@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ps.emperor.easy_water.view.MainActionBar
+        android:id="@+id/actionbar_main_panoramic"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+    </ps.emperor.easy_water.view.MainActionBar>
+<ps.emperor.easy_water.view.CustomHScrollView
+        		android:id="@+id/scrollView_panoramic"
+  				android:layout_width="match_parent" 
+  				android:layout_height="match_parent"
+  				android:scrollbars="none"
+  				android:background="@color/gray_2"
+  				android:layout_weight="1">
+  				<FrameLayout 
+            		android:layout_width="fill_parent"  
+            		android:layout_height="match_parent" >
+  					<LinearLayout
+  		    			android:id="@+id/linearLayout_gridtableLayout_panoramic"  
+  		    			android:layout_width="950dp"
+   						android:layout_height="match_parent"
+    					android:orientation="horizontal">
+    					<ScrollView android:layout_width="wrap_content"
+    					    android:layout_height="fill_parent">
+   						<ps.emperor.easy_water.view.MyGridView 
+    						android:id="@+id/grid_maintain_panoramic" 
+    						android:layout_width="fill_parent"
+    						android:layout_height="match_parent"
+    						android:numColumns="13"
+    						android:horizontalSpacing="40px"
+    						android:nextFocusUp="@+id/buttonList"
+  							android:nextFocusDown="@+id/listView"/>
+   						</ScrollView>
+   					</LinearLayout>	
+   				</FrameLayout> 
+  			</ps.emperor.easy_water.view.CustomHScrollView>
+</LinearLayout>

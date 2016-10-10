@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp" >
+
+    <TextView
+        android:id="@+id/text_apply_irrigate_unit_control_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="55dp"
+        android:text="2016-04-15"
+        android:textColor="@color/gray_1" />
+
+    <TextView
+        android:id="@+id/text_apply_irrigate_unit_control_crop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="40dp"
+        android:text="玉米 "
+        android:textColor="@color/gray_1" />
+        
+    </RelativeLayout>
+
+</LinearLayout>

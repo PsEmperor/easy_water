@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/gray_3" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp" >
+
+        <TextView
+            android:id="@+id/tv_apply_water_haplopore_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="1孔" 
+            android:layout_marginLeft="10dp"
+            android:textSize="18sp"/>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="50dp">
+        <SeekBar
+            android:id="@+id/mySeekBar_apply_water_haplopore_gate_control_list"
+            android:layout_width="655dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:maxHeight="50dp"
+            android:progressDrawable="@drawable/seekbar_progress"
+            android:thumb="@drawable/thumb2"
+            android:thumbOffset="0dp" />
+
+        <TextView
+            android:id="@+id/tv_apply_water_haplopore_gate_control_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="TextView" />
+
+    </RelativeLayout>
+</RelativeLayout>
+</LinearLayout>

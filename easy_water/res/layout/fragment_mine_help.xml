@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_3"
+    android:orientation="vertical" >
+
+    <ps.emperor.easy_water.view.MainActionBar
+        android:id="@+id/actionbar_mine_help"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+    </ps.emperor.easy_water.view.MainActionBar>
+
+    <RelativeLayout
+        android:id="@+id/layout_help_word"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mine_layout_height"
+        android:layout_marginTop="20dp"
+        android:background="@color/white" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:text="查看帮助文档"
+            android:textColor="@color/gray_1" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="30dp"
+            android:src="@drawable/image_gray_row" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_operation_video"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mine_layout_height"
+        android:layout_marginTop="1dp"
+        android:background="@color/white" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:text="查看操作视频"
+            android:textColor="@color/gray_1" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="30dp"
+            android:src="@drawable/image_gray_row" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="联系我们" />
+
+    <RelativeLayout
+        android:id="@+id/layout_help_tel"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mine_layout_height"
+        android:layout_marginTop="20dp"
+        android:background="@color/white" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:text="电话 :"
+            android:textColor="@color/gray_1" />
+
+        <TextView
+            android:id="@+id/text_help_tel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/textView1"
+            android:text="134349243335" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_help_qq"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mine_layout_height"
+        android:layout_marginTop="1dp"
+        android:background="@color/white" >
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30dp"
+            android:text="QQ :"
+            android:textColor="@color/gray_1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/textView2"
+            android:text="134349243335" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_help_wechat"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mine_layout_height"
+        android:layout_marginTop="1dp"
+        android:background="@color/white" >
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:text="微信 :"
+            android:textColor="@color/gray_1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/textView3"
+            android:text="134349243335" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_help_mail"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mine_layout_height"
+        android:layout_marginTop="1dp"
+        android:background="@color/white" >
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:text="邮箱 :"
+            android:textColor="@color/gray_1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/textView4"
+            android:text="134349243335" />
+    </RelativeLayout>
+
+</LinearLayout>

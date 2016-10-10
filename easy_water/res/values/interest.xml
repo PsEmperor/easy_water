@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string-array name="selinterest">
+        <item>全季快速设定</item>
+        <item>单轮快速设定</item>
+        <item>自定义</item>
+    </string-array>
+    
+</resources>

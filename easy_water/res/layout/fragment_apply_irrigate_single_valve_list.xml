@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+
+        <TextView
+            android:id="@+id/text_apply_irrigate_single_valve_list"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/text_apply_irrigate_single_valve_list"
+            android:background="@color/color_grid_header"
+            android:gravity="center"
+            android:text="A"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/text_apply_irrigate_single_valve_user_name"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="1dp"
+            android:text="王" />
+
+        <TextView
+            android:id="@+id/text_apply_irrigate_single_valve_crop"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignBaseline="@+id/text_apply_irrigate_single_valve_user_name"
+            android:layout_alignBottom="@+id/text_apply_irrigate_single_valve_user_name"
+            android:layout_alignRight="@+id/text_apply_irrigate_single_valve_list"
+            android:text="土" />
+
+    </RelativeLayout>
+
+</LinearLayout>

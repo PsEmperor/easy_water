@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_3"
+    android:orientation="vertical" >
+
+    <ps.emperor.easy_water.view.MainActionBar
+        android:id="@+id/actionbar_apply_water_haplopore_gate"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+    </ps.emperor.easy_water.view.MainActionBar>
+
+    <RelativeLayout
+        android:id="@+id/layout_apply_water_time_operation"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_weight="0" >
+
+        <TextView
+            android:id="@+id/tv_apply_water_time_operation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="40dp"
+            android:text="预约调闸	2016-05-17 18:16"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/icon_arrow_red" 
+            />
+    </RelativeLayout>
+<TextView android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@color/white"/>
+<RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_weight="0" >
+
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentLeft="true"
+              android:layout_centerVertical="true"
+              android:layout_marginLeft="10dp"
+              android:text="预约闸门开度"
+              android:textSize="15sp" />
+
+    </RelativeLayout>
+
+  <TextView android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@color/white"/>
+    <ListView
+        android:id="@+id/list_apply_water_haplopore_gate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@color/white" >
+    </ListView>
+
+</LinearLayout>

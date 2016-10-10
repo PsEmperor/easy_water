@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_3"
+    android:orientation="vertical" >
+
+    <ps.emperor.easy_water.view.MainActionBar
+        android:id="@+id/actionbar_apply_irrigate_control"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+    </ps.emperor.easy_water.view.MainActionBar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/white" >
+
+        <TextView
+            android:id="@+id/text_apply_irrigate_control_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/text_apply_irrigate_control_element"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignRight="@+id/text_apply_irrigate_control_unit"
+            android:layout_marginBottom="10dp"
+            android:text="TextView" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_marginTop="20dp" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:background="@color/white" >
+
+            <TextView
+                android:id="@+id/text_apply_irrigate_control_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:text="正在执行灌溉任务" />
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/text_apply_irrigate_control_status"
+                android:layout_below="@+id/text_apply_irrigate_control_status"
+                android:layout_marginTop="5dp"
+                android:text="开始时间" />
+
+            <TextView
+                android:id="@+id/text_apply_irrigate_control_time_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/textView1"
+                android:layout_below="@+id/textView1"
+                android:layout_marginTop="8dp"
+                android:text="2016-04-05 12:00" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/text_apply_irrigate_control_time_start"
+                android:layout_below="@+id/text_apply_irrigate_control_time_start"
+                android:layout_marginTop="5dp"
+                android:text="结束时间" />
+
+            <TextView
+                android:id="@+id/text_apply_irrigate_control_time_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/textView2"
+                android:layout_below="@+id/textView2"
+                android:layout_marginTop="8dp"
+                android:text="2016-05-04 12:00" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/image_apply_irrigate_control"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/ic_launcher" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:layout_marginTop="20dp"
+        android:layout_weight="0"
+        android:background="@color/white" 
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
+
+        <ps.emperor.easy_water.view.MyGridView
+            android:id="@+id/grid_apply_irrigate_control_fm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:numColumns="4" 
+            >
+        </ps.emperor.easy_water.view.MyGridView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent" 
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/button_apply_irriagte_control_operation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/blue"
+            android:text="全部开启" />
+    </RelativeLayout>
+
+</LinearLayout>

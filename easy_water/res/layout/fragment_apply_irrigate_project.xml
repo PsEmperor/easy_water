@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/setting"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_3"
+    android:orientation="vertical" >
+
+    <ps.emperor.easy_water.view.MainActionBar
+        android:id="@+id/actionbar_apply_irrigat_project"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+    </ps.emperor.easy_water.view.MainActionBar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/white" >
+
+        <TextView
+            android:id="@+id/tv_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="25dp"
+            android:gravity="center"
+            android:text="1"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:background="@drawable/t0166c68826efe4f3b6"
+            />
+
+        <TextView
+            android:id="@+id/text_apply_irrigatr_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignTop="@+id/tv_indicator"
+            android:text="141团6连1#地块"
+            android:layout_marginLeft="10dp" />
+
+        <TextView
+            android:id="@+id/text_apply_irrigatr_element"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/text_apply_irrigatr_unit"
+            android:layout_alignBottom="@+id/text_apply_irrigatr_unit"
+            android:layout_centerHorizontal="true"
+            android:text="2#灌溉单元" />
+
+        <TextView
+            android:id="@+id/text_apply_irrigatr_now_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tv_indicator"
+            android:layout_alignRight="@+id/text_apply_irrigatr_element"
+            android:text="2016-10-8 05:55" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/text_apply_irrigatr_now_time"
+            android:layout_alignLeft="@+id/text_apply_irrigatr_unit"
+            android:text="当前时间" />
+
+    </RelativeLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="10.0dip"
+        android:layout_marginLeft="10.0dip"
+        android:layout_marginRight="10.0dip"
+        android:layout_weight="1"
+        android:background="@drawable/abc_ab_share_pack_holo_light" />
+<RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_weight="0"
+        android:orientation="horizontal" 
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        >
+
+        <Button
+            android:id="@+id/btn_project_del"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="删除"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/btn_project_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:text="添加"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/indicator"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/btn_project_add"
+            android:layout_alignBottom="@+id/btn_project_add"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"
+            android:layout_weight="0"
+            android:gravity="center" />
+
+    </RelativeLayout>
+
+</LinearLayout>

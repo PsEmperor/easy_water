@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- actionbar 参数start -->
+    <dimen name="actionbar_height">50dip</dimen>
+    <dimen name="actionbar_marginParent">10dip</dimen>
+    <dimen name="actionbar_titleSize">20sp</dimen>
+    <!-- actionbar 参数end -->
+
+	<!-- 我界面Linearlayout高度 -->
+	<dimen name="mine_layout_height">50dip</dimen>
+	<!-- 应用界面RelativeLayout高度 -->
+	<dimen name="apply_layout_height">45dip</dimen>
+	<!-- 灌溉计划界面RelativeLayout高度 -->
+	<dimen name="plan_layout_height">55dip</dimen>
+</resources>

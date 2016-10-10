@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_3"
+    android:orientation="vertical" >
+
+    <ps.emperor.easy_water.view.MainActionBar
+        android:id="@+id/actionbar_apply_irriagte_or_water"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+    </ps.emperor.easy_water.view.MainActionBar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="15dp" >
+
+        <TextView
+            android:id="@+id/tv_apply_irriagte"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_circular_square_edittext_selector"
+            android:gravity="center"
+            android:text="灌溉"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/tv_apply_water"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_circular_square_edittext_selector"
+            android:gravity="center"
+            android:text="配水"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical" >
+
+        <EditText
+            android:id="@+id/ed_maintain_irrigation_add"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="60dp"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:hint="請輸入授權單位"
+            android:paddingLeft="15dp"
+            android:singleLine="true"
+            android:textColor="@color/gray_1" />
+
+        <ImageView
+            android:id="@+id/image_maintain_irrigation_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/searchs" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/fragment_home_recommend"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="10dp" 
+        >
+    </FrameLayout>
+
+</LinearLayout>
