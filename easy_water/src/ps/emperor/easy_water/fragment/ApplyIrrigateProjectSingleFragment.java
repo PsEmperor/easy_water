@@ -72,8 +72,9 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 			time_compare_end, time_db_start, time_db_end;
 	private int aYear, aMonth, aDay, aHours, aMinutes, nHour, nMinutes;
 	private IrrigationProject irrigationProject;
-	private int now_round, notify, isSkip, isTrue = 0, long_hour, isOne;
+	private int now_round, notify, isSkip, isTrue = 0, long_hour, isOne=1;
 	private long temp, compare, compares;
+	private int saveDate,saveDates,loadDate,time_long,onleOne=0;
 	private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
@@ -250,8 +251,8 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 						.show();
 				break;
 			} else if (CheckUtil.IsEmpty(tv_time_continue)
-					|| tv_time_continue.getText().equals("0时") || nHour == 0
-					|| nMinutes == 0) {
+					|| tv_time_continue.getText().equals("0时") ||tv_time_continue.getText().equals("0小时")
+					) {
 				Toast.makeText(getActivity(), "请设置持续时间", Toast.LENGTH_SHORT)
 						.show();
 				break;
@@ -265,9 +266,18 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 				irrigationProject = new IrrigationProject();
 				List<IrrigationProject> listentity = dbHelper.loadAllSessions();
 				time_compare_start = time_start;
+				time_long = 24 - long_hour;
+				java.util.Date dates = new java.util.Date();
+				SimpleDateFormat formats = new SimpleDateFormat(
+						"yyyy-MM-dd HH:mm");
+				try {
+					dates = formats.parse(time_compare_start);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				saveDates = dates.getDate();
 				for (int j = 0; j < 5; j++) {
 					for (int i = 0; i < listentity.size(); i++) {
-
 						Calendar c = Calendar.getInstance();
 						if (i == 0) {
 							try {
@@ -286,8 +296,29 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 							} catch (ParseException e) {
 								e.printStackTrace();
 							}
-							date1.setHours(date1.getHours() + nHour);
-							date1.setMinutes(date1.getMinutes() + nMinutes);
+							if(date1.getDate()!=0&&date1.getMinutes()!= 0){
+								date1.setHours(date1.getHours() + nHour);
+								date1.setMinutes(date1.getMinutes() + nMinutes);
+								saveDate = date1.getDate();
+									if((saveDate-saveDates==1)){
+										DecimalFormat fnum = new DecimalFormat("##0.0"); 
+										String sleep = fnum.format(((float)(24-time_long)/((float)24))*4)+"";
+										String[] hours = sleep.split("\\.");
+										date1.setHours(date1.getHours() + Integer.valueOf(hours[0]));
+										if(!CheckUtil.IsEmpty(hours[1])){
+											date1.setMinutes(date1.getMinutes() + Integer.valueOf(hours[1])*6);
+										}
+								
+								}
+							} else {
+								date1.setHours(date1.getHours() + nHour);
+								date1.setMinutes(date1.getMinutes() + nMinutes);
+								loadDate = date1.getDate();
+								if ((saveDate - saveDates > 1)) {
+									date1.setHours(date1.getHours() + 4);
+									date1.setMinutes(date1.getMinutes() + 0);
+								}
+							}
 							time_compare_end = format1.format(date1);
 						} else {
 							try {
@@ -295,7 +326,6 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 										"yyyy-MM-dd HH:mm")
 										.parse(time_compare_end));
 							} catch (ParseException e1) {
-								// TODO Auto-generated catch block
 								e1.printStackTrace();
 							}
 							java.util.Date date1 = new java.util.Date();
@@ -306,8 +336,39 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 							} catch (ParseException e) {
 								e.printStackTrace();
 							}
-							date1.setHours(date1.getHours() + nHour * i);
-							date1.setMinutes(date1.getMinutes() + nMinutes * i);
+							saveDate = date1.getDate();
+							if(date1.getDate()!=0&&date1.getMinutes()!= 0){
+								date1.setHours(date1.getHours() + nHour);
+								date1.setMinutes(date1.getMinutes() + nMinutes);
+									if((saveDate-saveDates==1)){
+										if(onleOne == 1){
+											
+										}else{
+											DecimalFormat fnum = new DecimalFormat("##0.0"); 
+											String sleep = fnum.format(((float)(24-time_long)/((float)24))*4)+"";
+											String[] hours = sleep.split("\\.");
+											date1.setHours(date1.getHours() + Integer.valueOf(hours[0]));
+											if(!CheckUtil.IsEmpty(hours[1])){
+												date1.setMinutes(date1.getMinutes() + Integer.valueOf(hours[1])*6);
+												onleOne = 1;
+											}
+										}
+										
+								
+								}else {
+									if(saveDate > loadDate){
+										date1.setHours(date1.getHours() + 4);
+										date1.setMinutes(date1.getMinutes() + 0);
+								}
+								}
+								}else{
+									date1.setHours(date1.getHours() + nHour);
+									date1.setMinutes(date1.getMinutes() + nMinutes);
+									if(saveDate > loadDate){
+										date1.setHours(date1.getHours() + 4);
+										date1.setMinutes(date1.getMinutes() + 0);
+								}
+								}
 							time_compare_end = format1.format(date1);
 						}
 						time_db_start = listentity.get(i).getProjectstart();
@@ -354,48 +415,6 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 					Toast.makeText(getActivity(), "在范围内", Toast.LENGTH_SHORT)
 							.show();
 				} else {
-					// if (isTrue == 1) {
-					// int randomCommon[] = randomCommon(1, 5, 4);
-					// for (int i = 0; i < 4; i++) {
-					// Date date = new Date();
-					// SimpleDateFormat format = new SimpleDateFormat(
-					// "yyyy-MM-dd HH:mm");
-					// try {
-					// if (i == 0) {
-					// date = format.parse(time_start);
-					// time_starts = format.format(date);
-					// } else {
-					// date = format.parse(time_start);
-					// date.setHours(date.getHours()
-					// + Integer.valueOf(nHour) * (i));
-					// date.setMinutes(date.getMinutes()
-					// + Integer.valueOf(nMinutes) * (i));
-					// time_starts = format.format(date);
-					// }
-					// date.setHours(date.getHours()
-					// + Integer.valueOf(nHour));
-					// date.setMinutes(date.getMinutes()
-					// + Integer.valueOf(nMinutes));
-					// time_end = format.format(date);
-					// if (CheckUtil.IsEmpty(listentity)) {
-					// now_round = 0;
-					// }
-					// if (listentity.get(0).getRound().equals("1")) {
-					// now_round = 0;
-					// }
-					// if (isRandom == true) {
-					// dbHelper.updateProject(now_round + 1 + "",
-					// randomCommon[i], time_starts, time_end);
-					// } else {
-					// dbHelper.updateProject(now_round + 1 + "",
-					// i + 1, time_starts, time_end);
-					// }
-					// } catch (ParseException e) {
-					// e.printStackTrace();
-					// }
-					// }
-					//
-					// } else {
 					List<IrrigationProject> listentity1 = dbHelper
 							.loadAllSessions();
 					if (CheckUtil.IsEmpty(listentity1)) {
@@ -421,18 +440,75 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 							if (i == 0) {
 								date = format.parse(time_start);
 								time_starts = format.format(date);
+								
+								if(date.getDate()!=0&&date.getMinutes()!= 0){
+									date.setHours(date.getHours() + nHour);
+									date.setMinutes(date.getMinutes() + nMinutes);
+									saveDate = date.getDate();
+										if((saveDate-saveDates==1)){
+											DecimalFormat fnum = new DecimalFormat("##0.0"); 
+											String sleep = fnum.format(((float)(24-time_long)/((float)24))*4)+"";
+											String[] hours = sleep.split("\\.");
+											date.setHours(date.getHours() + Integer.valueOf(hours[0]));
+											if(!CheckUtil.IsEmpty(hours[1])){
+												date.setMinutes(date.getMinutes() + Integer.valueOf(hours[1])*6);
+											}
+											else {
+												if(saveDate > loadDate){
+													date.setHours(date.getHours() + 4);
+													date.setMinutes(date.getMinutes() + 0);
+											}
+											}
+									}
+									}else{
+										date.setHours(date.getHours() + nHour);
+										date.setMinutes(date.getMinutes() + nMinutes);
+										if(saveDate > loadDate){
+											date.setHours(date.getHours() + 4);
+											date.setMinutes(date.getMinutes() + 0);
+									}
+									}
 							} else {
-								date = format.parse(time_start);
-								date.setHours(date.getHours()
-										+ Integer.valueOf(nHour) * (i));
-								date.setMinutes(date.getMinutes()
-										+ Integer.valueOf(nMinutes) * (i));
+								date = format.parse(time_end);
 								time_starts = format.format(date);
+								loadDate = date.getDate();
+								if(date.getDate()!=0&&date.getMinutes()!= 0){
+									date.setHours(date.getHours() + nHour);
+									date.setMinutes(date.getMinutes() + nMinutes);
+									saveDate = date.getDate();
+										if((saveDate-saveDates==1)){
+											if(onleOne == 1){
+												
+											}else{
+												DecimalFormat fnum = new DecimalFormat("##0.0"); 
+												String sleep = fnum.format(((float)(24-time_long)/((float)24))*4)+"";
+												String[] hours = sleep.split("\\.");
+												date.setHours(date.getHours() + Integer.valueOf(hours[0]));
+												if(!CheckUtil.IsEmpty(hours[1])){
+													date.setMinutes(date.getMinutes() + Integer.valueOf(hours[1])*6);
+												}
+												onleOne = 1;
+											}
+									
+									}else {
+										if(saveDate > loadDate){
+											date.setHours(date.getHours() + 4);
+											date.setMinutes(date.getMinutes() + 0);
+									}
+									}
+									}else{
+										date.setHours(date.getHours() + nHour);
+										date.setMinutes(date.getMinutes() + nMinutes);
+										if(saveDate > loadDate){
+											date.setHours(date.getHours() + 4);
+											date.setMinutes(date.getMinutes() + 0);
+									}
+									}
 							}
-							date.setHours(date.getHours()
-									+ Integer.valueOf(nHour));
-							date.setMinutes(date.getMinutes()
-									+ Integer.valueOf(nMinutes));
+//							date.setHours(date.getHours()
+//									+ Integer.valueOf(nHour));
+//							date.setMinutes(date.getMinutes()
+//									+ Integer.valueOf(nMinutes));
 							time_end = format.format(date);
 							if (CheckUtil.IsEmpty(listentity)) {
 								now_round = 0;

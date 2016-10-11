@@ -282,6 +282,7 @@ public class TimeAvtivityDialog extends BaseActivity implements OnClickListener 
 					date1.setMinutes(date1.getMinutes()
 							+ Integer.valueOf(minutes.getCurrentItem()));
 					time_ends = format1.format(date1);
+					
 					if (aYear > date3.getYear() + 1900
 							|| aYear < date3.getYear() + 1900) {
 						isOne = 1;
