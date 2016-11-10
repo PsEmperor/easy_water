@@ -25,6 +25,7 @@ import ps.emperor.easy_water.entity.CustomData;
 import ps.emperor.easy_water.greendao.DBHelper;
 import ps.emperor.easy_water.greendao.IrrigationProject;
 import ps.emperor.easy_water.utils.CheckUtil;
+import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.view.HorizontalListView;
 import ps.emperor.easy_water.view.MainActionBar;
 import android.view.View.OnClickListener;
@@ -51,6 +52,8 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements OnClic
 	private String text;
 	private DBHelper dbHelper;
 	private List<IrrigationProject> listentity;
+	private String units;
+	private int isNot;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -64,7 +67,8 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements OnClic
 		actionBar.setActionBarOnClickListener(this);
 		
 		dbHelper = DBHelper.getInstance(getActivity()); // 得到DBHelper对象
-		listentity = dbHelper.loadAllProject();
+		units = getArguments().getString("units");
+		listentity = dbHelper.loadLastMsgBySessionids(units);
 		mHlvSimpleList = (TextView)view.findViewById(R.id.hlvSimpleList);
 		listView = (ListView) view.findViewById(R.id.list_apply_irrigate_unit_control_plant);
 		beans = new ArrayList<ApplyIrrigationUnitControlBean>();
@@ -133,6 +137,9 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements OnClic
 			break;
 		case R.id.acitionbar_right:
 			ApplyirrigatePreludeFragment fragment3 = new ApplyirrigatePreludeFragment();
+			Bundle bundle2 = new Bundle();
+			bundle2.putString("units", units);
+			fragment3.setArguments(bundle2);
 //			transaction.setCustomAnimations(R.anim.right_in, R.anim.right_out);
 			transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 			transaction.replace(R.id.fl, fragment3, "main");
@@ -142,12 +149,20 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements OnClic
 			ApplyIrrigateProjectFragment fragment1 = new ApplyIrrigateProjectFragment();
 //			transaction.setCustomAnimations(R.anim.right_in, R.anim.right_out);
 			transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			isNot = 1;
+			SharedUtils.setParam(getActivity(), "isNot", isNot);
+			Bundle bundle = new Bundle();
+			bundle.putString("units", units);
+			fragment1.setArguments(bundle);
 			transaction.replace(R.id.fl, fragment1, "main");
 			transaction.commit();
 			break;
 		case R.id.btn_apply_irrigate_unit_control_true://进入单阀界面
 			ApplyIrrigateSingleValveFragment fragment2 = new ApplyIrrigateSingleValveFragment();
 //			transaction.setCustomAnimations(R.anim.right_in, R.anim.right_out);
+			Bundle bundle1 = new Bundle();
+			bundle1.putString("units", units);
+			fragment2.setArguments(bundle1);
 			transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 			transaction.replace(R.id.fl, fragment2, "main");
 			transaction.commit();

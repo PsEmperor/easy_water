@@ -42,6 +42,7 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 	private String hour, minute;
 	private RelativeLayout valve_control; 
 	private TextView text_apply_irriagte_valve_control;
+	private String units;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,7 +58,7 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 		actionBar.setRightIcon(R.drawable.ic_launcher);
 		actionBar.setTitle("灌溉阀门控制");
 		actionBar.setActionBarOnClickListener(this);
-
+		units = getArguments().getString("units");
 		// 灌水延续时间
 		valve_control = (RelativeLayout) view
 				.findViewById(R.id.layout_apply_irriagte_valve_control);
@@ -91,6 +92,9 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 			ApplyIrrigateSingleValveFragment fragment = new ApplyIrrigateSingleValveFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
+			Bundle bundle = new Bundle();
+			bundle.putString("units", units);
+			fragment.setArguments(bundle);
 			transaction
 					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 			transaction.replace(R.id.fl, fragment, "main");

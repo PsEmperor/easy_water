@@ -36,7 +36,6 @@ public class MainTainIrrigateInfoFragment extends Fragment implements
 			text_max_orroagte_season_end;
 	private Button btn_maintain_panoramic;
 	
-	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -73,6 +72,7 @@ public class MainTainIrrigateInfoFragment extends Fragment implements
 		
 		btn_maintain_panoramic = (Button) view.findViewById(R.id.btn_maintain_panoramic);
 		btn_maintain_panoramic.setOnClickListener(this);
+		
 		return view;
 	}
 

@@ -1,7 +1,6 @@
 package ps.emperor.easy_water.greendao;
 
 import android.content.Context;
-
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -26,6 +25,7 @@ public class DaoMaster extends AbstractDaoMaster {
         SingleValueDao.createTable(db, ifNotExists);
         CustomerDao.createTable(db, ifNotExists);
         OrderDao.createTable(db, ifNotExists);
+        IrrigationIsFirstDao.createTable(db, ifNotExists);
     }
     
     /** Drops underlying database table using DAOs. */
@@ -37,6 +37,7 @@ public class DaoMaster extends AbstractDaoMaster {
         SingleValueDao.dropTable(db, ifExists);
         CustomerDao.dropTable(db, ifExists);
         OrderDao.dropTable(db, ifExists);
+        IrrigationIsFirstDao.dropTable(db, ifExists);
     }
     
     public static abstract class OpenHelper extends SQLiteOpenHelper {
@@ -75,6 +76,7 @@ public class DaoMaster extends AbstractDaoMaster {
         registerDaoClass(SingleValueDao.class);
         registerDaoClass(CustomerDao.class);
         registerDaoClass(OrderDao.class);
+        registerDaoClass(IrrigationIsFirstDao.class);
     }
     
     public DaoSession newSession() {

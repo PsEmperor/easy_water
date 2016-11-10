@@ -36,7 +36,8 @@ public class ListViewPagerAdapter1 extends PagerAdapter implements OnItemClickLi
 	int pageRows=5;
 	private int mChildCount = 0;
 	private int nowItem,nowPage;
-
+	private String units,compareTime;
+	
 	/**
 	 * 
 	 * @param context 活动窗体
@@ -44,12 +45,13 @@ public class ListViewPagerAdapter1 extends PagerAdapter implements OnItemClickLi
 	 * @param customIndicator 圆点控件
 	 * @param rows 每页显示多少条数据
 	 */ 
-	public ListViewPagerAdapter1(final Context context, List<ApplyIrrigationProjectBean> listentity,int rows) {
+	public ListViewPagerAdapter1(final Context context, List<ApplyIrrigationProjectBean> listentity,int rows,final String units) {
 		this.pageRows=rows;
 		int count = 0;  //ѭ������
 		int pos = 0;		//��ǰλ��
 		this.context = context;
 		this.list = listentity;
+		this.units = units;
 		//����ҳ��
 		pageNum = (int) Math.ceil(list.size() / pageRows);
 		int a=list.size() % pageRows;
@@ -173,9 +175,14 @@ public class ListViewPagerAdapter1 extends PagerAdapter implements OnItemClickLi
 						nowItem = 26;
 					}
 					nowPage = (Integer) SharedUtils.getParam(context, "nowPage", 1);
-						Bundle bundle = new Bundle();
+					compareTime = list.get((nowPage-1) * 4 + position).getTime_start();
+					position = (nowPage-1) * 4 +position;
+					Bundle bundle = new Bundle();
 						bundle.putInt("nowItem", nowItem);
 						bundle.putInt("nowPage", nowPage);
+						bundle.putString("compareTime", compareTime);
+						bundle.putString("units", units);
+						bundle.putInt("position", position);
 						Intent intent = new Intent(context, TimeAvtivityDialog.class);
 						intent.putExtras(bundle);
 						context.startActivity(intent);

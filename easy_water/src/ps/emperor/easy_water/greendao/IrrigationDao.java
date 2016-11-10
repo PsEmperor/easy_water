@@ -1,5 +1,4 @@
 package ps.emperor.easy_water.greendao;
-
 import android.database.Cursor;
 
 import android.database.sqlite.SQLiteDatabase;
@@ -26,15 +25,25 @@ public class IrrigationDao extends AbstractDao<Irrigation, Long> {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Irrigation = new Property(1, String.class, "irrigation", false, "IRRIGATION");
         public final static Property Isrelevance = new Property(2, Integer.class, "isrelevance", false, "ISRELEVANCE");
-        public final static Property Groupnumber = new Property(3, String.class, "groupnumber", false, "GROUPNUMBER");
-        public final static Property Valuenumber = new Property(4, String.class, "valuenumber", false, "VALUENUMBER");
-        public final static Property Filter = new Property(5, String.class, "filter", false, "FILTER");
-        public final static Property Timestart = new Property(6, String.class, "timestart", false, "TIMESTART");
-        public final static Property Timeend = new Property(7, String.class, "timeend", false, "TIMEEND");
-        public final static Property Userinfo = new Property(8, String.class, "userinfo", false, "USERINFO");
-        public final static Property Userphone = new Property(9, Boolean.class, "userphone", false, "USERPHONE");
-        public final static Property Cropsinfo = new Property(10, Long.class, "cropsinfo", false, "CROPSINFO");
-        public final static Property Cropstime = new Property(11, String.class, "cropstime", false, "CROPSTIME");
+        public final static Property Groupnumber = new Property(3, Integer.class, "groupnumber", false, "GROUPNUMBER");
+        public final static Property Valuenumber = new Property(4, Integer.class, "valuenumber", false, "VALUENUMBER");
+        public final static Property FilterHour = new Property(5, Integer.class, "filterHour", false, "FILTER_HOUR");
+        public final static Property FilterMinute = new Property(6, Integer.class, "filterMinute", false, "FILTER_MINUTE");
+        public final static Property Userinfo = new Property(7, String.class, "userinfo", false, "USERINFO");
+        public final static Property Userphone = new Property(8, String.class, "userphone", false, "USERPHONE");
+        public final static Property Cropsinfo = new Property(9, String.class, "cropsinfo", false, "CROPSINFO");
+        public final static Property Cropstime = new Property(10, String.class, "cropstime", false, "CROPSTIME");
+        public final static Property IsNightStartHour = new Property(11, Integer.class, "isNightStartHour", false, "IS_NIGHT_START_HOUR");
+        public final static Property IsNightStartMinute = new Property(12, Integer.class, "isNightStartMinute", false, "IS_NIGHT_START_MINUTE");
+        public final static Property IsNightContinueHour = new Property(13, Integer.class, "isNightContinueHour", false, "IS_NIGHT_CONTINUE_HOUR");
+        public final static Property IsNightContinueMinute = new Property(14, Integer.class, "isNightContinueMinute", false, "IS_NIGHT_CONTINUE_MINUTE");
+        public final static Property IsNightEndHour = new Property(15, Integer.class, "isNightEndHour", false, "IS_NIGHT_END_HOUR");
+        public final static Property IsNightEndMinute = new Property(16, Integer.class, "isNightEndMinute", false, "IS_NIGHT_END_MINUTE");
+        public final static Property IsTimeLong = new Property(17, Integer.class, "isTimeLong", false, "IS_TIME_LONG");
+        public final static Property NHour = new Property(18, Integer.class, "nHour", false, "N_HOUR");
+        public final static Property NMinutes = new Property(19, Integer.class, "nMinutes", false, "N_MINUTES");
+        public final static Property NNumber = new Property(20, Integer.class, "nNumber", false, "N_NUMBER");
+        public final static Property NRound = new Property(21, Integer.class, "nRound", false, "N_ROUND");
     };
 
 
@@ -53,15 +62,25 @@ public class IrrigationDao extends AbstractDao<Irrigation, Long> {
                 "'_id' INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "'IRRIGATION' TEXT," + // 1: irrigation
                 "'ISRELEVANCE' INTEGER," + // 2: isrelevance
-                "'GROUPNUMBER' TEXT," + // 3: groupnumber
-                "'VALUENUMBER' TEXT," + // 4: valuenumber
-                "'FILTER' TEXT," + // 5: filter
-                "'TIMESTART' TEXT," + // 6: timestart
-                "'TIMEEND' TEXT," + // 7: timeend
-                "'USERINFO' TEXT," + // 8: userinfo
-                "'USERPHONE' INTEGER," + // 9: userphone
-                "'CROPSINFO' INTEGER," + // 10: cropsinfo
-                "'CROPSTIME' TEXT);"); // 11: cropstime
+                "'GROUPNUMBER' INTEGER," + // 3: groupnumber
+                "'VALUENUMBER' INTEGER," + // 4: valuenumber
+                "'FILTER_HOUR' INTEGER," + // 5: filterHour
+                "'FILTER_MINUTE' INTEGER," + // 6: filterMinute
+                "'USERINFO' TEXT," + // 7: userinfo
+                "'USERPHONE' TEXT," + // 8: userphone
+                "'CROPSINFO' TEXT," + // 9: cropsinfo
+                "'CROPSTIME' TEXT," + // 10: cropstime
+                "'IS_NIGHT_START_HOUR' INTEGER," + // 11: isNightStartHour
+                "'IS_NIGHT_START_MINUTE' INTEGER," + // 12: isNightStartMinute
+                "'IS_NIGHT_CONTINUE_HOUR' INTEGER," + // 13: isNightContinueHour
+                "'IS_NIGHT_CONTINUE_MINUTE' INTEGER," + // 14: isNightContinueMinute
+                "'IS_NIGHT_END_HOUR' INTEGER," + // 15: isNightEndHour
+                "'IS_NIGHT_END_MINUTE' INTEGER," + // 16: isNightEndMinute
+                "'IS_TIME_LONG' INTEGER," + // 17: isTimeLong
+                "'N_HOUR' INTEGER," + // 18: nHour
+                "'N_MINUTES' INTEGER," + // 19: nMinutes
+                "'N_NUMBER' INTEGER," + // 20: nNumber
+                "'N_ROUND' INTEGER);"); // 21: nRound
     }
 
     /** Drops the underlying database table. */
@@ -90,49 +109,99 @@ public class IrrigationDao extends AbstractDao<Irrigation, Long> {
             stmt.bindLong(3, isrelevance);
         }
  
-        String groupnumber = entity.getGroupnumber();
+        Integer groupnumber = entity.getGroupnumber();
         if (groupnumber != null) {
-            stmt.bindString(4, groupnumber);
+            stmt.bindLong(4, groupnumber);
         }
  
-        String valuenumber = entity.getValuenumber();
+        Integer valuenumber = entity.getValuenumber();
         if (valuenumber != null) {
-            stmt.bindString(5, valuenumber);
+            stmt.bindLong(5, valuenumber);
         }
  
-        String filter = entity.getFilter();
-        if (filter != null) {
-            stmt.bindString(6, filter);
+        Integer filterHour = entity.getFilterHour();
+        if (filterHour != null) {
+            stmt.bindLong(6, filterHour);
         }
  
-        String timestart = entity.getTimestart();
-        if (timestart != null) {
-            stmt.bindString(7, timestart);
-        }
- 
-        String timeend = entity.getTimeend();
-        if (timeend != null) {
-            stmt.bindString(8, timeend);
+        Integer filterMinute = entity.getFilterMinute();
+        if (filterMinute != null) {
+            stmt.bindLong(7, filterMinute);
         }
  
         String userinfo = entity.getUserinfo();
         if (userinfo != null) {
-            stmt.bindString(9, userinfo);
+            stmt.bindString(8, userinfo);
         }
  
-        Boolean userphone = entity.getUserphone();
+        String userphone = entity.getUserphone();
         if (userphone != null) {
-            stmt.bindLong(10, userphone ? 1l: 0l);
+            stmt.bindString(9, userphone);
         }
  
-        Long cropsinfo = entity.getCropsinfo();
+        String cropsinfo = entity.getCropsinfo();
         if (cropsinfo != null) {
-            stmt.bindLong(11, cropsinfo);
+            stmt.bindString(10, cropsinfo);
         }
  
         String cropstime = entity.getCropstime();
         if (cropstime != null) {
-            stmt.bindString(12, cropstime);
+            stmt.bindString(11, cropstime);
+        }
+ 
+        Integer isNightStartHour = entity.getIsNightStartHour();
+        if (isNightStartHour != null) {
+            stmt.bindLong(12, isNightStartHour);
+        }
+ 
+        Integer isNightStartMinute = entity.getIsNightStartMinute();
+        if (isNightStartMinute != null) {
+            stmt.bindLong(13, isNightStartMinute);
+        }
+ 
+        Integer isNightContinueHour = entity.getIsNightContinueHour();
+        if (isNightContinueHour != null) {
+            stmt.bindLong(14, isNightContinueHour);
+        }
+ 
+        Integer isNightContinueMinute = entity.getIsNightContinueMinute();
+        if (isNightContinueMinute != null) {
+            stmt.bindLong(15, isNightContinueMinute);
+        }
+ 
+        Integer isNightEndHour = entity.getIsNightEndHour();
+        if (isNightEndHour != null) {
+            stmt.bindLong(16, isNightEndHour);
+        }
+ 
+        Integer isNightEndMinute = entity.getIsNightEndMinute();
+        if (isNightEndMinute != null) {
+            stmt.bindLong(17, isNightEndMinute);
+        }
+ 
+        Integer isTimeLong = entity.getIsTimeLong();
+        if (isTimeLong != null) {
+            stmt.bindLong(18, isTimeLong);
+        }
+ 
+        Integer nHour = entity.getNHour();
+        if (nHour != null) {
+            stmt.bindLong(19, nHour);
+        }
+ 
+        Integer nMinutes = entity.getNMinutes();
+        if (nMinutes != null) {
+            stmt.bindLong(20, nMinutes);
+        }
+ 
+        Integer nNumber = entity.getNNumber();
+        if (nNumber != null) {
+            stmt.bindLong(21, nNumber);
+        }
+ 
+        Integer nRound = entity.getNRound();
+        if (nRound != null) {
+            stmt.bindLong(22, nRound);
         }
     }
 
@@ -149,15 +218,25 @@ public class IrrigationDao extends AbstractDao<Irrigation, Long> {
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // irrigation
             cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // isrelevance
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // groupnumber
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // valuenumber
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // filter
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // timestart
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // timeend
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // userinfo
-            cursor.isNull(offset + 9) ? null : cursor.getShort(offset + 9) != 0, // userphone
-            cursor.isNull(offset + 10) ? null : cursor.getLong(offset + 10), // cropsinfo
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11) // cropstime
+            cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3), // groupnumber
+            cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4), // valuenumber
+            cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5), // filterHour
+            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // filterMinute
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // userinfo
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // userphone
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // cropsinfo
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // cropstime
+            cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11), // isNightStartHour
+            cursor.isNull(offset + 12) ? null : cursor.getInt(offset + 12), // isNightStartMinute
+            cursor.isNull(offset + 13) ? null : cursor.getInt(offset + 13), // isNightContinueHour
+            cursor.isNull(offset + 14) ? null : cursor.getInt(offset + 14), // isNightContinueMinute
+            cursor.isNull(offset + 15) ? null : cursor.getInt(offset + 15), // isNightEndHour
+            cursor.isNull(offset + 16) ? null : cursor.getInt(offset + 16), // isNightEndMinute
+            cursor.isNull(offset + 17) ? null : cursor.getInt(offset + 17), // isTimeLong
+            cursor.isNull(offset + 18) ? null : cursor.getInt(offset + 18), // nHour
+            cursor.isNull(offset + 19) ? null : cursor.getInt(offset + 19), // nMinutes
+            cursor.isNull(offset + 20) ? null : cursor.getInt(offset + 20), // nNumber
+            cursor.isNull(offset + 21) ? null : cursor.getInt(offset + 21) // nRound
         );
         return entity;
     }
@@ -168,15 +247,25 @@ public class IrrigationDao extends AbstractDao<Irrigation, Long> {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setIrrigation(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setIsrelevance(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
-        entity.setGroupnumber(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setValuenumber(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setFilter(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setTimestart(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setTimeend(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
-        entity.setUserinfo(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
-        entity.setUserphone(cursor.isNull(offset + 9) ? null : cursor.getShort(offset + 9) != 0);
-        entity.setCropsinfo(cursor.isNull(offset + 10) ? null : cursor.getLong(offset + 10));
-        entity.setCropstime(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setGroupnumber(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
+        entity.setValuenumber(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
+        entity.setFilterHour(cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5));
+        entity.setFilterMinute(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
+        entity.setUserinfo(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setUserphone(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setCropsinfo(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setCropstime(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setIsNightStartHour(cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11));
+        entity.setIsNightStartMinute(cursor.isNull(offset + 12) ? null : cursor.getInt(offset + 12));
+        entity.setIsNightContinueHour(cursor.isNull(offset + 13) ? null : cursor.getInt(offset + 13));
+        entity.setIsNightContinueMinute(cursor.isNull(offset + 14) ? null : cursor.getInt(offset + 14));
+        entity.setIsNightEndHour(cursor.isNull(offset + 15) ? null : cursor.getInt(offset + 15));
+        entity.setIsNightEndMinute(cursor.isNull(offset + 16) ? null : cursor.getInt(offset + 16));
+        entity.setIsTimeLong(cursor.isNull(offset + 17) ? null : cursor.getInt(offset + 17));
+        entity.setNHour(cursor.isNull(offset + 18) ? null : cursor.getInt(offset + 18));
+        entity.setNMinutes(cursor.isNull(offset + 19) ? null : cursor.getInt(offset + 19));
+        entity.setNNumber(cursor.isNull(offset + 20) ? null : cursor.getInt(offset + 20));
+        entity.setNRound(cursor.isNull(offset + 21) ? null : cursor.getInt(offset + 21));
      }
     
     /** @inheritdoc */

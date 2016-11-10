@@ -18,16 +18,18 @@ import android.widget.TextView;
 
 /**
  * 录入种植戸信息
+ * 
  * @author 毛国江
  * @version 2016-6-20 下午14:21
  */
 
 public class MainTainIntoUserFragment extends Fragment implements
-OnClickListener {
+		OnClickListener {
 	private LayoutInflater mInflater;
 	private MainActionBar actionBar;
 	private ArrayList<String> integers = new ArrayList<String>();
 	private GridView gridView;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -42,16 +44,15 @@ OnClickListener {
 		actionBar.setActionBarOnClickListener(this);
 		integers = getArguments().getStringArrayList("info");
 		gridView = (GridView) view.findViewById(R.id.grid__maintain_into_user);
-		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>( 
-		         getActivity(), android.R.layout.simple_list_item_1, 
-		         integers); 
-		 
-		        /* 设置ListView的Adapter */ 
-				gridView.setAdapter(new ArrayAdapter<String>(getActivity(), 
-		                android.R.layout.simple_list_item_1, integers)); 
-				return view;
+		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+				getActivity(), android.R.layout.simple_list_item_1, integers);
+
+		/* 设置ListView的Adapter */
+		gridView.setAdapter(new ArrayAdapter<String>(getActivity(),
+				android.R.layout.simple_list_item_1, integers));
+		return view;
 	}
-	
+
 	@Override
 	public void onClick(View v) {
 		FragmentManager fgManager = getFragmentManager();
@@ -68,7 +69,7 @@ OnClickListener {
 			transaction.commit();
 			break;
 		case R.id.acitionbar_right:
-			
+
 			break;
 		default:
 			break;

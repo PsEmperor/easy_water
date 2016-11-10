@@ -1,5 +1,6 @@
 package ps.emperor.easy_water.greendao;
 
+
 import android.database.sqlite.SQLiteDatabase;
 
 
@@ -27,6 +28,7 @@ public class DaoSession extends AbstractDaoSession {
     private final DaoConfig singleValueDaoConfig;
     private final DaoConfig customerDaoConfig;
     private final DaoConfig orderDaoConfig;
+    private final DaoConfig irrigationIsFirstDaoConfig;
 
     private final IrrigationDao irrigationDao;
     private final WaterDao waterDao;
@@ -35,6 +37,7 @@ public class DaoSession extends AbstractDaoSession {
     private final SingleValueDao singleValueDao;
     private final CustomerDao customerDao;
     private final OrderDao orderDao;
+    private final IrrigationIsFirstDao irrigationIsFirstDao;
 
     public DaoSession(SQLiteDatabase db, IdentityScopeType type, Map<Class<? extends AbstractDao<?, ?>>, DaoConfig>
             daoConfigMap) {
@@ -61,6 +64,9 @@ public class DaoSession extends AbstractDaoSession {
         orderDaoConfig = daoConfigMap.get(OrderDao.class).clone();
         orderDaoConfig.initIdentityScope(type);
 
+        irrigationIsFirstDaoConfig = daoConfigMap.get(IrrigationIsFirstDao.class).clone();
+        irrigationIsFirstDaoConfig.initIdentityScope(type);
+
         irrigationDao = new IrrigationDao(irrigationDaoConfig, this);
         waterDao = new WaterDao(waterDaoConfig, this);
         irrigationProjectDao = new IrrigationProjectDao(irrigationProjectDaoConfig, this);
@@ -68,6 +74,7 @@ public class DaoSession extends AbstractDaoSession {
         singleValueDao = new SingleValueDao(singleValueDaoConfig, this);
         customerDao = new CustomerDao(customerDaoConfig, this);
         orderDao = new OrderDao(orderDaoConfig, this);
+        irrigationIsFirstDao = new IrrigationIsFirstDao(irrigationIsFirstDaoConfig, this);
 
         registerDao(Irrigation.class, irrigationDao);
         registerDao(Water.class, waterDao);
@@ -76,6 +83,7 @@ public class DaoSession extends AbstractDaoSession {
         registerDao(SingleValue.class, singleValueDao);
         registerDao(Customer.class, customerDao);
         registerDao(Order.class, orderDao);
+        registerDao(IrrigationIsFirst.class, irrigationIsFirstDao);
     }
     
     public void clear() {
@@ -86,6 +94,7 @@ public class DaoSession extends AbstractDaoSession {
         singleValueDaoConfig.getIdentityScope().clear();
         customerDaoConfig.getIdentityScope().clear();
         orderDaoConfig.getIdentityScope().clear();
+        irrigationIsFirstDaoConfig.getIdentityScope().clear();
     }
 
     public IrrigationDao getIrrigationDao() {
@@ -114,6 +123,10 @@ public class DaoSession extends AbstractDaoSession {
 
     public OrderDao getOrderDao() {
         return orderDao;
+    }
+
+    public IrrigationIsFirstDao getIrrigationIsFirstDao() {
+        return irrigationIsFirstDao;
     }
 
 }

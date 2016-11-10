@@ -38,7 +38,7 @@
         <GridView
             android:id="@+id/grid__maintain_into_user"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="150dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:numColumns="5" >

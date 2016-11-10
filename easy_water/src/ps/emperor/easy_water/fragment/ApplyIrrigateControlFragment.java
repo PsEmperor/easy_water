@@ -44,6 +44,7 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 	private ApplyIrrigateControlAdapter adapter; //灌溉组控制adapter
 	private List<ApplyIrrigateControlBean> beans; //灌溉组控制实体类
 	private ImageView irrigatr_control;
+	private String units;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,6 +60,8 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 		actionBar.setTitle("灌溉组控制");
 		actionBar.setActionBarOnClickListener(this);
 
+		units = getArguments().getString("units");
+		
 		irrigatr_control = (ImageView) view
 				.findViewById(R.id.image_apply_irrigate_control);
 		irrigatr_control.setOnClickListener(this);
@@ -90,6 +93,9 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 			ApplyIrrigateUnitControlFragment fragment = new ApplyIrrigateUnitControlFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
+			Bundle bundle = new Bundle();
+			bundle.putString("units", units);
+			fragment.setArguments(bundle);
 			transaction
 					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 			transaction.replace(R.id.fl, fragment, "main");
@@ -99,6 +105,9 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 			ApplyIrrigateSingleValveFragment fragment1 = new ApplyIrrigateSingleValveFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
+			Bundle bundle1 = new Bundle();
+			bundle1.putString("units", units);
+			fragment1.setArguments(bundle1);
 			transaction
 					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 			transaction.replace(R.id.fl, fragment1, "main");

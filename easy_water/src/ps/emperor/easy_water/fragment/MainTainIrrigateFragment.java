@@ -17,7 +17,12 @@ import android.widget.ListView;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.activity.MainTainPresentrrigateActivity;
 import ps.emperor.easy_water.adapter.MainTainIrrigationAdapter;
+import ps.emperor.easy_water.entity.ApplyIrrigationBean;
 import ps.emperor.easy_water.entity.MainTainIrrigationBean;
+import ps.emperor.easy_water.greendao.DBHelper;
+import ps.emperor.easy_water.greendao.Irrigation;
+import ps.emperor.easy_water.utils.CheckUtil;
+import ps.emperor.easy_water.utils.SharedUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -35,22 +40,33 @@ public class MainTainIrrigateFragment extends Fragment implements OnClickListene
 	private ListView listView;
 	private MainTainIrrigationAdapter adapter;
 	private List<MainTainIrrigationBean> beans;
-
+	private DBHelper dbHelper;
+	private List<Irrigation> irrigation;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		mInflater = inflater;
 		View view = inflater.inflate(R.layout.fragment_maintain_irrigate, container, false);
+
+		dbHelper = DBHelper.getInstance(getActivity()); // 得到DBHelper对象
 
 		listView = (ListView) view.findViewById(R.id.list_maintain_irrigate_add);
 		listView.setOnItemClickListener(this);
 		adapter = new MainTainIrrigationAdapter(getActivity());
 		beans = new ArrayList<MainTainIrrigationBean>();
 		MainTainIrrigationBean bean;
-		for (int i = 0; i < 18; i++) {
-			bean = new MainTainIrrigationBean();
-			bean.setMaintain("第五大队第四中队第三小队");
-			beans.add(bean);
-		}
+		bean = new MainTainIrrigationBean();
+		bean.setMaintain("第二大队第四中队第三小队");
+		beans.add(bean);
+		bean = new MainTainIrrigationBean();
+		bean.setMaintain("第三大队第四中队第三小队");
+		beans.add(bean);
+		bean = new MainTainIrrigationBean();
+		bean.setMaintain("第四大队第四中队第三小队");
+		beans.add(bean);
+		bean = new MainTainIrrigationBean();
+		bean.setMaintain("第五大队第四中队第三小队");
+		beans.add(bean);
 		adapter.addData(beans, false);
 		listView.setAdapter(adapter);
 		beans = adapter.getData();
@@ -68,7 +84,29 @@ public class MainTainIrrigateFragment extends Fragment implements OnClickListene
 //		transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 //		transaction.replace(R.id.fragment_home_recommend, fragment, "main");
 //		transaction.commit();
+		SharedUtils.setParam(getActivity(), "units", beans.get(position).getMaintain());
 		Intent intent = new Intent(getActivity(),MainTainPresentrrigateActivity.class);
+		irrigation = dbHelper.loadContinue(beans.get(position).getMaintain());
+		if(CheckUtil.IsEmpty(irrigation)){
+			Irrigation irrigation = new Irrigation();
+			irrigation.setIrrigation(beans.get(position).getMaintain());
+			irrigation.setNHour(0);
+			irrigation.setNMinutes(0);
+			irrigation.setNNumber(0);
+			irrigation.setNRound(0);
+			irrigation.setIsNightStartHour(0);
+			irrigation.setIsNightStartMinute(0);
+			irrigation.setIsNightContinueHour(0);
+			irrigation.setIsNightContinueMinute(0);
+			irrigation.setIsNightEndHour(0);
+			irrigation.setIsNightEndMinute(0);
+			irrigation.setIsTimeLong(0);
+			irrigation.setGroupnumber(0);
+			irrigation.setValuenumber(0);
+			irrigation.setFilterHour(0);
+			irrigation.setFilterMinute(0);
+			dbHelper.saveSession(irrigation);
+		}
 		startActivity(intent);
 	}
 

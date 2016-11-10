@@ -7,6 +7,9 @@ import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.adapter.ApplyIrrigationAdapter;
 import ps.emperor.easy_water.application.ApplicationFragment;
 import ps.emperor.easy_water.entity.ApplyIrrigationBean;
+import ps.emperor.easy_water.greendao.DBHelper;
+import ps.emperor.easy_water.greendao.Irrigation;
+import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.view.MainActionBar;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
@@ -37,7 +40,8 @@ public class ApplyIrrigateFragment extends Fragment implements OnClickListener,
 	private ListView listView;
 	private ApplyIrrigationAdapter adapter;
 	private List<ApplyIrrigationBean> beans;
-	
+	private DBHelper dbHelper;
+	private List<Irrigation> irrigation;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,7 +49,9 @@ public class ApplyIrrigateFragment extends Fragment implements OnClickListener,
 		mInflater = inflater;
 		View view = inflater.inflate(R.layout.fragment_apply_irrigate,
 				container, false);
-
+		
+		dbHelper = DBHelper.getInstance(getActivity()); // 得到DBHelper对象
+		
 		actionBar = (MainActionBar) view
 				.findViewById(R.id.actionbar_apply_irrigate);
 		actionBar.setLeftIcon(R.drawable.btn_back_selector);
@@ -59,15 +65,30 @@ public class ApplyIrrigateFragment extends Fragment implements OnClickListener,
 		beans = new ArrayList<ApplyIrrigationBean>();
 		
 		ApplyIrrigationBean bean;
-		for (int i = 0; i < 18; i++) {
+			bean = new ApplyIrrigationBean();
+			bean.setUnits("第二大队第四中队第三小队");
+			bean.setElement("2#灌溉单元");
+			bean.setWhether("正在执行");
+			bean.setCurrent_state(180);
+			beans.add(bean);
+			bean = new ApplyIrrigationBean();
+			bean.setUnits("第三大队第四中队第三小队");
+			bean.setElement("2#灌溉单元");
+			bean.setWhether("正在执行");
+			bean.setCurrent_state(180);
+			beans.add(bean);
+			bean = new ApplyIrrigationBean();
+			bean.setUnits("第四大队第四中队第三小队");
+			bean.setElement("2#灌溉单元");
+			bean.setWhether("正在执行");
+			bean.setCurrent_state(180);
+			beans.add(bean);
 			bean = new ApplyIrrigationBean();
 			bean.setUnits("第五大队第四中队第三小队");
 			bean.setElement("2#灌溉单元");
 			bean.setWhether("正在执行");
 			bean.setCurrent_state(180);
-			;
 			beans.add(bean);
-		}
 		adapter.addData(beans, false);
 		listView.setAdapter(adapter);
 		beans = adapter.getData();
@@ -98,13 +119,33 @@ public class ApplyIrrigateFragment extends Fragment implements OnClickListener,
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view,
 			final int position, long id) {
+		irrigation = dbHelper.loadContinue(beans.get(position).getUnits());
+		if(CheckUtil.IsEmpty(irrigation)){
+			Irrigation irrigation = new Irrigation();
+			irrigation.setIrrigation(beans.get(position).getUnits());
+			irrigation.setNHour(0);
+			irrigation.setNMinutes(0);
+			irrigation.setNNumber(0);
+			irrigation.setNRound(0);
+			irrigation.setIsNightStartHour(0);
+			irrigation.setIsNightStartMinute(0);
+			irrigation.setIsNightContinueHour(0);
+			irrigation.setIsNightContinueMinute(0);
+			irrigation.setIsNightEndHour(0);
+			irrigation.setIsNightEndMinute(0);
+			irrigation.setIsTimeLong(0);
+			irrigation.setGroupnumber(0);
+			irrigation.setValuenumber(0);
+			irrigation.setFilterHour(0);
+			irrigation.setFilterMinute(0);
+			dbHelper.saveSession(irrigation);
+		}
 		FragmentManager fgManager = getFragmentManager();
 		FragmentTransaction transaction = fgManager.beginTransaction();
 		ApplyIrrigateUnitControlFragment fragment = new ApplyIrrigateUnitControlFragment();
 		Bundle bundle = new Bundle();
 		bundle.putString("units", beans.get(position).getUnits());
 		fragment.setArguments(bundle);
-		// transaction.setCustomAnimations(R.anim.right_in, R.anim.right_out);
 		transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 		transaction.replace(R.id.fl, fragment, "main");
 		transaction.commit();

@@ -45,10 +45,11 @@ public class TimeAvtivityDialog extends BaseActivity implements OnClickListener 
 	private WheelView hours;
 	private WheelView minutes;
 	private int isBefore;
-	private String time_end, time_ends, time_start;
+	private String time_end, time_ends, time_start, units, compareTime,
+			compareRound;
 	private int first_setTime = 0;
 	private long end, nowEnd, minuteOfDay, start;
-	private int nowItem, nowPages, isOne,isSkip;
+	private int nowItem, nowPages, isOne, isSkip, position;
 	private DBHelper dbHelper;
 	private List<IrrigationProject> listentity;
 
@@ -65,6 +66,9 @@ public class TimeAvtivityDialog extends BaseActivity implements OnClickListener 
 		Bundle bundle = intent.getExtras();
 		nowItem = bundle.getInt("nowItem");
 		nowPages = bundle.getInt("nowPage");
+		units = bundle.getString("units");
+		compareTime = bundle.getString("compareTime");
+		position = bundle.getInt("position");
 
 		Calendar c = Calendar.getInstance();
 		int currentYear = c.get(Calendar.YEAR);
@@ -243,7 +247,7 @@ public class TimeAvtivityDialog extends BaseActivity implements OnClickListener 
 				isBefore = -1;
 			}
 			if (isBefore == 1) {
-				listentity = dbHelper.loadAllSessions();
+				listentity = dbHelper.loadLastMsgBySessionids(units);
 				Calendar cal = Calendar.getInstance();// 当前日期
 				// 从数据库中查出点击的该项对应的计划结束时间
 				for (int i = 0; i < listentity.size(); i++) {
@@ -282,7 +286,7 @@ public class TimeAvtivityDialog extends BaseActivity implements OnClickListener 
 					date1.setMinutes(date1.getMinutes()
 							+ Integer.valueOf(minutes.getCurrentItem()));
 					time_ends = format1.format(date1);
-					
+
 					if (aYear > date3.getYear() + 1900
 							|| aYear < date3.getYear() + 1900) {
 						isOne = 1;
@@ -318,7 +322,16 @@ public class TimeAvtivityDialog extends BaseActivity implements OnClickListener 
 							+ decimal.format(hour.getCurrentItem())
 							+ ":"
 							+ decimal.format(minute.getCurrentItem());
-					dbHelper.updateProject(nowPages + "", nowItem,
+					// dbHelper.updateProject(nowPages + "", nowItem,
+					// nowStar + "", time_ends + "");
+					// for (int i = 0; i < listentity.size(); i++) {
+					// if(compareTime.equals(listentity.get(i).getProjectstart())){
+					// compareRound = listentity.get(i).getRound();
+					// break;
+					// }
+					// }
+					compareRound = listentity.get(position).getRound();
+					dbHelper.updateProjects(units, compareRound, nowItem,
 							nowStar + "", time_ends + "");
 					isSkip = 1;
 					SharedUtils.setParam(getApplication(), "isSkip", isSkip);

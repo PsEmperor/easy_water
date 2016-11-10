@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.AdapterView.OnItemClickListener;
 import ps.emperor.easy_water.R;
+import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.view.MainActionBar;
 
@@ -31,6 +32,8 @@ public class MainTainBasicCompileFragment extends Fragment implements
 	private MainActionBar actionBar;
 	private Button button_marshalling, button_user_name,
 	button_user_crop,button_basic_info;
+	private int Skip;
+	private String units;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,6 +63,7 @@ public class MainTainBasicCompileFragment extends Fragment implements
 		button_user_crop.setOnClickListener(this);
 		button_user_name.setOnClickListener(this);
 		button_marshalling.setOnClickListener(this);
+		units = (String) SharedUtils.getParam(getActivity(), "units", 1+"");
 		return view;
 	}
 
@@ -79,9 +83,16 @@ public class MainTainBasicCompileFragment extends Fragment implements
 			transaction.commit();
 			break;
 		case R.id.button_maintain_compile_basic_info:// 基本信息
+			Skip = 1;
+			SharedUtils.setParam(getActivity(), "setLong", 0);
+			SharedUtils.setParam(getActivity(), "setNight", 0);
+			SharedUtils.setParam(getActivity(), "Skip", Skip);
 			MainTainBasicInfoFragment fragment1 = new MainTainBasicInfoFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
+			Bundle bundle = new Bundle();
+			bundle.putString("units", units);
+			fragment1.setArguments(bundle);
 			transaction
 					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 			transaction.replace(R.id.fragment_maintain_present_irrigate,

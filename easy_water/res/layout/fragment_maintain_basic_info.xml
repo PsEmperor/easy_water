@@ -121,12 +121,48 @@
                 android:layout_marginRight="25dp"
                 android:src="@drawable/image_gray_row" />
         </RelativeLayout>
+<RelativeLayout
+                    android:id="@+id/layout_apply_irriagte_project_single_time_long"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/plan_layout_height"
+                    android:layout_marginTop="1dp"
+                    android:background="@color/white" 
+                    android:layout_below="@+id/layout_maintain_basic_info_max_orroagte_filter" >
 
+                    <ImageView
+                        android:id="@+id/imageview2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="25dp"
+                        android:src="@drawable/image_gray_row" />
+
+                    <TextView
+                        android:id="@+id/text_apply_irriagte_project_single_time_long"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="0小时" 
+                        android:layout_marginRight="55dp"
+                         android:layout_alignParentRight="true"/>
+
+                    <TextView
+                        android:id="@+id/textview3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="30dp"
+                        android:gravity="center_vertical"
+                        android:text="允许最长灌溉时间/日"
+                        android:layout_centerVertical="true" />
+
+                </RelativeLayout>
         <RelativeLayout
             android:id="@+id/layout_maintain_basic_info_max_orroagte_restnight"
             android:layout_width="match_parent"
             android:layout_height="85dp"
-            android:layout_below="@+id/layout_maintain_basic_info_max_orroagte_filter" >
+            android:layout_below="@+id/layout_apply_irriagte_project_single_time_long" >
 
             <ImageView
                 android:id="@+id/imageView2"
@@ -193,8 +229,8 @@
             android:layout_width="match_parent"
             android:layout_height="85dp"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/layout_maintain_basic_info_max_orroagte_valve"
-            android:layout_marginTop="141dp" >
+            android:layout_below="@+id/layout_maintain_basic_info_max_orroagte_restnight"
+            >
 
             <ImageView
                 android:id="@+id/ImageView01"

@@ -78,8 +78,8 @@ public class MineIrrigationAddChangeFragment extends Fragment implements OnClick
 			{
 				Irrigation tmpEntity = listentity.get(i);  
 				Log.v("tmpEntity.getIrrigation()",tmpEntity.getIrrigation());  
-				Log.v("tmpEntity.getGroupnumber()",tmpEntity.getGroupnumber());  
-				Log.v("tmpEntity.getValuenumber()",tmpEntity.getValuenumber());  
+				Log.v("tmpEntity.getGroupnumber()",tmpEntity.getGroupnumber()+"");  
+				Log.v("tmpEntity.getValuenumber()",tmpEntity.getValuenumber()+"");  
 			}  
 		// checkBox.setOnCheckedChangeListener(listener1);
 		adapter = new IrrigationAddAdapter(getActivity());
@@ -97,8 +97,8 @@ public class MineIrrigationAddChangeFragment extends Fragment implements OnClick
 		for (int i = 0; i < beans.size(); i++) {
 	    	   entity = new Irrigation();    //创建一个SessionEntity实体对象，并赋值  
 	    	   entity.setIrrigation(beans.get(i).getkeyword());
-	    	   entity.setGroupnumber("5");
-	    	   entity.setValuenumber("5");
+	    	   entity.setGroupnumber(5);
+	    	   entity.setValuenumber(5);
 	    	   entity.setIsrelevance(0);
 	    	   if(!CheckUtil.IsEmpty(listentity)){
 	    		   if(entity.getIrrigation().equals(listentity.get(i).getIrrigation())){

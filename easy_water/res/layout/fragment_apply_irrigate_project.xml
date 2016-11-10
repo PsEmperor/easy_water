@@ -108,14 +108,14 @@
 
         <TextView
             android:id="@+id/indicator"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/btn_project_add"
-            android:layout_alignBottom="@+id/btn_project_add"
             android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:layout_margin="10dp"
             android:layout_weight="0"
-            android:gravity="center" />
+            android:gravity="center"
+            android:inputType="number" />
 
     </RelativeLayout>
 

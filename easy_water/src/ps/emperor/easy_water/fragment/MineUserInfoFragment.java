@@ -152,14 +152,19 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 					new android.content.DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
+							
 							name = (EditText) contentview
 									.findViewById(R.id.edit_mine_user_name);
 							String names = name.getText().toString().trim();
-							SharedUtils.setParam(getActivity(),
-									"dialog_user_name", names);
-							name.setText(names);
-							name_show.setText(names);
-							dialog.dismiss();
+							if(checkNameChese(names) == true){
+								name.setText(names);
+								name_show.setText(names);
+								SharedUtils.setParam(getActivity(),
+										"dialog_user_name", names);
+								dialog.dismiss();
+							}else{
+								Toast.makeText(getActivity(), "请输入正确的姓名！", Toast.LENGTH_SHORT).show();
+							}
 						}
 					});
 			builder.setView(contentview);
@@ -260,4 +265,42 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 		}
 		// sendIcon();
 	}
+	
+	 /**
+     * 判定输入汉字
+     * @param c
+     * @return
+     */
+    public  boolean isChinese(char c) {
+    Character.UnicodeBlock ub = Character.UnicodeBlock.of(c);
+    if (ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS
+         || ub == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS
+        || ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A
+        || ub == Character.UnicodeBlock.GENERAL_PUNCTUATION
+        || ub == Character.UnicodeBlock.CJK_SYMBOLS_AND_PUNCTUATION
+        || ub == Character.UnicodeBlock.HALFWIDTH_AND_FULLWIDTH_FORMS) {
+        return true;
+    }
+    return false;
+}
+    
+    /**
+     * 检测String是否全是中文
+     * @param name
+     * @return
+     */
+	 public  boolean checkNameChese(String name)
+	   {
+	           boolean res=true;
+	           char [] cTemp = name.toCharArray(); 
+	           for(int i=0;i<name.length();i++)
+	           {
+	                   if(!isChinese(cTemp[i]))
+	                   {
+	                           res=false;
+	                           break;
+	                   }
+	           }           
+	           return res;
+	   }
 }

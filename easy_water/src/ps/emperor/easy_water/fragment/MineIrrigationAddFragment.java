@@ -61,23 +61,7 @@ public class MineIrrigationAddFragment extends Fragment implements OnClickListen
 		irrigation_canel.setOnClickListener(this);
 
 		dBManager = DBHelper.getInstance(getActivity());    //得到DBHelper对象  
-		 List<Irrigation> listentity = dBManager.loadAllSession();   
 	       
-	  //下面这一行就把entity对象存数据库了，然后我们新建一个SessionEntity列表再读一下  
-	  
-	  
-	         //下面这个方法是查询Session表里面的所有数据返回一个数据列表，相当于select * from table，然后扫描打印出来  
-	      
-			
-			
-			for(int i=0;i<listentity.size();i++)  
-			{
-				Irrigation tmpEntity = listentity.get(i);  
-				Log.v("tmpEntity.getIrrigation()",tmpEntity.getIrrigation());  
-				Log.v("tmpEntity.getGroupnumber()",tmpEntity.getGroupnumber());  
-				Log.v("tmpEntity.getValuenumber()",tmpEntity.getValuenumber());  
-			}  
-		// checkBox.setOnCheckedChangeListener(listener1);
 		adapter = new IrrigationAddAdapter(getActivity());
 		beans = new ArrayList<KeyWordBean>();
 		KeyWordBean bean;
@@ -89,21 +73,6 @@ public class MineIrrigationAddFragment extends Fragment implements OnClickListen
 		adapter.addData(beans, false);
 		listView.setAdapter(adapter);
 		beans = adapter.getData();
-		
-		for (int i = 0; i < beans.size(); i++) {
-	    	   entity = new Irrigation();    //创建一个SessionEntity实体对象，并赋值  
-	    	   entity.setIrrigation(beans.get(i).getkeyword());
-	    	   entity.setGroupnumber("5");
-	    	   entity.setValuenumber("5");
-	    	   entity.setIsrelevance(0);
-	    	   if(!CheckUtil.IsEmpty(listentity)){
-	    		   if(entity.getIrrigation().equals(listentity.get(i).getIrrigation())){
-	    	   }
-	    	   }else{
-	    		   dBManager.saveSession(entity);    //保存到数据库  
-	    	   
-		}
-		}
 		return view;
 	}
 
@@ -120,7 +89,19 @@ public class MineIrrigationAddFragment extends Fragment implements OnClickListen
 			transaction.commit();
 			break;
 		case R.id.text_irrigation_add:
-			Toast.makeText(getActivity(), "23333333", Toast.LENGTH_LONG).show();
+			for (int i = 0; i < beans.size(); i++) {
+		    	   entity = new Irrigation();    //创建一个SessionEntity实体对象，并赋值  
+		    	   entity.setIrrigation(beans.get(i).getkeyword());
+		    	   entity.setGroupnumber(5);
+		    	   entity.setValuenumber(5);
+		    	   entity.setIsrelevance(0);
+		    	   dBManager.saveSession(entity);    //保存到数据库  
+			}
+			MineIrrigationEquipmentFragment fragment1 = new MineIrrigationEquipmentFragment();
+//			transaction.setCustomAnimations(R.anim.right_in, R.anim.right_out);
+			transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.replace(R.id.fl, fragment1, "main");
+			transaction.commit();
 			break;
 		case R.id.text_irrigation_canel:
 			for (int i = 0; i < beans.size(); i++) {

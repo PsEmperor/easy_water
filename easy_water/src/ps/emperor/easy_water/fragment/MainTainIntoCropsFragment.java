@@ -36,22 +36,22 @@ import android.widget.TextView;
  */
 
 public class MainTainIntoCropsFragment extends Fragment implements
-OnClickListener {
+		OnClickListener {
 	private LayoutInflater mInflater;
 	private MainActionBar actionBar;
 	private ArrayList<String> integers = new ArrayList<String>();
 	private MainTainIntoCropsAdapter adapter;
 	private GridView gridView;
-	private EditText control_time;//播种时间
+	private EditText control_time;// 播种时间
 	private Dialog dialog;
 	private String year, month, day;
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		mInflater = inflater;
-		View view = inflater.inflate(R.layout.fragment_maintain_into_crops_info,
-				container, false);
+		View view = inflater.inflate(
+				R.layout.fragment_maintain_into_crops_info, container, false);
 		actionBar = (MainActionBar) view
 				.findViewById(R.id.actionbar_maintain_into_crops);
 		actionBar.setLeftIcon(R.drawable.btn_back_selector);
@@ -62,26 +62,27 @@ OnClickListener {
 		integers = getArguments().getStringArrayList("info");
 		adapter = new MainTainIntoCropsAdapter(getActivity());
 		gridView = (GridView) view.findViewById(R.id.grid__maintain_into_crops);
-		control_time = (EditText) view.findViewById(R.id.text__apply_irrigatr_control_time);
+		control_time = (EditText) view
+				.findViewById(R.id.text__apply_irrigatr_control_time);
 		control_time.setOnClickListener(this);
-		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>( 
-		         getActivity(), android.R.layout.simple_list_item_1, 
-		         integers); 
-		 
-		        /* 设置ListView的Adapter */ 
-				gridView.setAdapter(new ArrayAdapter<String>(getActivity(), 
-		                android.R.layout.simple_list_item_1, integers)); 
-				return view;
+		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+				getActivity(), android.R.layout.simple_list_item_1, integers);
+
+		/* 设置ListView的Adapter */
+		gridView.setAdapter(new ArrayAdapter<String>(getActivity(),
+				android.R.layout.simple_list_item_1, integers));
+		return view;
 	}
-	
+
 	private void init() {
 		year = (String) SharedUtils.getParam(getActivity(), "year_info_crops",
 				"0000");
-		month = (String) SharedUtils.getParam(getActivity(), "month_info_crops",
-				"00");
+		month = (String) SharedUtils.getParam(getActivity(),
+				"month_info_crops", "00");
 		day = (String) SharedUtils.getParam(getActivity(), "day_info_crops",
 				"00");
 	}
+
 	@Override
 	public void onClick(View v) {
 		FragmentManager fgManager = getFragmentManager();
@@ -104,6 +105,7 @@ OnClickListener {
 			break;
 		}
 	}
+
 	/**
 	 * @Description: TODO 弹出日期时间选择器
 	 */
@@ -121,21 +123,20 @@ OnClickListener {
 
 		String[] months_big = { "1", "3", "5", "7", "8", "10", "12" };
 		String[] months_little = { "4", "6", "9", "11" };
-		
-		
+
 		final List<String> list_big = Arrays.asList(months_big);
 		final List<String> list_little = Arrays.asList(months_little);
-		
-		
+
 		// 年
 		final WheelView year = (WheelView) view.findViewById(R.id.hour_times);
 		year.setAdapter(new NumericWheelAdapter(2016, 2036));
 		year.setCyclic(true);
 		year.setLabel("年");// 添加文字
-		year.setCurrentItem(currentYear-2016);
+		year.setCurrentItem(currentYear - 2016);
 
 		// 月
-		final WheelView month = (WheelView) view.findViewById(R.id.minute_times);
+		final WheelView month = (WheelView) view
+				.findViewById(R.id.minute_times);
 		month.setAdapter(new NumericWheelAdapter(1, 12));
 		month.setCyclic(true);
 		month.setLabel("月");// 添加文字
@@ -146,18 +147,19 @@ OnClickListener {
 		day.setCyclic(true);
 		day.setLabel("日");// 添加文字
 		// 判断大小月及是否闰年,用来确定"日"的数据
-				if (list_big.contains(String.valueOf(currentMonth + 1))) {
-					day.setAdapter(new NumbericWheelAdapter(1, 31));
-				} else if (list_little.contains(String.valueOf(currentMonth + 1))) {
-					day.setAdapter(new NumbericWheelAdapter(1, 30));
-				} else {
-					// 闰年
-					if ((currentYear % 4 == 0 && currentYear % 100 != 0) || currentYear % 400 == 0)
-						day.setAdapter(new NumbericWheelAdapter(1, 29));
-					else
-						day.setAdapter(new NumbericWheelAdapter(1, 28));
-				}
-				day.setCurrentItem(currentDay - 1);
+		if (list_big.contains(String.valueOf(currentMonth + 1))) {
+			day.setAdapter(new NumbericWheelAdapter(1, 31));
+		} else if (list_little.contains(String.valueOf(currentMonth + 1))) {
+			day.setAdapter(new NumbericWheelAdapter(1, 30));
+		} else {
+			// 闰年
+			if ((currentYear % 4 == 0 && currentYear % 100 != 0)
+					|| currentYear % 400 == 0)
+				day.setAdapter(new NumbericWheelAdapter(1, 29));
+			else
+				day.setAdapter(new NumbericWheelAdapter(1, 28));
+		}
+		day.setCurrentItem(currentDay - 1);
 		// 根据屏幕密度来指定选择器字体的大小
 		// int textSize = 0;
 		//
@@ -176,18 +178,16 @@ OnClickListener {
 				// 如果是个数,则显示为"02"的样式
 				String parten = "00";
 				DecimalFormat decimal = new DecimalFormat(parten);
-				control_time.setText(decimal
-						.format(year.getCurrentItem()+2016)
+				control_time.setText(decimal.format(year.getCurrentItem() + 2016)
 						+ "-"
-						+ decimal.format(month.getCurrentItem()+1)
-						+ "-"
-						+ decimal.format(day.getCurrentItem()+1));
+						+ decimal.format(month.getCurrentItem() + 1)
+						+ "-" + decimal.format(day.getCurrentItem() + 1));
 				SharedUtils.setParam(getActivity(), "year_info_crops",
-						decimal.format(year.getCurrentItem()+2016));
+						decimal.format(year.getCurrentItem() + 2016));
 				SharedUtils.setParam(getActivity(), "month_info_crops",
-						decimal.format(month.getCurrentItem()+1));
+						decimal.format(month.getCurrentItem() + 1));
 				SharedUtils.setParam(getActivity(), "day_info_crops",
-						decimal.format(day.getCurrentItem()+1));
+						decimal.format(day.getCurrentItem() + 1));
 				// 设置日期的显示
 				// tv_time.setText((wv_year.getCurrentItem() + START_YEAR) + "-"
 				// + decimal.format((wv_month.getCurrentItem() + 1)) + "-"

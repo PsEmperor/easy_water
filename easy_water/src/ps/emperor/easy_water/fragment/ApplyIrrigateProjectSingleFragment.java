@@ -19,6 +19,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.printservice.PrintDocument;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,8 @@ import ps.emperor.easy_water.Interface.OnWheelChangedListener;
 import ps.emperor.easy_water.adapter.NumbericWheelAdapter;
 import ps.emperor.easy_water.adapter.NumericWheelAdapter;
 import ps.emperor.easy_water.greendao.DBHelper;
+import ps.emperor.easy_water.greendao.Irrigation;
+import ps.emperor.easy_water.greendao.IrrigationIsFirst;
 import ps.emperor.easy_water.greendao.IrrigationProject;
 import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
@@ -53,13 +56,12 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 
 	private LayoutInflater mInflater;
 	private MainActionBar actionBar;
-	private ToggleButton time_night, time_interval;
-	private Boolean isNight, isRandom;
+	private ToggleButton time_night, time_interval, time_longs;
+	private Boolean isNight, isRandom, isLong;
 	private RelativeLayout layout_time_start, layout_time_continue,
-			layout_time_long, layout_time_interval;
-	private TextView tv_time_start, tv_time_continue, tv_time_long;
+			layout_time_interval;
+	private TextView tv_time_start, tv_time_continue;
 	private Dialog dialog;
-	private int id;
 	private int isBefore;
 	private WheelView current_year;
 	private WheelView current_month;
@@ -68,22 +70,31 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 	private WheelView current_minute;
 	private Button button_single_this;
 	private DBHelper dbHelper;
-	private String time_start, time_end, time_starts, time_compare_start,
-			time_compare_end, time_db_start, time_db_end;
-	private int aYear, aMonth, aDay, aHours, aMinutes, nHour, nMinutes;
+	private String time_start,time_max_start, time_end, time_starts, time_compare_start,
+			time_compare_end, time_db_start, time_db_end,units;
+	private int aYear, aMonth, aDay, aHours, aMinutes, nHour, nHours, nHour2,
+			 nMinutes;
 	private IrrigationProject irrigationProject;
-	private int now_round, notify, isSkip, isTrue = 0, long_hour, isOne = 1;
+	private int now_round, notify, isSkip, isTrue , long_hour, isOne = 1,
+			isHave, isHaves, isTrues,isTrue1;
 	private long temp, compare, compares;
-	private int saveDate, saveDates, loadDate, time_long, onleOne = 0,
-			onleOnes = 0;
+	private int isLegal, isLegals, time_long, setLong, setNight,
+			onleOne = 0, onleOnes = 0, conpare, isNightStartHour,
+			isNightStartHours, isNightStartMinute,isBig,
+			isNightEnd, isNightEndMinutes, isNightContinueHour,
+			isNightContinueMinute, compareDay, compareDays, compareDayf,isGreater;
+	private List<Irrigation> irrigation;
+	private List<IrrigationIsFirst> firsts;
+	private IrrigationIsFirst irrigationIsFirst;
+	
 	private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case 100:
-				if (CheckUtil.IsEmpty(time_start)) {
+				if (CheckUtil.IsEmpty(time_max_start)) {
 					tv_time_start.setText("0000-00-00 00:00");
 				} else {
-					tv_time_start.setText(time_start);
+					tv_time_start.setText(time_max_start);
 				}
 				break;
 			default:
@@ -100,8 +111,10 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 				R.layout.fragment_apply_irrigate_project_single, container,
 				false);
 
-		init();
 		dbHelper = DBHelper.getInstance(getActivity()); // 得到DBHelper对象
+		units = getArguments().getString("units");
+		irrigationIsFirst = new IrrigationIsFirst();
+		init();
 
 		actionBar = (MainActionBar) view
 				.findViewById(R.id.actionbar_apply_irrigat_project_single);
@@ -116,9 +129,7 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 		layout_time_continue = (RelativeLayout) view
 				.findViewById(R.id.layout_apply_irriagte_project_single_time_continue);
 		layout_time_continue.setOnClickListener(this);
-		layout_time_long = (RelativeLayout) view
-				.findViewById(R.id.layout_apply_irriagte_project_single_time_long);
-		layout_time_long.setOnClickListener(this);
+
 		layout_time_interval = (RelativeLayout) view
 				.findViewById(R.id.layout_apply_irriagte_project_single_time_interval);
 		layout_time_interval.setOnClickListener(this);
@@ -127,48 +138,69 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 				.findViewById(R.id.text_apply_irriagte_project_single_time_start);
 		tv_time_continue = (TextView) view
 				.findViewById(R.id.text_apply_irriagte_project_single_time_continue);
-		tv_time_long = (TextView) view
-				.findViewById(R.id.text_apply_irriagte_project_single_time_long);
 
 		time_night = (ToggleButton) view
 				.findViewById(R.id.toggle_apply_irriagte_project_single_time_night);
 		time_interval = (ToggleButton) view
 				.findViewById(R.id.toggle_apply_irriagte_project_single_time_random);
-
-		nHour = (int) SharedUtils.getParam(getActivity(), "nHour", 0);
-		nMinutes = (int) SharedUtils.getParam(getActivity(), "nMinutes", 0);
-		if (!CheckUtil.IsEmpty(nMinutes)) {
-			tv_time_continue.setText(nHour + "时" + nMinutes + "分");
-		} else {
-			tv_time_continue.setText(nHour + "时");
+		time_longs = (ToggleButton) view
+				.findViewById(R.id.toggle_apply_irriagte_project_single_time_longs);
+		
+		nHour =irrigation.get(0).getNHour();
+		nMinutes = irrigation.get(0).getNMinutes();
+		if (!CheckUtil.IsEmpty(nHour)&&!CheckUtil.IsEmpty(nMinutes)) {
+			tv_time_continue.setText(nHour + "小时" + nMinutes + "分钟");
+		} else if(CheckUtil.IsEmpty(nHour)&&!CheckUtil.IsEmpty(nMinutes)){
+			tv_time_continue.setText(nMinutes + "分钟");
+		}else {
+			tv_time_continue.setText(nHour + "小时");
 		}
-		long_hour = (int) SharedUtils.getParam(getActivity(), "long_hour", 0);
-		tv_time_long.setText(long_hour + "时");
 
 		time_night.setChecked(isNight);
 		time_interval.setChecked(isRandom);
+		time_longs.setChecked(isLong);
 
 		time_night.setOnCheckedChangeListener(this);
 		time_interval.setOnCheckedChangeListener(this);
+		time_longs.setOnCheckedChangeListener(this);
 
 		button_single_this = (Button) view
 				.findViewById(R.id.button_apply_irriagte_project_single_this);
 		button_single_this.setOnClickListener(this);
 
-		// if(!isMsg){
-		// initToggle = false;
-		// }
+		
 		return view;
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
+		isNight = (Boolean) SharedUtils.getParam(getActivity(), "SingleNight",
+				false);
+		isRandom = (Boolean) SharedUtils.getParam(getActivity(),
+				"SingleInterval", false);
+		isLong = (Boolean) SharedUtils.getParam(getActivity(), "SingleLong",
+				false);
+
+		isTrue = 0;
+		isTrue1 = 0;
+		
+		if (CheckUtil.IsEmpty(long_hour) || long_hour == 0){
+			isLong = false;
+		}
+		if ((CheckUtil.IsEmpty(isNightStartHour) || isNightStartHour == 0)
+				&& (CheckUtil.IsEmpty(isNightEnd) || isNightEnd == 0)) {
+			isNight = false;
+		}
+		time_night.setChecked(isNight);
+		time_interval.setChecked(isRandom);
+		time_longs.setChecked(isLong);
+
 		new Thread(new Runnable() {
 
 			@Override
 			public void run() {
-				List<IrrigationProject> listentity = dbHelper.loadAllProject();
+				List<IrrigationProject> listentity = dbHelper.loadLastMsgBySessionids(units);
 				if (!CheckUtil.IsEmpty(listentity)) {
 					Calendar c = Calendar.getInstance();
 					Calendar c1 = Calendar.getInstance();
@@ -197,6 +229,7 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 							SimpleDateFormat sdf = new SimpleDateFormat(
 									"yyyy-MM-dd HH:mm");
 							time_start = sdf.format(date);
+							time_max_start = time_start;
 
 						}
 					}
@@ -213,6 +246,30 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 				false);
 		isRandom = (Boolean) SharedUtils.getParam(getActivity(),
 				"SingleInterval", false);
+		isLong = (Boolean) SharedUtils.getParam(getActivity(), "SingleLong",
+				false);
+
+//		isNightStartHour = (int) SharedUtils.getParam(getActivity(),
+//				"isNightStartHour", 0);
+//		isNightStartMinute = (int) SharedUtils.getParam(getActivity(),
+//				"isNightStartMinute", 0);
+//		isNightContinueHour = (int) SharedUtils.getParam(getActivity(),
+//				"isNightContinueHour", 0);
+//		isNightContinueMinute = (int) SharedUtils.getParam(getActivity(),
+//				"isNightContinueMinute", 0);
+//		isNightEnd = (int) SharedUtils.getParam(getActivity(),
+//				"isNightEndHour", 0);
+//		isNightEndMinutes = (int) SharedUtils.getParam(getActivity(),
+//				"isNightEndMinute", 0);
+
+		irrigation = dbHelper.loadContinue(units);
+		isNightStartHour = irrigation.get(0).getIsNightStartHour();
+		isNightStartMinute =irrigation.get(0).getIsNightStartMinute();
+		isNightContinueHour = irrigation.get(0).getIsNightContinueHour();
+		isNightContinueMinute = irrigation.get(0).getIsNightContinueMinute();
+		isNightEnd = irrigation.get(0).getIsNightEndHour();
+		isNightEndMinutes = irrigation.get(0).getIsNightEndMinute();
+		long_hour = irrigation.get(0).getIsTimeLong();
 	}
 
 	@Override
@@ -227,6 +284,9 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 			ApplyIrrigateProjectFragment fragment = new ApplyIrrigateProjectFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
+			Bundle bundle = new Bundle();
+			bundle.putString("units", units);
+			fragment.setArguments(bundle);
 			transaction
 					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 			transaction.replace(R.id.fl, fragment, "main");
@@ -236,15 +296,9 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 			showDateTimePicker1(mInflater);
 			break;
 		case R.id.layout_apply_irriagte_project_single_time_continue:// 持续时间
-			id = 1;
 			showDateTimePickers(mInflater);
 			break;
-		case R.id.layout_apply_irriagte_project_single_time_long:// 最长工作时间
-			id = 2;
-			showDateTimePicker(mInflater);
-			break;
 		case R.id.button_apply_irriagte_project_single_this:
-
 			if (CheckUtil.IsEmpty(time_start)
 					|| time_start.equals("0000-00-00 00:00")) {
 
@@ -253,267 +307,428 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 				break;
 			} else if (CheckUtil.IsEmpty(tv_time_continue)
 					|| tv_time_continue.getText().equals("0时")
-					|| tv_time_continue.getText().equals("0小时")) {
+					|| tv_time_continue.getText().equals("0小时")
+					|| tv_time_continue.getText().equals("0时0分")) {
 				Toast.makeText(getActivity(), "请设置持续时间", Toast.LENGTH_SHORT)
 						.show();
 				break;
-			} else if (CheckUtil.IsEmpty(tv_time_long)
-					|| tv_time_continue.getText().equals("0时")
-					|| long_hour == 0) {
-				Toast.makeText(getActivity(), "请设置最长灌溉时间", Toast.LENGTH_SHORT)
-						.show();
-				break;
-			} else {
+			}
+			List<IrrigationProject> listentitys = dbHelper.loadLastMsgBySessionid(units);
+			for (int i = 0; i < listentitys.size(); i++) {
+				Date date = new Date();
+				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+				try {
+					date = dateFormat.parse(time_start);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				Date date1 = new Date();
+				SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+				try {
+					date1 = dateFormat1.parse(listentitys.get(i).getProjectend());
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if (date.getYear() > date1.getYear()) {
+					isBig = 1;
+				}else if(date.getYear() == date1.getYear()){
+				    if(date.getMonth() > date1.getMonth()){
+				    	isBig = 1;
+				    }else if(date.getMonth() == date1.getMonth()){
+				    	if(date.getDate() > date1.getDate()){
+				    		isBig = 1;
+				    	}else if(date.getDate() == date1.getDate()){
+				    		if(date.getHours() > date1.getHours()){
+				    			isBig = 1;
+				    		}else if(date.getHours() == date1.getHours()){
+				    			if(date.getMinutes() >= date1.getMinutes()){
+				    				isBig = 1;
+				    			}else{
+				    				isBig = 2;
+				    				break;
+				    			}
+				    	}
+				    	}else{
+				    		isBig = 2;
+				    		break;
+				    	}
+				    }else{
+	    				isBig = 2;
+	    				break;
+	    			}
+				}
+				else{
+					isBig = 2;
+					break;
+				}
+			}
+			if(isBig == 2){
+				Toast.makeText(getActivity(), "设置的时间不能在"+time_max_start+"之前", Toast.LENGTH_SHORT)
+				.show();
+		        break;
+			}
+			if(time_start.equals(time_max_start)){
+				onleOne = 1;
+				onleOnes = 1;
+			}
+			if (isLong == true && isNight == false) {
 				irrigationProject = new IrrigationProject();
-				List<IrrigationProject> listentity = dbHelper.loadAllSessions();
+				List<IrrigationProject> listentity = dbHelper.loadLastMsgBySessionid(units);
 				time_compare_start = time_start;
 				time_long = 24 - long_hour;
-				java.util.Date dates = new java.util.Date();
-				SimpleDateFormat formats = new SimpleDateFormat(
+				java.util.Date date2 = new java.util.Date();
+				SimpleDateFormat format2 = new SimpleDateFormat(
 						"yyyy-MM-dd HH:mm");
 				try {
-					dates = formats.parse(time_compare_start);
+					date2 = format2.parse(time_compare_start);
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
-				saveDates = dates.getDate();
-				for (int j = 0; j < 5; j++) {
-					for (int i = 0; i < listentity.size(); i++) {
-						Calendar c = Calendar.getInstance();
-						if (j == 0) {
-							try {
-								c.setTime(new SimpleDateFormat(
-										"yyyy-MM-dd HH:mm")
-										.parse(time_compare_start));
-							} catch (ParseException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
-							java.util.Date date1 = new java.util.Date();
-							SimpleDateFormat format1 = new SimpleDateFormat(
-									"yyyy-MM-dd HH:mm");
-							try {
-								date1 = format1.parse(time_compare_start);
-							} catch (ParseException e) {
-								e.printStackTrace();
-							}
-							if (date1.getDate() == 0 && date1.getMinutes() == 0) {
-								date1.setHours(date1.getHours() + nHour);
-								date1.setMinutes(date1.getMinutes() + nMinutes);
-								if ((saveDate - saveDates > 1)) {
-									date1.setHours(date1.getHours() + 4);
-									date1.setMinutes(date1.getMinutes() + 0);
-								}
-							} else {
-								date1.setHours(date1.getHours() + nHour);
-								date1.setMinutes(date1.getMinutes() + nMinutes);
-								saveDate = date1.getDate();
-								if ((saveDate - saveDates == 1)) {
-									DecimalFormat fnum = new DecimalFormat(
-											"##0.0");
-									String sleep = fnum
-											.format(((float) (24 - time_long) / ((float) 24)) * 4)
-											+ "";
-									String[] hours = sleep.split("\\.");
-									date1.setHours(date1.getHours()
-											+ Integer.valueOf(hours[0]));
-									if (!CheckUtil.IsEmpty(hours[1])) {
-										date1.setMinutes(date1.getMinutes()
-												+ Integer.valueOf(hours[1]) * 6);
-									}
-								}
-							}
-							time_compare_end = format1.format(date1);
-						} else {
-							try {
-								c.setTime(new SimpleDateFormat(
-										"yyyy-MM-dd HH:mm")
-										.parse(time_compare_end));
-							} catch (ParseException e1) {
-								e1.printStackTrace();
-							}
-							java.util.Date date1 = new java.util.Date();
-							SimpleDateFormat format1 = new SimpleDateFormat(
-									"yyyy-MM-dd HH:mm");
-							try {
-								date1 = format1.parse(time_compare_end);
-							} catch (ParseException e) {
-								e.printStackTrace();
-							}
-							loadDate = date1.getDate();
-							if (date1.getDate() == 0 && date1.getMinutes() == 0) {
-								date1.setHours(date1.getHours() + nHour);
-								date1.setMinutes(date1.getMinutes() + nMinutes);
-								saveDate = date1.getDate();
-								if ((saveDate > loadDate)) {
-									date1.setHours(date1.getHours() + 4);
-									date1.setMinutes(date1.getMinutes() + 0);
-								}
-							} else {
-								date1.setHours(date1.getHours() + nHour);
-								date1.setMinutes(date1.getMinutes() + nMinutes);
-								saveDate = date1.getDate();
-								if ((saveDate - saveDates == 1)) {
-									if (onleOne == 1) {
-									} else {
-										DecimalFormat fnum = new DecimalFormat(
-												"##0.0");
-										String sleep = fnum
-												.format(((float) (24 - time_long) / ((float) 24)) * 4)
-												+ "";
-										String[] hours = sleep.split("\\.");
-										date1.setHours(date1.getHours()
-												+ Integer.valueOf(hours[0]));
-										if (!CheckUtil.IsEmpty(hours[1])) {
-											date1.setMinutes(date1.getMinutes()
-													+ Integer.valueOf(hours[1])
-													* 6);
-										}
-										onleOne = 1;
-									}
-								} else {
-									if (saveDate > loadDate) {
-										date1.setHours(date1.getHours() + 4);
-										date1.setMinutes(date1.getMinutes() + 0);
-									}
-								}
-							}
-							time_compare_end = format1.format(date1);
-						}
-						time_db_start = listentity.get(i).getProjectstart();
-						time_db_end = listentity.get(i).getProjectend();
-
-						Calendar c1 = Calendar.getInstance();
-						try {
-							c1.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm")
-									.parse(time_compare_end));
-						} catch (ParseException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						Calendar c2 = Calendar.getInstance();
-						try {
-							c2.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm")
-									.parse(time_db_start));
-						} catch (ParseException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						Calendar c3 = Calendar.getInstance();
-						try {
-							c3.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm")
-									.parse(time_db_end));
-						} catch (ParseException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-
-						long ms_start = c.getTimeInMillis();
-						long ms_end = c1.getTimeInMillis();
-						long ms_db_start = c2.getTimeInMillis();
-						long ms_db_end = c3.getTimeInMillis();
-						if (ms_start >= ms_db_end || ms_end <= ms_db_start) {
-							isOne = 1;
-						} else {
-							isOne = 2;
-							break;
-						}
-					}
-					if (isOne == 2) {
-						break;
-					}
+				Date dates = new Date();
+				SimpleDateFormat formats = new SimpleDateFormat(
+						"yyyy-MM-dd HH:mm");
+				try {
+					dates = formats.parse(time_start);
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
-				if (isOne != 1) {
-					Toast.makeText(getActivity(), "在范围内", Toast.LENGTH_SHORT)
-							.show();
+				if (dates.getHours() > 0 && dates.getHours() < time_long) {
+					Toast.makeText(getActivity(), "非工作区间",
+							Toast.LENGTH_LONG).show();
 				} else {
-					// onleOne = 0;
-					List<IrrigationProject> listentity1 = dbHelper
-							.loadAllSessions();
-					if (CheckUtil.IsEmpty(listentity1)) {
-						now_round = 0;
-					} else {
-						now_round = Integer.valueOf(listentity1.get(0)
-								.getRound());
-					}
-					for (int i = 1; i < 5; i++) {
-						irrigationProject = new IrrigationProject();
-						irrigationProject.setProjectstart("0000-00-00 00:00");
-						irrigationProject.setProjectend("0000-00-00 00:00");
-						irrigationProject.setRound((now_round + 1) + "");
-						irrigationProject.setMarshalling(i + "");
-						dbHelper.saveSessions(irrigationProject);
-					}
-					int randomCommon[] = randomCommon(1, 5, 4);
-					time_long = 24 - long_hour;
-					for (int i = 0; i < 4; i++) {
-						Date date = new Date();
-						SimpleDateFormat format = new SimpleDateFormat(
-								"yyyy-MM-dd HH:mm");
-						try {
-							if (i == 0) {
-								date = format.parse(time_start);
-								time_starts = format.format(date);
-								saveDates = date.getDate();
-								if (date.getDate() == 0
-										&& date.getMinutes() == 0) {
-									date.setHours(date.getHours() + nHour);
-									date.setMinutes(date.getMinutes()
-											+ nMinutes);
+				//数据库查重
+//				nHour3 = nHour;
+//				for (int j = 0; j < 4; j++) {
+//					conpare = 0;
+//					for (int i = 0; i < listentity.size(); i++) {
+//						Calendar c = Calendar.getInstance();
+//						if (j == 0) {
+//							try {
+//								c.setTime(new SimpleDateFormat(
+//										"yyyy-MM-dd HH:mm")
+//										.parse(time_compare_start));
+//							} catch (ParseException e1) {
+//								// TODO Auto-generated catch block
+//								e1.printStackTrace();
+//							}
+//							java.util.Date date1 = new java.util.Date();
+//							SimpleDateFormat format1 = new SimpleDateFormat(
+//									"yyyy-MM-dd HH:mm");
+//							try {
+//								date1 = format1.parse(time_compare_start);
+//							} catch (ParseException e) {
+//								e.printStackTrace();
+//							}
+//							time_starts = format1.format(date1);
+//							// date.setHours(date.getHours() + nHour);
+//							// date.setMinutes(date.getMinutes() + nMinutes);
+//							if (date1.getHours() == time_long) {
+//								onleOne = 1;
+//							}
+//							while (nHour3 > 0) {
+//								if (nHour3 >= long_hour) {
+//									date1.setHours(date1.getHours() + time_long
+//											+ long_hour);
+//									date1.setMinutes(date1.getMinutes()
+//											+ nMinutes);
+//									nHour3 = nHour3 - long_hour;
+//								} else {
+//									compareDayf = date1.getDate();
+//									date1.setHours(date1.getHours() + nHour3);
+//									date1.setMinutes(date1.getMinutes()
+//											+ nMinutes);
+//									nHour3 = 0;
+//									compareDays = date1.getDate();
+//									if (compareDays > compareDayf) {
+//										if (date1.getHours() == 0) {
+//											isHaves = 1;
+//										} else {
+//											if (onleOne != 1) {
+//												DecimalFormat fnum = new DecimalFormat(
+//														"##0.0");
+//												String sleep = fnum
+//														.format(((float) (24 - nHour)
+//																/ ((float) 24) * time_long))
+//														+ "";
+//												String[] hours = sleep
+//														.split("\\.");
+//												date1.setHours(date1.getHours()
+//														+ Integer
+//																.valueOf(hours[0]));
+//												if (!CheckUtil
+//														.IsEmpty(hours[1])) {
+//													date1.setMinutes(date1
+//															.getMinutes()
+//															+ Integer
+//																	.valueOf(hours[1])
+//															* 6);
+//												}
+//												onleOne = 1;
+//											} else {
+//												date1.setHours(date1.getHours()
+//														+ time_long);
+//											}
+//										}
+//									}
+//								}
+//							}
+//							time_compare_end = format1.format(date1);
+//						} else {
+//							if (conpare == 1) {
+//
+//							} else {
+//								try {
+//									c.setTime(new SimpleDateFormat(
+//											"yyyy-MM-dd HH:mm")
+//											.parse(time_compare_end));
+//								} catch (ParseException e1) {
+//									e1.printStackTrace();
+//								}
+//								java.util.Date date1 = new java.util.Date();
+//								SimpleDateFormat format1 = new SimpleDateFormat(
+//										"yyyy-MM-dd HH:mm");
+//								try {
+//									date1 = format1.parse(time_compare_end);
+//								} catch (ParseException e) {
+//									e.printStackTrace();
+//								}
+//								if (isHaves == 1) {
+//									if (onleOne != 1) {
+//										DecimalFormat fnum = new DecimalFormat(
+//												"##0.0");
+//										String sleep = fnum
+//												.format(((float) (24 - nHour)
+//														/ ((float) 24) * time_long))
+//												+ "";
+//										String[] hours = sleep.split("\\.");
+//										date1.setHours(date1.getHours()
+//												+ Integer.valueOf(hours[0]));
+//										if (!CheckUtil.IsEmpty(hours[1])) {
+//											date1.setMinutes(date1.getMinutes()
+//													+ Integer.valueOf(hours[1])
+//													* 6);
+//										}
+//										onleOne = 1;
+//									} else {
+//										date1.setHours(date1.getHours()
+//												+ time_long);
+//									}
+//									isHaves = 0;
+//								}
+//								time_starts = format1.format(date1);
+//								nHour4 = nHour;
+//								while (nHour4 > 0) {
+//									if (nHour4 >= long_hour) {
+//										date1.setHours(date1.getHours()
+//												+ time_long + long_hour);
+//										date1.setMinutes(date1.getMinutes()
+//												+ nMinutes);
+//										nHour4 = nHour4 - long_hour;
+//
+//									} else {
+//										compareDayf = date1.getDate();
+//										date1.setHours(date1.getHours()
+//												+ nHour4);
+//										date1.setMinutes(date1.getMinutes()
+//												+ nMinutes);
+//										nHour4 = 0;
+//										compareDays = date1.getDate();
+//										if (compareDays > compareDayf) {
+//											if (date1.getHours() == 0) {
+//												isHaves = 1;
+//											} else {
+//												if (onleOne != 1) {
+//													DecimalFormat fnum = new DecimalFormat(
+//															"##0.0");
+//													String sleep = fnum
+//															.format(((float) (24 - nHour)
+//																	/ ((float) 24) * time_long))
+//															+ "";
+//													String[] hours = sleep
+//															.split("\\.");
+//													date1.setHours(date1
+//															.getHours()
+//															+ Integer
+//																	.valueOf(hours[0]));
+//													if (!CheckUtil
+//															.IsEmpty(hours[1])) {
+//														date1.setMinutes(date1
+//																.getMinutes()
+//																+ Integer
+//																		.valueOf(hours[1])
+//																* 6);
+//													}
+//													onleOne = 1;
+//												} else {
+//													date1.setHours(date1
+//															.getHours()
+//															+ time_long);
+//												}
+//											}
+//										}
+//									}
+//								}
+//								time_compare_end = format1.format(date1);
+//								conpare = 1;
+//							}
+//						}
+//						time_db_start = listentity.get(i).getProjectstart();
+//						time_db_end = listentity.get(i).getProjectend();
+//
+//						Calendar c4 = Calendar.getInstance();
+//						try {
+//							c4.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm")
+//									.parse(time_starts));
+//						} catch (ParseException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//						Calendar c1 = Calendar.getInstance();
+//						try {
+//							c1.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm")
+//									.parse(time_compare_end));
+//						} catch (ParseException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//						Calendar c2 = Calendar.getInstance();
+//						try {
+//							c2.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm")
+//									.parse(time_db_start));
+//						} catch (ParseException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//						Calendar c3 = Calendar.getInstance();
+//						try {
+//							c3.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm")
+//									.parse(time_db_end));
+//						} catch (ParseException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//
+//						long ms_start = c4.getTimeInMillis();
+//						long ms_end = c1.getTimeInMillis();
+//						long ms_db_start = c2.getTimeInMillis();
+//						long ms_db_end = c3.getTimeInMillis();
+//						if (ms_start >= ms_db_end || ms_end <= ms_db_start) {
+//							isOne = 1;
+//						} else {
+//							isOne = 2;
+//							break;
+//						}
+//					}
+//					if (isOne == 2) {
+//						break;
+//					}
+//				}
+//				if (isOne != 1) {
+//					Toast.makeText(getActivity(), "在范围内", Toast.LENGTH_SHORT)
+//							.show();
+//				} else {
+						List<IrrigationProject> listentity1 = dbHelper
+								.loadLastMsgBySessionid(units);
+						if (CheckUtil.IsEmpty(listentity1)) {
+							now_round = 0;
+						} else {
+							now_round = Integer.valueOf(listentity1.get(0)
+									.getRound());
+						}
+						for (int i = 1; i < 5; i++) {
+							irrigationProject = new IrrigationProject();
+							irrigationProject.setIrrigation(units);
+							irrigationProject
+									.setProjectstart("0000-00-00 00:00");
+							irrigationProject.setProjectend("0000-00-00 00:00");
+							irrigationProject.setRound((now_round + 1) + "");
+							irrigationProject.setMarshalling(i + "");
+							dbHelper.saveSessions(irrigationProject);
+						}
+						int randomCommon[] = randomCommon(1, 5, 4);
+						time_long = 24 - long_hour;
+						nHours = nHour;
 
-									// 4和0是夜间休息时间段 需按照维护设定更改
-									if ((saveDate - saveDates > 1)) {
-										date.setHours(date.getHours() + 4);
-										date.setMinutes(date.getMinutes() + 0);
+						for (int i = 0; i < 4; i++) {
+							Date date = new Date();
+							SimpleDateFormat format = new SimpleDateFormat(
+									"yyyy-MM-dd HH:mm");
+							try {
+								if (i == 0) {
+									date = format.parse(time_start);
+									time_starts = format.format(date);
+									// date.setHours(date.getHours() + nHour);
+									// date.setMinutes(date.getMinutes() +
+									// nMinutes);
+
+									if (date.getHours() == time_long) {
+										onleOnes = 1;
 									}
-								} else {
-									date.setHours(date.getHours() + nHour);
-									date.setMinutes(date.getMinutes()
-											+ nMinutes);
-									saveDate = date.getDate();
-									if ((saveDate - saveDates == 1)) {
-										DecimalFormat fnum = new DecimalFormat(
-												"##0.0");
-										String sleep = fnum
-												.format(((float) (24 - time_long) / ((float) 24)) * 4)
-												+ "";
-										String[] hours = sleep.split("\\.");
-										date.setHours(date.getHours()
-												+ Integer.valueOf(hours[0]));
-										if (!CheckUtil.IsEmpty(hours[1])) {
+									while (nHours > 0) {
+										if (nHours >= long_hour) {
+											date.setHours(date.getHours()
+													+ time_long + long_hour);
 											date.setMinutes(date.getMinutes()
-													+ Integer.valueOf(hours[1])
-													* 6);
+													+ nMinutes);
+											nHours = nHours - long_hour;
+										} else {
+											compareDayf = date.getDate();
+											date.setHours(date.getHours()
+													+ nHours);
+											date.setMinutes(date.getMinutes()
+													+ nMinutes);
+											nHours = 0;
+											compareDays = date.getDate();
+											if (date.getHours() == time_long) {
+												onleOnes = 1;
+											}
+											if (compareDays > compareDayf) {
+												if (date.getHours() == 0) {
+													isHave = 1;
+												} else {
+													if (onleOnes != 1) {
+														DecimalFormat fnum = new DecimalFormat(
+																"##0.0");
+														String sleep = fnum
+																.format(((float) (24 - nHour)
+																		/ ((float) 24) * time_long))
+																+ "";
+														String[] hours = sleep
+																.split("\\.");
+														date.setHours(date
+																.getHours()
+																+ Integer
+																		.valueOf(hours[0]));
+														if (!CheckUtil
+																.IsEmpty(hours[1])) {
+															date.setMinutes(date
+																	.getMinutes()
+																	+ Integer
+																			.valueOf(hours[1])
+																	* 6);
+														}
+														onleOnes = 1;
+													} else {
+														date.setHours(date
+																.getHours()
+																+ time_long);
+													}
+												}
+											}
 										}
-
-									}
-								}
-							} else {
-								date = format.parse(time_end);
-								time_starts = format.format(date);
-								loadDate = date.getDate();
-								if (date.getDate() == 0
-										&& date.getMinutes() == 0) {
-									date.setHours(date.getHours() + nHour);
-									date.setMinutes(date.getMinutes()
-											+ nMinutes);
-									saveDate = date.getDate();
-									if (saveDate > loadDate) {
-										date.setHours(date.getHours() + 4);
-										date.setMinutes(date.getMinutes() + 0);
 									}
 								} else {
-									date.setHours(date.getHours() + nHour);
-									date.setMinutes(date.getMinutes()
-											+ nMinutes);
-									saveDate = date.getDate();
-									if ((saveDate - saveDates == 1)) {
-										if (onleOnes == 1) {
-										} else {
+									date = format.parse(time_end);
+									if (isHave == 1) {
+										if (onleOnes != 1) {
 											DecimalFormat fnum = new DecimalFormat(
 													"##0.0");
 											String sleep = fnum
-													.format(((float) (24 - time_long) / ((float) 24)) * 4)
+													.format(((float) (24 - nHour)
+															/ ((float) 24) * time_long))
 													+ "";
 											String[] hours = sleep.split("\\.");
 											date.setHours(date.getHours()
@@ -526,41 +741,2485 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 														* 6);
 											}
 											onleOnes = 1;
+										} else {
+											date.setHours(date.getHours()
+													+ time_long);
 										}
-									} else {
-										if (saveDate > loadDate) {
-											date.setHours(date.getHours() + 4);
-											date.setMinutes(date.getMinutes() + 0);
+										isHave = 0;
+									}
+									time_starts = format.format(date);
+									nHour2 = nHour;
+									while (nHour2 > 0) {
+										if (nHour2 >= long_hour) {
+											date.setHours(date.getHours()
+													+ time_long + long_hour);
+											date.setMinutes(date.getMinutes()
+													+ nMinutes);
+											nHour2 = nHour2 - long_hour;
+
+										} else {
+											compareDayf = date.getDate();
+											date.setHours(date.getHours()
+													+ nHour2);
+											date.setMinutes(date.getMinutes()
+													+ nMinutes);
+											nHour2 = 0;
+											compareDays = date.getDate();
+											if (compareDays > compareDayf) {
+												if (date.getHours() == 0) {
+													isHave = 1;
+												} else {
+													if (onleOnes != 1) {
+														DecimalFormat fnum = new DecimalFormat(
+																"##0.0");
+														String sleep = fnum
+																.format(((float) (24 - nHour)
+																		/ ((float) 24) * time_long))
+																+ "";
+														String[] hours = sleep
+																.split("\\.");
+														date.setHours(date
+																.getHours()
+																+ Integer
+																		.valueOf(hours[0]));
+														if (!CheckUtil
+																.IsEmpty(hours[1])) {
+															date.setMinutes(date
+																	.getMinutes()
+																	+ Integer
+																			.valueOf(hours[1])
+																	* 6);
+														}
+														onleOnes = 1;
+													} else {
+														date.setHours(date
+																.getHours()
+																+ time_long);
+													}
+												}
+											}
 										}
 									}
+								}
+								time_end = format.format(date);
+								if (CheckUtil.IsEmpty(listentity)) {
+									now_round = 0;
+								}
+								if (isRandom == true) {
+									dbHelper.updateProjects(units,now_round + 1 + "",
+											randomCommon[i], time_starts,
+											time_end);
+								} else {
+									dbHelper.updateProjects(units,now_round + 1 + "",
+											i + 1, time_starts, time_end);
+								}
+							} catch (ParseException e) {
+								e.printStackTrace();
+							}
+						}
+						notify = 1;
+						SharedUtils.setParam(getActivity(), "notify", notify);
+						ApplyIrrigateProjectFragment fragment3 = new ApplyIrrigateProjectFragment();
+						Bundle bundle1 = new Bundle();
+						bundle1.putString("units", units);
+						fragment3.setArguments(bundle1);
+						transaction
+								.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+						transaction.replace(R.id.fl, fragment3, "main");
+						transaction.commit();
+						firsts = dbHelper.loadisFirst(units);
+						if(CheckUtil.IsEmpty(firsts)){
+							irrigationIsFirst.setIrrigation(units);
+							irrigationIsFirst.setIsFirst(0);
+							dbHelper.saveIsFirst(irrigationIsFirst);
+						}
+//					}
+				}
+			} else if (isLong == true && isNight == true) {
+				irrigationProject = new IrrigationProject();
+				List<IrrigationProject> listentity = dbHelper.loadLastMsgBySessionid(units);
+				time_compare_start = time_start;
+				time_long = 24 - long_hour;
 
+					if (isNightContinueHour >= long_hour) {
+						Date dates = new Date();
+						SimpleDateFormat formats = new SimpleDateFormat(
+								"yyyy-MM-dd HH:mm");
+						try {
+							dates = formats.parse(time_start);
+						} catch (ParseException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						compareDay = dates.getDate();
+						//
+						if(isNightStartHour == 0){
+							isNightStartHours = 24;
+						}else{
+							isNightStartHours = isNightStartHour;
+						}
+						isGreater = (int) SharedUtils.getParam(getActivity(), "isGreater", 0);
+						if (isGreater == 1) {
+							if(dates.getHours() < isNightStartHours && dates.getHours() > isNightEnd){
+								isLegal = 1;
+							}else{
+								isLegal = 0;
+							}
+						}else{
+							if(dates.getHours() > isNightStartHours && dates.getHours() < isNightEnd){
+								isLegal = 0;
+							}else{
+								isLegal = 1;
+							}
+						}
+						
+						if(dates.getHours() == isNightStartHour){
+							if(dates.getMinutes() < isNightStartMinute){
+								isLegal = 1;
+							}else{
+								isLegal = 0;
+							}
+						}
+						
+						if(dates.getHours() == isNightEnd){
+							if(dates.getMinutes()>=isNightEndMinutes){
+								isLegal = 1;
+							}else{
+								isLegal = 0;
+							}
+						}
+						if(isLegal != 1){
+							Toast.makeText(getActivity(), "非工作区间", Toast.LENGTH_SHORT).show();
+						}else{
+						//数据库查重	
+//						java.util.Date date2 = new java.util.Date();
+//						SimpleDateFormat format2 = new SimpleDateFormat(
+//								"yyyy-MM-dd HH:mm");
+//						try {
+//							date2 = format2.parse(time_compare_start);
+//						} catch (ParseException e) {
+//							e.printStackTrace();
+//						}
+//						nHour3 = nHour;
+//						for (int j = 0; j < 4; j++) {
+//							conpare = 0;
+//							for (int i = 0; i < listentity.size(); i++) {
+//								Calendar c = Calendar.getInstance();
+//								if (j == 0) {
+//									try {
+//										c.setTime(new SimpleDateFormat(
+//												"yyyy-MM-dd HH:mm")
+//												.parse(time_compare_start));
+//									} catch (ParseException e1) {
+//										// TODO Auto-generated catch block
+//										e1.printStackTrace();
+//									}
+//									java.util.Date date1 = new java.util.Date();
+//									SimpleDateFormat format1 = new SimpleDateFormat(
+//											"yyyy-MM-dd HH:mm");
+//									try {
+//										date1 = format1.parse(time_compare_start);
+//									} catch (ParseException e) {
+//										e.printStackTrace();
+//									}
+//									time_starts = format1.format(date1);
+//									// date.setHours(date.getHours() + nHour);
+//									// date.setMinutes(date.getMinutes() + nMinutes);
+//									if (date1.getHours() == time_long) {
+//										onleOne = 1;
+//									}
+//									compareDayf = date1.getDate();
+//									date1.setHours(date1.getHours() + nHour);
+//									date1.setMinutes(date1.getMinutes() + nMinutes);
+//									compareDays = date1.getDate();
+//									if (compareDays > compareDayf) {
+//											isTrues = 1;
+//											isTrue = 0;
+//											isTrue1 = 0;
+//											if(isNightStartHour != 0){
+//												if(date1.getHours() == isNightEnd&&date1.getMinutes()<= isNightEndMinutes){
+//													isTrues = 1;
+//												}
+//												if(date1.getHours() >= isNightStartHour){
+//													isTrues = 1;
+//													if(date1.getHours() == isNightStartHour&&date1.getMinutes()>isNightStartMinute){
+//														isTrues = 1;
+//													}else{
+//														isTrues = 2;
+//													}
+//												}else{
+//													if(isGreater == 1){
+//													
+//												}else{
+//													isTrues = 0;
+//												}
+//												}
+//											}else{
+//												if(isNightStartHour == 0&&date1.getMinutes()<=isNightStartMinute){
+//													isTrues = 3;
+//												}else{
+//													isTrues = 2;
+//												}
+//										}
+//											if (isTrues == 1) {
+//												if(date1.getHours() == isNightStartHour && date1.getMinutes()<=isNightStartMinute){
+//													
+//												}else{
+//													if(isTrue1 == 0){
+//														date1.setHours(date1.getHours()
+//																+ isNightContinueHour);
+//														date1.setMinutes(date1.getMinutes()
+//																+ isNightContinueMinute);
+//														isTrues = 0;
+//														isTrue1 = 1;
+//													}
+//												}
+//											}else if(isTrues == 2){
+//												if(date1.getHours() == isNightStartHour && date1.getMinutes()<=isNightStartMinute){
+//													
+//												}else{
+//													if(isTrue1 == 0){
+//														date1.setHours(date1.getHours()
+//																+ isNightContinueHour);
+//														date1.setMinutes(date1.getMinutes()
+//																+ isNightContinueMinute);
+//														isTrues = 0;
+//														isTrue1 = 1;
+//													}
+//												}
+//											}else if(isTrues == 3){
+//												if(date1.getHours() == isNightStartHour && date1.getMinutes()<=isNightStartMinute){
+//													
+//												}else{
+//													if(isTrue1 == 0){
+//														date1.setHours(date1.getHours()
+//																+ isNightContinueHour);
+//														date1.setMinutes(date1.getMinutes()
+//																+ isNightContinueMinute);
+//														isTrues = 0;
+//														isTrue1 = 1;
+//													}
+//												}
+//											}
+//									}else{
+//										if(isNightStartHour != 0){
+//											if(date1.getHours() == isNightEnd&&date1.getMinutes()<= isNightEndMinutes){
+//												isTrues = 1;
+//											}
+//											if(date1.getHours() >= isNightStartHour){
+//												isTrues = 1;
+//												isTrue1 = 0;
+//												if(date1.getHours() == isNightStartHour&&date1.getMinutes()>isNightStartMinute){
+//													isTrues = 1;
+//												}else{
+//													isTrues = 2;
+//											}
+//											}else{
+//												if(isGreater == 1){
+//													
+//												}else{
+//													isTrues = 0;
+//												}
+//											}
+//										}else{
+//											if(isNightStartHour == 0&&date1.getMinutes()<=isNightStartMinute){
+//												isTrues = 0;
+//											}else{
+//												isTrues = 2;
+//											}
+//											isNightStartHours = 24;
+//											if(isNightStartHours - date1.getHours() == 0){
+//												isTrues = 2;
+//											}else{
+//												isTrues = 0;
+//											}
+//										}
+//										if (isTrues == 1) {
+//											if(date1.getHours() == isNightStartHour && date1.getMinutes()<=isNightStartMinute){
+//												
+//											}else{
+//												if(isTrue1 == 0){
+//													date1.setHours(date1.getHours()
+//															+ isNightContinueHour);
+//													date1.setMinutes(date1.getMinutes()
+//															+ isNightContinueMinute);
+//													isTrues = 0;
+//													isTrue1 = 1;
+//												}
+//											}
+//										}else if(isTrues == 2){
+//											if(date1.getHours() == isNightStartHour && date1.getMinutes()<=isNightStartMinute){
+//												
+//											}else{
+//												if(isTrue1 == 0){
+//													date1.setHours(date1.getHours()
+//															+ isNightContinueHour);
+//													date1.setMinutes(date1.getMinutes()
+//															+ isNightContinueMinute);
+//													isTrues = 0;
+//													isTrue1 = 1;
+//												}
+//											}
+//										}else if(isTrues == 3){
+//											if(date1.getHours() == isNightStartHour && date1.getMinutes()<=isNightStartMinute){
+//												
+//											}else{
+//												if(isTrue1 == 0){
+//													date1.setHours(date1.getHours()
+//															+ isNightContinueHour);
+//													date1.setMinutes(date1.getMinutes()
+//															+ isNightContinueMinute);
+//													isTrues = 0;
+//													isTrue1 = 1;
+//												}
+//											}}}
+//									
+//									time_compare_end = format1.format(date1);
+//								} else {
+//									if (conpare == 1) {
+//
+//									} else {
+//										try {
+//											c.setTime(new SimpleDateFormat(
+//													"yyyy-MM-dd HH:mm")
+//													.parse(time_compare_end));
+//										} catch (ParseException e1) {
+//											e1.printStackTrace();
+//										}
+//										java.util.Date date1 = new java.util.Date();
+//										SimpleDateFormat format1 = new SimpleDateFormat(
+//												"yyyy-MM-dd HH:mm");
+//										try {
+//											date1 = format1.parse(time_compare_end);
+//										} catch (ParseException e) {
+//											e.printStackTrace();
+//										}
+//										if (isTrues == 1) {
+//											if(isTrue == 0){
+//												date1.setHours(date1.getHours()
+//														+ isNightContinueHour);
+//												date1.setMinutes(date1.getMinutes()
+//														+ isNightContinueMinute);
+//												isTrues = 0;
+//												isTrue = 1;
+//											}
+//											isTrues = 0;
+//										}else if(isTrues == 2){
+//											if(isTrue1 == 0){
+//												date1.setHours(date1.getHours()
+//														+ isNightContinueHour);
+//												date1.setMinutes(date1.getMinutes()
+//														+ isNightContinueMinute);
+//												isTrues = 0;
+//												isTrue1 = 1;
+//											}
+//										}else if(isTrues == 3){
+//											if(isTrue1 == 0){
+//												date1.setHours(date1.getHours()
+//														+ isNightContinueHour);
+//												date1.setMinutes(date1.getMinutes()
+//														+ isNightContinueMinute);
+//												isTrues = 0;
+//												isTrue1 = 1;
+//											}
+//										}
+//										time_starts = format1.format(date1);
+//										compareDayf = date1.getDate();
+//										date1.setHours(date1.getHours() + nHour);
+//										date1.setMinutes(date1.getMinutes() + nMinutes);
+//										compareDays = date1.getDate();
+//										if (compareDays > compareDayf) {
+//												isTrues = 1;
+//												isTrue = 0;
+//												isTrue1 = 0;
+//											if(isNightStartHour != 0){
+//												if(date1.getHours() == isNightEnd&&date1.getMinutes()<= isNightEndMinutes){
+//													isTrues = 1;
+//												}
+//												if(date1.getHours() >= isNightStartHour){
+//													isTrues = 1;
+//													if(date1.getHours() == isNightStartHour&&date1.getMinutes()>isNightStartMinute){
+//														isTrues = 1;
+//													}else{
+//														isTrues = 2;
+//													}
+//												}else{
+//													if(isGreater == 1){
+//														
+//													}else{
+//														isTrues = 0;
+//													}
+//												}
+//											}else{
+//												if(isNightStartHour == 0&&date1.getMinutes()<=isNightStartMinute){
+//													isTrues = 3;
+//												}else{
+//													isTrues = 2;
+//												}
+//											}
+//											if (isTrues == 1) {
+//												if(date1.getHours() == isNightStartHour && date1.getMinutes()<=isNightStartMinute){
+//													
+//												}else{
+//													if(isTrue1 == 0){
+//														date1.setHours(date1.getHours()
+//																+ isNightContinueHour);
+//														date1.setMinutes(date1.getMinutes()
+//																+ isNightContinueMinute);
+//														isTrues = 0;
+//														isTrue1 = 1;
+//													}
+//												}
+//											}else if(isTrues == 2){
+//												if(date1.getHours() == isNightStartHour && date1.getMinutes()<=isNightStartMinute){
+//													
+//												}else{
+//													if(isTrue1 == 0){
+//														date1.setHours(date1.getHours()
+//																+ isNightContinueHour);
+//														date1.setMinutes(date1.getMinutes()
+//																+ isNightContinueMinute);
+//														isTrues = 0;
+//														isTrue1 = 1;
+//													}
+//												}
+//											}else if(isTrues == 3){
+//												if(date1.getHours() == isNightStartHour && date1.getMinutes()<=isNightStartMinute){
+//													
+//												}else{
+//													if(isTrue1 == 0){
+//														date1.setHours(date1.getHours()
+//																+ isNightContinueHour);
+//														date1.setMinutes(date1.getMinutes()
+//																+ isNightContinueMinute);
+//														isTrues = 0;
+//														isTrue1 = 1;
+//													}
+//												}
+//											}
+//										}else{
+//											if(isNightStartHour != 0){
+//												if(date1.getHours() == isNightEnd&&date1.getMinutes()<= isNightEndMinutes){
+//													isTrues = 1;
+//												}
+//												if(date1.getHours() >= isNightStartHour){
+//													isTrues = 1;
+//													isTrue1 = 0;
+//													if(date1.getHours() == isNightStartHour&&date1.getMinutes()>isNightStartMinute){
+//														isTrues = 1;
+//													}else{
+//														isTrues = 2;
+//													}
+//												}else{
+//													if(isGreater == 1){
+//														
+//													}else{
+//														isTrues = 0;
+//													}
+//												}
+//											}else{
+//												if(isNightStartHour == 0&&date1.getMinutes()<=isNightStartMinute){
+//													isTrues = 0;
+//												}else{
+//													isTrues = 2;
+//												}
+//											}
+//											if (isTrues == 1) {
+//												if(date1.getHours() == isNightStartHour && date1.getMinutes()<=isNightStartMinute){
+//													
+//												}else{
+//													if(isTrue1 == 0){
+//														date1.setHours(date1.getHours()
+//																+ isNightContinueHour);
+//														date1.setMinutes(date1.getMinutes()
+//																+ isNightContinueMinute);
+//														isTrues = 0;
+//														isTrue1 = 1;
+//													}
+//												}
+//											}else if(isTrues == 2){
+//												if(date1.getHours() == isNightStartHour && date1.getMinutes()<=isNightStartMinute){
+//													
+//												}else{
+//													if(isTrue1 == 0){
+//														date1.setHours(date1.getHours()
+//																+ isNightContinueHour);
+//														date1.setMinutes(date1.getMinutes()
+//																+ isNightContinueMinute);
+//														isTrues = 0;
+//														isTrue1 = 1;
+//													}
+//												}
+//											}else if(isTrues == 3){
+//												if(date1.getHours() == isNightStartHour && date1.getMinutes()<=isNightStartMinute){
+//													
+//												}else{
+//													if(isTrue1 == 0){
+//														date1.setHours(date1.getHours()
+//																+ isNightContinueHour);
+//														date1.setMinutes(date1.getMinutes()
+//																+ isNightContinueMinute);
+//														isTrues = 0;
+//														isTrue1 = 1;
+//													}
+//												}
+//											}
+//										}
+//									
+//										time_compare_end = format1.format(date1);
+//										conpare = 1;
+//									}
+//								}
+//								time_db_start = listentity.get(i).getProjectstart();
+//								time_db_end = listentity.get(i).getProjectend();
+//
+//								Calendar c4 = Calendar.getInstance();
+//								try {
+//									c4.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm")
+//											.parse(time_starts));
+//								} catch (ParseException e) {
+//									// TODO Auto-generated catch block
+//									e.printStackTrace();
+//								}
+//								Calendar c1 = Calendar.getInstance();
+//								try {
+//									c1.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm")
+//											.parse(time_compare_end));
+//								} catch (ParseException e) {
+//									// TODO Auto-generated catch block
+//									e.printStackTrace();
+//								}
+//								Calendar c2 = Calendar.getInstance();
+//								try {
+//									c2.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm")
+//											.parse(time_db_start));
+//								} catch (ParseException e) {
+//									// TODO Auto-generated catch block
+//									e.printStackTrace();
+//								}
+//								Calendar c3 = Calendar.getInstance();
+//								try {
+//									c3.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm")
+//											.parse(time_db_end));
+//								} catch (ParseException e) {
+//									// TODO Auto-generated catch block
+//									e.printStackTrace();
+//								}
+//
+//								long ms_start = c4.getTimeInMillis();
+//								long ms_end = c1.getTimeInMillis();
+//								long ms_db_start = c2.getTimeInMillis();
+//								long ms_db_end = c3.getTimeInMillis();
+//								if (ms_start >= ms_db_end || ms_end <= ms_db_start) {
+//									isOne = 1;
+//								} else {
+//									isOne = 2;
+//									break;
+//								}
+//							}
+//							if (isOne == 2) {
+//								break;
+//							}
+//						}
+//						if (isOne != 1) {
+//							Toast.makeText(getActivity(), "在范围内", Toast.LENGTH_SHORT)
+//									.show();
+//						} else {
+						List<IrrigationProject> listentity1 = dbHelper
+								.loadLastMsgBySessionid(units);
+						if (CheckUtil.IsEmpty(listentity1)) {
+							now_round = 0;
+						} else {
+							now_round = Integer.valueOf(listentity1.get(0).getRound());
+						}
+						for (int i = 1; i < 5; i++) {
+							irrigationProject = new IrrigationProject();
+							irrigationProject.setIrrigation(units);
+							irrigationProject.setProjectstart("0000-00-00 00:00");
+							irrigationProject.setProjectend("0000-00-00 00:00");
+							irrigationProject.setRound((now_round + 1) + "");
+							irrigationProject.setMarshalling(i + "");
+							dbHelper.saveSessions(irrigationProject);
+						}
+						int randomCommon[] = randomCommon(1, 5, 4);
+						time_long = 24 - long_hour;
+						for (int i = 0; i < 4; i++) {
+							Date date = new Date();
+							SimpleDateFormat format = new SimpleDateFormat(
+									"yyyy-MM-dd HH:mm");
+							try {
+								if (i == 0) {
+									date = format.parse(time_start);
+									time_starts = format.format(date);
+									compareDayf = date.getDate();
+									date.setHours(date.getHours() + nHour);
+									date.setMinutes(date.getMinutes() + nMinutes);
+									compareDays = date.getDate();
+									if (compareDays > compareDayf) {
+											isTrues = 1;
+											isTrue = 0;
+											isTrue1 = 0;
+											if(isNightStartHour != 0){
+												if(date.getHours() == isNightEnd&&date.getMinutes()<= isNightEndMinutes){
+													isTrues = 1;
+												}
+												if(date.getHours() >= isNightStartHour){
+													isTrues = 1;
+													if(date.getHours() == isNightStartHour&&date.getMinutes()>isNightStartMinute){
+														isTrues = 1;
+													}else{
+														isTrues = 2;
+													}
+												}else{
+													if(isGreater == 1){
+													
+												}else{
+													isTrues = 0;
+												}
+												}
+											}else{
+												if(isNightStartHour == 0&&date.getMinutes()<=isNightStartMinute){
+													isTrues = 3;
+												}else{
+													isTrues = 2;
+												}
+										}
+											if (isTrues == 1) {
+												if(date.getHours() == isNightStartHour && date.getMinutes()<=isNightStartMinute){
+													
+												}else{
+													if(isTrue1 == 0){
+														date.setHours(date.getHours()
+																+ isNightContinueHour);
+														date.setMinutes(date.getMinutes()
+																+ isNightContinueMinute);
+														isTrues = 0;
+														isTrue1 = 1;
+													}
+												}
+											}else if(isTrues == 2){
+												if(date.getHours() == isNightStartHour && date.getMinutes()<=isNightStartMinute){
+													
+												}else{
+													if(isTrue1 == 0){
+														date.setHours(date.getHours()
+																+ isNightContinueHour);
+														date.setMinutes(date.getMinutes()
+																+ isNightContinueMinute);
+														isTrues = 0;
+														isTrue1 = 1;
+													}
+												}
+											}else if(isTrues == 3){
+												if(date.getHours() == isNightStartHour && date.getMinutes()<=isNightStartMinute){
+													
+												}else{
+													if(isTrue1 == 0){
+														date.setHours(date.getHours()
+																+ isNightContinueHour);
+														date.setMinutes(date.getMinutes()
+																+ isNightContinueMinute);
+														isTrues = 0;
+														isTrue1 = 1;
+													}
+												}
+											}
+									}else{
+										if(isNightStartHour != 0){
+											if(date.getHours() == isNightEnd&&date.getMinutes()<= isNightEndMinutes){
+												isTrues = 1;
+											}
+											if(date.getHours() >= isNightStartHour){
+												isTrues = 1;
+												isTrue1 = 0;
+												if(date.getHours() == isNightStartHour&&date.getMinutes()>isNightStartMinute){
+													isTrues = 1;
+												}else{
+													isTrues = 2;
+											}
+											}else{
+												if(isGreater == 1){
+													
+												}else{
+													isTrues = 0;
+												}
+											}
+										}else{
+											if(isNightStartHour == 0&&date.getMinutes()<=isNightStartMinute){
+												isTrues = 0;
+											}else{
+												isTrues = 2;
+											}
+											isNightStartHours = 24;
+											if(isNightStartHours - date.getHours() == 0){
+												isTrues = 2;
+											}else{
+												isTrues = 0;
+											}
+										}
+										if (isTrues == 1) {
+											if(date.getHours() == isNightStartHour && date.getMinutes()<=isNightStartMinute){
+												
+											}else{
+												if(isTrue1 == 0){
+													date.setHours(date.getHours()
+															+ isNightContinueHour);
+													date.setMinutes(date.getMinutes()
+															+ isNightContinueMinute);
+													isTrues = 0;
+													isTrue1 = 1;
+												}
+											}
+										}else if(isTrues == 2){
+											if(date.getHours() == isNightStartHour && date.getMinutes()<=isNightStartMinute){
+												
+											}else{
+												if(isTrue1 == 0){
+													date.setHours(date.getHours()
+															+ isNightContinueHour);
+													date.setMinutes(date.getMinutes()
+															+ isNightContinueMinute);
+													isTrues = 0;
+													isTrue1 = 1;
+												}
+											}
+										}else if(isTrues == 3){
+											if(date.getHours() == isNightStartHour && date.getMinutes()<=isNightStartMinute){
+												
+											}else{
+												if(isTrue1 == 0){
+													date.setHours(date.getHours()
+															+ isNightContinueHour);
+													date.setMinutes(date.getMinutes()
+															+ isNightContinueMinute);
+													isTrues = 0;
+													isTrue1 = 1;
+												}
+											}}}
+									} else {
+									date = format.parse(time_end);
+									if (isTrues == 1) {
+										if(isTrue == 0){
+											date.setHours(date.getHours()
+													+ isNightContinueHour);
+											date.setMinutes(date.getMinutes()
+													+ isNightContinueMinute);
+											isTrues = 0;
+											isTrue = 1;
+										}
+										isTrues = 0;
+									}else if(isTrues == 2){
+										if(isTrue1 == 0){
+											date.setHours(date.getHours()
+													+ isNightContinueHour);
+											date.setMinutes(date.getMinutes()
+													+ isNightContinueMinute);
+											isTrues = 0;
+											isTrue1 = 1;
+										}
+									}else if(isTrues == 3){
+										if(isTrue1 == 0){
+											date.setHours(date.getHours()
+													+ isNightContinueHour);
+											date.setMinutes(date.getMinutes()
+													+ isNightContinueMinute);
+											isTrues = 0;
+											isTrue1 = 1;
+										}
+									}
+									time_starts = format.format(date);
+									compareDayf = date.getDate();
+									date.setHours(date.getHours() + nHour);
+									date.setMinutes(date.getMinutes() + nMinutes);
+									compareDays = date.getDate();
+									if (compareDays > compareDayf) {
+											isTrues = 1;
+											isTrue = 0;
+											isTrue1 = 0;
+										if(isNightStartHour != 0){
+											if(date.getHours() == isNightEnd&&date.getMinutes()<= isNightEndMinutes){
+												isTrues = 1;
+											}
+											if(date.getHours() >= isNightStartHour){
+												isTrues = 1;
+												if(date.getHours() == isNightStartHour&&date.getMinutes()>isNightStartMinute){
+													isTrues = 1;
+												}else{
+													isTrues = 2;
+												}
+											}else{
+												if(isGreater == 1){
+													
+												}else{
+													isTrues = 0;
+												}
+											}
+										}else{
+											if(isNightStartHour == 0&&date.getMinutes()<=isNightStartMinute){
+												isTrues = 3;
+											}else{
+												isTrues = 2;
+											}
+										}
+										if (isTrues == 1) {
+											if(date.getHours() == isNightStartHour && date.getMinutes()<=isNightStartMinute){
+												
+											}else{
+												if(isTrue1 == 0){
+													date.setHours(date.getHours()
+															+ isNightContinueHour);
+													date.setMinutes(date.getMinutes()
+															+ isNightContinueMinute);
+													isTrues = 0;
+													isTrue1 = 1;
+												}
+											}
+										}else if(isTrues == 2){
+											if(date.getHours() == isNightStartHour && date.getMinutes()<=isNightStartMinute){
+												
+											}else{
+												if(isTrue1 == 0){
+													date.setHours(date.getHours()
+															+ isNightContinueHour);
+													date.setMinutes(date.getMinutes()
+															+ isNightContinueMinute);
+													isTrues = 0;
+													isTrue1 = 1;
+												}
+											}
+										}else if(isTrues == 3){
+											if(date.getHours() == isNightStartHour && date.getMinutes()<=isNightStartMinute){
+												
+											}else{
+												if(isTrue1 == 0){
+													date.setHours(date.getHours()
+															+ isNightContinueHour);
+													date.setMinutes(date.getMinutes()
+															+ isNightContinueMinute);
+													isTrues = 0;
+													isTrue1 = 1;
+												}
+											}
+										}
+									}else{
+										if(isNightStartHour != 0){
+											if(date.getHours() == isNightEnd&&date.getMinutes()<= isNightEndMinutes){
+												isTrues = 1;
+											}
+											if(date.getHours() >= isNightStartHour){
+												isTrues = 1;
+												isTrue1 = 0;
+												if(date.getHours() == isNightStartHour&&date.getMinutes()>isNightStartMinute){
+													isTrues = 1;
+												}else{
+													isTrues = 2;
+												}
+											}else{
+												if(isGreater == 1){
+													
+												}else{
+													isTrues = 0;
+												}
+											}
+										}else{
+											if(isNightStartHour == 0&&date.getMinutes()<=isNightStartMinute){
+												isTrues = 0;
+											}else{
+												isTrues = 2;
+											}
+										}
+										if (isTrues == 1) {
+											if(date.getHours() == isNightStartHour && date.getMinutes()<=isNightStartMinute){
+												
+											}else{
+												if(isTrue1 == 0){
+													date.setHours(date.getHours()
+															+ isNightContinueHour);
+													date.setMinutes(date.getMinutes()
+															+ isNightContinueMinute);
+													isTrues = 0;
+													isTrue1 = 1;
+												}
+											}
+										}else if(isTrues == 2){
+											if(date.getHours() == isNightStartHour && date.getMinutes()<=isNightStartMinute){
+												
+											}else{
+												if(isTrue1 == 0){
+													date.setHours(date.getHours()
+															+ isNightContinueHour);
+													date.setMinutes(date.getMinutes()
+															+ isNightContinueMinute);
+													isTrues = 0;
+													isTrue1 = 1;
+												}
+											}
+										}else if(isTrues == 3){
+											if(date.getHours() == isNightStartHour && date.getMinutes()<=isNightStartMinute){
+												
+											}else{
+												if(isTrue1 == 0){
+													date.setHours(date.getHours()
+															+ isNightContinueHour);
+													date.setMinutes(date.getMinutes()
+															+ isNightContinueMinute);
+													isTrues = 0;
+													isTrue1 = 1;
+												}
+											}
+										}
+									}
+								}
+								time_end = format.format(date);
+								if (CheckUtil.IsEmpty(listentity)) {
+									now_round = 0;
+								}
+								if (isRandom == true) {
+									dbHelper.updateProjects(units,now_round + 1 + "",
+											randomCommon[i], time_starts, time_end);
+								} else {
+									dbHelper.updateProjects(units,now_round + 1 + "", i + 1,
+											time_starts, time_end);
+								}
+							} catch (ParseException e) {
+								e.printStackTrace();
+							}}
+						notify = 1;
+						SharedUtils.setParam(getActivity(), "notify", notify);
+						ApplyIrrigateProjectFragment fragment3 = new ApplyIrrigateProjectFragment();
+						Bundle bundle1 = new Bundle();
+						bundle1.putString("units", units);
+						fragment3.setArguments(bundle1);
+						transaction
+								.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+						transaction.replace(R.id.fl, fragment3, "main");
+						transaction.commit();
+						firsts = dbHelper.loadisFirst(units);
+						if(CheckUtil.IsEmpty(firsts)){
+							irrigationIsFirst.setIrrigation(units);
+							irrigationIsFirst.setIsFirst(0);
+							dbHelper.saveIsFirst(irrigationIsFirst);
+						}
+//						}
+						 }
+					} else if (isNightContinueHour < long_hour) {
+					java.util.Date date2 = new java.util.Date();
+				SimpleDateFormat format2 = new SimpleDateFormat(
+						"yyyy-MM-dd HH:mm");
+				try {
+					date2 = format2.parse(time_compare_start);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				Date dates = new Date();
+				SimpleDateFormat formats = new SimpleDateFormat(
+						"yyyy-MM-dd HH:mm");
+				try {
+					dates = formats.parse(time_start);
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				if (dates.getHours() > 0 && dates.getHours() < time_long) {
+					Toast.makeText(getActivity(), "非工作区间",
+							Toast.LENGTH_LONG).show();
+				} else {
+				//数据库查重	
+//				nHour3 = nHour;
+//				for (int j = 0; j < 4; j++) {
+//					conpare = 0;
+//					for (int i = 0; i < listentity.size(); i++) {
+//						Calendar c = Calendar.getInstance();
+//						if (j == 0) {
+//							try {
+//								c.setTime(new SimpleDateFormat(
+//										"yyyy-MM-dd HH:mm")
+//										.parse(time_compare_start));
+//							} catch (ParseException e1) {
+//								// TODO Auto-generated catch block
+//								e1.printStackTrace();
+//							}
+//							java.util.Date date1 = new java.util.Date();
+//							SimpleDateFormat format1 = new SimpleDateFormat(
+//									"yyyy-MM-dd HH:mm");
+//							try {
+//								date1 = format1.parse(time_compare_start);
+//							} catch (ParseException e) {
+//								e.printStackTrace();
+//							}
+//							time_starts = format1.format(date1);
+//							// date.setHours(date.getHours() + nHour);
+//							// date.setMinutes(date.getMinutes() + nMinutes);
+//							if (date1.getHours() == time_long) {
+//								onleOne = 1;
+//							}
+//							while (nHour3 > 0) {
+//								if (nHour3 >= long_hour) {
+//									date1.setHours(date1.getHours() + time_long
+//											+ long_hour);
+//									date1.setMinutes(date1.getMinutes()
+//											+ nMinutes);
+//									nHour3 = nHour3 - long_hour;
+//								} else {
+//									compareDayf = date1.getDate();
+//									date1.setHours(date1.getHours() + nHour3);
+//									date1.setMinutes(date1.getMinutes()
+//											+ nMinutes);
+//									nHour3 = 0;
+//									compareDays = date1.getDate();
+//									if (compareDays > compareDayf) {
+//										if (date1.getHours() == 0) {
+//											isHaves = 1;
+//										} else {
+//											if (onleOne != 1) {
+//												DecimalFormat fnum = new DecimalFormat(
+//														"##0.0");
+//												String sleep = fnum
+//														.format(((float) (24 - nHour)
+//																/ ((float) 24) * time_long))
+//														+ "";
+//												String[] hours = sleep
+//														.split("\\.");
+//												date1.setHours(date1.getHours()
+//														+ Integer
+//																.valueOf(hours[0]));
+//												if (!CheckUtil
+//														.IsEmpty(hours[1])) {
+//													date1.setMinutes(date1
+//															.getMinutes()
+//															+ Integer
+//																	.valueOf(hours[1])
+//															* 6);
+//												}
+//												onleOne = 1;
+//											} else {
+//												date1.setHours(date1.getHours()
+//														+ time_long);
+//											}
+//										}
+//									}
+//								}
+//							}
+//							time_compare_end = format1.format(date1);
+//						} else {
+//							if (conpare == 1) {
+//
+//							} else {
+//								try {
+//									c.setTime(new SimpleDateFormat(
+//											"yyyy-MM-dd HH:mm")
+//											.parse(time_compare_end));
+//								} catch (ParseException e1) {
+//									e1.printStackTrace();
+//								}
+//								java.util.Date date1 = new java.util.Date();
+//								SimpleDateFormat format1 = new SimpleDateFormat(
+//										"yyyy-MM-dd HH:mm");
+//								try {
+//									date1 = format1.parse(time_compare_end);
+//								} catch (ParseException e) {
+//									e.printStackTrace();
+//								}
+//								if (isHaves == 1) {
+//									if (onleOne != 1) {
+//										DecimalFormat fnum = new DecimalFormat(
+//												"##0.0");
+//										String sleep = fnum
+//												.format(((float) (24 - nHour)
+//														/ ((float) 24) * time_long))
+//												+ "";
+//										String[] hours = sleep.split("\\.");
+//										date1.setHours(date1.getHours()
+//												+ Integer.valueOf(hours[0]));
+//										if (!CheckUtil.IsEmpty(hours[1])) {
+//											date1.setMinutes(date1.getMinutes()
+//													+ Integer.valueOf(hours[1])
+//													* 6);
+//										}
+//										onleOne = 1;
+//									} else {
+//										date1.setHours(date1.getHours()
+//												+ time_long);
+//									}
+//									isHaves = 0;
+//								}
+//								time_starts = format1.format(date1);
+//								nHour4 = nHour;
+//								while (nHour4 > 0) {
+//									if (nHour4 >= long_hour) {
+//										date1.setHours(date1.getHours()
+//												+ time_long + long_hour);
+//										date1.setMinutes(date1.getMinutes()
+//												+ nMinutes);
+//										nHour4 = nHour4 - long_hour;
+//
+//									} else {
+//										compareDayf = date1.getDate();
+//										date1.setHours(date1.getHours()
+//												+ nHour4);
+//										date1.setMinutes(date1.getMinutes()
+//												+ nMinutes);
+//										nHour4 = 0;
+//										compareDays = date1.getDate();
+//										if (compareDays > compareDayf) {
+//											if (date1.getHours() == 0) {
+//												isHaves = 1;
+//											} else {
+//												if (onleOne != 1) {
+//													DecimalFormat fnum = new DecimalFormat(
+//															"##0.0");
+//													String sleep = fnum
+//															.format(((float) (24 - nHour)
+//																	/ ((float) 24) * time_long))
+//															+ "";
+//													String[] hours = sleep
+//															.split("\\.");
+//													date1.setHours(date1
+//															.getHours()
+//															+ Integer
+//																	.valueOf(hours[0]));
+//													if (!CheckUtil
+//															.IsEmpty(hours[1])) {
+//														date1.setMinutes(date1
+//																.getMinutes()
+//																+ Integer
+//																		.valueOf(hours[1])
+//																* 6);
+//													}
+//													onleOne = 1;
+//												} else {
+//													date1.setHours(date1
+//															.getHours()
+//															+ time_long);
+//												}
+//											}
+//										}
+//									}
+//								}
+//								time_compare_end = format1.format(date1);
+//								conpare = 1;
+//							}
+//						}
+//						time_db_start = listentity.get(i).getProjectstart();
+//						time_db_end = listentity.get(i).getProjectend();
+//
+//						Calendar c4 = Calendar.getInstance();
+//						try {
+//							c4.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm")
+//									.parse(time_starts));
+//						} catch (ParseException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//						Calendar c1 = Calendar.getInstance();
+//						try {
+//							c1.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm")
+//									.parse(time_compare_end));
+//						} catch (ParseException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//						Calendar c2 = Calendar.getInstance();
+//						try {
+//							c2.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm")
+//									.parse(time_db_start));
+//						} catch (ParseException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//						Calendar c3 = Calendar.getInstance();
+//						try {
+//							c3.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm")
+//									.parse(time_db_end));
+//						} catch (ParseException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//
+//						long ms_start = c4.getTimeInMillis();
+//						long ms_end = c1.getTimeInMillis();
+//						long ms_db_start = c2.getTimeInMillis();
+//						long ms_db_end = c3.getTimeInMillis();
+//						if (ms_start >= ms_db_end || ms_end <= ms_db_start) {
+//							isOne = 1;
+//						} else {
+//							isOne = 2;
+//							break;
+//						}
+//					}
+//					if (isOne == 2) {
+//						break;
+//					}
+//				}
+//				if (isOne != 1) {
+//					Toast.makeText(getActivity(), "在范围内", Toast.LENGTH_SHORT)
+//							.show();
+//				} else {
+						List<IrrigationProject> listentity1 = dbHelper
+								.loadLastMsgBySessionid(units);
+						if (CheckUtil.IsEmpty(listentity1)) {
+							now_round = 0;
+						} else {
+							now_round = Integer.valueOf(listentity1.get(0)
+									.getRound());
+						}
+						for (int i = 1; i < 5; i++) {
+							irrigationProject = new IrrigationProject();
+							irrigationProject.setIrrigation(units);
+							irrigationProject
+									.setProjectstart("0000-00-00 00:00");
+							irrigationProject.setProjectend("0000-00-00 00:00");
+							irrigationProject.setRound((now_round + 1) + "");
+							irrigationProject.setMarshalling(i + "");
+							dbHelper.saveSessions(irrigationProject);
+						}
+						int randomCommon[] = randomCommon(1, 5, 4);
+						time_long = 24 - long_hour;
+						nHours = nHour;
+
+						for (int i = 0; i < 4; i++) {
+							Date date = new Date();
+							SimpleDateFormat format = new SimpleDateFormat(
+									"yyyy-MM-dd HH:mm");
+							try {
+								if (i == 0) {
+									date = format.parse(time_start);
+									time_starts = format.format(date);
+									// date.setHours(date.getHours() + nHour);
+									// date.setMinutes(date.getMinutes() +
+									// nMinutes);
+
+									if (date.getHours() == time_long) {
+										onleOnes = 1;
+									}
+									while (nHours > 0) {
+										if (nHours >= long_hour) {
+											date.setHours(date.getHours()
+													+ time_long + long_hour);
+											date.setMinutes(date.getMinutes()
+													+ nMinutes);
+											nHours = nHours - long_hour;
+										} else {
+											compareDayf = date.getDate();
+											date.setHours(date.getHours()
+													+ nHours);
+											date.setMinutes(date.getMinutes()
+													+ nMinutes);
+											nHours = 0;
+											compareDays = date.getDate();
+											if (date.getHours() == time_long) {
+												onleOnes = 1;
+											}
+											if (compareDays > compareDayf) {
+												if (date.getHours() == 0) {
+													isHave = 1;
+												} else {
+													if (onleOnes != 1) {
+														DecimalFormat fnum = new DecimalFormat(
+																"##0.0");
+														String sleep = fnum
+																.format(((float) (24 - nHour)
+																		/ ((float) 24) * time_long))
+																+ "";
+														String[] hours = sleep
+																.split("\\.");
+														date.setHours(date
+																.getHours()
+																+ Integer
+																		.valueOf(hours[0]));
+														if (!CheckUtil
+																.IsEmpty(hours[1])) {
+															date.setMinutes(date
+																	.getMinutes()
+																	+ Integer
+																			.valueOf(hours[1])
+																	* 6);
+														}
+														onleOnes = 1;
+													} else {
+														date.setHours(date
+																.getHours()
+																+ time_long);
+													}
+												}
+											}
+										}
+									}
+								} else {
+									date = format.parse(time_end);
+									if (isHave == 1) {
+										if (onleOnes != 1) {
+											DecimalFormat fnum = new DecimalFormat(
+													"##0.0");
+											String sleep = fnum
+													.format(((float) (24 - nHour)
+															/ ((float) 24) * time_long))
+													+ "";
+											String[] hours = sleep.split("\\.");
+											date.setHours(date.getHours()
+													+ Integer.valueOf(hours[0]));
+											if (!CheckUtil.IsEmpty(hours[1])) {
+												date.setMinutes(date
+														.getMinutes()
+														+ Integer
+																.valueOf(hours[1])
+														* 6);
+											}
+											onleOnes = 1;
+										} else {
+											date.setHours(date.getHours()
+													+ time_long);
+										}
+										isHave = 0;
+									}
+									time_starts = format.format(date);
+									nHour2 = nHour;
+									while (nHour2 > 0) {
+										if (nHour2 >= long_hour) {
+											date.setHours(date.getHours()
+													+ time_long + long_hour);
+											date.setMinutes(date.getMinutes()
+													+ nMinutes);
+											nHour2 = nHour2 - long_hour;
+
+										} else {
+											compareDayf = date.getDate();
+											date.setHours(date.getHours()
+													+ nHour2);
+											date.setMinutes(date.getMinutes()
+													+ nMinutes);
+											nHour2 = 0;
+											compareDays = date.getDate();
+											if (compareDays > compareDayf) {
+												if (date.getHours() == 0) {
+													isHave = 1;
+												} else {
+													if (onleOnes != 1) {
+														DecimalFormat fnum = new DecimalFormat(
+																"##0.0");
+														String sleep = fnum
+																.format(((float) (24 - nHour)
+																		/ ((float) 24) * time_long))
+																+ "";
+														String[] hours = sleep
+																.split("\\.");
+														date.setHours(date
+																.getHours()
+																+ Integer
+																		.valueOf(hours[0]));
+														if (!CheckUtil
+																.IsEmpty(hours[1])) {
+															date.setMinutes(date
+																	.getMinutes()
+																	+ Integer
+																			.valueOf(hours[1])
+																	* 6);
+														}
+														onleOnes = 1;
+													} else {
+														date.setHours(date
+																.getHours()
+																+ time_long);
+													}
+												}
+											}
+										}
+									}
+								}
+								time_end = format.format(date);
+								if (CheckUtil.IsEmpty(listentity)) {
+									now_round = 0;
+								}
+								if (isRandom == true) {
+									dbHelper.updateProjects(units,now_round + 1 + "",
+											randomCommon[i], time_starts,
+											time_end);
+								} else {
+									dbHelper.updateProjects(units,now_round + 1 + "",
+											i + 1, time_starts, time_end);
+								}
+							} catch (ParseException e) {
+								e.printStackTrace();
+							}
+						}
+						notify = 1;
+						SharedUtils.setParam(getActivity(), "notify", notify);
+						ApplyIrrigateProjectFragment fragment3 = new ApplyIrrigateProjectFragment();
+						Bundle bundle1 = new Bundle();
+						bundle1.putString("units", units);
+						fragment3.setArguments(bundle1);
+						transaction
+								.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+						transaction.replace(R.id.fl, fragment3, "main");
+						transaction.commit();
+						firsts = dbHelper.loadisFirst(units);
+						if(CheckUtil.IsEmpty(firsts)){
+							irrigationIsFirst.setIrrigation(units);
+							irrigationIsFirst.setIsFirst(0);
+							dbHelper.saveIsFirst(irrigationIsFirst);
+						}
+//					}
+				}}
+			} else if (isLong == false && isNight == true) {
+				irrigationProject = new IrrigationProject();
+				List<IrrigationProject> listentity = dbHelper.loadLastMsgBySessionid(units);
+				time_compare_start = time_start;
+				time_long = 24 - long_hour;
+				Date dates = new Date();
+				SimpleDateFormat formats = new SimpleDateFormat(
+						"yyyy-MM-dd HH:mm");
+				try {
+					dates = formats.parse(time_start);
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				compareDay = dates.getDate();
+				//
+				if(isNightStartHour == 0){
+					isNightStartHours = 24;
+				}else{
+					isNightStartHours = isNightStartHour;
+				}
+				isGreater = (int) SharedUtils.getParam(getActivity(), "isGreater", 0);
+				if (isGreater == 1) {
+					if(dates.getHours() < isNightStartHours && dates.getHours() > isNightEnd){
+						isLegal = 1;
+					}else{
+						isLegal = 0;
+					}
+				}else{
+					if(dates.getHours() > isNightStartHours && dates.getHours() < isNightEnd){
+						isLegal = 0;
+					}else{
+						isLegal = 1;
+					}
+				}
+				
+				if(dates.getHours() == isNightStartHour){
+					if(dates.getMinutes() < isNightStartMinute){
+						isLegal = 1;
+					}else{
+						isLegal = 0;
+					}
+				}
+				
+				if(dates.getHours() == isNightEnd){
+					if(dates.getMinutes()>=isNightEndMinutes){
+						isLegal = 1;
+					}else{
+						isLegal = 0;
+					}
+				}
+				if(isLegal != 1){
+					Toast.makeText(getActivity(), "非工作区间", Toast.LENGTH_SHORT).show();
+				}else{
+//				java.util.Date date2 = new java.util.Date();
+//				SimpleDateFormat format2 = new SimpleDateFormat(
+//						"yyyy-MM-dd HH:mm");
+//				try {
+//					date2 = format2.parse(time_compare_start);
+//				} catch (ParseException e) {
+//					e.printStackTrace();
+//				}
+//				for (int j = 0; j < 4; j++) {
+//					conpare = 0;
+//					for (int i = 0; i < listentity.size(); i++) {
+//						Calendar c = Calendar.getInstance();
+//						if (j == 0) {
+//							try {
+//								c.setTime(new SimpleDateFormat(
+//										"yyyy-MM-dd HH:mm")
+//										.parse(time_compare_start));
+//							} catch (ParseException e1) {
+//								// TODO Auto-generated catch block
+//								e1.printStackTrace();
+//							}
+//							java.util.Date date1 = new java.util.Date();
+//							SimpleDateFormat format1 = new SimpleDateFormat(
+//									"yyyy-MM-dd HH:mm");
+//							try {
+//								date1 = format1.parse(time_compare_start);
+//							} catch (ParseException e) {
+//								e.printStackTrace();
+//							}
+//							time_starts = format1.format(date1);
+//							// date.setHours(date.getHours() + nHour);
+//							// date.setMinutes(date.getMinutes() + nMinutes);
+//							if (date1.getHours() == time_long) {
+//								onleOne = 1;
+//							}
+//							compareDayf = date1.getDate();
+//							date1.setHours(date1.getHours() + nHour);
+//							date1.setMinutes(date1.getMinutes() + nMinutes);
+//							compareDays = date1.getDate();
+//							if (compareDays > compareDayf) {
+//									isTrues = 1;
+//									isTrue = 0;
+//									isTrue1 = 0;
+//									if(isNightStartHour != 0){
+//										if(date1.getHours() == isNightEnd&&date1.getMinutes()<= isNightEndMinutes){
+//											isTrues = 1;
+//										}
+//										if(date1.getHours() >= isNightStartHour){
+//											isTrues = 1;
+//											if(date1.getHours() == isNightStartHour&&date1.getMinutes()>isNightStartMinute){
+//												isTrues = 1;
+//											}else{
+//												isTrues = 2;
+//											}
+//										}else{
+//											if(isGreater == 1){
+//											
+//										}else{
+//											isTrues = 0;
+//										}
+//										}
+//									}else{
+//										if(isNightStartHour == 0&&date1.getMinutes()<=isNightStartMinute){
+//											isTrues = 3;
+//										}else{
+//											isTrues = 2;
+//										}
+//								}
+//									if (isTrues == 1) {
+//										if(date1.getHours() == isNightStartHour && date1.getMinutes()<=isNightStartMinute){
+//											
+//										}else{
+//											if(isTrue1 == 0){
+//												date1.setHours(date1.getHours()
+//														+ isNightContinueHour);
+//												date1.setMinutes(date1.getMinutes()
+//														+ isNightContinueMinute);
+//												isTrues = 0;
+//												isTrue1 = 1;
+//											}
+//										}
+//									}else if(isTrues == 2){
+//										if(date1.getHours() == isNightStartHour && date1.getMinutes()<=isNightStartMinute){
+//											
+//										}else{
+//											if(isTrue1 == 0){
+//												date1.setHours(date1.getHours()
+//														+ isNightContinueHour);
+//												date1.setMinutes(date1.getMinutes()
+//														+ isNightContinueMinute);
+//												isTrues = 0;
+//												isTrue1 = 1;
+//											}
+//										}
+//									}else if(isTrues == 3){
+//										if(date1.getHours() == isNightStartHour && date1.getMinutes()<=isNightStartMinute){
+//											
+//										}else{
+//											if(isTrue1 == 0){
+//												date1.setHours(date1.getHours()
+//														+ isNightContinueHour);
+//												date1.setMinutes(date1.getMinutes()
+//														+ isNightContinueMinute);
+//												isTrues = 0;
+//												isTrue1 = 1;
+//											}
+//										}
+//									}
+//							}else{
+//								if(isNightStartHour != 0){
+//									if(date1.getHours() == isNightEnd&&date1.getMinutes()<= isNightEndMinutes){
+//										isTrues = 1;
+//									}
+//									if(date1.getHours() >= isNightStartHour){
+//										isTrues = 1;
+//										isTrue1 = 0;
+//										if(date1.getHours() == isNightStartHour&&date1.getMinutes()>isNightStartMinute){
+//											isTrues = 1;
+//										}else{
+//											isTrues = 2;
+//									}
+//									}else{
+//										if(isGreater == 1){
+//											
+//										}else{
+//											isTrues = 0;
+//										}
+//									}
+//								}else{
+//									if(isNightStartHour == 0&&date1.getMinutes()<=isNightStartMinute){
+//										isTrues = 0;
+//									}else{
+//										isTrues = 2;
+//									}
+//									isNightStartHours = 24;
+//									if(isNightStartHours - date1.getHours() == 0){
+//										isTrues = 2;
+//									}else{
+//										isTrues = 0;
+//									}
+//								}
+//								if (isTrues == 1) {
+//									if(date1.getHours() == isNightStartHour && date1.getMinutes()<=isNightStartMinute){
+//										
+//									}else{
+//										if(isTrue1 == 0){
+//											date1.setHours(date1.getHours()
+//													+ isNightContinueHour);
+//											date1.setMinutes(date1.getMinutes()
+//													+ isNightContinueMinute);
+//											isTrues = 0;
+//											isTrue1 = 1;
+//										}
+//									}
+//								}else if(isTrues == 2){
+//									if(date1.getHours() == isNightStartHour && date1.getMinutes()<=isNightStartMinute){
+//										
+//									}else{
+//										if(isTrue1 == 0){
+//											date1.setHours(date1.getHours()
+//													+ isNightContinueHour);
+//											date1.setMinutes(date1.getMinutes()
+//													+ isNightContinueMinute);
+//											isTrues = 0;
+//											isTrue1 = 1;
+//										}
+//									}
+//								}else if(isTrues == 3){
+//									if(date1.getHours() == isNightStartHour && date1.getMinutes()<=isNightStartMinute){
+//										
+//									}else{
+//										if(isTrue1 == 0){
+//											date1.setHours(date1.getHours()
+//													+ isNightContinueHour);
+//											date1.setMinutes(date1.getMinutes()
+//													+ isNightContinueMinute);
+//											isTrues = 0;
+//											isTrue1 = 1;
+//										}
+//									}}}
+//							
+//							time_compare_end = format1.format(date1);
+//						} else {
+//							if (conpare == 1) {
+//
+//							} else {
+//								try {
+//									c.setTime(new SimpleDateFormat(
+//											"yyyy-MM-dd HH:mm")
+//											.parse(time_compare_end));
+//								} catch (ParseException e1) {
+//									e1.printStackTrace();
+//								}
+//								java.util.Date date1 = new java.util.Date();
+//								SimpleDateFormat format1 = new SimpleDateFormat(
+//										"yyyy-MM-dd HH:mm");
+//								try {
+//									date1 = format1.parse(time_compare_end);
+//								} catch (ParseException e) {
+//									e.printStackTrace();
+//								}
+//								if (isTrues == 1) {
+//									if(isTrue == 0){
+//										date1.setHours(date1.getHours()
+//												+ isNightContinueHour);
+//										date1.setMinutes(date1.getMinutes()
+//												+ isNightContinueMinute);
+//										isTrues = 0;
+//										isTrue = 1;
+//									}
+//									isTrues = 0;
+//								}else if(isTrues == 2){
+//									if(isTrue1 == 0){
+//										date1.setHours(date1.getHours()
+//												+ isNightContinueHour);
+//										date1.setMinutes(date1.getMinutes()
+//												+ isNightContinueMinute);
+//										isTrues = 0;
+//										isTrue1 = 1;
+//									}
+//								}else if(isTrues == 3){
+//									if(isTrue1 == 0){
+//										date1.setHours(date1.getHours()
+//												+ isNightContinueHour);
+//										date1.setMinutes(date1.getMinutes()
+//												+ isNightContinueMinute);
+//										isTrues = 0;
+//										isTrue1 = 1;
+//									}
+//								}
+//								time_starts = format1.format(date1);
+//								compareDayf = date1.getDate();
+//								date1.setHours(date1.getHours() + nHour);
+//								date1.setMinutes(date1.getMinutes() + nMinutes);
+//								compareDays = date1.getDate();
+//								if (compareDays > compareDayf) {
+//										isTrues = 1;
+//										isTrue = 0;
+//										isTrue1 = 0;
+//									if(isNightStartHour != 0){
+//										if(date1.getHours() == isNightEnd&&date1.getMinutes()<= isNightEndMinutes){
+//											isTrues = 1;
+//										}
+//										if(date1.getHours() >= isNightStartHour){
+//											isTrues = 1;
+//											if(date1.getHours() == isNightStartHour&&date1.getMinutes()>isNightStartMinute){
+//												isTrues = 1;
+//											}else{
+//												isTrues = 2;
+//											}
+//										}else{
+//											if(isGreater == 1){
+//												
+//											}else{
+//												isTrues = 0;
+//											}
+//										}
+//									}else{
+//										if(isNightStartHour == 0&&date1.getMinutes()<=isNightStartMinute){
+//											isTrues = 3;
+//										}else{
+//											isTrues = 2;
+//										}
+//									}
+//									if (isTrues == 1) {
+//										if(date1.getHours() == isNightStartHour && date1.getMinutes()<=isNightStartMinute){
+//											
+//										}else{
+//											if(isTrue1 == 0){
+//												date1.setHours(date1.getHours()
+//														+ isNightContinueHour);
+//												date1.setMinutes(date1.getMinutes()
+//														+ isNightContinueMinute);
+//												isTrues = 0;
+//												isTrue1 = 1;
+//											}
+//										}
+//									}else if(isTrues == 2){
+//										if(date1.getHours() == isNightStartHour && date1.getMinutes()<=isNightStartMinute){
+//											
+//										}else{
+//											if(isTrue1 == 0){
+//												date1.setHours(date1.getHours()
+//														+ isNightContinueHour);
+//												date1.setMinutes(date1.getMinutes()
+//														+ isNightContinueMinute);
+//												isTrues = 0;
+//												isTrue1 = 1;
+//											}
+//										}
+//									}else if(isTrues == 3){
+//										if(date1.getHours() == isNightStartHour && date1.getMinutes()<=isNightStartMinute){
+//											
+//										}else{
+//											if(isTrue1 == 0){
+//												date1.setHours(date1.getHours()
+//														+ isNightContinueHour);
+//												date1.setMinutes(date1.getMinutes()
+//														+ isNightContinueMinute);
+//												isTrues = 0;
+//												isTrue1 = 1;
+//											}
+//										}
+//									}
+//								}else{
+//									if(isNightStartHour != 0){
+//										if(date1.getHours() == isNightEnd&&date1.getMinutes()<= isNightEndMinutes){
+//											isTrues = 1;
+//										}
+//										if(date1.getHours() >= isNightStartHour){
+//											isTrues = 1;
+//											isTrue1 = 0;
+//											if(date1.getHours() == isNightStartHour&&date1.getMinutes()>isNightStartMinute){
+//												isTrues = 1;
+//											}else{
+//												isTrues = 2;
+//											}
+//										}else{
+//											if(isGreater == 1){
+//												
+//											}else{
+//												isTrues = 0;
+//											}
+//										}
+//									}else{
+//										if(isNightStartHour == 0&&date1.getMinutes()<=isNightStartMinute){
+//											isTrues = 0;
+//										}else{
+//											isTrues = 2;
+//										}
+//									}
+//									if (isTrues == 1) {
+//										if(date1.getHours() == isNightStartHour && date1.getMinutes()<=isNightStartMinute){
+//											
+//										}else{
+//											if(isTrue1 == 0){
+//												date1.setHours(date1.getHours()
+//														+ isNightContinueHour);
+//												date1.setMinutes(date1.getMinutes()
+//														+ isNightContinueMinute);
+//												isTrues = 0;
+//												isTrue1 = 1;
+//											}
+//										}
+//									}else if(isTrues == 2){
+//										if(date1.getHours() == isNightStartHour && date1.getMinutes()<=isNightStartMinute){
+//											
+//										}else{
+//											if(isTrue1 == 0){
+//												date1.setHours(date1.getHours()
+//														+ isNightContinueHour);
+//												date1.setMinutes(date1.getMinutes()
+//														+ isNightContinueMinute);
+//												isTrues = 0;
+//												isTrue1 = 1;
+//											}
+//										}
+//									}else if(isTrues == 3){
+//										if(date1.getHours() == isNightStartHour && date1.getMinutes()<=isNightStartMinute){
+//											
+//										}else{
+//											if(isTrue1 == 0){
+//												date1.setHours(date1.getHours()
+//														+ isNightContinueHour);
+//												date1.setMinutes(date1.getMinutes()
+//														+ isNightContinueMinute);
+//												isTrues = 0;
+//												isTrue1 = 1;
+//											}
+//										}
+//									}
+//								}
+//							
+//								time_compare_end = format1.format(date1);
+//								conpare = 1;
+//							}
+//						}
+//						time_db_start = listentity.get(i).getProjectstart();
+//						time_db_end = listentity.get(i).getProjectend();
+//
+//						Calendar c4 = Calendar.getInstance();
+//						try {
+//							c4.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm")
+//									.parse(time_starts));
+//						} catch (ParseException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//						Calendar c1 = Calendar.getInstance();
+//						try {
+//							c1.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm")
+//									.parse(time_compare_end));
+//						} catch (ParseException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//						Calendar c2 = Calendar.getInstance();
+//						try {
+//							c2.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm")
+//									.parse(time_db_start));
+//						} catch (ParseException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//						Calendar c3 = Calendar.getInstance();
+//						try {
+//							c3.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm")
+//									.parse(time_db_end));
+//						} catch (ParseException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//
+//						long ms_start = c4.getTimeInMillis();
+//						long ms_end = c1.getTimeInMillis();
+//						long ms_db_start = c2.getTimeInMillis();
+//						long ms_db_end = c3.getTimeInMillis();
+//						if (ms_start >= ms_db_end || ms_end <= ms_db_start) {
+//							isOne = 1;
+//						} else {
+//							isOne = 2;
+//							break;
+//						}
+//					}
+//					if (isOne == 2) {
+//						break;
+//					}
+//				}
+//				if (isOne != 1) {
+//					Toast.makeText(getActivity(), "在范围内", Toast.LENGTH_SHORT)
+//							.show();
+//				} else {
+				List<IrrigationProject> listentity1 = dbHelper
+						.loadLastMsgBySessionid(units);
+				if (CheckUtil.IsEmpty(listentity1)) {
+					now_round = 0;
+				} else {
+					now_round = Integer.valueOf(listentity1.get(0).getRound());
+				}
+				for (int i = 1; i < 5; i++) {
+					irrigationProject = new IrrigationProject();
+					irrigationProject.setIrrigation(units);
+					irrigationProject.setProjectstart("0000-00-00 00:00");
+					irrigationProject.setProjectend("0000-00-00 00:00");
+					irrigationProject.setRound((now_round + 1) + "");
+					irrigationProject.setMarshalling(i + "");
+					dbHelper.saveSessions(irrigationProject);
+				}
+				int randomCommon[] = randomCommon(1, 5, 4);
+				time_long = 24 - long_hour;
+				for (int i = 0; i < 4; i++) {
+					Date date = new Date();
+					SimpleDateFormat format = new SimpleDateFormat(
+							"yyyy-MM-dd HH:mm");
+					try {
+						if (i == 0) {
+							date = format.parse(time_start);
+							time_starts = format.format(date);
+							compareDayf = date.getDate();
+							date.setHours(date.getHours() + nHour);
+							date.setMinutes(date.getMinutes() + nMinutes);
+							compareDays = date.getDate();
+							if (compareDays > compareDayf) {
+									isTrues = 1;
+									isTrue = 0;
+									isTrue1 = 0;
+									if(isNightStartHour != 0){
+										if(date.getHours() == isNightEnd&&date.getMinutes()<= isNightEndMinutes){
+											isTrues = 1;
+										}
+										if(date.getHours() >= isNightStartHour){
+											isTrues = 1;
+											if(date.getHours() == isNightStartHour&&date.getMinutes()>isNightStartMinute){
+												isTrues = 1;
+											}else{
+												isTrues = 2;
+											}
+										}else{
+											if(isGreater == 1){
+											
+										}else{
+											isTrues = 0;
+										}
+										}
+									}else{
+										if(isNightStartHour == 0&&date.getMinutes()<=isNightStartMinute){
+											isTrues = 3;
+										}else{
+											isTrues = 2;
+										}
+								}
+									if (isTrues == 1) {
+										if(date.getHours() == isNightStartHour && date.getMinutes()<=isNightStartMinute){
+											
+										}else{
+											if(isTrue1 == 0){
+												date.setHours(date.getHours()
+														+ isNightContinueHour);
+												date.setMinutes(date.getMinutes()
+														+ isNightContinueMinute);
+												isTrues = 0;
+												isTrue1 = 1;
+											}
+										}
+									}else if(isTrues == 2){
+										if(date.getHours() == isNightStartHour && date.getMinutes()<=isNightStartMinute){
+											
+										}else{
+											if(isTrue1 == 0){
+												date.setHours(date.getHours()
+														+ isNightContinueHour);
+												date.setMinutes(date.getMinutes()
+														+ isNightContinueMinute);
+												isTrues = 0;
+												isTrue1 = 1;
+											}
+										}
+									}else if(isTrues == 3){
+										if(date.getHours() == isNightStartHour && date.getMinutes()<=isNightStartMinute){
+											
+										}else{
+											if(isTrue1 == 0){
+												date.setHours(date.getHours()
+														+ isNightContinueHour);
+												date.setMinutes(date.getMinutes()
+														+ isNightContinueMinute);
+												isTrues = 0;
+												isTrue1 = 1;
+											}
+										}
+									}
+							}else{
+								if(isNightStartHour != 0){
+									if(date.getHours() == isNightEnd&&date.getMinutes()<= isNightEndMinutes){
+										isTrues = 1;
+									}
+									if(date.getHours() >= isNightStartHour){
+										isTrues = 1;
+										isTrue1 = 0;
+										if(date.getHours() == isNightStartHour&&date.getMinutes()>isNightStartMinute){
+											isTrues = 1;
+										}else{
+											isTrues = 2;
+									}
+									}else{
+										if(isGreater == 1){
+											
+										}else{
+											isTrues = 0;
+										}
+									}
+								}else{
+									if(isNightStartHour == 0&&date.getMinutes()<=isNightStartMinute){
+										isTrues = 0;
+									}else{
+										isTrues = 2;
+									}
+									isNightStartHours = 24;
+									if(isNightStartHours - date.getHours() == 0){
+										isTrues = 2;
+									}else{
+										isTrues = 0;
+									}
+								}
+								if (isTrues == 1) {
+									if(date.getHours() == isNightStartHour && date.getMinutes()<=isNightStartMinute){
+										
+									}else{
+										if(isTrue1 == 0){
+											date.setHours(date.getHours()
+													+ isNightContinueHour);
+											date.setMinutes(date.getMinutes()
+													+ isNightContinueMinute);
+											isTrues = 0;
+											isTrue1 = 1;
+										}
+									}
+								}else if(isTrues == 2){
+									if(date.getHours() == isNightStartHour && date.getMinutes()<=isNightStartMinute){
+										
+									}else{
+										if(isTrue1 == 0){
+											date.setHours(date.getHours()
+													+ isNightContinueHour);
+											date.setMinutes(date.getMinutes()
+													+ isNightContinueMinute);
+											isTrues = 0;
+											isTrue1 = 1;
+										}
+									}
+								}else if(isTrues == 3){
+									if(date.getHours() == isNightStartHour && date.getMinutes()<=isNightStartMinute){
+										
+									}else{
+										if(isTrue1 == 0){
+											date.setHours(date.getHours()
+													+ isNightContinueHour);
+											date.setMinutes(date.getMinutes()
+													+ isNightContinueMinute);
+											isTrues = 0;
+											isTrue1 = 1;
+										}
+									}}}
+							} else {
+							date = format.parse(time_end);
+							if (isTrues == 1) {
+								if(isTrue == 0){
+									date.setHours(date.getHours()
+											+ isNightContinueHour);
+									date.setMinutes(date.getMinutes()
+											+ isNightContinueMinute);
+									isTrues = 0;
+									isTrue = 1;
+								}
+								isTrues = 0;
+							}else if(isTrues == 2){
+								if(isTrue1 == 0){
+									date.setHours(date.getHours()
+											+ isNightContinueHour);
+									date.setMinutes(date.getMinutes()
+											+ isNightContinueMinute);
+									isTrues = 0;
+									isTrue1 = 1;
+								}
+							}else if(isTrues == 3){
+								if(isTrue1 == 0){
+									date.setHours(date.getHours()
+											+ isNightContinueHour);
+									date.setMinutes(date.getMinutes()
+											+ isNightContinueMinute);
+									isTrues = 0;
+									isTrue1 = 1;
 								}
 							}
-							time_end = format.format(date);
-							if (CheckUtil.IsEmpty(listentity)) {
-								now_round = 0;
+							time_starts = format.format(date);
+							compareDayf = date.getDate();
+							date.setHours(date.getHours() + nHour);
+							date.setMinutes(date.getMinutes() + nMinutes);
+							compareDays = date.getDate();
+							if (compareDays > compareDayf) {
+									isTrues = 1;
+									isTrue = 0;
+									isTrue1 = 0;
+								if(isNightStartHour != 0){
+									if(date.getHours() == isNightEnd&&date.getMinutes()<= isNightEndMinutes){
+										isTrues = 1;
+									}
+									if(date.getHours() >= isNightStartHour){
+										isTrues = 1;
+										if(date.getHours() == isNightStartHour&&date.getMinutes()>isNightStartMinute){
+											isTrues = 1;
+										}else{
+											isTrues = 2;
+										}
+									}else{
+										if(isGreater == 1){
+											
+										}else{
+											isTrues = 0;
+										}
+									}
+								}else{
+									if(isNightStartHour == 0&&date.getMinutes()<=isNightStartMinute){
+										isTrues = 3;
+									}else{
+										isTrues = 2;
+									}
+								}
+								if (isTrues == 1) {
+									if(date.getHours() == isNightStartHour && date.getMinutes()<=isNightStartMinute){
+										
+									}else{
+										if(isTrue1 == 0){
+											date.setHours(date.getHours()
+													+ isNightContinueHour);
+											date.setMinutes(date.getMinutes()
+													+ isNightContinueMinute);
+											isTrues = 0;
+											isTrue1 = 1;
+										}
+									}
+								}else if(isTrues == 2){
+									if(date.getHours() == isNightStartHour && date.getMinutes()<=isNightStartMinute){
+										
+									}else{
+										if(isTrue1 == 0){
+											date.setHours(date.getHours()
+													+ isNightContinueHour);
+											date.setMinutes(date.getMinutes()
+													+ isNightContinueMinute);
+											isTrues = 0;
+											isTrue1 = 1;
+										}
+									}
+								}else if(isTrues == 3){
+									if(date.getHours() == isNightStartHour && date.getMinutes()<=isNightStartMinute){
+										
+									}else{
+										if(isTrue1 == 0){
+											date.setHours(date.getHours()
+													+ isNightContinueHour);
+											date.setMinutes(date.getMinutes()
+													+ isNightContinueMinute);
+											isTrues = 0;
+											isTrue1 = 1;
+										}
+									}
+								}
+							}else{
+								if(isNightStartHour != 0){
+									if(date.getHours() == isNightEnd&&date.getMinutes()<= isNightEndMinutes){
+										isTrues = 1;
+									}
+									if(date.getHours() >= isNightStartHour){
+										isTrues = 1;
+										isTrue1 = 0;
+										if(date.getHours() == isNightStartHour&&date.getMinutes()>isNightStartMinute){
+											isTrues = 1;
+										}else{
+											isTrues = 2;
+										}
+									}else{
+										if(isGreater == 1){
+											
+										}else{
+											isTrues = 0;
+										}
+									}
+								}else{
+									if(isNightStartHour == 0&&date.getMinutes()<=isNightStartMinute){
+										isTrues = 0;
+									}else{
+										isTrues = 2;
+									}
+								}
+								if (isTrues == 1) {
+									if(date.getHours() == isNightStartHour && date.getMinutes()<=isNightStartMinute){
+										
+									}else{
+										if(isTrue1 == 0){
+											date.setHours(date.getHours()
+													+ isNightContinueHour);
+											date.setMinutes(date.getMinutes()
+													+ isNightContinueMinute);
+											isTrues = 0;
+											isTrue1 = 1;
+										}
+									}
+								}else if(isTrues == 2){
+									if(date.getHours() == isNightStartHour && date.getMinutes()<=isNightStartMinute){
+										
+									}else{
+										if(isTrue1 == 0){
+											date.setHours(date.getHours()
+													+ isNightContinueHour);
+											date.setMinutes(date.getMinutes()
+													+ isNightContinueMinute);
+											isTrues = 0;
+											isTrue1 = 1;
+										}
+									}
+								}else if(isTrues == 3){
+									if(date.getHours() == isNightStartHour && date.getMinutes()<=isNightStartMinute){
+										
+									}else{
+										if(isTrue1 == 0){
+											date.setHours(date.getHours()
+													+ isNightContinueHour);
+											date.setMinutes(date.getMinutes()
+													+ isNightContinueMinute);
+											isTrues = 0;
+											isTrue1 = 1;
+										}
+									}
+								}
 							}
-							if (isRandom == true) {
-								dbHelper.updateProject(now_round + 1 + "",
-										randomCommon[i], time_starts, time_end);
-							} else {
-								dbHelper.updateProject(now_round + 1 + "",
-										i + 1, time_starts, time_end);
-							}
-						} catch (ParseException e) {
-							e.printStackTrace();
 						}
+						time_end = format.format(date);
+						if (CheckUtil.IsEmpty(listentity)) {
+							now_round = 0;
+						}
+						if (isRandom == true) {
+							dbHelper.updateProjects(units,now_round + 1 + "",
+									randomCommon[i], time_starts, time_end);
+						} else {
+							dbHelper.updateProjects(units,now_round + 1 + "", i + 1,
+									time_starts, time_end);
+						}
+					} catch (ParseException e) {
+						e.printStackTrace();
 					}
-					notify = 1;
-					SharedUtils.setParam(getActivity(), "notify", notify);
-					ApplyIrrigateProjectFragment fragment3 = new ApplyIrrigateProjectFragment();
-					transaction
-							.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-					transaction.replace(R.id.fl, fragment3, "main");
-					transaction.commit();
+				}
+				notify = 1;
+				SharedUtils.setParam(getActivity(), "notify", notify);
+				ApplyIrrigateProjectFragment fragment3 = new ApplyIrrigateProjectFragment();
+				Bundle bundle1 = new Bundle();
+				bundle1.putString("units", units);
+				fragment3.setArguments(bundle1);
+				transaction
+						.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+				transaction.replace(R.id.fl, fragment3, "main");
+				transaction.commit();
+				firsts = dbHelper.loadisFirst(units);
+				if(CheckUtil.IsEmpty(firsts)){
+					irrigationIsFirst.setIrrigation(units);
+					irrigationIsFirst.setIsFirst(0);
+					dbHelper.saveIsFirst(irrigationIsFirst);
+				}
+//				}
+				 }
+			} else if (isLong == false && isNight == false) {
+				irrigationProject = new IrrigationProject();
+				List<IrrigationProject> listentity = dbHelper.loadLastMsgBySessionid(units);
+				time_compare_start = time_start;
+				time_long = 24 - long_hour;
+//				java.util.Date date2 = new java.util.Date();
+//				SimpleDateFormat format2 = new SimpleDateFormat(
+//						"yyyy-MM-dd HH:mm");
+//				try {
+//					date2 = format2.parse(time_compare_start);
+//				} catch (ParseException e) {
+//					e.printStackTrace();
+//				}
+//				for (int j = 0; j < 4; j++) {
+//					conpare = 0;
+//					for (int i = 0; i < listentity.size(); i++) {
+//						Calendar c = Calendar.getInstance();
+//						if (j == 0) {
+//							try {
+//								c.setTime(new SimpleDateFormat(
+//										"yyyy-MM-dd HH:mm")
+//										.parse(time_compare_start));
+//							} catch (ParseException e1) {
+//								// TODO Auto-generated catch block
+//								e1.printStackTrace();
+//							}
+//							java.util.Date date1 = new java.util.Date();
+//							SimpleDateFormat format1 = new SimpleDateFormat(
+//									"yyyy-MM-dd HH:mm");
+//							try {
+//								date1 = format1.parse(time_compare_start);
+//							} catch (ParseException e) {
+//								e.printStackTrace();
+//							}
+//							time_starts = format1.format(date1);
+//							date1.setHours(date1.getHours() + nHour);
+//							date1.setMinutes(date1.getMinutes() + nMinutes);							
+//							time_compare_end = format1.format(date1);
+//						} else {
+//							if (conpare == 1) {
+//
+//							} else {
+//								try {
+//									c.setTime(new SimpleDateFormat(
+//											"yyyy-MM-dd HH:mm")
+//											.parse(time_compare_end));
+//								} catch (ParseException e1) {
+//									e1.printStackTrace();
+//								}
+//								java.util.Date date1 = new java.util.Date();
+//								SimpleDateFormat format1 = new SimpleDateFormat(
+//										"yyyy-MM-dd HH:mm");
+//								try {
+//									date1 = format1.parse(time_compare_end);
+//								} catch (ParseException e) {
+//									e.printStackTrace();
+//								}
+//								
+//								time_starts = format1.format(date1);
+//								date1.setHours(date1.getHours() + nHour);
+//								date1.setMinutes(date1.getMinutes() + nMinutes);
+//								time_compare_end = format1.format(date1);
+//								conpare = 1;
+//							}
+//						}
+//						time_db_start = listentity.get(i).getProjectstart();
+//						time_db_end = listentity.get(i).getProjectend();
+//
+//						Calendar c4 = Calendar.getInstance();
+//						try {
+//							c4.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm")
+//									.parse(time_starts));
+//						} catch (ParseException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//						Calendar c1 = Calendar.getInstance();
+//						try {
+//							c1.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm")
+//									.parse(time_compare_end));
+//						} catch (ParseException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//						Calendar c2 = Calendar.getInstance();
+//						try {
+//							c2.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm")
+//									.parse(time_db_start));
+//						} catch (ParseException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//						Calendar c3 = Calendar.getInstance();
+//						try {
+//							c3.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm")
+//									.parse(time_db_end));
+//						} catch (ParseException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//
+//						long ms_start = c4.getTimeInMillis();
+//						long ms_end = c1.getTimeInMillis();
+//						long ms_db_start = c2.getTimeInMillis();
+//						long ms_db_end = c3.getTimeInMillis();
+//						if (ms_start >= ms_db_end || ms_end <= ms_db_start) {
+//							isOne = 1;
+//						} else {
+//							isOne = 2;
+//							break;
+//						}
+//					}
+//					if (isOne == 2) {
+//						break;
+//					}
+//				}
+//				if (isOne != 1) {
+//					Toast.makeText(getActivity(), "在范围内", Toast.LENGTH_SHORT)
+//							.show();
+//				} else {
+				Date dates = new Date();
+				SimpleDateFormat formats = new SimpleDateFormat(
+						"yyyy-MM-dd HH:mm");
+				try {
+					dates = formats.parse(time_start);
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				List<IrrigationProject> listentity1 = dbHelper
+						.loadLastMsgBySessionid(units);
+				if (CheckUtil.IsEmpty(listentity1)) {
+					now_round = 0;
+				} else {
+					now_round = Integer.valueOf(listentity1.get(0).getRound());
+				}
+				for (int i = 1; i < 5; i++) {
+					irrigationProject = new IrrigationProject();
+					irrigationProject.setIrrigation(units);
+					irrigationProject.setProjectstart("0000-00-00 00:00");
+					irrigationProject.setProjectend("0000-00-00 00:00");
+					irrigationProject.setRound((now_round + 1) + "");
+					irrigationProject.setMarshalling(i + "");
+					dbHelper.saveSessions(irrigationProject);
+				}
+				int randomCommon[] = randomCommon(1, 5, 4);
+				time_long = 24 - long_hour;
+				for (int i = 0; i < 4; i++) {
+					Date date = new Date();
+					SimpleDateFormat format = new SimpleDateFormat(
+							"yyyy-MM-dd HH:mm");
+					try {
+						if (i == 0) {
+							date = format.parse(time_start);
+							time_starts = format.format(date);
+							date.setHours(date.getHours() + nHour);
+							date.setMinutes(date.getMinutes() + nMinutes);
+						} else {
+							date = format.parse(time_end);
+							time_starts = format.format(date);
+							date.setHours(date.getHours() + nHour);
+							date.setMinutes(date.getMinutes() + nMinutes);
+						}
+						time_end = format.format(date);
+						if (CheckUtil.IsEmpty(listentity1)) {
+							now_round = 0;
+						}
+						if (isRandom == true) {
+							dbHelper.updateProjects(units,now_round + 1 + "",
+									randomCommon[i], time_starts, time_end);
+						} else {
+							dbHelper.updateProjects(units,now_round + 1 + "", i + 1,
+									time_starts, time_end);
+						}
+					} catch (ParseException e) {
+						e.printStackTrace();
+//					}
 				}
 			}
-			// }
+				notify = 1;
+				SharedUtils.setParam(getActivity(), "notify", notify);
+				ApplyIrrigateProjectFragment fragment3 = new ApplyIrrigateProjectFragment();
+				Bundle bundle1 = new Bundle();
+				bundle1.putString("units", units);
+				fragment3.setArguments(bundle1);
+				transaction
+				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+				transaction.replace(R.id.fl, fragment3, "main");
+				transaction.commit();
+				firsts = dbHelper.loadisFirst(units);
+				if(CheckUtil.IsEmpty(firsts)){
+					irrigationIsFirst.setIrrigation(units);
+					irrigationIsFirst.setIsFirst(0);
+					dbHelper.saveIsFirst(irrigationIsFirst);
+				}
+			}
 			break;
 		default:
 			break;
@@ -576,6 +3235,25 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 			SharedUtils.setParam(getActivity(), "SingleNight", isChecked);
 			if (isChecked) {
 				isNight = true;
+				if ((CheckUtil.IsEmpty(isNightStartHour) || isNightStartHour == 0)
+						&& (CheckUtil.IsEmpty(isNightEnd) || isNightEnd == 0)) {
+					setNight = 1;
+					SharedUtils.setParam(getActivity(), "setNight", setNight);
+					FragmentManager fgManager = getFragmentManager();
+					FragmentTransaction transaction = fgManager
+							.beginTransaction();
+					MainTainBasicInfoFragment fragment = new MainTainBasicInfoFragment();
+					// transaction.setCustomAnimations(R.anim.right_in,
+					// R.anim.right_out);
+					SharedUtils.setParam(getActivity(), "isFront", 1);
+					Bundle bundle = new Bundle();
+					bundle.putString("units", units);
+					fragment.setArguments(bundle);
+					transaction
+							.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+					transaction.replace(R.id.fl, fragment, "main");
+					transaction.commit();
+				}
 			} else {
 				isNight = false;
 			}
@@ -590,70 +3268,36 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 				isRandom = false;
 			}
 			break;
-
-		}
-	}
-
-	/**
-	 * @Description: TODO 弹出日期时间选择器
-	 */
-	private void showDateTimePicker(LayoutInflater inflater) {
-		Calendar calendar = Calendar.getInstance();
-		int hour = calendar.get(Calendar.HOUR_OF_DAY);
-
-		dialog = new Dialog(getActivity());
-		dialog.setTitle("请选择时间");
-		// 找到dialog的布局文件
-		mInflater = inflater;
-		View view = inflater.inflate(R.layout.chose_times, null);
-
-		// 时
-		final WheelView wv_hours = (WheelView) view.findViewById(R.id.hour);
-		wv_hours.setAdapter(new NumericWheelAdapter(0, 23));
-		wv_hours.setCyclic(true);
-		wv_hours.setCurrentItem(hour);
-
-		Button btn_sure = (Button) view.findViewById(R.id.chose_time_sures);
-		Button btn_cancel = (Button) view.findViewById(R.id.chose_time_canles);
-		// 确定
-		btn_sure.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				if (id == 1) {
-				} else if (id == 2) {
-					tv_time_long.setText(wv_hours.getCurrentItem() + "小时");
-					long_hour = wv_hours.getCurrentItem();
-					SharedUtils.setParam(getActivity(), "long_hour",
-							wv_hours.getCurrentItem());
-					// }else if(id == 3){
-					// //
-					// tv_time_interval.setText(wv_hours.getCurrentItem()+"轮");
+		case R.id.toggle_apply_irriagte_project_single_time_longs:// 规律
+			Toast.makeText(getActivity(), "开关--" + isChecked,
+					Toast.LENGTH_SHORT).show();
+			SharedUtils.setParam(getActivity(), "SingleLong", isChecked);
+			if (isChecked) {
+				isLong = true;
+				if (CheckUtil.IsEmpty(long_hour) || long_hour == 0) {
+					setLong = 1;
+					SharedUtils.setParam(getActivity(), "setLong", setLong);
+					FragmentManager fgManager = getFragmentManager();
+					FragmentTransaction transaction = fgManager
+							.beginTransaction();
+					MainTainBasicInfoFragment fragment = new MainTainBasicInfoFragment();
+					// transaction.setCustomAnimations(R.anim.right_in,
+					// R.anim.right_out);
+					SharedUtils.setParam(getActivity(), "isFront", 1);
+					Bundle bundle = new Bundle();
+					bundle.putString("units", units);
+					fragment.setArguments(bundle);
+					transaction
+							.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+					transaction.replace(R.id.fl, fragment, "main");
+					transaction.commit();
 				}
-				// TODO Auto-generated method stub
-				// 如果是个数,则显示为"02"的样式
-				// 设置日期的显示
-				// tv_time.setText((wv_year.getCurrentItem() + START_YEAR) + "-"
-				// + decimal.format((wv_month.getCurrentItem() + 1)) + "-"
-				// + decimal.format((wv_day.getCurrentItem() + 1)) + " "
-				// + decimal.format(wv_hours.getCurrentItem()) + ":"
-				// + decimal.format(wv_minute.getCurrentItem()));
 
-				dialog.dismiss();
+			} else {
+				isLong = false;
 			}
-		});
-		// 取消
-		btn_cancel.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				dialog.dismiss();
-			}
-		});
-		// 设置dialog的布局,并显示
-		dialog.setContentView(view);
-		dialog.show();
+			break;
+		}
 	}
 
 	private void showDateTimePicker1(LayoutInflater inflater) {
@@ -833,34 +3477,6 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 							.getCurrentItem()));
 					tv_time_start.setText(time_start);
 
-					// isTrue = 1;
-					//
-					// // 添加数据库
-					// List<IrrigationProject> listentity = dbHelper
-					// .loadAllSessions();
-					// if (CheckUtil.IsEmpty(listentity)) {
-					// now_round = 0;
-					// } else {
-					// now_round = Integer.valueOf(listentity.get(0)
-					// .getRound());
-					// }
-					// for (int i = 1; i < 5; i++) {
-					// irrigationProject = new IrrigationProject();
-					// irrigationProject.setProjectstart("0000-00-00 00:00");
-					// irrigationProject.setProjectend("0000-00-00 00:00");
-					// irrigationProject.setRound((now_round + 1) + "");
-					// irrigationProject.setMarshalling(i + "");
-					// dbHelper.saveSessions(irrigationProject);
-					// }
-					// TODO Auto-generated method stub
-					// 如果是个数,则显示为"02"的样式
-					// 设置日期的显示
-					// tv_time.setText((wv_year.getCurrentItem() + START_YEAR) +
-					// "-"
-					// + decimal.format((wv_month.getCurrentItem() + 1)) + "-"
-					// + decimal.format((wv_day.getCurrentItem() + 1)) + " "
-					// + decimal.format(wv_hours.getCurrentItem()) + ":"
-					// + decimal.format(wv_minute.getCurrentItem()));
 					dialog.dismiss();
 				} else {
 					new AlertDialog.Builder(getActivity())
@@ -935,20 +3551,26 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 
 			@Override
 			public void onClick(View v) {
-				if (CheckUtil.IsEmpty(wv_minute.getCurrentItem())
-						|| wv_minute.getCurrentItem() == 0) {
+				if (wv_hours.getCurrentItem() != 0 && wv_minute.getCurrentItem() == 0) {
 					nHour = wv_hours.getCurrentItem();
 					nMinutes = wv_minute.getCurrentItem();
 					tv_time_continue.setText(wv_hours.getCurrentItem() + "小时");
-					SharedUtils.setParam(getActivity(), "nHour", nHour);
-					SharedUtils.setParam(getActivity(), "nMinutes", nMinutes);
-				} else {
+					dbHelper.updateContinue(units, nHour, nMinutes);
+//					SharedUtils.setParam(getActivity(), "nHour", nHour);
+//					SharedUtils.setParam(getActivity(), "nMinutes", nMinutes);
+				}else if(wv_hours.getCurrentItem()==0 && wv_minute.getCurrentItem() != 0){
+					nHour = wv_hours.getCurrentItem();
+					nMinutes = wv_minute.getCurrentItem();
+					tv_time_continue.setText(wv_minute.getCurrentItem() + "分钟");
+					dbHelper.updateContinue(units, nHour, nMinutes);
+				}else {
 					tv_time_continue.setText(wv_hours.getCurrentItem() + "小时"
 							+ wv_minute.getCurrentItem() + "分钟");
 					nHour = wv_hours.getCurrentItem();
 					nMinutes = wv_minute.getCurrentItem();
-					SharedUtils.setParam(getActivity(), "nHour", nHour);
-					SharedUtils.setParam(getActivity(), "nMinutes", nMinutes);
+					dbHelper.updateContinue(units, nHour, nMinutes);
+//					SharedUtils.setParam(getActivity(), "nHour", nHour);
+//					SharedUtils.setParam(getActivity(), "nMinutes", nMinutes);
 				}
 				// TODO Auto-generated method stub
 				// 如果是个数,则显示为"02"的样式

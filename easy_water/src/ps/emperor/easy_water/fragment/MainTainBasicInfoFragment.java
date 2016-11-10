@@ -39,6 +39,8 @@ import ps.emperor.easy_water.adapter.ArrayWheelAdapter;
 import ps.emperor.easy_water.adapter.NumbericWheelAdapter;
 import ps.emperor.easy_water.adapter.NumericWheelAdapter;
 import ps.emperor.easy_water.entity.ApplyIrrigateControlBean;
+import ps.emperor.easy_water.greendao.DBHelper;
+import ps.emperor.easy_water.greendao.Irrigation;
 import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.view.MainActionBar;
@@ -60,15 +62,15 @@ public class MainTainBasicInfoFragment extends Fragment implements
 	private MainActionBar actionBar;
 	private ImageView irrigatr_control;
 	private RelativeLayout layout_irriagte_group, layout_orroagte_valve,
-			layout_filter, layout__restnight, layout_season;
+			layout_filter, layout__restnight, layout_season,layout_time_long;
 	private TextView tv_irriagte_group, tv_orroagte_valve, tv_filter,
 			tv_restnight_start, tv_restnight_end, text_season_start,
 			text_season_end;
 	private Dialog dialog;
-	private int id;
-	private int first_setting, first_crop;
-	private int group, value;
-	private String minutes, hours, minute, hour, timeend;
+	private int id,isFront;
+	private int first_setting, first_crop,minutes, hours, minute, hour,filterHour,filterMinute;
+	private int group, value,long_hour,setLong,setNight,Skip,aNight;
+	private String timeend,units;
 	private WheelView year;
 	private WheelView month;
 	private WheelView day;
@@ -78,7 +80,10 @@ public class MainTainBasicInfoFragment extends Fragment implements
 	private WheelView wv_minute_night;
 	WheelView wv_hour_nights;
     WheelView wv_minute_nights;
-
+    private TextView tv_time_long;
+    private DBHelper dbHelper;
+    private List<Irrigation> irrigation;
+    
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -93,6 +98,11 @@ public class MainTainBasicInfoFragment extends Fragment implements
 		actionBar.setTitle("基本信息维护");
 		actionBar.setActionBarOnClickListener(this);
 
+		dbHelper = DBHelper.getInstance(getActivity()); // 得到DBHelper对象
+		
+		units = getArguments().getString("units");
+		init();
+		
 		tv_irriagte_group = (TextView) view
 				.findViewById(R.id.text_maintain_basic_info_max_irrigat_group);
 		tv_orroagte_valve = (TextView) view
@@ -124,12 +134,14 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				.findViewById(R.id.text_maintain_basic_info_max_orroagte_season_start);
 		text_season_end = (TextView) view
 				.findViewById(R.id.text_maintain_basic_info_max_orroagte_season_end);
-
-		group = (Integer) SharedUtils.getParam(getActivity(), "groups", 0);
-		value = (Integer) SharedUtils.getParam(getActivity(), "values", 0);
-
-		init();
-
+		tv_time_long = (TextView) view
+				.findViewById(R.id.text_apply_irriagte_project_single_time_long);
+		tv_time_long.setText(long_hour + "时");
+		
+		layout_time_long = (RelativeLayout) view
+				.findViewById(R.id.layout_apply_irriagte_project_single_time_long);
+		layout_time_long.setOnClickListener(this);
+		
 		if (!CheckUtil.IsEmpty(group)) {
 			tv_irriagte_group.setText(group + "");
 		} else {
@@ -140,38 +152,187 @@ public class MainTainBasicInfoFragment extends Fragment implements
 		} else {
 			tv_orroagte_valve.setText("0个");
 		}
-
+		String parten = "00";
+		DecimalFormat decimal = new DecimalFormat(parten);
+		tv_restnight_start.setText(decimal.format(hour) + ":" + decimal.format(minute) + "");
+		tv_restnight_end.setText(decimal.format(hours) + ":" +decimal.format(minutes) + "");
+		if(filterHour == 0 && filterMinute == 0){
+			tv_filter.setText(0+"");
+		}else if(filterHour ==0 && filterMinute != 0){
+			tv_filter.setText(filterMinute+"分钟");
+		}else if(filterHour !=0 && filterMinute == 0){
+			tv_filter.setText(filterHour + "小时");
+		}else{
+			tv_filter.setText(filterHour + "小时" + filterMinute +"分钟");
+		}
 		return view;
 
 	}
 
-	private void init() {
-		hour = (String) SharedUtils.getParam(getActivity(), "night_hour", "0");
-		minute = (String) SharedUtils.getParam(getActivity(), "night_minute",
-				"0");
-		hours = (String) SharedUtils
-				.getParam(getActivity(), "night_hours", "0");
-		minutes = (String) SharedUtils.getParam(getActivity(), "night_minutes",
-				"0");
-
+	@Override
+	public void onResume() {
+		super.onResume();
+		setLong = (int) SharedUtils.getParam(getActivity(), "setLong", 0);
+		setNight = (int) SharedUtils.getParam(getActivity(), "setNight", 0);
+		Skip = (int) SharedUtils.getParam(getActivity(), "Skip", 0);
 	}
+	
+	private void init() {
+		irrigation = dbHelper.loadContinue(units);
+		hour = irrigation.get(0).getIsNightStartHour();
+		minute = irrigation.get(0).getIsNightStartMinute();
+		hours = irrigation.get(0).getIsNightEndHour();
+		minutes = irrigation.get(0).getIsNightEndMinute();
+//		hour = (int) SharedUtils.getParam(getActivity(), "isNightStartHour", 0);
+//		minute = (int) SharedUtils.getParam(getActivity(), "isNightStartMinute", 0);
+//		hours = (int) SharedUtils.getParam(getActivity(), "isNightEndHour", 0);
+//		minutes = (int) SharedUtils.getParam(getActivity(), "isNightEndMinute", 0);
+		long_hour = irrigation.get(0).getIsTimeLong();
+		group = irrigation.get(0).getGroupnumber();
+		value = irrigation.get(0).getValuenumber();
+		filterHour = irrigation.get(0).getFilterHour();
+		filterMinute = irrigation.get(0).getFilterMinute();
+		if(group == 0){
+			SharedUtils.setParam(getActivity(), "first_setting", 0);
+		}
+		if (value == 0) {
+			SharedUtils.setParam(getActivity(), "first_crop", 0);
+		}
+		}
 
 	@SuppressWarnings("deprecation")
 	@Override
 	public void onClick(View v) {
-		FragmentManager fgManager = getFragmentManager();
-		FragmentTransaction transaction = fgManager.beginTransaction();
+		
 		switch (v.getId()) {
 		case R.id.acitionbar_left:
-			MainTainBasicCompileFragment fragment = new MainTainBasicCompileFragment();
-			// transaction.setCustomAnimations(R.anim.right_in,
-			// R.anim.right_out);
-			transaction
+			FragmentManager fgManager = getFragmentManager();
+			FragmentTransaction transaction = fgManager.beginTransaction();
+			if(setLong == 1){
+				setLong = 0;
+				SharedUtils.setParam(getActivity(), "setLong", setLong);
+				if (CheckUtil.IsEmpty(long_hour) || long_hour == 0) {
+					SharedUtils.setParam(getActivity(), "SingleLong", false);
+				}else{
+					SharedUtils.setParam(getActivity(), "SingleLong", true);
+				}
+				ApplyIrrigateProjectSingleFragment fragment = new ApplyIrrigateProjectSingleFragment();
+				// transaction.setCustomAnimations(R.anim.right_in,
+				// R.anim.right_out);
+				Bundle bundle = new Bundle();
+				bundle.putString("units", units);
+				fragment.setArguments(bundle);
+				transaction
+						.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+				transaction.replace(R.id.fl,
+						fragment, "main");
+				transaction.commit();
+				break;
+			}else if(setLong == 2){
+				setLong = 0;
+				SharedUtils.setParam(getActivity(), "setLong", setLong);
+				if (CheckUtil.IsEmpty(long_hour) || long_hour == 0) {
+					SharedUtils.setParam(getActivity(), "SingleLong", false);
+				}else{
+					SharedUtils.setParam(getActivity(), "SingleLong", true);
+				}
+				ApplyIrrigateProjectSeasonFragment fragment = new ApplyIrrigateProjectSeasonFragment();
+				// transaction.setCustomAnimations(R.anim.right_in,
+				// R.anim.right_out);
+				Bundle bundle = new Bundle();
+				bundle.putString("units", units);
+				fragment.setArguments(bundle);
+				transaction
+						.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+				transaction.replace(R.id.fl,
+						fragment, "main");
+				transaction.commit();
+				break;
+			}
+			if(setNight == 1){
+				setNight = 0;
+				hour = irrigation.get(0).getIsNightStartHour();
+				minute = irrigation.get(0).getIsNightStartMinute();
+				hours = irrigation.get(0).getIsNightEndHour();
+				minutes = irrigation.get(0).getIsNightEndMinute(); 
+				if ((CheckUtil.IsEmpty(hour) || hour == 0)) {
+					aNight = 0;
+				}else{
+					aNight = 1;
+				}
+				
+				if ((CheckUtil.IsEmpty(hours) || hours == 0)) {
+					aNight = 0;
+				}else{
+					aNight = 1;
+				}
+				if(aNight == 0){
+					SharedUtils.setParam(getActivity(), "SingleNight", false);
+				}else{
+					SharedUtils.setParam(getActivity(), "SingleNight", true);
+				}
+				SharedUtils.setParam(getActivity(), "setNight", setNight);
+				ApplyIrrigateProjectSingleFragment fragment = new ApplyIrrigateProjectSingleFragment();
+				// transaction.setCustomAnimations(R.anim.right_in,
+				// R.anim.right_out);
+				Bundle bundle = new Bundle();
+				bundle.putString("units", units);
+				fragment.setArguments(bundle);
+				transaction
+						.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+				transaction.replace(R.id.fl,
+						fragment, "main");
+				transaction.commit();
+				break;
+			}else if(setNight == 2){
+				setNight = 0;
+				hour = irrigation.get(0).getIsNightStartHour();
+				minute = irrigation.get(0).getIsNightStartMinute();
+				hours = irrigation.get(0).getIsNightEndHour();
+				minutes = irrigation.get(0).getIsNightEndMinute(); 
+				if ((CheckUtil.IsEmpty(hour) || hour == 0)) {
+					aNight = 0;
+				}else{
+					aNight = 1;
+				}
+				
+				if ((CheckUtil.IsEmpty(hours) || hours == 0)) {
+					aNight = 0;
+				}else{
+					aNight = 1;
+				}
+				if(aNight == 0){
+					SharedUtils.setParam(getActivity(), "SingleNight", false);
+				}else{
+					SharedUtils.setParam(getActivity(), "SingleNight", true);
+				}
+				SharedUtils.setParam(getActivity(), "setNight", setNight);
+				ApplyIrrigateProjectSeasonFragment fragment = new ApplyIrrigateProjectSeasonFragment();
+				// transaction.setCustomAnimations(R.anim.right_in,
+				// R.anim.right_out);
+				Bundle bundle = new Bundle();
+				bundle.putString("units", units);
+				fragment.setArguments(bundle);
+				transaction
+						.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+				transaction.replace(R.id.fl,
+						fragment, "main");
+				transaction.commit();
+				break;
+			}
+				if(Skip == 1){
+					Skip = 0;
+					SharedUtils.setParam(getActivity(), "Skip", Skip);
+					MainTainBasicCompileFragment fragment = new MainTainBasicCompileFragment();
+					// transaction.setCustomAnimations(R.anim.right_in,
+					// R.anim.right_out);
+					transaction
 					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-			transaction.replace(R.id.fragment_maintain_present_irrigate,
-					fragment, "main");
-			transaction.commit();
-			break;
+					transaction.replace(R.id.fragment_maintain_present_irrigate,
+							fragment, "main");
+					transaction.commit();
+					break;
+			}
 		case R.id.acitionbar_right:
 			SharedUtils.setParam(getActivity(), "values",
 					Integer.valueOf(tv_orroagte_valve.getText().toString()));
@@ -196,9 +357,77 @@ public class MainTainBasicInfoFragment extends Fragment implements
 		case R.id.layout_maintain_basic_info_season:
 			showDateTimePicker2(mInflater);
 			break;
+		case R.id.layout_apply_irriagte_project_single_time_long:// 最长工作时间
+			id = 2;
+			showDateTimePickers(mInflater);
+			break;
 		}
 	}
 
+	
+	/**
+	 * @Description: TODO 弹出日期时间选择器
+	 */
+	private void showDateTimePickers(LayoutInflater inflater) {
+		Calendar calendar = Calendar.getInstance();
+		int hour = calendar.get(Calendar.HOUR_OF_DAY);
+
+		dialog = new Dialog(getActivity());
+		dialog.setTitle("请选择时间");
+		// 找到dialog的布局文件
+		mInflater = inflater;
+		View view = inflater.inflate(R.layout.chose_times, null);
+
+		// 时
+		final WheelView wv_hours = (WheelView) view.findViewById(R.id.hour);
+		wv_hours.setAdapter(new NumericWheelAdapter(0, 23));
+		wv_hours.setCyclic(true);
+		wv_hours.setCurrentItem(hour);
+
+		Button btn_sure = (Button) view.findViewById(R.id.chose_time_sures);
+		Button btn_cancel = (Button) view.findViewById(R.id.chose_time_canles);
+		// 确定
+		btn_sure.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (id == 1) {
+				} else if (id == 2) {
+					tv_time_long.setText(wv_hours.getCurrentItem() + "小时");
+					long_hour = wv_hours.getCurrentItem();
+					dbHelper.updateBasicTimeLong(units, long_hour);
+//					SharedUtils.setParam(getActivity(), "long_hour",
+//							wv_hours.getCurrentItem());
+					// }else if(id == 3){
+					// //
+					// tv_time_interval.setText(wv_hours.getCurrentItem()+"轮");
+				}
+				// TODO Auto-generated method stub
+				// 如果是个数,则显示为"02"的样式
+				// 设置日期的显示
+				// tv_time.setText((wv_year.getCurrentItem() + START_YEAR) + "-"
+				// + decimal.format((wv_month.getCurrentItem() + 1)) + "-"
+				// + decimal.format((wv_day.getCurrentItem() + 1)) + " "
+				// + decimal.format(wv_hours.getCurrentItem()) + ":"
+				// + decimal.format(wv_minute.getCurrentItem()));
+
+				dialog.dismiss();
+			}
+		});
+		// 取消
+		btn_cancel.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				dialog.dismiss();
+			}
+		});
+		// 设置dialog的布局,并显示
+		dialog.setContentView(view);
+		dialog.show();
+	}
+	
 	/**
 	 * @Description: TODO 弹出日期时间选择器
 	 */
@@ -231,15 +460,15 @@ public class MainTainBasicInfoFragment extends Fragment implements
 					if (first_setting == 0) {
 						tv_irriagte_group.setText((wv_hours.getCurrentItem() + 1)
 								+ "");
-						SharedUtils.setParam(getActivity(), "groups",
-								Integer.valueOf(tv_irriagte_group.getText()
-										.toString()));
+//						SharedUtils.setParam(getActivity(), "groups",
+//								Integer.valueOf(tv_irriagte_group.getText()
+//										.toString()));
+						dbHelper.updateBasicGroup(units, (wv_hours.getCurrentItem() + 1));
 						first_setting = 1;
 						SharedUtils.setParam(getActivity(), "first_setting",
 								first_setting);
 					} else {
-						if (wv_hours.getCurrentItem() + 1 == (Integer) SharedUtils
-								.getParam(getActivity(), "groups", 0)) {
+						if (wv_hours.getCurrentItem() + 1 == irrigation.get(0).getGroupnumber()) {
 
 						} else {
 							new AlertDialog.Builder(getActivity())
@@ -268,12 +497,15 @@ public class MainTainBasicInfoFragment extends Fragment implements
 													tv_irriagte_group.setText(wv_hours
 															.getCurrentItem()
 															+ 1 + "");
-													SharedUtils.setParam(
-															getActivity(),
-															"groups",
-															Integer.valueOf(tv_irriagte_group
-																	.getText()
-																	.toString()));
+//													SharedUtils.setParam(
+//															getActivity(),
+//															"groups",
+//															Integer.valueOf(tv_irriagte_group
+//																	.getText()
+//																	.toString()));
+													dbHelper.updateBasicGroup(units, wv_hours
+															.getCurrentItem()
+															+ 1 );
 													dialog.dismiss();
 
 												}
@@ -306,16 +538,15 @@ public class MainTainBasicInfoFragment extends Fragment implements
 					if (first_crop == 0) {
 						tv_orroagte_valve.setText((wv_hours.getCurrentItem() + 1)
 								+ "");
-						SharedUtils.setParam(getActivity(), "values",
-								Integer.valueOf(tv_orroagte_valve.getText()
-										.toString()));
-
+//						SharedUtils.setParam(getActivity(), "values",
+//								Integer.valueOf(tv_orroagte_valve.getText()
+//										.toString()));
+						dbHelper.updateBasicVlaue(units, (wv_hours.getCurrentItem() + 1));
 						first_crop = 1;
 						SharedUtils.setParam(getActivity(), "first_crop",
 								first_crop);
 					} else {
-						if (wv_hours.getCurrentItem() + 1 == (Integer) SharedUtils
-								.getParam(getActivity(), "values", 0)) {
+						if (wv_hours.getCurrentItem() + 1 == irrigation.get(0).getValuenumber()) {
 
 						} else {
 							new AlertDialog.Builder(getActivity())
@@ -344,12 +575,13 @@ public class MainTainBasicInfoFragment extends Fragment implements
 													tv_orroagte_valve.setText(wv_hours
 															.getCurrentItem()
 															+ 1 + "");
-													SharedUtils.setParam(
-															getActivity(),
-															"values",
-															Integer.valueOf(tv_orroagte_valve
-																	.getText()
-																	.toString()));
+//													SharedUtils.setParam(
+//															getActivity(),
+//															"values",
+//															Integer.valueOf(tv_orroagte_valve
+//																	.getText()
+//																	.toString()));
+													dbHelper.updateBasicVlaue(units, (wv_hours.getCurrentItem() + 1));
 													dialog.dismiss();
 
 												}
@@ -425,7 +657,7 @@ public class MainTainBasicInfoFragment extends Fragment implements
 
 		final WheelView wv_minute = (WheelView) view
 				.findViewById(R.id.minute_filter);
-		wv_minute.setAdapter(new NumbericWheelAdapter(0, 60));
+		wv_minute.setAdapter(new NumbericWheelAdapter(0, 59));
 		wv_minute.setCyclic(true);
 		wv_minute.setLabel("分");
 
@@ -442,23 +674,21 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				String parten = "00";
 				DecimalFormat decimal = new DecimalFormat(parten);
 				if (id == 3) {
-					if (wv_minute.getCurrentItem() != 0) {
-						tv_filter.setText(wv_hour.getCurrentItem() + "小时"
-								+ decimal.format(wv_minute.getCurrentItem())
-								+ "分钟");
-					} else {
+					if(wv_hour.getCurrentItem() ==0 && wv_minute.getCurrentItem() != 0){
+						tv_filter.setText(wv_minute.getCurrentItem() + "分钟");
+						dbHelper.updateBasicFilter(units, 0,wv_minute.getCurrentItem());
+					}else if(wv_hour.getCurrentItem() != 0 && wv_minute.getCurrentItem() == 0){
 						tv_filter.setText(wv_hour.getCurrentItem() + "小时");
+						dbHelper.updateBasicFilter(units, wv_hour.getCurrentItem(),0);
+					}else if(wv_hour.getCurrentItem() ==0 && wv_minute.getCurrentItem() == 0){
+						tv_filter.setText(0+"");
+						dbHelper.updateBasicFilter(units, wv_hour.getCurrentItem(), wv_minute.getCurrentItem());
+					}else{
+						tv_filter.setText(wv_hour.getCurrentItem()+"小时"+wv_minute.getCurrentItem()+"分钟");
+						dbHelper.updateBasicFilter(units, wv_hour.getCurrentItem(), wv_minute.getCurrentItem());
 					}
 					dialog.dismiss();
 				}
-				if (id == 4) {
-					tv_restnight_start.setText(decimal.format(wv_hour
-							.getCurrentItem())
-							+ ":"
-							+ decimal.format(wv_minute.getCurrentItem()));
-					dialog.dismiss();
-				}
-
 			}
 		});
 		// 取消
@@ -684,16 +914,16 @@ public class MainTainBasicInfoFragment extends Fragment implements
 						+ ":"
 						+ decimal.format(wv_minute_night.getCurrentItem());
 				Date date = new Date();
-				SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 				try {
-					date = format.parse(timestarts);
+					date = format.parse("2016-10-24" + " " +timestarts);
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
 				date.setHours(date.getHours() + Integer.valueOf(wv_hour_nights.getCurrentItem()));
 				date.setMinutes(date.getMinutes() + Integer.valueOf(wv_minute_nights.getCurrentItem()));
 				timeend = format.format(date);
-
+				
 				if (CheckUtil.IsEmpty(timestarts)) {
 					tv_restnight_start.setText("00:00");
 					tv_restnight_end.setText("00:00");
@@ -703,9 +933,30 @@ public class MainTainBasicInfoFragment extends Fragment implements
 						tv_restnight_end.setText("00:00");
 					} else {
 						tv_restnight_start.setText(timestarts);
-						tv_restnight_end.setText(timeend);
+						tv_restnight_end.setText( decimal.format(date.getHours())+":"+ decimal.format(date.getMinutes()));
 					}
 				}
+				if(date.getDate() > 24){
+					SharedUtils.setParam(getActivity(), "isGreater", 1);
+				}else{
+					SharedUtils.setParam(getActivity(), "isGreater", 0);
+				}
+//				SharedUtils.setParam(getActivity(), "isNightStartHour", wv_hour_night
+//						.getCurrentItem());
+//				SharedUtils.setParam(getActivity(), "isNightStartMinute", wv_minute_night
+//						.getCurrentItem());
+//				SharedUtils.setParam(getActivity(), "isNightContinueHour", wv_hour_nights
+//						.getCurrentItem());
+//				SharedUtils.setParam(getActivity(), "isNightContinueMinute", wv_minute_nights
+//						.getCurrentItem());
+//				SharedUtils.setParam(getActivity(), "isNightEndHour", date.getHours()
+//						);
+//				SharedUtils.setParam(getActivity(), "isNightEndMinute", date.getMinutes());
+				dbHelper.updateBasicTime(units, wv_hour_night
+						.getCurrentItem(), wv_minute_night
+						.getCurrentItem(), wv_hour_nights
+						.getCurrentItem(), wv_minute_nights
+						.getCurrentItem(),  date.getHours(), date.getMinutes());
 				dialog.dismiss();
 			}
 		});

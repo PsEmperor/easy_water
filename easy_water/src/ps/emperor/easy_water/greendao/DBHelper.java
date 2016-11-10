@@ -10,6 +10,7 @@ import de.greenrobot.dao.query.QueryBuilder;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.widget.Toast;
 
 public class DBHelper {
@@ -22,7 +23,9 @@ public class DBHelper {
     private WaterDao waterDao;   
     private IrrigationProjectDao irrigationprojectDao;
     private IrrigationGroupDao irrigationGroupDao;
+    private IrrigationIsFirstDao irrigationIsFirstDao;
     private SingleValueDao valueDao;
+    private Cursor cursor;
     private DBHelper() {  
     }   
     //单例模式，DBHelper只初始化一次  
@@ -38,11 +41,153 @@ public class DBHelper {
                    instance.irrigationprojectDao = instance.mDaoSession.getIrrigationProjectDao();
                    instance.irrigationGroupDao = instance.mDaoSession.getIrrigationGroupDao();
                    instance.valueDao = instance.mDaoSession.getSingleValueDao();
-               }   
+                   instance.irrigationIsFirstDao = instance.mDaoSession.getIrrigationIsFirstDao();
+        }   
         return instance;    
     }  
   
+    
+    //根据灌溉单元查询计划 倒序
+      public List<IrrigationProject> loadLastMsgBySessionid(String irrigation){  
+          QueryBuilder<IrrigationProject> mqBuilder = irrigationprojectDao.queryBuilder();  
+          mqBuilder.where(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Irrigation.eq(irrigation))  
+          .orderDesc(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Irrigation)  
+          ;  
+          List<IrrigationProject> irrigations = new ArrayList<IrrigationProject>();  
+          int len = mqBuilder.list().size();  
+          for (int i = len-1; i >=0; i--) {  
+          	irrigations.add(mqBuilder.list().get(i));  
+          }  
+          return irrigations;  
+      }
+    //根据灌溉单元查询计划 正序
+      public List<IrrigationProject> loadLastMsgBySessionids(String irrigation){  
+          QueryBuilder<IrrigationProject> mqBuilder = irrigationprojectDao.queryBuilder();  
+          mqBuilder.where(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Irrigation.eq(irrigation))  
+          .orderDesc(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Irrigation)  
+          ;  
+          List<IrrigationProject> irrigations = new ArrayList<IrrigationProject>();  
+          int len = mqBuilder.list().size();  
+          for (int i = 0; i <len ; i++) {  
+          	irrigations.add(mqBuilder.list().get(i));  
+          }  
+          return irrigations;  
+      }
+    //根据灌溉单元查询是否第一次设置 正序
+      public List<IrrigationIsFirst> loadisFirst(String irrigation){  
+          QueryBuilder<IrrigationIsFirst> mqBuilder = irrigationIsFirstDao.queryBuilder();  
+          mqBuilder.where(IrrigationIsFirstDao.Properties.Irrigation.eq(irrigation))  
+          .orderDesc(IrrigationIsFirstDao.Properties.Irrigation)  
+          ;  
+          List<IrrigationIsFirst> irrigations = new ArrayList<IrrigationIsFirst>();  
+          int len = mqBuilder.list().size();  
+          for (int i = 0; i <len ; i++) {  
+          	irrigations.add(mqBuilder.list().get(i));  
+          }  
+          return irrigations;  
+      }
+    //根据灌溉单元查询灌水持续时间  正序
+      public List<Irrigation> loadContinue(String irrigation){  
+          QueryBuilder<Irrigation> mqBuilder = irrigationDao.queryBuilder();  
+          mqBuilder.where(Properties.Irrigation.eq(irrigation))  
+          .orderDesc(Properties.Irrigation)  
+          ;  
+          List<Irrigation> irrigations = new ArrayList<Irrigation>();  
+          int len = mqBuilder.list().size();  
+          for (int i = 0; i <len ; i++) {  
+          	irrigations.add(mqBuilder.list().get(i));  
+          }  
+          return irrigations;  
+      }
   
+      /**  
+       * delete note by id  
+       * @param id  
+       */     
+      //根据灌溉单元查询-id删除 正序
+      public List<IrrigationProject> loadLastMsgByDelete(String irrigation,int round){  
+          QueryBuilder<IrrigationProject> mqBuilder = irrigationprojectDao.queryBuilder();  
+          mqBuilder.where(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Irrigation.eq(irrigation)).where(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Round.eq(round))  
+          .orderDesc(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Irrigation)  
+          ;  
+          List<IrrigationProject> irrigations = new ArrayList<IrrigationProject>();  
+          int len = mqBuilder.list().size();  
+          for (int i = 0; i <len ; i++) {  
+          	irrigations.add(mqBuilder.list().get(i));  
+          }  
+          return irrigations;  
+      }
+      
+      public void updateContinue(String id,int nHour,int nMinute) {
+      	Irrigation findUser = irrigationDao.queryBuilder().where(Properties.Irrigation.eq(id)).build().unique();
+      	if(findUser != null) {
+      	    findUser.setNHour(nHour);
+      	    findUser.setNMinutes(nMinute);
+      	    irrigationDao.update(findUser);
+      	}
+      }
+      
+      
+      public void updateContinueNum(String id,int nNumber) {
+        	Irrigation findUser = irrigationDao.queryBuilder().where(Properties.Irrigation.eq(id)).build().unique();
+        	if(findUser != null) {
+        	    findUser.setNNumber(nNumber);
+        	    irrigationDao.update(findUser);
+        	}
+        }
+      public void updateContinueRound(String id,int nRound) {
+      	Irrigation findUser = irrigationDao.queryBuilder().where(Properties.Irrigation.eq(id)).build().unique();
+      	if(findUser != null) {
+      	    findUser.setNRound(nRound);
+      	    irrigationDao.update(findUser);
+      	}
+      }
+      //更新夜间休息时间
+      public void updateBasicTime(String id,int isNightStartHour,int isNightStartMinute,int isNightContinueHour,int isNightContinueMinute,int isNightEndHour,int isNightEndMinute) {
+      	Irrigation findUser = irrigationDao.queryBuilder().where(Properties.Irrigation.eq(id)).build().unique();
+      	if(findUser != null) {
+      	    findUser.setIsNightStartHour(isNightStartHour);
+      	    findUser.setIsNightStartMinute(isNightStartMinute);
+      	    findUser.setIsNightContinueHour(isNightContinueHour);
+      	    findUser.setIsNightContinueMinute(isNightContinueMinute);
+      	    findUser.setIsNightEndHour(isNightEndHour);
+      	    findUser.setIsNightEndMinute(isNightEndMinute);
+      	    irrigationDao.update(findUser);
+      	}
+      }
+      //更新最大灌溉时长
+      public void updateBasicTimeLong(String id,int isTimeLong) {
+        	Irrigation findUser = irrigationDao.queryBuilder().where(Properties.Irrigation.eq(id)).build().unique();
+        	if(findUser != null) {
+        	    findUser.setIsTimeLong(isTimeLong);
+        	    irrigationDao.update(findUser);
+        	}
+        }
+      //更新阀门数
+      public void updateBasicVlaue(String id,int valuenumber) {
+      	Irrigation findUser = irrigationDao.queryBuilder().where(Properties.Irrigation.eq(id)).build().unique();
+      	if(findUser != null) {
+      	    findUser.setValuenumber(valuenumber);
+      	    irrigationDao.update(findUser);
+      	}
+      }
+      //更新组数
+      public void updateBasicGroup(String id,int groupnumber) {
+      	Irrigation findUser = irrigationDao.queryBuilder().where(Properties.Irrigation.eq(id)).build().unique();
+      	if(findUser != null) {
+      	    findUser.setGroupnumber(groupnumber);
+      	    irrigationDao.update(findUser);
+      	}
+      }
+      //更新过滤器
+      public void updateBasicFilter(String id,int filterHour,int filterMinute) {
+      	Irrigation findUser = irrigationDao.queryBuilder().where(Properties.Irrigation.eq(id)).build().unique();
+      	if(findUser != null) {
+      	    findUser.setFilterHour(filterHour);
+      	    findUser.setFilterMinute(filterMinute);
+      	    irrigationDao.update(findUser);
+      	}
+      }
     //删除Session表  
     public  void dropSessionTable()  
     {  
@@ -80,7 +225,10 @@ public class DBHelper {
     public long saveSession(Irrigation irrigation){    
         return irrigationDao.insertOrReplace(irrigation);    
     }    
-  
+  //插入或者删除irrigations项  
+    public long saveIsFirst(IrrigationIsFirst irrigation){    
+        return irrigationIsFirstDao.insertOrReplace(irrigation);    
+    } 
   //插入或者删除irrigations项  
     public long saveSessions(IrrigationProject irrigation){    
         return irrigationprojectDao.insertOrReplace(irrigation);    
@@ -108,16 +256,17 @@ public class DBHelper {
         return irrigations;  
     }  
     
-  //获得所有的Irrigations倒序排存到List列表里面  
+  //获得所有的Irrigations正序排存到List列表里面  
     public List<IrrigationProject> loadAllProject() {  
         List<IrrigationProject> irrigations = new ArrayList<IrrigationProject>();  
-        List<IrrigationProject> tmpIrrigations = irrigationprojectDao.loadAll();  
+        List<IrrigationProject> tmpIrrigations = irrigationprojectDao.loadAll();
         int len = tmpIrrigations.size();  
         for (int i = 0; i <len ; i++) {  
         	irrigations.add(tmpIrrigations.get(i));  
         }  
         return irrigations;  
     }  
+  
     
     public void DeleteSession(Irrigation entity) {  
     	irrigationDao.delete(entity);  
@@ -135,6 +284,21 @@ public class DBHelper {
   
     public void updateProject(String id,int randomCommon,String start,String end) {
     	IrrigationProject findUser = irrigationprojectDao.queryBuilder().where(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Round.eq(id)).where(IrrigationProjectDao.Properties.Marshalling.eq(randomCommon)).build().unique();
+    	if(findUser != null) {
+    	    findUser.setProjectstart(start);
+    	    findUser.setProjectend(end);
+    	    irrigationprojectDao.update(findUser);
+    	}
+    }
+    public void updateRound(String irrigation,String id,String round) {
+    	IrrigationProject findUser = irrigationprojectDao.queryBuilder().where(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Irrigation.eq(irrigation)).where(IrrigationProjectDao.Properties.Id.eq(id)).build().unique();
+    	if(findUser != null) {
+    	    findUser.setProjectstart(round);
+    	    irrigationprojectDao.update(findUser);
+    	}
+    }
+    public void updateProjects(String irrigation ,String id,int randomCommon,String start,String end) {
+    	IrrigationProject findUser = irrigationprojectDao.queryBuilder().where(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Irrigation.eq(irrigation)).where(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Round.eq(id)).where(IrrigationProjectDao.Properties.Marshalling.eq(randomCommon)).build().unique();
     	if(findUser != null) {
     	    findUser.setProjectstart(start);
     	    findUser.setProjectend(end);
@@ -165,15 +329,6 @@ public class DBHelper {
     }  
   
   
-    //不一一介绍了，大家可以自己写，有些比较难的查询可以使用QueryBuilder来查询  
-    public List<Irrigation> loadLastMsgBySessionid(String irrigation){  
-        QueryBuilder<Irrigation> mqBuilder = irrigationDao.queryBuilder();  
-        mqBuilder.where(Properties.Irrigation.eq(irrigation))  
-        .orderDesc(Properties.Id)  
-        .limit(1);  
-        return mqBuilder.list();  
-    }  
-  
   
     public List<Irrigation> loadMoreMsgById(String irrigation, Long id){  
         QueryBuilder<Irrigation> mqBuilder = irrigationDao.queryBuilder();  
@@ -183,6 +338,7 @@ public class DBHelper {
         .limit(20);  
         return mqBuilder.list();  
     }  
+    
     public List<IrrigationProject> loadMoreMsgById(int id){  
     	QueryBuilder<IrrigationProject> mqBuilder = irrigationprojectDao.queryBuilder();  
     	mqBuilder.where(IrrigationProjectDao.Properties.Round.lt(id))  
@@ -191,7 +347,6 @@ public class DBHelper {
     	return mqBuilder.list();  
     }  
     
-   
     /**  
      * delete all note  
      */    
@@ -200,16 +355,8 @@ public class DBHelper {
     }    
   
   
-    /**  
-     * delete note by id  
-     * @param id  
-     */    
     public void deleteNote(long id){    
-    	irrigationprojectDao.deleteByKey(id);    
+        irrigationprojectDao.deleteByKey(id);
     }    
   
-  
-    public void deleteNote(Irrigation note){    
-    	irrigationDao.delete(note);    
-    }    
 }

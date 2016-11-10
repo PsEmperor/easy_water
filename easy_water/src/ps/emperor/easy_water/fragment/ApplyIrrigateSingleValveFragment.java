@@ -40,6 +40,7 @@ public class ApplyIrrigateSingleValveFragment extends Fragment implements
 	private ImageAdapters adapter;
 	private Vector<ApplyIrrigateSingleValveBean> beans;
 	private ApplyIrrigateSingleValveAdapter adapter2;
+	private String units;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,6 +56,8 @@ public class ApplyIrrigateSingleValveFragment extends Fragment implements
 		actionBar.setTitle("单阀显示");
 		actionBar.setActionBarOnClickListener(this);
 
+		units = getArguments().getString("units");
+		
 		gridView = (MyGridView) view
 				.findViewById(R.id.grid_maintain_irrigate_infos_single);
 		gridView.setOnItemClickListener(this);
@@ -86,6 +89,9 @@ public class ApplyIrrigateSingleValveFragment extends Fragment implements
 			ApplyIrrigateUnitControlFragment fragment = new ApplyIrrigateUnitControlFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
+			Bundle bundle = new Bundle();
+			bundle.putString("units", units);
+			fragment.setArguments(bundle);
 			transaction
 					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 			transaction.replace(R.id.fl, fragment, "main");
@@ -93,6 +99,9 @@ public class ApplyIrrigateSingleValveFragment extends Fragment implements
 			break;
 		case R.id.acitionbar_right:
 			ApplyIrrigateControlFragment fragment1 = new ApplyIrrigateControlFragment();
+			Bundle bundle1 = new Bundle();
+			bundle1.putString("units", units);
+			fragment1.setArguments(bundle1);
 			transaction
 					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 			transaction.replace(R.id.fl, fragment1, "main");
@@ -108,6 +117,9 @@ public class ApplyIrrigateSingleValveFragment extends Fragment implements
 		FragmentManager fgManager = getFragmentManager();
 		FragmentTransaction transaction = fgManager.beginTransaction();
 		ApplyIrrigateControlValveFragment fragment2 = new ApplyIrrigateControlValveFragment();
+		Bundle bundle = new Bundle();
+		bundle.putString("units", units);
+		fragment2.setArguments(bundle);
 		transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 		transaction.replace(R.id.fl, fragment2, "main");
 		transaction.commit();

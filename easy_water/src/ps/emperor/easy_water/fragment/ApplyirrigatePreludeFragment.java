@@ -30,6 +30,7 @@ public class ApplyirrigatePreludeFragment extends Fragment implements
 	private MainActionBar actionBar;
 	private ToggleButton bt_water_pump, bt_filter, bt_fertilizer_drill; //水泵、反过滤冲洗器、施肥机
 	private Boolean isWaterPump, isFilter, isFertilizer_drill;
+	private String units;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,6 +68,8 @@ public class ApplyirrigatePreludeFragment extends Fragment implements
 		isWaterPump = (Boolean) SharedUtils.getParam(getActivity(), "water_pump", false);
 		isFilter = (Boolean) SharedUtils.getParam(getActivity(), "filter", false);
 		isFertilizer_drill = (Boolean) SharedUtils.getParam(getActivity(), "fertilizer_drill", false);
+		
+		units = getArguments().getString("units");
 	}
 	@Override
 	public void onClick(View v) {
@@ -75,6 +78,9 @@ public class ApplyirrigatePreludeFragment extends Fragment implements
 		switch (v.getId()) {
 		case R.id.acitionbar_left:
 			ApplyIrrigateUnitControlFragment fragment = new ApplyIrrigateUnitControlFragment();
+			Bundle bundle = new Bundle();
+			bundle.putString("units", units);
+			fragment.setArguments(bundle);
 //			transaction.setCustomAnimations(R.anim.right_in, R.anim.right_out);
 			transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 			transaction.replace(R.id.fl, fragment, "main");
