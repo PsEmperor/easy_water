@@ -7,8 +7,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="67dp"
+        android:layout_marginBottom="5dp"
         android:background="@color/white" >
 
         <ImageView
@@ -28,7 +28,8 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
             android:text="111团5连"
-            android:textColor="@color/gray_1" />
+            android:textColor="@color/gray_1" 
+            android:textSize="14sp"/>
     </RelativeLayout>
 
 </LinearLayout>

@@ -181,7 +181,7 @@ public class MainTainIrrigationInfoFragment extends Fragment implements
 //					public void onDismiss() {
 //						popupWindow.dismiss();
 //						popupWindow = null;
-//						WindowManager.LayoutParams params = getActivity()
+//						WindowManager.LayoutParams params = getActivity()	
 //								.getWindow().getAttributes();
 //						params.alpha = 1f;
 //						getActivity().getWindow().setAttributes(params);

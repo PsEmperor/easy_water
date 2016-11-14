@@ -267,27 +267,27 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 			bean.setAperture(40+"%");
 			bean.setPercentage(50+"");
 			beans.add(bean);
-			bean = new ApplyWaterDistrbutionGateBean();
-			bean.setHigh(0.8+"m");
-			bean.setAperture(80+"%");
-			bean.setPercentage(30+"");
-			beans.add(bean);
-			bean = new ApplyWaterDistrbutionGateBean();
-			bean.setHigh(0.8+"m");
-			bean.setAperture(80+"%");
-			bean.setPercentage(30+"");
-			beans.add(bean);
-			bean = new ApplyWaterDistrbutionGateBean();
-			bean.setHigh(0.8+"m");
-			bean.setAperture(80+"%");
-			bean.setPercentage(30+"");
-			beans.add(bean);
-			bean = new ApplyWaterDistrbutionGateBean();
-			bean.setHigh(0.8+"m");
-			bean.setAperture(80+"%");
-			bean.setPercentage(30+"");
-			beans.add(bean);
-			
+//			bean = new ApplyWaterDistrbutionGateBean();
+//			bean.setHigh(0.8+"m");
+//			bean.setAperture(80+"%");
+//			bean.setPercentage(30+"");
+//			beans.add(bean);
+//			bean = new ApplyWaterDistrbutionGateBean();
+//			bean.setHigh(0.8+"m");
+//			bean.setAperture(80+"%");
+//			bean.setPercentage(30+"");
+//			beans.add(bean);
+//			bean = new ApplyWaterDistrbutionGateBean();
+//			bean.setHigh(0.8+"m");
+//			bean.setAperture(80+"%");
+//			bean.setPercentage(30+"");
+//			beans.add(bean);
+//			bean = new ApplyWaterDistrbutionGateBean();
+//			bean.setHigh(0.8+"m");
+//			bean.setAperture(80+"%");
+//			bean.setPercentage(30+"");
+//			beans.add(bean);
+//			
 			adapter.addData(beans, false);
 		
 		

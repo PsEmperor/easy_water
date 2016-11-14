@@ -13,7 +13,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="45dp"
         android:background="@color/white" >
 
         <TextView
@@ -28,8 +28,8 @@
 
         <TextView
             android:id="@+id/tv_indicator"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="24dp"
@@ -47,23 +47,26 @@
         <TextView
             android:id="@+id/text_apply_water_distrbution_gate_control"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="30dp"
             android:layout_marginTop="2dp"
             android:background="@color/white"
             android:gravity="center"
             android:paddingLeft="15dp"
             android:text="141团5连支渠一斗进水闸"
-            android:textSize="16sp" />
+            android:textSize="15sp" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="290dp"
-        android:background="@color/gray_3" >
+        android:layout_height="260dp"
+        android:background="@color/gray_3" 
+        android:layout_weight="1"
+        >
 
         <RelativeLayout
             android:id="@+id/layout_relative_change"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="290dp"
+             android:layout_marginTop="10dp"
              >
 
             <RelativeLayout
@@ -71,10 +74,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentTop="true"
-                android:layout_marginBottom="15dp"
                 android:layout_marginLeft="85dp"
                 android:layout_marginRight="85dp"
                 android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
                 android:background="@color/white" >
 
                 <RelativeLayout
@@ -153,6 +156,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="290dp"
                 android:layout_weight="1"
+                android:layout_marginTop="10dp"
                  >
 
                 <RelativeLayout
@@ -236,6 +240,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="290dp"
                 android:layout_weight="1"
+                android:layout_marginTop="10dp"
                 >
 
                 <RelativeLayout
@@ -328,6 +333,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="290dp"
                 android:layout_weight="1"
+                android:layout_marginTop="10dp"
                  >
 
                 <RelativeLayout
@@ -418,6 +424,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="290dp"
                 android:layout_weight="1"
+                android:layout_marginTop="10dp"
                 >
 
                 <RelativeLayout
@@ -507,6 +514,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="290dp"
                 android:layout_weight="1"
+                android:layout_marginTop="10dp"
                  >
 
                 <RelativeLayout
@@ -645,7 +653,7 @@
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="50dp"
         android:layout_weight="1"
         android:background="@color/white"
         android:orientation="horizontal" >
@@ -814,7 +822,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_weight="1" >
+        android:layout_weight="0" >
 
         <TextView
             android:id="@+id/tv_time_operation"

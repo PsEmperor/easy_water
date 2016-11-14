@@ -15,7 +15,7 @@
         android:layout_height="50dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:background="@color/gray_3"
         android:orientation="vertical" >
 
@@ -45,7 +45,7 @@
     <ListView
         android:id="@+id/list_mine_user_authorized_utils"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="300dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
@@ -59,7 +59,7 @@
         android:layout_weight="0"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:text="提示:选择所处行政区划后自动出现管理单位列表，若授权单位不在列表中请与客服联系。"
         android:textColor="@color/gray_1"

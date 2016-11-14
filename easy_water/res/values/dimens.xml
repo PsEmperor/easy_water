@@ -13,4 +13,6 @@
 	<dimen name="apply_layout_height">45dip</dimen>
 	<!-- 灌溉计划界面RelativeLayout高度 -->
 	<dimen name="plan_layout_height">55dip</dimen>
+	<!-- 灌溉单元管理界面RelativeLayout高度 -->
+	<dimen name="plan_layout_heights">50dip</dimen>
 </resources>

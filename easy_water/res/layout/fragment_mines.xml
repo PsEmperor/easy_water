@@ -5,16 +5,6 @@
     android:background="@color/gray_3"
     android:orientation="vertical" >
 
-    <ScrollView
-        android:id="@+id/scrollView1"
-        android:layout_width="match_parent"
-        android:layout_height="fill_parent" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:orientation="vertical" >
-
             <ps.emperor.easy_water.view.MainActionBar
                 android:id="@+id/actionbar_mine"
                 android:layout_width="fill_parent"
@@ -288,9 +278,11 @@
                 android:id="@+id/layout_main_cancel"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/mine_layout_height"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
                 android:layout_weight="1"
-                android:background="@color/white" >
+                android:background="@color/white" 
+                android:layout_marginBottom="10dp"
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -298,9 +290,8 @@
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:text="退出当前账号"
-                    android:textColor="@color/red" />
+                    android:textColor="@color/red" 
+                    />
             </RelativeLayout>
-        </LinearLayout>
-    </ScrollView>
 
 </LinearLayout>

@@ -6,7 +6,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="55dp" >
+        android:layout_height="54dp" >
 
         <CheckBox
             android:id="@+id/ck_irrigation_add"
@@ -23,7 +23,9 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
             android:layout_toRightOf="@+id/ck_irrigation_add"
-            android:text="141团5连7#地块4#灌溉单元" />
+            android:text="141团5连7#地块4#灌溉单元" 
+            android:textColor="@color/gray_1"
+            android:textSize="15sp"/>
     </RelativeLayout>
 
 </LinearLayout>

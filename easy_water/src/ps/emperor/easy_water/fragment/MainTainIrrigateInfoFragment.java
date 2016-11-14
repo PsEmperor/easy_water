@@ -109,5 +109,9 @@ public class MainTainIrrigateInfoFragment extends Fragment implements
 		}
 
 	}
-	
+//	<ps.emperor.easy_water.utils.BottomNavigation
+//    android:layout_weight="0"
+//        android:layout_width="match_parent"
+//        android:layout_height="wrap_content" >
+//    </ps.emperor.easy_water.utils.BottomNavigation>
 }

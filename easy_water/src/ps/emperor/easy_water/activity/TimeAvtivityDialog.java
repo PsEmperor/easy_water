@@ -250,9 +250,9 @@ public class TimeAvtivityDialog extends BaseActivity implements OnClickListener 
 				listentity = dbHelper.loadLastMsgBySessionids(units);
 				Calendar cal = Calendar.getInstance();// 当前日期
 				// 从数据库中查出点击的该项对应的计划结束时间
-				for (int i = 0; i < listentity.size(); i++) {
-					time_end = listentity.get(i).getProjectend();
-					time_start = listentity.get(i).getProjectstart();
+//				for (int i = 0; i < listentity.size(); i++) {
+					time_end = listentity.get(position).getProjectend();
+					time_start = listentity.get(position).getProjectstart();
 
 					java.util.Date date = new java.util.Date();
 					SimpleDateFormat format = new SimpleDateFormat(
@@ -303,13 +303,12 @@ public class TimeAvtivityDialog extends BaseActivity implements OnClickListener 
 								* 60 + date.getDate() * 24 * 60
 								+ date.getHours() * 60 + date.getMinutes());// 结束时间（从数据库中调出）
 
-						if (nowEnd <= start || minuteOfDay >= end) {
+						if (minuteOfDay >= start&& nowEnd <= end ) {
 							isOne = 1;
 						} else {
 							isOne = 2;
-							break;
 						}
-					}
+//					}
 				}
 				if (isOne == 1) {
 					String nowStar = decimal

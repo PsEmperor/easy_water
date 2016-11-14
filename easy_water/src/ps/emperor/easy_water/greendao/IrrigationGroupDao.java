@@ -1,5 +1,4 @@
 package ps.emperor.easy_water.greendao;
-
 import android.database.Cursor;
 
 import android.database.sqlite.SQLiteDatabase;
@@ -26,6 +25,7 @@ public class IrrigationGroupDao extends AbstractDao<IrrigationGroup, Long> {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Irrigation = new Property(1, String.class, "irrigation", false, "IRRIGATION");
         public final static Property Matchedvalue = new Property(2, String.class, "matchedvalue", false, "MATCHEDVALUE");
+        public final static Property MatchedNum = new Property(3, Integer.class, "matchedNum", false, "MATCHED_NUM");
     };
 
 
@@ -43,7 +43,8 @@ public class IrrigationGroupDao extends AbstractDao<IrrigationGroup, Long> {
         db.execSQL("CREATE TABLE " + constraint + "'IRRIGATION_GROUP' (" + //
                 "'_id' INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "'IRRIGATION' TEXT," + // 1: irrigation
-                "'MATCHEDVALUE' TEXT);"); // 2: matchedvalue
+                "'MATCHEDVALUE' TEXT," + // 2: matchedvalue
+                "'MATCHED_NUM' INTEGER);"); // 3: matchedNum
     }
 
     /** Drops the underlying database table. */
@@ -71,6 +72,11 @@ public class IrrigationGroupDao extends AbstractDao<IrrigationGroup, Long> {
         if (matchedvalue != null) {
             stmt.bindString(3, matchedvalue);
         }
+ 
+        Integer matchedNum = entity.getMatchedNum();
+        if (matchedNum != null) {
+            stmt.bindLong(4, matchedNum);
+        }
     }
 
     /** @inheritdoc */
@@ -85,7 +91,8 @@ public class IrrigationGroupDao extends AbstractDao<IrrigationGroup, Long> {
         IrrigationGroup entity = new IrrigationGroup( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // irrigation
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2) // matchedvalue
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // matchedvalue
+            cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3) // matchedNum
         );
         return entity;
     }
@@ -96,6 +103,7 @@ public class IrrigationGroupDao extends AbstractDao<IrrigationGroup, Long> {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setIrrigation(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setMatchedvalue(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setMatchedNum(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
      }
     
     /** @inheritdoc */
