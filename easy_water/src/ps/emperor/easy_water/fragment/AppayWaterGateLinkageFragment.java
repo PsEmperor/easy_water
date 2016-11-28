@@ -13,6 +13,7 @@ import ps.emperor.easy_water.adapter.ApplyWaterGateLinkageAdapter;
 import ps.emperor.easy_water.adapter.NumbericWheelAdapter;
 import ps.emperor.easy_water.entity.ApplyWaterGateLinkageBean;
 import ps.emperor.easy_water.view.MainActionBar;
+import ps.emperor.easy_water.view.MainActionBars;
 import ps.emperor.easy_water.view.WheelView;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -40,7 +41,7 @@ import android.widget.TextView;
 public class AppayWaterGateLinkageFragment extends Fragment implements
 		OnClickListener {
 	private LayoutInflater mInflater;
-	private MainActionBar actionBar;
+	private MainActionBars actionBar;
 	private ApplyWaterGateLinkageAdapter adapter;
 	private List<ApplyWaterGateLinkageBean> beans;
 	private RelativeLayout layout_time_operation,layout_apply_water_time_operation;
@@ -61,10 +62,10 @@ public class AppayWaterGateLinkageFragment extends Fragment implements
 		View view = inflater.inflate(R.layout.fragment_haplopore_gate,
 				container, false);
 
-		actionBar = (MainActionBar) view
+		actionBar = (MainActionBars) view
 				.findViewById(R.id.actionbar_apply_water_haplopore_gate);
 		actionBar.setLeftIcon(R.drawable.btn_back_selector);
-		actionBar.setRightIcon(R.drawable.ic_launcher);
+		actionBar.setRightText("保存");
 		actionBar.setTitle("预约闸门调整");
 		actionBar.setActionBarOnClickListener(this);
 

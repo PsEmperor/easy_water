@@ -29,6 +29,7 @@ import ps.emperor.easy_water.entity.MainTainIrrigationInfoBean;
 import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.view.MainActionBar;
+import ps.emperor.easy_water.view.MainActionBars;
 import ps.emperor.easy_water.view.MyGridView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -46,7 +47,7 @@ public class MainTainIrrigationUserInfoFragment extends Fragment implements
 		OnClickListener, OnItemClickListener {
 
 	private LayoutInflater mInflater;
-	private MainActionBar actionBar;
+	private MainActionBars actionBar;
 	private MyGridView gridView;
 //	private PopupWindow popupWindow;
 	Button btn_image_cancel, btn_image_choose;
@@ -62,10 +63,10 @@ public class MainTainIrrigationUserInfoFragment extends Fragment implements
 		mInflater = inflater;
 		View view = inflater.inflate(
 				R.layout.fragment_maintain_irrigation_info, container, false);
-		actionBar = (MainActionBar) view
+		actionBar = (MainActionBars) view
 				.findViewById(R.id.actionbar_main_irrigate_info);
 		actionBar.setLeftIcon(R.drawable.btn_back_selector);
-		actionBar.setRightIcon(R.drawable.ic_launcher);
+		actionBar.setRightText("下一步");
 		actionBar.setTitle("种植户信息维护");
 		
 		layout_irriagte_group = (RelativeLayout) view.findViewById(R.id.text_maintain_irrigat_info_round_of_irrigation_group);
@@ -88,8 +89,8 @@ public class MainTainIrrigationUserInfoFragment extends Fragment implements
 				.findViewById(R.id.btn_main_irrigate_info_all);
 		adapter = new ImageAdapter(getActivity(), true, beans);
 		gridView.setAdapter(adapter);
-		gridView.setVerticalSpacing(10);
-		gridView.setPadding(10, 10, 5, 5);
+		gridView.setVerticalSpacing(5);
+		gridView.setPadding(10, 10, 5, 10);
 		gridView.setOnItemClickListener(this);
 		btn_image_cancel.setOnClickListener(this);
 		btn_image_choose.setOnClickListener(this);

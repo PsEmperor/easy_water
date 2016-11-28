@@ -76,7 +76,7 @@ public class ImageAdapter extends BaseAdapter{
 //            imageView.setLayoutParams(new GridView.LayoutParams(110, 120));	// 设置布局图片
 //            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);		// 设置显示比例类型
             textView = new TextView(mContext);
-            textView.setLayoutParams(new GridView.LayoutParams(90, 90));
+            textView.setLayoutParams(new GridView.LayoutParams(95, 95));
         }
         else
         {

@@ -1,21 +1,34 @@
 package ps.emperor.easy_water.fragment;
 
 
+import java.text.DecimalFormat;
+import java.util.List;
+
 import android.annotation.SuppressLint;
 
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import ps.emperor.easy_water.R;
+import ps.emperor.easy_water.greendao.DBHelper;
+import ps.emperor.easy_water.greendao.Irrigation;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.view.MainActionBar;
+import ps.emperor.easy_water.view.MainActionBars;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 /**
  * 灌溉信息维护
@@ -28,13 +41,16 @@ public class MainTainIrrigateInfoFragment extends Fragment implements
 		OnClickListener {
 
 	private LayoutInflater mInflater;
-	private MainActionBar actionBar;
+	private MainActionBars actionBar;
 	private int group, value;
 	private TextView text_max_irrigat_group, text_max_orroagte_valve,
 			text_filter, text_max_orroagte_restnight_start,
 			text_max_orroagte_restnight_end, text_max_orroagte_season_start,
 			text_max_orroagte_season_end;
 	private Button btn_maintain_panoramic;
+	private List<Irrigation> irrigation;
+	private DBHelper dbHelper;
+	private String units;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,10 +59,10 @@ public class MainTainIrrigateInfoFragment extends Fragment implements
 		View view = inflater.inflate(R.layout.fragment_maintain_irrigate_info,
 				container, false);
 
-		actionBar = (MainActionBar) view
+		actionBar = (MainActionBars) view
 				.findViewById(R.id.actionbar_maintain_irrigate_info);
 		actionBar.setLeftIcon(R.drawable.btn_back_selector);
-		actionBar.setRightIcon(R.drawable.ic_launcher);
+		actionBar.setRightText("编辑");
 		actionBar.setTitle("灌溉信息维护");
 		actionBar.setActionBarOnClickListener(this);
 
@@ -64,16 +80,29 @@ public class MainTainIrrigateInfoFragment extends Fragment implements
 				.findViewById(R.id.text_maintain_basic_info_max_orroagte_season_start_examine);
 		text_max_orroagte_season_end = (TextView) view
 				.findViewById(R.id.text_maintain_basic_info_max_orroagte_season_end_examine);
-
-		group = (Integer) SharedUtils.getParam(getActivity(), "groups", 0);
-		value = (Integer) SharedUtils.getParam(getActivity(), "values", 0);
-		text_max_irrigat_group.setText(group+"");
-		text_max_orroagte_valve.setText(value+"");
+		dbHelper = DBHelper.getInstance(getActivity()); // 得到DBHelper对象
+		
+		Intent intent = getActivity().getIntent();
+		units = intent.getStringExtra("units");
+		
+		init();
+		
+		String parten = "00";
+		DecimalFormat decimal = new DecimalFormat(parten);
+		text_max_irrigat_group.setText(irrigation.get(0).getGroupnumber()+"");
+		text_max_orroagte_valve.setText(irrigation.get(0).getValuenumber()+"");
+		text_filter.setText(irrigation.get(0).getFilterHour()+"小时"+decimal.format(irrigation.get(0).getFilterMinute())+"分钟");
+		text_max_orroagte_restnight_start.setText(irrigation.get(0).getIsNightStartHour() + ":"+decimal.format(irrigation.get(0).getIsNightStartMinute()));
+		text_max_orroagte_restnight_end.setText(irrigation.get(0).getIsNightEndHour()+":"+decimal.format(irrigation.get(0).getIsNightContinueMinute()));
 		
 		btn_maintain_panoramic = (Button) view.findViewById(R.id.btn_maintain_panoramic);
 		btn_maintain_panoramic.setOnClickListener(this);
 		
 		return view;
+	}
+
+	private void init() {
+		irrigation = dbHelper.loadContinue(units);
 	}
 
 	@Override
@@ -109,9 +138,5 @@ public class MainTainIrrigateInfoFragment extends Fragment implements
 		}
 
 	}
-//	<ps.emperor.easy_water.utils.BottomNavigation
-//    android:layout_weight="0"
-//        android:layout_width="match_parent"
-//        android:layout_height="wrap_content" >
-//    </ps.emperor.easy_water.utils.BottomNavigation>
+	 
 }

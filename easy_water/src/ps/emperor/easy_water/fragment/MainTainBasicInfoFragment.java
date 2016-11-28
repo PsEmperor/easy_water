@@ -44,6 +44,7 @@ import ps.emperor.easy_water.greendao.Irrigation;
 import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.view.MainActionBar;
+import ps.emperor.easy_water.view.MainActionBars;
 import ps.emperor.easy_water.view.MyGridView;
 import ps.emperor.easy_water.view.WheelView;
 
@@ -59,7 +60,7 @@ public class MainTainBasicInfoFragment extends Fragment implements
 		OnClickListener {
 
 	private LayoutInflater mInflater;
-	private MainActionBar actionBar;
+	private MainActionBars actionBar;
 	private ImageView irrigatr_control;
 	private RelativeLayout layout_irriagte_group, layout_orroagte_valve,
 			layout_filter, layout__restnight, layout_season,layout_time_long;
@@ -91,10 +92,10 @@ public class MainTainBasicInfoFragment extends Fragment implements
 		View view = inflater.inflate(R.layout.fragment_maintain_basic_info,
 				container, false);
 
-		actionBar = (MainActionBar) view
+		actionBar = (MainActionBars) view
 				.findViewById(R.id.actionbar_maintain_basic_info);
 		actionBar.setLeftIcon(R.drawable.btn_back_selector);
-		actionBar.setRightIcon(R.drawable.ic_launcher);
+		actionBar.setRightText("保存");
 		actionBar.setTitle("基本信息维护");
 		actionBar.setActionBarOnClickListener(this);
 
@@ -937,9 +938,9 @@ public class MainTainBasicInfoFragment extends Fragment implements
 					}
 				}
 				if(date.getDate() > 24){
-					SharedUtils.setParam(getActivity(), "isGreater", 1);
+					SharedUtils.setParam(getActivity(), "isGreaters", 1);
 				}else{
-					SharedUtils.setParam(getActivity(), "isGreater", 0);
+					SharedUtils.setParam(getActivity(), "isGreaters", 0);
 				}
 //				SharedUtils.setParam(getActivity(), "isNightStartHour", wv_hour_night
 //						.getCurrentItem());

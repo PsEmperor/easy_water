@@ -9,6 +9,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.MeasureSpec;
@@ -24,11 +25,13 @@ import ps.emperor.easy_water.entity.ApplyIrrigationProject;
 import ps.emperor.easy_water.entity.ApplyIrrigationUnitControlBean;
 import ps.emperor.easy_water.entity.CustomData;
 import ps.emperor.easy_water.greendao.DBHelper;
+import ps.emperor.easy_water.greendao.IrrigationGroup;
 import ps.emperor.easy_water.greendao.IrrigationProject;
 import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.view.HorizontalListView;
 import ps.emperor.easy_water.view.MainActionBar;
+import ps.emperor.easy_water.view.MainActionBars;
 import ps.emperor.easy_water.view.MyListView;
 import android.view.View.OnClickListener;
 
@@ -44,7 +47,7 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements
 		OnClickListener {
 
 	private LayoutInflater mInflater;
-	private MainActionBar actionBar;
+	private MainActionBars actionBar;
 	private TextView unit_control_plan;
 	private Button btn_control_true;
 	private ListView listView;
@@ -58,7 +61,18 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements
 	private List<IrrigationProject> listentity;
 	private String units;
 	private int isNot;
-
+	private Handler handler = new Handler() {
+		public void handleMessage(android.os.Message msg) {
+			switch (msg.what) {
+			case 0:
+				if (CheckUtil.IsEmpty(listentity)) {
+					unit_control_plan.setText("设定计划");
+				} else {
+					unit_control_plan.setText("更改计划");
+				}
+				break;
+			}}};
+				
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -67,16 +81,22 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements
 				.inflate(R.layout.fragment_apply_irrigate_unit_control,
 						container, false);
 
-		actionBar = (MainActionBar) view
+		actionBar = (MainActionBars) view
 				.findViewById(R.id.actionbar_apply_irrigate_unit_control);
 		actionBar.setLeftIcon(R.drawable.btn_back_selector);
-		actionBar.setRightIcon(R.drawable.ic_launcher);
 		actionBar.setTitle("灌溉单元管理");
 		actionBar.setActionBarOnClickListener(this);
 
 		dbHelper = DBHelper.getInstance(getActivity()); // 得到DBHelper对象
 		units = getArguments().getString("units");
-		listentity = dbHelper.loadLastMsgBySessionids(units);
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				listentity = dbHelper.loadLastMsgBySessionids(units);
+				handler.sendEmptyMessage(0);
+			}
+		}).start();
 		mHlvSimpleList = (TextView) view.findViewById(R.id.hlvSimpleList);
 		listView = (ListView) view
 				.findViewById(R.id.list_apply_irrigate_unit_control_plant);
@@ -93,12 +113,6 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements
 		btn_control_true = (Button) view
 				.findViewById(R.id.btn_apply_irrigate_unit_control_true);
 		btn_control_true.setOnClickListener(this);
-
-		if (CheckUtil.IsEmpty(listentity)) {
-			unit_control_plan.setText("设定计划");
-		} else {
-			unit_control_plan.setText("更改计划");
-		}
 
 		return view;
 	}

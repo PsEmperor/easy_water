@@ -9,6 +9,7 @@ import ps.emperor.easy_water.application.ApplicationFragment;
 import ps.emperor.easy_water.entity.ApplyIrrigationBean;
 import ps.emperor.easy_water.greendao.DBHelper;
 import ps.emperor.easy_water.greendao.Irrigation;
+import ps.emperor.easy_water.greendao.IrrigationGroup;
 import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.view.MainActionBar;
 import android.annotation.SuppressLint;
@@ -42,6 +43,8 @@ public class ApplyIrrigateFragment extends Fragment implements OnClickListener,
 	private List<ApplyIrrigationBean> beans;
 	private DBHelper dbHelper;
 	private List<Irrigation> irrigation;
+	private List<IrrigationGroup> irrigationGroups; 
+	private IrrigationGroup irrigationGroup;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -139,6 +142,17 @@ public class ApplyIrrigateFragment extends Fragment implements OnClickListener,
 			irrigation.setFilterHour(0);
 			irrigation.setFilterMinute(0);
 			dbHelper.saveSession(irrigation);
+		}
+		irrigationGroups = dbHelper.loadGroupByUnits(beans.get(position).getUnits());
+		if(CheckUtil.IsEmpty(irrigationGroups)){
+			for (int i = 1; i <= 5; i++) {
+				irrigationGroup = new IrrigationGroup();
+				irrigationGroup	
+				.setIrrigation(beans.get(position).getUnits());
+				irrigationGroup
+				.setMatchedNum(i);
+				dbHelper.saveGroup(irrigationGroup);
+			}	
 		}
 		FragmentManager fgManager = getFragmentManager();
 		FragmentTransaction transaction = fgManager.beginTransaction();

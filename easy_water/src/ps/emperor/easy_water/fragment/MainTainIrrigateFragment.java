@@ -86,6 +86,7 @@ public class MainTainIrrigateFragment extends Fragment implements OnClickListene
 //		transaction.commit();
 		SharedUtils.setParam(getActivity(), "units", beans.get(position).getMaintain());
 		Intent intent = new Intent(getActivity(),MainTainPresentrrigateActivity.class);
+		intent.putExtra("units", beans.get(position).getMaintain());
 		irrigation = dbHelper.loadContinue(beans.get(position).getMaintain());
 		if(CheckUtil.IsEmpty(irrigation)){
 			Irrigation irrigation = new Irrigation();

@@ -12,6 +12,7 @@ import ps.emperor.easy_water.adapter.NumbericWheelAdapter;
 import ps.emperor.easy_water.adapter.NumericWheelAdapter;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.view.MainActionBar;
+import ps.emperor.easy_water.view.MainActionBars;
 import ps.emperor.easy_water.view.WheelView;
 import android.app.Dialog;
 import android.app.Fragment;
@@ -38,7 +39,7 @@ import android.widget.TextView;
 public class MainTainIntoCropsFragment extends Fragment implements
 		OnClickListener {
 	private LayoutInflater mInflater;
-	private MainActionBar actionBar;
+	private MainActionBars actionBar;
 	private ArrayList<String> integers = new ArrayList<String>();
 	private MainTainIntoCropsAdapter adapter;
 	private GridView gridView;
@@ -52,10 +53,10 @@ public class MainTainIntoCropsFragment extends Fragment implements
 		mInflater = inflater;
 		View view = inflater.inflate(
 				R.layout.fragment_maintain_into_crops_info, container, false);
-		actionBar = (MainActionBar) view
+		actionBar = (MainActionBars) view
 				.findViewById(R.id.actionbar_maintain_into_crops);
 		actionBar.setLeftIcon(R.drawable.btn_back_selector);
-		actionBar.setRightIcon(R.drawable.ic_launcher);
+		actionBar.setRightText("保存");
 		actionBar.setTitle("录入种植信息");
 		actionBar.setActionBarOnClickListener(this);
 		init();

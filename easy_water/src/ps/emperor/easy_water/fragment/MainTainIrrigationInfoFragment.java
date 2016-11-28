@@ -31,9 +31,13 @@ import android.widget.Toast;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.adapter.ImageAdapter;
 import ps.emperor.easy_water.entity.MainTainIrrigationInfoBean;
+import ps.emperor.easy_water.greendao.DBHelper;
+import ps.emperor.easy_water.greendao.IrrigationGroup;
+import ps.emperor.easy_water.greendao.IrrigationProject;
 import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.view.MainActionBar;
+import ps.emperor.easy_water.view.MainActionBars;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.PopupWindow.OnDismissListener;
@@ -50,10 +54,10 @@ public class MainTainIrrigationInfoFragment extends Fragment implements
 		OnClickListener, OnItemClickListener {
 
 	private LayoutInflater mInflater;
-	private MainActionBar actionBar;
+	private MainActionBars actionBar;
 	private GridView gridView;
 //	private PopupWindow popupWindow;
-	
+	private DBHelper dbHelper;
 	ImageAdapter adapter;
 	private Vector<MainTainIrrigationInfoBean> beans = new Vector<MainTainIrrigationInfoBean>();
 	private int list[];
@@ -63,6 +67,9 @@ public class MainTainIrrigationInfoFragment extends Fragment implements
 	private RelativeLayout layout_irriagte_group;
 	private Button btn_main_irrigate_info_group;
 	private Button btn_image_cancel, btn_image_choose;//全选、取消 隐藏
+	private List<IrrigationGroup> irrigationGroups; 
+	private IrrigationGroup irrigationGroup;
+	private String units;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,13 +77,28 @@ public class MainTainIrrigationInfoFragment extends Fragment implements
 		mInflater = inflater;
 		View view = inflater.inflate(
 				R.layout.fragment_maintain_irrigation_info, container, false);
-		actionBar = (MainActionBar) view
+		actionBar = (MainActionBars) view
 				.findViewById(R.id.actionbar_main_irrigate_info);
 		actionBar.setLeftIcon(R.drawable.btn_back_selector);
-		actionBar.setRightIcon(R.drawable.ic_launcher);
+		actionBar.setRightText("保存");
 		actionBar.setTitle("轮灌组维护");
 
 		value = new ArrayList<Integer>();
+		dbHelper = DBHelper.getInstance(getActivity()); // 得到DBHelper对象
+		units = (String) SharedUtils.getParam(getActivity(), "units", 1+"");
+		
+		irrigationGroups = dbHelper.loadGroupByUnits(units);
+		if(CheckUtil.IsEmpty(irrigationGroups)){
+			for (int i = 1; i <= 5; i++) {
+				irrigationGroup = new IrrigationGroup();
+				irrigationGroup
+				.setIrrigation(units);
+				irrigationGroup
+				.setMatchedNum(i);
+				dbHelper.saveGroup(irrigationGroup);
+			}	
+		}
+		
 		for (int i = 0; i < 6; i++) {
 			MainTainIrrigationInfoBean bean = new MainTainIrrigationInfoBean();
 			bean.setGate("1-1");
@@ -89,10 +111,10 @@ public class MainTainIrrigationInfoFragment extends Fragment implements
 		infoBeans = new ArrayList<String>();
 		adapter = new ImageAdapter(getActivity(), true, beans);
 		gridView.setAdapter(adapter);
-		gridView.setVerticalSpacing(10);
-		gridView.setPadding(10, 5, 5, 5);
+		gridView.setVerticalSpacing(5);
+		gridView.setPadding(10, 10, 5, 10);
 		gridView.setOnItemClickListener(this);
-	
+		
 		// beans = adapter.getData();
 		actionBar.setActionBarOnClickListener(this);
 		layout_irriagte_group = (RelativeLayout) view
@@ -209,6 +231,42 @@ public class MainTainIrrigationInfoFragment extends Fragment implements
 		transaction.replace(R.id.fragment_maintain_present_irrigate,
 				fragment1, "main");
 		transaction.commit();
+		case R.id.text_irrigation_info_group:// 重置编组信息
+			new AlertDialog.Builder(getActivity())
+					.setTitle("系统提示")
+					// 设置对话框标题
+
+					.setMessage("重置轮灌组信息将删除当前所有已编组的阀门信息！您确认要重置轮灌组吗？")
+					// 设置显示的内容
+
+					.setPositiveButton("确定",
+							new DialogInterface.OnClickListener() {// 添加确定按钮
+
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {// 确定按钮的响应事件
+
+									// TODO Auto-generated method stub
+									Toast.makeText(getActivity(), "重置成功",
+											Toast.LENGTH_SHORT).show();
+									dialog.dismiss();
+
+								}
+
+							})
+					.setNegativeButton("返回",
+							new DialogInterface.OnClickListener() {// 添加返回按钮
+
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {// 响应事件
+
+									// TODO Auto-generated method stub
+
+									dialog.dismiss();
+								}
+
+							}).show();// 在按键响应事件中显示此对话框
 		break;
 		}
 	}

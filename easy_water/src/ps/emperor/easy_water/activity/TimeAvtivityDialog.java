@@ -49,7 +49,7 @@ public class TimeAvtivityDialog extends BaseActivity implements OnClickListener 
 			compareRound;
 	private int first_setTime = 0;
 	private long end, nowEnd, minuteOfDay, start;
-	private int nowItem, nowPages, isOne, isSkip, position;
+	private int nowItem, nowPages, isOne, isSkip,isSkips, position;
 	private DBHelper dbHelper;
 	private List<IrrigationProject> listentity;
 
@@ -334,6 +334,8 @@ public class TimeAvtivityDialog extends BaseActivity implements OnClickListener 
 							nowStar + "", time_ends + "");
 					isSkip = 1;
 					SharedUtils.setParam(getApplication(), "isSkip", isSkip);
+					isSkips = 1;
+					SharedUtils.setParam(getApplication(), "isSkips", isSkips);
 					finish();
 				} else {
 					Toast.makeText(getApplication(), "在范围内", Toast.LENGTH_SHORT)
@@ -368,6 +370,8 @@ public class TimeAvtivityDialog extends BaseActivity implements OnClickListener 
 		case R.id.time_canle:
 			isSkip = 2;
 			SharedUtils.setParam(getApplication(), "isSkip", isSkip);
+			isSkips = 0;
+			SharedUtils.setParam(getApplication(), "isSkips", isSkips);
 			finish();
 			break;
 		default:

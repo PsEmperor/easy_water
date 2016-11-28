@@ -150,8 +150,9 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 		FragmentManager fgManager = getFragmentManager();
 		FragmentTransaction transaction = fgManager.beginTransaction();
 		ApplyIrrigateControlValveFragment fragment1 = new ApplyIrrigateControlValveFragment();
-		// transaction.setCustomAnimations(R.anim.right_in,
-		// R.anim.right_out);
+		Bundle bundle = new Bundle();
+		bundle.putString("units", units);
+		fragment1.setArguments(bundle);
 		transaction
 				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 		transaction.replace(R.id.fl, fragment1, "main");

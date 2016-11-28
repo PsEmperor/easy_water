@@ -1,5 +1,7 @@
 package ps.emperor.easy_water.fragment;
 
+import java.lang.reflect.Field;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
@@ -161,8 +163,21 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 								name_show.setText(names);
 								SharedUtils.setParam(getActivity(),
 										"dialog_user_name", names);
-								dialog.dismiss();
+								try {
+									Field field = dialog.getClass().getSuperclass().getDeclaredField("mShowing");
+									field.setAccessible(true);
+									field.set(dialog, true);
+									} catch (Exception e) {
+									e.printStackTrace();
+									}
 							}else{
+								  try {
+					                    Field field = dialog.getClass().getSuperclass().getDeclaredField("mShowing");
+					                    field.setAccessible(true);
+					                    field.set(dialog, false);
+					                } catch (Exception e) {
+					                    e.printStackTrace();
+					                }
 								Toast.makeText(getActivity(), "请输入正确的姓名！", Toast.LENGTH_SHORT).show();
 							}
 						}

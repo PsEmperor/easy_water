@@ -5,11 +5,11 @@
     android:background="@color/gray_3"
     android:orientation="vertical" >
 
-    <ps.emperor.easy_water.view.MainActionBar
+    <ps.emperor.easy_water.view.MainActionBars
         android:id="@+id/actionbar_maintain_gate_info"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
-    </ps.emperor.easy_water.view.MainActionBar>
+    </ps.emperor.easy_water.view.MainActionBars>
 
     <RelativeLayout
         android:layout_width="match_parent"

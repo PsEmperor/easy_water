@@ -15,4 +15,5 @@ public class ChoseApplyWaterGateControlUnits extends BaseActivity{
 //		index = 1;
 //		clearStatus();
 	}
+	
 }

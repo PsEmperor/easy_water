@@ -34,5 +34,4 @@
         <item name="android:backgroundDimEnabled">false</item>
         <item name="android:windowBackground">@null</item><!--除去背景色-->
 </style>
-
 </resources>

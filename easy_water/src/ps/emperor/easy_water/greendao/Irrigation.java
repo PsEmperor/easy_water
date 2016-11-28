@@ -6,27 +6,27 @@ package ps.emperor.easy_water.greendao;
 public class Irrigation {
 
     private Long id;
-    private String irrigation;
-    private Integer isrelevance;
-    private Integer groupnumber;
-    private Integer valuenumber;
-    private Integer filterHour;
-    private Integer filterMinute;
-    private String userinfo;
-    private String userphone;
-    private String cropsinfo;
-    private String cropstime;
-    private Integer isNightStartHour;
-    private Integer isNightStartMinute;
-    private Integer isNightContinueHour;
-    private Integer isNightContinueMinute;
-    private Integer isNightEndHour;
-    private Integer isNightEndMinute;
-    private Integer isTimeLong;
-    private Integer nHour;
-    private Integer nMinutes;
-    private Integer nNumber;
-    private Integer nRound;
+    private String irrigation; //灌溉单元
+    private Integer isrelevance; //是否关联
+    private Integer groupnumber; //最大组数
+    private Integer valuenumber; //最大阀门数
+    private Integer filterHour; //反过滤开始时间
+    private Integer filterMinute; //反过滤持续时间
+    private String userinfo; //用户姓名
+    private String userphone; //用户电话
+    private String cropsinfo; //作物信息
+    private String cropstime; //作物种植时间
+    private Integer isNightStartHour; //夜间休息开始时间
+    private Integer isNightStartMinute; //夜间休息开始时间
+    private Integer isNightContinueHour; //夜间休息持续时间
+    private Integer isNightContinueMinute;//夜间休息持续时间
+    private Integer isNightEndHour;//夜间休息结束时间
+    private Integer isNightEndMinute;//夜间休息结束时间
+    private Integer isTimeLong; //最大工作时长
+    private Integer nHour; //灌溉持续时间
+    private Integer nMinutes; //灌溉持续时间
+    private Integer nNumber; //当前组数
+    private Integer nRound; //轮次
 
     public Irrigation() {
     }

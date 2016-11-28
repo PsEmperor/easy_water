@@ -6,6 +6,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -16,21 +17,21 @@ import ps.emperor.easy_water.R;
  * @author 毛国江
  * @version 2016-5-16 上午9:50
  */
-public class MainActionBar extends LinearLayout {
+public class MainActionBars extends LinearLayout {
 	private Context context;
 	private ImageButton acition_bar_left;
-	private ImageButton acition_bar_right;
+	private Button acition_bar_right;
 	private TextView acition_bar_title;
 	private RelativeLayout layout_container;
 	private View layout;
 
-	public MainActionBar(Context context, AttributeSet attrs) {
+	public MainActionBars(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		this.context = context;
 		initView();
 	}
 
-	public MainActionBar(Context context) {
+	public MainActionBars(Context context) {
 		super(context);
 		this.context = context;
 		initView();
@@ -44,10 +45,10 @@ public class MainActionBar extends LinearLayout {
 
 	private void initView() {
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		layout = inflater.inflate(R.layout.layout_action_bar, this);
+		layout = inflater.inflate(R.layout.layout_action_bars, this);
 		acition_bar_left = (ImageButton) layout.findViewById(R.id.acitionbar_left);// 返回
 		layout_container = (RelativeLayout) layout.findViewById(R.id.layout_container);
-		acition_bar_right = (ImageButton) layout.findViewById(R.id.acitionbar_right);// 分享
+		acition_bar_right = (Button) layout.findViewById(R.id.acitionbar_right);// 分享
 		acition_bar_title = (TextView) layout.findViewById(R.id.acitionbar_title);// 标题栏
 	}
 
@@ -83,9 +84,6 @@ public class MainActionBar extends LinearLayout {
 		acition_bar_left.setImageResource(resourceId);
 	}
 
-	public void setRightIcon(int resourceId) {
-		acition_bar_right.setImageResource(resourceId);
-	}
 
 	public void setRightOnClick(boolean bool) {
 		if(bool){
@@ -93,6 +91,9 @@ public class MainActionBar extends LinearLayout {
 		}else{
 			acition_bar_right.setEnabled(false);
 		}
+	}
+	public void setRightText(String Right){
+		acition_bar_right.setText(Right);
 	}
 }
 

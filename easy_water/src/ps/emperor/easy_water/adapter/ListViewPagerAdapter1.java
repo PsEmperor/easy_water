@@ -8,6 +8,8 @@ import java.util.List;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.activity.TimeAvtivityDialog;
 import ps.emperor.easy_water.entity.ApplyIrrigationProjectBean;
+import ps.emperor.easy_water.greendao.DBHelper;
+import ps.emperor.easy_water.greendao.IrrigationGroup;
 import ps.emperor.easy_water.greendao.IrrigationProject;
 import ps.emperor.easy_water.utils.SharedUtils;
 
@@ -37,7 +39,9 @@ public class ListViewPagerAdapter1 extends PagerAdapter implements OnItemClickLi
 	private int mChildCount = 0;
 	private int nowItem,nowPage;
 	private String units,compareTime;
-	
+	private DBHelper dbHelper;
+	private int MatchedNum;
+	private List<IrrigationGroup> irrigationGroups;
 	/**
 	 * 
 	 * @param context 活动窗体
@@ -54,6 +58,9 @@ public class ListViewPagerAdapter1 extends PagerAdapter implements OnItemClickLi
 		this.units = units;
 		//����ҳ��
 		pageNum = (int) Math.ceil(list.size() / pageRows);
+		dbHelper = DBHelper.getInstance(context); // 得到DBHelper对象
+		irrigationGroups = dbHelper.loadGroupByUnits(units);
+		MatchedNum  = irrigationGroups.size();
 		int a=list.size() % pageRows;
 		if (a>0) {
 			pageNum=pageNum+1;
@@ -175,8 +182,12 @@ public class ListViewPagerAdapter1 extends PagerAdapter implements OnItemClickLi
 						nowItem = 26;
 					}
 					nowPage = (Integer) SharedUtils.getParam(context, "nowPage", 1);
-					compareTime = list.get((nowPage-1) * 4 + position).getTime_start();
-					position = (nowPage-1) * 4 +position;
+//					compareTime = list.get((nowPage-1) * MatchedNum + position).getTime_start();
+					if(nowPage == 0 ){
+						position = nowPage * MatchedNum +position;
+					}else{
+						position = (nowPage-1) * MatchedNum +position;
+					}
 					Bundle bundle = new Bundle();
 						bundle.putInt("nowItem", nowItem);
 						bundle.putInt("nowPage", nowPage);

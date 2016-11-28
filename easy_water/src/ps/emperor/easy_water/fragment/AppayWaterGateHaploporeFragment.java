@@ -2,6 +2,7 @@ package ps.emperor.easy_water.fragment;
 
 import java.util.List;
 
+
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.adapter.ApplyWaterGateLinkageAdapter;
 import ps.emperor.easy_water.entity.ApplyWaterGateLinkageBean;
@@ -124,6 +125,7 @@ public class AppayWaterGateHaploporeFragment extends Fragment implements
 	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress,
 			boolean fromUser) {
+		//这个部分就是拖动进度条变化上方布局高度
 		hight.setText(progress + "%");
 		tv_show.setText(progress + "%");
 		RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)layout_hight_change.getLayoutParams();

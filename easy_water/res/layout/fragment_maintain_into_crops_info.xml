@@ -5,11 +5,11 @@
     android:orientation="vertical"
     android:background="@color/gray_3" >
     
-<ps.emperor.easy_water.view.MainActionBar
+<ps.emperor.easy_water.view.MainActionBars
         android:id="@+id/actionbar_maintain_into_crops"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
-    </ps.emperor.easy_water.view.MainActionBar>
+    </ps.emperor.easy_water.view.MainActionBars>
     
 
         <TextView

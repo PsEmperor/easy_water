@@ -1,16 +1,30 @@
 package ps.emperor.easy_water.application;
 
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.XMLConstants;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xutils.BuildConfig;
+import org.xutils.x;
+import org.xutils.common.Callback.CommonCallback;
+import org.xutils.ex.HttpException;
+import org.xutils.http.RequestParams;
+
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.activity.IrriagteOrWaterActivity;
+import ps.emperor.easy_water.entity.Person;
 import ps.emperor.easy_water.fragment.ApplyIrrigateFragment;
 import ps.emperor.easy_water.fragment.ApplyWaterDistrbutionFragment;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Xml;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +49,6 @@ public class ApplicationFragment extends Fragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-
 		View view = inflater.inflate(R.layout.fragment_application, null);
 		findView(view);
 		return view;
@@ -60,7 +73,7 @@ public class ApplicationFragment extends Fragment implements
 		gvApp.setOnItemClickListener(this);
 
 	}
-
+	
 	/**
 	 * 给list集合赋值 AppBeen 名称为汉字缩写
 	 */
@@ -94,6 +107,7 @@ public class ApplicationFragment extends Fragment implements
 //			Toast.makeText(getActivity(),
 //					position + "" + ((TextView) view).getText() + "被点击", 0)
 //					.show();
+			
 			
 			ApplyIrrigateFragment af = new ApplyIrrigateFragment();
 			getActivity().getFragmentManager().beginTransaction()
@@ -146,4 +160,5 @@ public class ApplicationFragment extends Fragment implements
 
 
 	}
+	
 }

@@ -22,6 +22,7 @@ import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.adapter.NumericWheelAdapter;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.view.MainActionBar;
+import ps.emperor.easy_water.view.MainActionBars;
 import ps.emperor.easy_water.view.WheelView;
 
 /**
@@ -36,7 +37,7 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 		OnClickListener{
 
 	private LayoutInflater mInflater;
-	private MainActionBar actionBar;
+	private MainActionBars actionBar;
 	private ImageView isOpen;
 	private Dialog dialog;
 	private String hour, minute;
@@ -52,10 +53,10 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 				R.layout.fragment_apply_irrigate_valve_control, container,
 				false);
 
-		actionBar = (MainActionBar) view
+		actionBar = (MainActionBars) view
 				.findViewById(R.id.actionbar_apply_irrigat_valve_control);
 		actionBar.setLeftIcon(R.drawable.btn_back_selector);
-		actionBar.setRightIcon(R.drawable.ic_launcher);
+		actionBar.setRightText("保存");
 		actionBar.setTitle("灌溉阀门控制");
 		actionBar.setActionBarOnClickListener(this);
 		units = getArguments().getString("units");

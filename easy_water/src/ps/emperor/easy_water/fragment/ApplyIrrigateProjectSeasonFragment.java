@@ -32,6 +32,7 @@ import ps.emperor.easy_water.adapter.NumbericWheelAdapter;
 import ps.emperor.easy_water.adapter.NumericWheelAdapter;
 import ps.emperor.easy_water.greendao.DBHelper;
 import ps.emperor.easy_water.greendao.Irrigation;
+import ps.emperor.easy_water.greendao.IrrigationGroup;
 import ps.emperor.easy_water.greendao.IrrigationIsFirst;
 import ps.emperor.easy_water.greendao.IrrigationProject;
 import ps.emperor.easy_water.utils.CheckUtil;
@@ -75,14 +76,16 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 	private IrrigationProject irrigationProject;
 	private String time_start, time_end, time_starts, time_compare_start,
 			units, time_max_start;
-	private int a = 1, s = 0, Marshalling = 1, isLegal, time_long,
-			onleOnes = 0, isNightStartHours, compareDay, compareDays,
+	private int MatchedNum, a = 1, s = 0, Marshalling = 1, isLegal, time_long,
+			onleOnes = 0, isNightStartHours, compareDay, compareYear,
+			compareYears, compareMonth, compareMonths, compareDays,
 			compareDayf, isGreater, isHave, isTrue, isTrue1, isTrues, nHour2,
-			notifys;
+			notifys, conpare, isGreaters, isGreater1;
 	private List<Irrigation> irrigation;
 	private Button button_season;
 	private List<IrrigationIsFirst> firsts;
 	private IrrigationIsFirst irrigationIsFirst;
+	private List<IrrigationGroup> groups;
 
 	private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
@@ -110,6 +113,8 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 
 		dbHelper = DBHelper.getInstance(getActivity()); // 得到DBHelper对象
 		units = getArguments().getString("units");
+		groups = dbHelper.loadGroupByUnits(units);
+		MatchedNum = groups.size();
 		irrigationIsFirst = new IrrigationIsFirst();
 		init();
 
@@ -290,16 +295,16 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 					}
 					now_rounds = now_round;
 					now_round1 = now_round;
-					for (int i = 1; i <= 4 * time_number; i++) {
+					for (int i = 1; i <= MatchedNum * time_number; i++) {
 						irrigationProject = new IrrigationProject();
 						irrigationProject.setIrrigation(units);
 						irrigationProject.setProjectstart("0000-00-00 00:00");
 						irrigationProject.setProjectend("0000-00-00 00:00");
-						if (a >= 5) {
+						if (a >= MatchedNum + 1) {
 							now_rounds = now_rounds + 1;
 							a = 1;
 						}
-						if (Marshalling >= 5) {
+						if (Marshalling >= MatchedNum + 1) {
 							Marshalling = 1;
 						}
 						irrigationProject.setRound(now_rounds + 1 + "");
@@ -308,20 +313,21 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 						a++;
 						Marshalling++;
 					}
-					int randomCommon[] = randomCommon(1, 5, 4);
+					int randomCommon[] = randomCommon(1, MatchedNum + 1,
+							MatchedNum);
 					time_long = 24 - long_hour;
 					nHours = nHour;
 					a = 1;
 					Marshalling = 1;
-					for (int i = 1; i <= 4 * time_number; i++) {
+					for (int i = 1; i <= MatchedNum * time_number; i++) {
 						Date date = new Date();
 						SimpleDateFormat format = new SimpleDateFormat(
 								"yyyy-MM-dd HH:mm");
-						if (a >= 5) {
+						if (a >= MatchedNum + 1) {
 							now_round1 = now_round1 + 1;
 							a = 1;
 						}
-						if (Marshalling >= 5) {
+						if (Marshalling >= MatchedNum + 1) {
 							Marshalling = 1;
 						}
 						s++;
@@ -345,15 +351,83 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 										nHours = nHours - long_hour;
 									} else {
 										compareDayf = date.getDate();
+										compareMonth = date.getMonth();
+										compareYear = date.getYear();
 										date.setHours(date.getHours() + nHours);
 										date.setMinutes(date.getMinutes()
 												+ nMinutes);
 										nHours = 0;
 										compareDays = date.getDate();
+										compareMonths = date.getMonth();
+										compareYears = date.getYear();
 										if (date.getHours() == time_long) {
 											onleOnes = 1;
 										}
-										if (compareDays > compareDayf) {
+										if (compareYears > compareYear) {
+											if (date.getHours() == 0) {
+												isHave = 1;
+											} else {
+												if (onleOnes != 1) {
+													DecimalFormat fnum = new DecimalFormat(
+															"##0.0");
+													String sleep = fnum
+															.format(((float) (24 - nHour)
+																	/ ((float) 24) * time_long))
+															+ "";
+													String[] hours = sleep
+															.split("\\.");
+													date.setHours(date
+															.getHours()
+															+ Integer
+																	.valueOf(hours[0]));
+													if (!CheckUtil
+															.IsEmpty(hours[1])) {
+														date.setMinutes(date
+																.getMinutes()
+																+ Integer
+																		.valueOf(hours[1])
+																* 6);
+													}
+													onleOnes = 1;
+												} else {
+													date.setHours(date
+															.getHours()
+															+ time_long);
+												}
+											}
+										} else if (compareMonths > compareMonth) {
+											if (date.getHours() == 0) {
+												isHave = 1;
+											} else {
+												if (onleOnes != 1) {
+													DecimalFormat fnum = new DecimalFormat(
+															"##0.0");
+													String sleep = fnum
+															.format(((float) (24 - nHour)
+																	/ ((float) 24) * time_long))
+															+ "";
+													String[] hours = sleep
+															.split("\\.");
+													date.setHours(date
+															.getHours()
+															+ Integer
+																	.valueOf(hours[0]));
+													if (!CheckUtil
+															.IsEmpty(hours[1])) {
+														date.setMinutes(date
+																.getMinutes()
+																+ Integer
+																		.valueOf(hours[1])
+																* 6);
+													}
+													onleOnes = 1;
+												} else {
+													date.setHours(date
+															.getHours()
+															+ time_long);
+												}
+											}
+										} else if (compareDays > compareDayf) {
 											if (date.getHours() == 0) {
 												isHave = 1;
 											} else {
@@ -390,7 +464,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 								}
 							} else {
 								date = format.parse(time_end);
-								if (s > 4) {
+								if (s > MatchedNum) {
 									date.setDate(date.getDate() + 10);
 									s = 1;
 								}
@@ -429,12 +503,80 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 
 									} else {
 										compareDayf = date.getDate();
+										compareMonth = date.getMonth();
+										compareYear = date.getYear();
 										date.setHours(date.getHours() + nHour2);
 										date.setMinutes(date.getMinutes()
 												+ nMinutes);
 										nHour2 = 0;
 										compareDays = date.getDate();
-										if (compareDays > compareDayf) {
+										compareMonths = date.getMonth();
+										compareYears = date.getYear();
+										if (compareYears > compareYear) {
+											if (date.getHours() == 0) {
+												isHave = 1;
+											} else {
+												if (onleOnes != 1) {
+													DecimalFormat fnum = new DecimalFormat(
+															"##0.0");
+													String sleep = fnum
+															.format(((float) (24 - nHour)
+																	/ ((float) 24) * time_long))
+															+ "";
+													String[] hours = sleep
+															.split("\\.");
+													date.setHours(date
+															.getHours()
+															+ Integer
+																	.valueOf(hours[0]));
+													if (!CheckUtil
+															.IsEmpty(hours[1])) {
+														date.setMinutes(date
+																.getMinutes()
+																+ Integer
+																		.valueOf(hours[1])
+																* 6);
+													}
+													onleOnes = 1;
+												} else {
+													date.setHours(date
+															.getHours()
+															+ time_long);
+												}
+											}
+										} else if (compareMonths > compareMonth) {
+											if (date.getHours() == 0) {
+												isHave = 1;
+											} else {
+												if (onleOnes != 1) {
+													DecimalFormat fnum = new DecimalFormat(
+															"##0.0");
+													String sleep = fnum
+															.format(((float) (24 - nHour)
+																	/ ((float) 24) * time_long))
+															+ "";
+													String[] hours = sleep
+															.split("\\.");
+													date.setHours(date
+															.getHours()
+															+ Integer
+																	.valueOf(hours[0]));
+													if (!CheckUtil
+															.IsEmpty(hours[1])) {
+														date.setMinutes(date
+																.getMinutes()
+																+ Integer
+																		.valueOf(hours[1])
+																* 6);
+													}
+													onleOnes = 1;
+												} else {
+													date.setHours(date
+															.getHours()
+															+ time_long);
+												}
+											}
+										} else if (compareDays > compareDayf) {
 											if (date.getHours() == 0) {
 												isHave = 1;
 											} else {
@@ -505,7 +647,6 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 						irrigationIsFirst.setIsFirst(0);
 						dbHelper.saveIsFirst(irrigationIsFirst);
 					}
-					// }
 				}
 			} else if (isLong == true && isNight == true) {
 				irrigationProject = new IrrigationProject();
@@ -513,7 +654,6 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 						.loadLastMsgBySessionid(units);
 				time_compare_start = time_start;
 				time_long = 24 - long_hour;
-
 				if (isNightContinueHour >= long_hour) {
 					Date dates = new Date();
 					SimpleDateFormat formats = new SimpleDateFormat(
@@ -521,7 +661,6 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 					try {
 						dates = formats.parse(time_start);
 					} catch (ParseException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					compareDay = dates.getDate();
@@ -531,9 +670,9 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 					} else {
 						isNightStartHours = isNightStartHour;
 					}
-					isGreater = (int) SharedUtils.getParam(getActivity(),
-							"isGreater", 0);
-					if (isGreater == 1) {
+					isGreaters = (int) SharedUtils.getParam(getActivity(),
+							"isGreaters", 0);
+					if (isGreaters == 1) {
 						if (dates.getHours() < isNightStartHours
 								&& dates.getHours() > isNightEnd) {
 							isLegal = 1;
@@ -578,17 +717,17 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 						}
 						now_rounds = now_round;
 						now_round1 = now_round;
-						for (int i = 1; i < 5 * time_number; i++) {
+						for (int i = 1; i <= MatchedNum * time_number; i++) {
 							irrigationProject = new IrrigationProject();
 							irrigationProject.setIrrigation(units);
 							irrigationProject
 									.setProjectstart("0000-00-00 00:00");
 							irrigationProject.setProjectend("0000-00-00 00:00");
-							if (a >= 5) {
+							if (a >= MatchedNum + 1) {
 								now_rounds = now_rounds + 1;
 								a = 1;
 							}
-							if (Marshalling >= 5) {
+							if (Marshalling >= MatchedNum + 1) {
 								Marshalling = 1;
 							}
 							irrigationProject.setRound((now_rounds + 1) + "");
@@ -597,19 +736,20 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 							a++;
 							Marshalling++;
 						}
-						int randomCommon[] = randomCommon(1, 5, 4);
-						time_long = 24 - long_hour;
 						a = 1;
 						Marshalling = 1;
-						for (int i = 1; i <= 4 * time_number; i++) {
+						int randomCommon[] = randomCommon(1, MatchedNum + 1,
+								MatchedNum);
+						time_long = 24 - long_hour;
+						for (int i = 1; i <= MatchedNum * time_number; i++) {
 							Date date = new Date();
 							SimpleDateFormat format = new SimpleDateFormat(
 									"yyyy-MM-dd HH:mm");
-							if (a >= 5) {
+							if (a >= MatchedNum + 1) {
 								now_round1 = now_round1 + 1;
 								a = 1;
 							}
-							if (Marshalling >= 5) {
+							if (Marshalling >= MatchedNum + 1) {
 								Marshalling = 1;
 							}
 							s++;
@@ -618,21 +758,23 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 									date = format.parse(time_start);
 									time_starts = format.format(date);
 									compareDayf = date.getDate();
+									compareMonth = date.getMonth();
+									compareYear = date.getYear();
 									date.setHours(date.getHours() + nHour);
 									date.setMinutes(date.getMinutes()
 											+ nMinutes);
 									compareDays = date.getDate();
-									if (compareDays > compareDayf) {
-										isTrues = 1;
-										isTrue = 0;
-										isTrue1 = 0;
+									compareMonths = date.getMonth();
+									compareYears = date.getYear();
+									if (compareYears > compareYear) {
+										conpare = 0;
 										if (isNightStartHour != 0) {
 											if (date.getHours() == isNightEnd
 													&& date.getMinutes() <= isNightEndMinutes) {
 												isTrues = 1;
 											}
 											if (date.getHours() >= isNightStartHour) {
-												isTrues = 1;
+												isGreater = 1;
 												if (date.getHours() == isNightStartHour
 														&& date.getMinutes() > isNightStartMinute) {
 													isTrues = 1;
@@ -640,8 +782,17 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 													isTrues = 2;
 												}
 											} else {
-												if (isGreater == 1) {
-
+												isGreater = 0;
+											}
+											if (isGreater == 1) {
+												isTrues = 1;
+												isTrue = 0;
+												isTrue1 = 0;
+											} else {
+												if (isGreaters == 1) {
+													isTrues = 1;
+													isTrue = 0;
+													isTrue1 = 0;
 												} else {
 													isTrues = 0;
 												}
@@ -650,14 +801,16 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 											if (isNightStartHour == 0
 													&& date.getMinutes() <= isNightStartMinute) {
 												isTrues = 3;
+												isTrue1 = 0;
 											} else {
 												isTrues = 2;
+												isTrue1 = 0;
 											}
 										}
 										if (isTrues == 1) {
 											if (date.getHours() == isNightStartHour
 													&& date.getMinutes() <= isNightStartMinute) {
-
+												conpare = 1;
 											} else {
 												if (isTrue1 == 0) {
 													date.setHours(date
@@ -668,12 +821,13 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 															+ isNightContinueMinute);
 													isTrues = 0;
 													isTrue1 = 1;
+													conpare = 1;
 												}
 											}
 										} else if (isTrues == 2) {
 											if (date.getHours() == isNightStartHour
 													&& date.getMinutes() <= isNightStartMinute) {
-
+												conpare = 1;
 											} else {
 												if (isTrue1 == 0) {
 													date.setHours(date
@@ -684,6 +838,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 															+ isNightContinueMinute);
 													isTrues = 0;
 													isTrue1 = 1;
+													conpare = 1;
 												}
 											}
 										} else if (isTrues == 3) {
@@ -700,6 +855,193 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 															+ isNightContinueMinute);
 													isTrues = 0;
 													isTrue1 = 1;
+													conpare = 1;
+												}
+											}
+										}
+									} else if (compareMonths > compareMonth) {
+										conpare = 0;
+										if (isNightStartHour != 0) {
+											if (date.getHours() == isNightEnd
+													&& date.getMinutes() <= isNightEndMinutes) {
+												isTrues = 1;
+											}
+											if (date.getHours() >= isNightStartHour) {
+												isGreater = 1;
+												if (date.getHours() == isNightStartHour
+														&& date.getMinutes() > isNightStartMinute) {
+													isTrues = 1;
+												} else {
+													isTrues = 2;
+												}
+											} else {
+												isGreater = 0;
+											}
+											if (isGreater == 1) {
+												isTrues = 1;
+												isTrue = 0;
+												isTrue1 = 0;
+											} else {
+												if (isGreaters == 1) {
+													isTrues = 1;
+													isTrue = 0;
+													isTrue1 = 0;
+												} else {
+													isTrues = 0;
+												}
+											}
+										} else {
+											if (isNightStartHour == 0
+													&& date.getMinutes() <= isNightStartMinute) {
+												isTrues = 3;
+												isTrue1 = 0;
+											} else {
+												isTrues = 2;
+												isTrue1 = 0;
+											}
+										}
+										if (isTrues == 1) {
+											if (date.getHours() == isNightStartHour
+													&& date.getMinutes() <= isNightStartMinute) {
+												conpare = 1;
+											} else {
+												if (isTrue1 == 0) {
+													date.setHours(date
+															.getHours()
+															+ isNightContinueHour);
+													date.setMinutes(date
+															.getMinutes()
+															+ isNightContinueMinute);
+													isTrues = 0;
+													isTrue1 = 1;
+													conpare = 1;
+												}
+											}
+										} else if (isTrues == 2) {
+											if (date.getHours() == isNightStartHour
+													&& date.getMinutes() <= isNightStartMinute) {
+												conpare = 1;
+											} else {
+												if (isTrue1 == 0) {
+													date.setHours(date
+															.getHours()
+															+ isNightContinueHour);
+													date.setMinutes(date
+															.getMinutes()
+															+ isNightContinueMinute);
+													isTrues = 0;
+													isTrue1 = 1;
+													conpare = 1;
+												}
+											}
+										} else if (isTrues == 3) {
+											if (date.getHours() == isNightStartHour
+													&& date.getMinutes() <= isNightStartMinute) {
+
+											} else {
+												if (isTrue1 == 0) {
+													date.setHours(date
+															.getHours()
+															+ isNightContinueHour);
+													date.setMinutes(date
+															.getMinutes()
+															+ isNightContinueMinute);
+													isTrues = 0;
+													isTrue1 = 1;
+													conpare = 1;
+												}
+											}
+										}
+									} else if (compareDays > compareDayf) {
+										conpare = 0;
+										if (isNightStartHour != 0) {
+											if (date.getHours() == isNightEnd
+													&& date.getMinutes() <= isNightEndMinutes) {
+												isTrues = 1;
+											}
+											if (date.getHours() >= isNightStartHour) {
+												isGreater = 1;
+												if (date.getHours() == isNightStartHour
+														&& date.getMinutes() > isNightStartMinute) {
+													isTrues = 1;
+												} else {
+													isTrues = 2;
+												}
+											} else {
+												isGreater = 0;
+											}
+											if (isGreater == 1) {
+												isTrues = 1;
+												isTrue = 0;
+												isTrue1 = 0;
+											} else {
+												if (isGreaters == 1) {
+													isTrues = 1;
+													isTrue = 0;
+													isTrue1 = 0;
+												} else {
+													isTrues = 0;
+												}
+											}
+										} else {
+											if (isNightStartHour == 0
+													&& date.getMinutes() <= isNightStartMinute) {
+												isTrues = 3;
+												isTrue1 = 0;
+											} else {
+												isTrues = 2;
+												isTrue1 = 0;
+											}
+										}
+										if (isTrues == 1) {
+											if (date.getHours() == isNightStartHour
+													&& date.getMinutes() <= isNightStartMinute) {
+												conpare = 1;
+											} else {
+												if (isTrue1 == 0) {
+													date.setHours(date
+															.getHours()
+															+ isNightContinueHour);
+													date.setMinutes(date
+															.getMinutes()
+															+ isNightContinueMinute);
+													isTrues = 0;
+													isTrue1 = 1;
+													conpare = 1;
+												}
+											}
+										} else if (isTrues == 2) {
+											if (date.getHours() == isNightStartHour
+													&& date.getMinutes() <= isNightStartMinute) {
+												conpare = 1;
+											} else {
+												if (isTrue1 == 0) {
+													date.setHours(date
+															.getHours()
+															+ isNightContinueHour);
+													date.setMinutes(date
+															.getMinutes()
+															+ isNightContinueMinute);
+													isTrues = 0;
+													isTrue1 = 1;
+													conpare = 1;
+												}
+											}
+										} else if (isTrues == 3) {
+											if (date.getHours() == isNightStartHour
+													&& date.getMinutes() <= isNightStartMinute) {
+
+											} else {
+												if (isTrue1 == 0) {
+													date.setHours(date
+															.getHours()
+															+ isNightContinueHour);
+													date.setMinutes(date
+															.getMinutes()
+															+ isNightContinueMinute);
+													isTrues = 0;
+													isTrue1 = 1;
+													conpare = 1;
 												}
 											}
 										}
@@ -710,8 +1052,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 												isTrues = 1;
 											}
 											if (date.getHours() >= isNightStartHour) {
-												isTrues = 1;
-												isTrue1 = 0;
+												isGreater = 1;
 												if (date.getHours() == isNightStartHour
 														&& date.getMinutes() > isNightStartMinute) {
 													isTrues = 1;
@@ -719,11 +1060,15 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 													isTrues = 2;
 												}
 											} else {
-												if (isGreater == 1) {
-
-												} else {
-													isTrues = 0;
+												isGreater = 0;
+											}
+											if (isGreater == 1) {
+												if (conpare == 0) {
+													isTrues = 1;
+													isTrue1 = 0;
 												}
+											} else {
+												isTrues = 0;
 											}
 										} else {
 											if (isNightStartHour == 0
@@ -731,19 +1076,31 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 												isTrues = 0;
 											} else {
 												isTrues = 2;
+												isTrue1 = 0;
 											}
 											isNightStartHours = 24;
 											if (isNightStartHours
 													- date.getHours() == 0) {
 												isTrues = 2;
+												isTrue1 = 0;
 											} else {
 												isTrues = 0;
 											}
 										}
+										Date dateStart = new Date();
+										SimpleDateFormat formatStart = new SimpleDateFormat(
+												"yyyy-MM-dd HH:mm");
+										dateStart = format.parse(time_start);
+										if (dateStart.getHours() > isNightStartHour) {
+											isTrue1 = 1;
+										} else {
+											isTrue1 = 0;
+										}
+
 										if (isTrues == 1) {
 											if (date.getHours() == isNightStartHour
 													&& date.getMinutes() <= isNightStartMinute) {
-
+												conpare = 1;
 											} else {
 												if (isTrue1 == 0) {
 													date.setHours(date
@@ -759,7 +1116,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 										} else if (isTrues == 2) {
 											if (date.getHours() == isNightStartHour
 													&& date.getMinutes() <= isNightStartMinute) {
-
+												conpare = 1;
 											} else {
 												if (isTrue1 == 0) {
 													date.setHours(date
@@ -792,20 +1149,21 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 									}
 								} else {
 									date = format.parse(time_end);
-									if (s > 4) {
+									if (s > MatchedNum) {
 										date.setDate(date.getDate() + 10);
 										s = 1;
 									}
 									if (isTrues == 1) {
-										if (isTrue == 0) {
+										if (isTrue1 == 0) {
 											date.setHours(date.getHours()
 													+ isNightContinueHour);
 											date.setMinutes(date.getMinutes()
 													+ isNightContinueMinute);
 											isTrues = 0;
-											isTrue = 1;
+											isTrue1 = 1;
 										}
 										isTrues = 0;
+										conpare = 1;
 									} else if (isTrues == 2) {
 										if (isTrue1 == 0) {
 											date.setHours(date.getHours()
@@ -815,6 +1173,8 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 											isTrues = 0;
 											isTrue1 = 1;
 										}
+										isTrues = 0;
+										conpare = 1;
 									} else if (isTrues == 3) {
 										if (isTrue1 == 0) {
 											date.setHours(date.getHours()
@@ -824,24 +1184,29 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 											isTrues = 0;
 											isTrue1 = 1;
 										}
+										isTrues = 0;
+										conpare = 1;
 									}
 									time_starts = format.format(date);
 									compareDayf = date.getDate();
+									compareMonth = date.getMonth();
+									compareYear = date.getYear();
 									date.setHours(date.getHours() + nHour);
 									date.setMinutes(date.getMinutes()
 											+ nMinutes);
 									compareDays = date.getDate();
-									if (compareDays > compareDayf) {
-										isTrues = 1;
-										isTrue = 0;
-										isTrue1 = 0;
+									compareMonths = date.getMonth();
+									compareYears = date.getYear();
+									if (compareYears > compareYear) {
+										conpare = 0;
+										isGreater1 = 0;
 										if (isNightStartHour != 0) {
 											if (date.getHours() == isNightEnd
 													&& date.getMinutes() <= isNightEndMinutes) {
 												isTrues = 1;
 											}
 											if (date.getHours() >= isNightStartHour) {
-												isTrues = 1;
+												isGreater = 1;
 												if (date.getHours() == isNightStartHour
 														&& date.getMinutes() > isNightStartMinute) {
 													isTrues = 1;
@@ -849,24 +1214,38 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 													isTrues = 2;
 												}
 											} else {
-												if (isGreater == 1) {
-
+												isGreater = 0;
+											}
+											if (isGreater == 1) {
+												if (conpare == 0) {
+													isTrues = 1;
+													isTrue = 0;
+													isTrue1 = 0;
+												}
+											} else {
+												if (isGreaters == 1) {
+													isTrues = 1;
+													isTrue = 0;
+													isTrue1 = 0;
 												} else {
 													isTrues = 0;
 												}
+
 											}
 										} else {
 											if (isNightStartHour == 0
 													&& date.getMinutes() <= isNightStartMinute) {
 												isTrues = 3;
+												isTrue1 = 0;
 											} else {
 												isTrues = 2;
+												isTrue1 = 0;
 											}
 										}
 										if (isTrues == 1) {
 											if (date.getHours() == isNightStartHour
 													&& date.getMinutes() <= isNightStartMinute) {
-
+												compare = 1;
 											} else {
 												if (isTrue1 == 0) {
 													date.setHours(date
@@ -877,12 +1256,13 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 															+ isNightContinueMinute);
 													isTrues = 0;
 													isTrue1 = 1;
+													conpare = 1;
 												}
 											}
 										} else if (isTrues == 2) {
 											if (date.getHours() == isNightStartHour
 													&& date.getMinutes() <= isNightStartMinute) {
-
+												compare = 1;
 											} else {
 												if (isTrue1 == 0) {
 													date.setHours(date
@@ -893,6 +1273,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 															+ isNightContinueMinute);
 													isTrues = 0;
 													isTrue1 = 1;
+													conpare = 1;
 												}
 											}
 										} else if (isTrues == 3) {
@@ -909,6 +1290,201 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 															+ isNightContinueMinute);
 													isTrues = 0;
 													isTrue1 = 1;
+													conpare = 1;
+												}
+											}
+										}
+									} else if (compareMonths > compareMonth) {
+										conpare = 0;
+										isGreater1 = 0;
+										if (isNightStartHour != 0) {
+											if (date.getHours() == isNightEnd
+													&& date.getMinutes() <= isNightEndMinutes) {
+												isTrues = 1;
+											}
+											if (date.getHours() >= isNightStartHour) {
+												isGreater = 1;
+												if (date.getHours() == isNightStartHour
+														&& date.getMinutes() > isNightStartMinute) {
+													isTrues = 1;
+												} else {
+													isTrues = 2;
+												}
+											} else {
+												isGreater = 0;
+											}
+											if (isGreater == 1) {
+												if (conpare == 0) {
+													isTrues = 1;
+													isTrue = 0;
+													isTrue1 = 0;
+												}
+											} else {
+												if (isGreaters == 1) {
+													isTrues = 1;
+													isTrue = 0;
+													isTrue1 = 0;
+												} else {
+													isTrues = 0;
+												}
+
+											}
+										} else {
+											if (isNightStartHour == 0
+													&& date.getMinutes() <= isNightStartMinute) {
+												isTrues = 3;
+												isTrue1 = 0;
+											} else {
+												isTrues = 2;
+												isTrue1 = 0;
+											}
+										}
+										if (isTrues == 1) {
+											if (date.getHours() == isNightStartHour
+													&& date.getMinutes() <= isNightStartMinute) {
+												compare = 1;
+											} else {
+												if (isTrue1 == 0) {
+													date.setHours(date
+															.getHours()
+															+ isNightContinueHour);
+													date.setMinutes(date
+															.getMinutes()
+															+ isNightContinueMinute);
+													isTrues = 0;
+													isTrue1 = 1;
+													conpare = 1;
+												}
+											}
+										} else if (isTrues == 2) {
+											if (date.getHours() == isNightStartHour
+													&& date.getMinutes() <= isNightStartMinute) {
+												compare = 1;
+											} else {
+												if (isTrue1 == 0) {
+													date.setHours(date
+															.getHours()
+															+ isNightContinueHour);
+													date.setMinutes(date
+															.getMinutes()
+															+ isNightContinueMinute);
+													isTrues = 0;
+													isTrue1 = 1;
+													conpare = 1;
+												}
+											}
+										} else if (isTrues == 3) {
+											if (date.getHours() == isNightStartHour
+													&& date.getMinutes() <= isNightStartMinute) {
+
+											} else {
+												if (isTrue1 == 0) {
+													date.setHours(date
+															.getHours()
+															+ isNightContinueHour);
+													date.setMinutes(date
+															.getMinutes()
+															+ isNightContinueMinute);
+													isTrues = 0;
+													isTrue1 = 1;
+													conpare = 1;
+												}
+											}
+										}
+									} else if (compareDays > compareDayf) {
+										conpare = 0;
+										isGreater1 = 0;
+										if (isNightStartHour != 0) {
+											if (date.getHours() == isNightEnd
+													&& date.getMinutes() <= isNightEndMinutes) {
+												isTrues = 1;
+											}
+											if (date.getHours() >= isNightStartHour) {
+												isGreater = 1;
+												if (date.getHours() == isNightStartHour
+														&& date.getMinutes() > isNightStartMinute) {
+													isTrues = 1;
+												} else {
+													isTrues = 2;
+												}
+											} else {
+												isGreater = 0;
+											}
+											if (isGreater == 1) {
+												if (conpare == 0) {
+													isTrues = 1;
+													isTrue = 0;
+													isTrue1 = 0;
+												}
+											} else {
+												if (isGreaters == 1) {
+													isTrues = 1;
+													isTrue = 0;
+													isTrue1 = 0;
+												} else {
+													isTrues = 0;
+												}
+
+											}
+										} else {
+											if (isNightStartHour == 0
+													&& date.getMinutes() <= isNightStartMinute) {
+												isTrues = 3;
+												isTrue1 = 0;
+											} else {
+												isTrues = 2;
+												isTrue1 = 0;
+											}
+										}
+										if (isTrues == 1) {
+											if (date.getHours() == isNightStartHour
+													&& date.getMinutes() <= isNightStartMinute) {
+												compare = 1;
+											} else {
+												if (isTrue1 == 0) {
+													date.setHours(date
+															.getHours()
+															+ isNightContinueHour);
+													date.setMinutes(date
+															.getMinutes()
+															+ isNightContinueMinute);
+													isTrues = 0;
+													isTrue1 = 1;
+													conpare = 1;
+												}
+											}
+										} else if (isTrues == 2) {
+											if (date.getHours() == isNightStartHour
+													&& date.getMinutes() <= isNightStartMinute) {
+												compare = 1;
+											} else {
+												if (isTrue1 == 0) {
+													date.setHours(date
+															.getHours()
+															+ isNightContinueHour);
+													date.setMinutes(date
+															.getMinutes()
+															+ isNightContinueMinute);
+													isTrues = 0;
+													isTrue1 = 1;
+													conpare = 1;
+												}
+											}
+										} else if (isTrues == 3) {
+											if (date.getHours() == isNightStartHour
+													&& date.getMinutes() <= isNightStartMinute) {
+
+											} else {
+												if (isTrue1 == 0) {
+													date.setHours(date
+															.getHours()
+															+ isNightContinueHour);
+													date.setMinutes(date
+															.getMinutes()
+															+ isNightContinueMinute);
+													isTrues = 0;
+													isTrue1 = 1;
+													conpare = 1;
 												}
 											}
 										}
@@ -919,20 +1495,36 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 												isTrues = 1;
 											}
 											if (date.getHours() >= isNightStartHour) {
-												isTrues = 1;
-												isTrue1 = 0;
+												isGreater = 1;
+												if (isGreaters == 1) {
+													conpare = 0;
+													isGreater1 = 0;
+												}
 												if (date.getHours() == isNightStartHour
 														&& date.getMinutes() > isNightStartMinute) {
 													isTrues = 1;
 												} else {
-													isTrues = 2;
+													if (isGreater1 == 0) {
+														isTrues = 2;
+														if (conpare == 0) {
+															isTrue1 = 0;
+															isGreater1 = 1;
+														}
+													} else {
+														isTrues = 2;
+														isTrue1 = 1;
+													}
 												}
 											} else {
-												if (isGreater == 1) {
-
-												} else {
-													isTrues = 0;
+												isGreater = 0;
+											}
+											if (isGreater == 1) {
+												if (conpare == 0) {
+													isTrues = 1;
+													isTrue1 = 0;
 												}
+											} else {
+												isTrues = 0;
 											}
 										} else {
 											if (isNightStartHour == 0
@@ -941,11 +1533,18 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 											} else {
 												isTrues = 2;
 											}
+											isNightStartHours = 24;
+											if (isNightStartHours
+													- date.getHours() == 0) {
+												isTrues = 2;
+											} else {
+												isTrues = 0;
+											}
 										}
 										if (isTrues == 1) {
 											if (date.getHours() == isNightStartHour
 													&& date.getMinutes() <= isNightStartMinute) {
-
+												conpare = 1;
 											} else {
 												if (isTrue1 == 0) {
 													date.setHours(date
@@ -956,12 +1555,13 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 															+ isNightContinueMinute);
 													isTrues = 0;
 													isTrue1 = 1;
+													conpare = 1;
 												}
 											}
 										} else if (isTrues == 2) {
 											if (date.getHours() == isNightStartHour
 													&& date.getMinutes() <= isNightStartMinute) {
-
+												conpare = 1;
 											} else {
 												if (isTrue1 == 0) {
 													date.setHours(date
@@ -972,6 +1572,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 															+ isNightContinueMinute);
 													isTrues = 0;
 													isTrue1 = 1;
+													conpare = 1;
 												}
 											}
 										} else if (isTrues == 3) {
@@ -988,6 +1589,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 															+ isNightContinueMinute);
 													isTrues = 0;
 													isTrue1 = 1;
+													conpare = 1;
 												}
 											}
 										}
@@ -1062,17 +1664,17 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 						}
 						now_rounds = now_round;
 						now_round1 = now_round;
-						for (int i = 1; i <= 4 * time_number; i++) {
+						for (int i = 1; i <= MatchedNum * time_number; i++) {
 							irrigationProject = new IrrigationProject();
 							irrigationProject.setIrrigation(units);
 							irrigationProject
 									.setProjectstart("0000-00-00 00:00");
 							irrigationProject.setProjectend("0000-00-00 00:00");
-							if (a >= 5) {
+							if (a >= MatchedNum + 1) {
 								now_rounds = now_rounds + 1;
 								a = 1;
 							}
-							if (Marshalling >= 5) {
+							if (Marshalling >= MatchedNum + 1) {
 								Marshalling = 1;
 							}
 							irrigationProject.setRound((now_rounds + 1) + "");
@@ -1081,20 +1683,21 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 							a++;
 							Marshalling++;
 						}
-						int randomCommon[] = randomCommon(1, 5, 4);
+						int randomCommon[] = randomCommon(1, MatchedNum + 1,
+								MatchedNum);
 						time_long = 24 - long_hour;
 						nHours = nHour;
 						a = 1;
 						Marshalling = 1;
-						for (int i = 1; i <= 4 * time_number; i++) {
+						for (int i = 1; i <= MatchedNum * time_number; i++) {
 							Date date = new Date();
 							SimpleDateFormat format = new SimpleDateFormat(
 									"yyyy-MM-dd HH:mm");
-							if (a >= 5) {
+							if (a >= MatchedNum + 1) {
 								now_round1 = now_round1 + 1;
 								a = 1;
 							}
-							if (Marshalling >= 5) {
+							if (Marshalling >= MatchedNum + 1) {
 								Marshalling = 1;
 							}
 							s++;
@@ -1114,16 +1717,84 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 											nHours = nHours - long_hour;
 										} else {
 											compareDayf = date.getDate();
+											compareMonth = date.getMonth();
+											compareYear = date.getYear();
 											date.setHours(date.getHours()
 													+ nHours);
 											date.setMinutes(date.getMinutes()
 													+ nMinutes);
 											nHours = 0;
 											compareDays = date.getDate();
+											compareMonths = date.getMonth();
+											compareYears = date.getYear();
 											if (date.getHours() == time_long) {
 												onleOnes = 1;
 											}
-											if (compareDays > compareDayf) {
+											if (compareYears > compareYear) {
+												if (date.getHours() == 0) {
+													isHave = 1;
+												} else {
+													if (onleOnes != 1) {
+														DecimalFormat fnum = new DecimalFormat(
+																"##0.0");
+														String sleep = fnum
+																.format(((float) (24 - nHour)
+																		/ ((float) 24) * time_long))
+																+ "";
+														String[] hours = sleep
+																.split("\\.");
+														date.setHours(date
+																.getHours()
+																+ Integer
+																		.valueOf(hours[0]));
+														if (!CheckUtil
+																.IsEmpty(hours[1])) {
+															date.setMinutes(date
+																	.getMinutes()
+																	+ Integer
+																			.valueOf(hours[1])
+																	* 6);
+														}
+														onleOnes = 1;
+													} else {
+														date.setHours(date
+																.getHours()
+																+ time_long);
+													}
+												}
+											} else if (compareMonths > compareMonth) {
+												if (date.getHours() == 0) {
+													isHave = 1;
+												} else {
+													if (onleOnes != 1) {
+														DecimalFormat fnum = new DecimalFormat(
+																"##0.0");
+														String sleep = fnum
+																.format(((float) (24 - nHour)
+																		/ ((float) 24) * time_long))
+																+ "";
+														String[] hours = sleep
+																.split("\\.");
+														date.setHours(date
+																.getHours()
+																+ Integer
+																		.valueOf(hours[0]));
+														if (!CheckUtil
+																.IsEmpty(hours[1])) {
+															date.setMinutes(date
+																	.getMinutes()
+																	+ Integer
+																			.valueOf(hours[1])
+																	* 6);
+														}
+														onleOnes = 1;
+													} else {
+														date.setHours(date
+																.getHours()
+																+ time_long);
+													}
+												}
+											} else if (compareDays > compareDayf) {
 												if (date.getHours() == 0) {
 													isHave = 1;
 												} else {
@@ -1160,7 +1831,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 									}
 								} else {
 									date = format.parse(time_end);
-									if (s > 4) {
+									if (s > MatchedNum) {
 										date.setDate(date.getDate() + 10);
 										s = 1;
 									}
@@ -1201,13 +1872,81 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 
 										} else {
 											compareDayf = date.getDate();
+											compareMonth = date.getMonth();
+											compareYear = date.getYear();
 											date.setHours(date.getHours()
 													+ nHour2);
 											date.setMinutes(date.getMinutes()
 													+ nMinutes);
 											nHour2 = 0;
 											compareDays = date.getDate();
-											if (compareDays > compareDayf) {
+											compareMonths = date.getMonth();
+											compareYears = date.getYear();
+											if (compareYears > compareYear) {
+												if (date.getHours() == 0) {
+													isHave = 1;
+												} else {
+													if (onleOnes != 1) {
+														DecimalFormat fnum = new DecimalFormat(
+																"##0.0");
+														String sleep = fnum
+																.format(((float) (24 - nHour)
+																		/ ((float) 24) * time_long))
+																+ "";
+														String[] hours = sleep
+																.split("\\.");
+														date.setHours(date
+																.getHours()
+																+ Integer
+																		.valueOf(hours[0]));
+														if (!CheckUtil
+																.IsEmpty(hours[1])) {
+															date.setMinutes(date
+																	.getMinutes()
+																	+ Integer
+																			.valueOf(hours[1])
+																	* 6);
+														}
+														onleOnes = 1;
+													} else {
+														date.setHours(date
+																.getHours()
+																+ time_long);
+													}
+												}
+											} else if (compareMonths > compareMonth) {
+												if (date.getHours() == 0) {
+													isHave = 1;
+												} else {
+													if (onleOnes != 1) {
+														DecimalFormat fnum = new DecimalFormat(
+																"##0.0");
+														String sleep = fnum
+																.format(((float) (24 - nHour)
+																		/ ((float) 24) * time_long))
+																+ "";
+														String[] hours = sleep
+																.split("\\.");
+														date.setHours(date
+																.getHours()
+																+ Integer
+																		.valueOf(hours[0]));
+														if (!CheckUtil
+																.IsEmpty(hours[1])) {
+															date.setMinutes(date
+																	.getMinutes()
+																	+ Integer
+																			.valueOf(hours[1])
+																	* 6);
+														}
+														onleOnes = 1;
+													} else {
+														date.setHours(date
+																.getHours()
+																+ time_long);
+													}
+												}
+											} else if (compareDays > compareDayf) {
 												if (date.getHours() == 0) {
 													isHave = 1;
 												} else {
@@ -1303,9 +2042,9 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 				} else {
 					isNightStartHours = isNightStartHour;
 				}
-				isGreater = (int) SharedUtils.getParam(getActivity(),
-						"isGreater", 0);
-				if (isGreater == 1) {
+				isGreaters = (int) SharedUtils.getParam(getActivity(),
+						"isGreaters", 0);
+				if (isGreaters == 1) {
 					if (dates.getHours() < isNightStartHours
 							&& dates.getHours() > isNightEnd) {
 						isLegal = 1;
@@ -1350,16 +2089,16 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 					}
 					now_rounds = now_round;
 					now_round1 = now_round;
-					for (int i = 1; i <= 4 * time_number; i++) {
+					for (int i = 1; i <= MatchedNum * time_number; i++) {
 						irrigationProject = new IrrigationProject();
 						irrigationProject.setIrrigation(units);
 						irrigationProject.setProjectstart("0000-00-00 00:00");
 						irrigationProject.setProjectend("0000-00-00 00:00");
-						if (a >= 5) {
+						if (a >= MatchedNum + 1) {
 							now_rounds = now_rounds + 1;
 							a = 1;
 						}
-						if (Marshalling >= 5) {
+						if (Marshalling >= MatchedNum + 1) {
 							Marshalling = 1;
 						}
 						irrigationProject.setRound((now_rounds + 1) + "");
@@ -1370,17 +2109,18 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 					}
 					a = 1;
 					Marshalling = 1;
-					int randomCommon[] = randomCommon(1, 5, 4);
+					int randomCommon[] = randomCommon(1, MatchedNum + 1,
+							MatchedNum);
 					time_long = 24 - long_hour;
-					for (int i = 1; i <= 4 * time_number; i++) {
+					for (int i = 1; i <= MatchedNum * time_number; i++) {
 						Date date = new Date();
 						SimpleDateFormat format = new SimpleDateFormat(
 								"yyyy-MM-dd HH:mm");
-						if (a >= 5) {
+						if (a >= MatchedNum + 1) {
 							now_round1 = now_round1 + 1;
 							a = 1;
 						}
-						if (Marshalling >= 5) {
+						if (Marshalling >= MatchedNum + 1) {
 							Marshalling = 1;
 						}
 						s++;
@@ -1389,20 +2129,22 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 								date = format.parse(time_start);
 								time_starts = format.format(date);
 								compareDayf = date.getDate();
+								compareMonth = date.getMonth();
+								compareYear = date.getYear();
 								date.setHours(date.getHours() + nHour);
 								date.setMinutes(date.getMinutes() + nMinutes);
 								compareDays = date.getDate();
-								if (compareDays > compareDayf) {
-									isTrues = 1;
-									isTrue = 0;
-									isTrue1 = 0;
+								compareMonths = date.getMonth();
+								compareYears = date.getYear();
+								if (compareYears > compareYear) {
+									conpare = 0;
 									if (isNightStartHour != 0) {
 										if (date.getHours() == isNightEnd
 												&& date.getMinutes() <= isNightEndMinutes) {
 											isTrues = 1;
 										}
 										if (date.getHours() >= isNightStartHour) {
-											isTrues = 1;
+											isGreater = 1;
 											if (date.getHours() == isNightStartHour
 													&& date.getMinutes() > isNightStartMinute) {
 												isTrues = 1;
@@ -1410,8 +2152,17 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 												isTrues = 2;
 											}
 										} else {
-											if (isGreater == 1) {
-
+											isGreater = 0;
+										}
+										if (isGreater == 1) {
+											isTrues = 1;
+											isTrue = 0;
+											isTrue1 = 0;
+										} else {
+											if (isGreaters == 1) {
+												isTrues = 1;
+												isTrue = 0;
+												isTrue1 = 0;
 											} else {
 												isTrues = 0;
 											}
@@ -1420,14 +2171,16 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 										if (isNightStartHour == 0
 												&& date.getMinutes() <= isNightStartMinute) {
 											isTrues = 3;
+											isTrue1 = 0;
 										} else {
 											isTrues = 2;
+											isTrue1 = 0;
 										}
 									}
 									if (isTrues == 1) {
 										if (date.getHours() == isNightStartHour
 												&& date.getMinutes() <= isNightStartMinute) {
-
+											conpare = 1;
 										} else {
 											if (isTrue1 == 0) {
 												date.setHours(date.getHours()
@@ -1437,12 +2190,13 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 														+ isNightContinueMinute);
 												isTrues = 0;
 												isTrue1 = 1;
+												conpare = 1;
 											}
 										}
 									} else if (isTrues == 2) {
 										if (date.getHours() == isNightStartHour
 												&& date.getMinutes() <= isNightStartMinute) {
-
+											conpare = 1;
 										} else {
 											if (isTrue1 == 0) {
 												date.setHours(date.getHours()
@@ -1452,6 +2206,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 														+ isNightContinueMinute);
 												isTrues = 0;
 												isTrue1 = 1;
+												conpare = 1;
 											}
 										}
 									} else if (isTrues == 3) {
@@ -1467,6 +2222,187 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 														+ isNightContinueMinute);
 												isTrues = 0;
 												isTrue1 = 1;
+												conpare = 1;
+											}
+										}
+									}
+								} else if (compareMonths > compareMonth) {
+									conpare = 0;
+									if (isNightStartHour != 0) {
+										if (date.getHours() == isNightEnd
+												&& date.getMinutes() <= isNightEndMinutes) {
+											isTrues = 1;
+										}
+										if (date.getHours() >= isNightStartHour) {
+											isGreater = 1;
+											if (date.getHours() == isNightStartHour
+													&& date.getMinutes() > isNightStartMinute) {
+												isTrues = 1;
+											} else {
+												isTrues = 2;
+											}
+										} else {
+											isGreater = 0;
+										}
+										if (isGreater == 1) {
+											isTrues = 1;
+											isTrue = 0;
+											isTrue1 = 0;
+										} else {
+											if (isGreaters == 1) {
+												isTrues = 1;
+												isTrue = 0;
+												isTrue1 = 0;
+											} else {
+												isTrues = 0;
+											}
+										}
+									} else {
+										if (isNightStartHour == 0
+												&& date.getMinutes() <= isNightStartMinute) {
+											isTrues = 3;
+											isTrue1 = 0;
+										} else {
+											isTrues = 2;
+											isTrue1 = 0;
+										}
+									}
+									if (isTrues == 1) {
+										if (date.getHours() == isNightStartHour
+												&& date.getMinutes() <= isNightStartMinute) {
+											conpare = 1;
+										} else {
+											if (isTrue1 == 0) {
+												date.setHours(date.getHours()
+														+ isNightContinueHour);
+												date.setMinutes(date
+														.getMinutes()
+														+ isNightContinueMinute);
+												isTrues = 0;
+												isTrue1 = 1;
+												conpare = 1;
+											}
+										}
+									} else if (isTrues == 2) {
+										if (date.getHours() == isNightStartHour
+												&& date.getMinutes() <= isNightStartMinute) {
+											conpare = 1;
+										} else {
+											if (isTrue1 == 0) {
+												date.setHours(date.getHours()
+														+ isNightContinueHour);
+												date.setMinutes(date
+														.getMinutes()
+														+ isNightContinueMinute);
+												isTrues = 0;
+												isTrue1 = 1;
+												conpare = 1;
+											}
+										}
+									} else if (isTrues == 3) {
+										if (date.getHours() == isNightStartHour
+												&& date.getMinutes() <= isNightStartMinute) {
+
+										} else {
+											if (isTrue1 == 0) {
+												date.setHours(date.getHours()
+														+ isNightContinueHour);
+												date.setMinutes(date
+														.getMinutes()
+														+ isNightContinueMinute);
+												isTrues = 0;
+												isTrue1 = 1;
+												conpare = 1;
+											}
+										}
+									}
+								} else if (compareDays > compareDayf) {
+									conpare = 0;
+									if (isNightStartHour != 0) {
+										if (date.getHours() == isNightEnd
+												&& date.getMinutes() <= isNightEndMinutes) {
+											isTrues = 1;
+										}
+										if (date.getHours() >= isNightStartHour) {
+											isGreater = 1;
+											if (date.getHours() == isNightStartHour
+													&& date.getMinutes() > isNightStartMinute) {
+												isTrues = 1;
+											} else {
+												isTrues = 2;
+											}
+										} else {
+											isGreater = 0;
+										}
+										if (isGreater == 1) {
+											isTrues = 1;
+											isTrue = 0;
+											isTrue1 = 0;
+										} else {
+											if (isGreaters == 1) {
+												isTrues = 1;
+												isTrue = 0;
+												isTrue1 = 0;
+											} else {
+												isTrues = 0;
+											}
+										}
+									} else {
+										if (isNightStartHour == 0
+												&& date.getMinutes() <= isNightStartMinute) {
+											isTrues = 3;
+											isTrue1 = 0;
+										} else {
+											isTrues = 2;
+											isTrue1 = 0;
+										}
+									}
+									if (isTrues == 1) {
+										if (date.getHours() == isNightStartHour
+												&& date.getMinutes() <= isNightStartMinute) {
+											conpare = 1;
+										} else {
+											if (isTrue1 == 0) {
+												date.setHours(date.getHours()
+														+ isNightContinueHour);
+												date.setMinutes(date
+														.getMinutes()
+														+ isNightContinueMinute);
+												isTrues = 0;
+												isTrue1 = 1;
+												conpare = 1;
+											}
+										}
+									} else if (isTrues == 2) {
+										if (date.getHours() == isNightStartHour
+												&& date.getMinutes() <= isNightStartMinute) {
+											conpare = 1;
+										} else {
+											if (isTrue1 == 0) {
+												date.setHours(date.getHours()
+														+ isNightContinueHour);
+												date.setMinutes(date
+														.getMinutes()
+														+ isNightContinueMinute);
+												isTrues = 0;
+												isTrue1 = 1;
+												conpare = 1;
+											}
+										}
+									} else if (isTrues == 3) {
+										if (date.getHours() == isNightStartHour
+												&& date.getMinutes() <= isNightStartMinute) {
+
+										} else {
+											if (isTrue1 == 0) {
+												date.setHours(date.getHours()
+														+ isNightContinueHour);
+												date.setMinutes(date
+														.getMinutes()
+														+ isNightContinueMinute);
+												isTrues = 0;
+												isTrue1 = 1;
+												conpare = 1;
 											}
 										}
 									}
@@ -1477,8 +2413,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 											isTrues = 1;
 										}
 										if (date.getHours() >= isNightStartHour) {
-											isTrues = 1;
-											isTrue1 = 0;
+											isGreater = 1;
 											if (date.getHours() == isNightStartHour
 													&& date.getMinutes() > isNightStartMinute) {
 												isTrues = 1;
@@ -1486,11 +2421,15 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 												isTrues = 2;
 											}
 										} else {
-											if (isGreater == 1) {
-
-											} else {
-												isTrues = 0;
+											isGreater = 0;
+										}
+										if (isGreater == 1) {
+											if (conpare == 0) {
+												isTrues = 1;
+												isTrue1 = 0;
 											}
+										} else {
+											isTrues = 0;
 										}
 									} else {
 										if (isNightStartHour == 0
@@ -1498,18 +2437,30 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 											isTrues = 0;
 										} else {
 											isTrues = 2;
+											isTrue1 = 0;
 										}
 										isNightStartHours = 24;
 										if (isNightStartHours - date.getHours() == 0) {
 											isTrues = 2;
+											isTrue1 = 0;
 										} else {
 											isTrues = 0;
 										}
 									}
+									Date dateStart = new Date();
+									SimpleDateFormat formatStart = new SimpleDateFormat(
+											"yyyy-MM-dd HH:mm");
+									dateStart = format.parse(time_start);
+									if (dateStart.getHours() > isNightStartHour) {
+										isTrue1 = 1;
+									} else {
+										isTrue1 = 0;
+									}
+
 									if (isTrues == 1) {
 										if (date.getHours() == isNightStartHour
 												&& date.getMinutes() <= isNightStartMinute) {
-
+											conpare = 1;
 										} else {
 											if (isTrue1 == 0) {
 												date.setHours(date.getHours()
@@ -1524,7 +2475,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 									} else if (isTrues == 2) {
 										if (date.getHours() == isNightStartHour
 												&& date.getMinutes() <= isNightStartMinute) {
-
+											conpare = 1;
 										} else {
 											if (isTrue1 == 0) {
 												date.setHours(date.getHours()
@@ -1555,20 +2506,21 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 								}
 							} else {
 								date = format.parse(time_end);
-								if (s > 4) {
+								if (s > MatchedNum) {
 									date.setDate(date.getDate() + 10);
 									s = 1;
 								}
 								if (isTrues == 1) {
-									if (isTrue == 0) {
+									if (isTrue1 == 0) {
 										date.setHours(date.getHours()
 												+ isNightContinueHour);
 										date.setMinutes(date.getMinutes()
 												+ isNightContinueMinute);
 										isTrues = 0;
-										isTrue = 1;
+										isTrue1 = 1;
 									}
 									isTrues = 0;
+									conpare = 1;
 								} else if (isTrues == 2) {
 									if (isTrue1 == 0) {
 										date.setHours(date.getHours()
@@ -1578,6 +2530,8 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 										isTrues = 0;
 										isTrue1 = 1;
 									}
+									isTrues = 0;
+									conpare = 1;
 								} else if (isTrues == 3) {
 									if (isTrue1 == 0) {
 										date.setHours(date.getHours()
@@ -1587,23 +2541,28 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 										isTrues = 0;
 										isTrue1 = 1;
 									}
+									isTrues = 0;
+									conpare = 1;
 								}
 								time_starts = format.format(date);
 								compareDayf = date.getDate();
+								compareMonth = date.getMonth();
+								compareYear = date.getYear();
 								date.setHours(date.getHours() + nHour);
 								date.setMinutes(date.getMinutes() + nMinutes);
 								compareDays = date.getDate();
-								if (compareDays > compareDayf) {
-									isTrues = 1;
-									isTrue = 0;
-									isTrue1 = 0;
+								compareMonths = date.getMonth();
+								compareYears = date.getYear();
+								if (compareYears > compareYear) {
+									conpare = 0;
+									isGreater1 = 0;
 									if (isNightStartHour != 0) {
 										if (date.getHours() == isNightEnd
 												&& date.getMinutes() <= isNightEndMinutes) {
 											isTrues = 1;
 										}
 										if (date.getHours() >= isNightStartHour) {
-											isTrues = 1;
+											isGreater = 1;
 											if (date.getHours() == isNightStartHour
 													&& date.getMinutes() > isNightStartMinute) {
 												isTrues = 1;
@@ -1611,24 +2570,38 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 												isTrues = 2;
 											}
 										} else {
-											if (isGreater == 1) {
-
+											isGreater = 0;
+										}
+										if (isGreater == 1) {
+											if (conpare == 0) {
+												isTrues = 1;
+												isTrue = 0;
+												isTrue1 = 0;
+											}
+										} else {
+											if (isGreaters == 1) {
+												isTrues = 1;
+												isTrue = 0;
+												isTrue1 = 0;
 											} else {
 												isTrues = 0;
 											}
+
 										}
 									} else {
 										if (isNightStartHour == 0
 												&& date.getMinutes() <= isNightStartMinute) {
 											isTrues = 3;
+											isTrue1 = 0;
 										} else {
 											isTrues = 2;
+											isTrue1 = 0;
 										}
 									}
 									if (isTrues == 1) {
 										if (date.getHours() == isNightStartHour
 												&& date.getMinutes() <= isNightStartMinute) {
-
+											compare = 1;
 										} else {
 											if (isTrue1 == 0) {
 												date.setHours(date.getHours()
@@ -1638,12 +2611,13 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 														+ isNightContinueMinute);
 												isTrues = 0;
 												isTrue1 = 1;
+												conpare = 1;
 											}
 										}
 									} else if (isTrues == 2) {
 										if (date.getHours() == isNightStartHour
 												&& date.getMinutes() <= isNightStartMinute) {
-
+											compare = 1;
 										} else {
 											if (isTrue1 == 0) {
 												date.setHours(date.getHours()
@@ -1653,6 +2627,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 														+ isNightContinueMinute);
 												isTrues = 0;
 												isTrue1 = 1;
+												conpare = 1;
 											}
 										}
 									} else if (isTrues == 3) {
@@ -1668,6 +2643,195 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 														+ isNightContinueMinute);
 												isTrues = 0;
 												isTrue1 = 1;
+												conpare = 1;
+											}
+										}
+									}
+								} else if (compareMonths > compareMonth) {
+									conpare = 0;
+									isGreater1 = 0;
+									if (isNightStartHour != 0) {
+										if (date.getHours() == isNightEnd
+												&& date.getMinutes() <= isNightEndMinutes) {
+											isTrues = 1;
+										}
+										if (date.getHours() >= isNightStartHour) {
+											isGreater = 1;
+											if (date.getHours() == isNightStartHour
+													&& date.getMinutes() > isNightStartMinute) {
+												isTrues = 1;
+											} else {
+												isTrues = 2;
+											}
+										} else {
+											isGreater = 0;
+										}
+										if (isGreater == 1) {
+											if (conpare == 0) {
+												isTrues = 1;
+												isTrue = 0;
+												isTrue1 = 0;
+											}
+										} else {
+											if (isGreaters == 1) {
+												isTrues = 1;
+												isTrue = 0;
+												isTrue1 = 0;
+											} else {
+												isTrues = 0;
+											}
+
+										}
+									} else {
+										if (isNightStartHour == 0
+												&& date.getMinutes() <= isNightStartMinute) {
+											isTrues = 3;
+											isTrue1 = 0;
+										} else {
+											isTrues = 2;
+											isTrue1 = 0;
+										}
+									}
+									if (isTrues == 1) {
+										if (date.getHours() == isNightStartHour
+												&& date.getMinutes() <= isNightStartMinute) {
+											compare = 1;
+										} else {
+											if (isTrue1 == 0) {
+												date.setHours(date.getHours()
+														+ isNightContinueHour);
+												date.setMinutes(date
+														.getMinutes()
+														+ isNightContinueMinute);
+												isTrues = 0;
+												isTrue1 = 1;
+												conpare = 1;
+											}
+										}
+									} else if (isTrues == 2) {
+										if (date.getHours() == isNightStartHour
+												&& date.getMinutes() <= isNightStartMinute) {
+											compare = 1;
+										} else {
+											if (isTrue1 == 0) {
+												date.setHours(date.getHours()
+														+ isNightContinueHour);
+												date.setMinutes(date
+														.getMinutes()
+														+ isNightContinueMinute);
+												isTrues = 0;
+												isTrue1 = 1;
+												conpare = 1;
+											}
+										}
+									} else if (isTrues == 3) {
+										if (date.getHours() == isNightStartHour
+												&& date.getMinutes() <= isNightStartMinute) {
+
+										} else {
+											if (isTrue1 == 0) {
+												date.setHours(date.getHours()
+														+ isNightContinueHour);
+												date.setMinutes(date
+														.getMinutes()
+														+ isNightContinueMinute);
+												isTrues = 0;
+												isTrue1 = 1;
+												conpare = 1;
+											}
+										}
+									}
+								} else if (compareDays > compareDayf) {
+									conpare = 0;
+									isGreater1 = 0;
+									if (isNightStartHour != 0) {
+										if (date.getHours() == isNightEnd
+												&& date.getMinutes() <= isNightEndMinutes) {
+											isTrues = 1;
+										}
+										if (date.getHours() >= isNightStartHour) {
+											isGreater = 1;
+											if (date.getHours() == isNightStartHour
+													&& date.getMinutes() > isNightStartMinute) {
+												isTrues = 1;
+											} else {
+												isTrues = 2;
+											}
+										} else {
+											isGreater = 0;
+										}
+										if (isGreater == 1) {
+											if (conpare == 0) {
+												isTrues = 1;
+												isTrue = 0;
+												isTrue1 = 0;
+											}
+										} else {
+											if (isGreaters == 1) {
+												isTrues = 1;
+												isTrue = 0;
+												isTrue1 = 0;
+											} else {
+												isTrues = 0;
+											}
+
+										}
+									} else {
+										if (isNightStartHour == 0
+												&& date.getMinutes() <= isNightStartMinute) {
+											isTrues = 3;
+											isTrue1 = 0;
+										} else {
+											isTrues = 2;
+											isTrue1 = 0;
+										}
+									}
+									if (isTrues == 1) {
+										if (date.getHours() == isNightStartHour
+												&& date.getMinutes() <= isNightStartMinute) {
+											compare = 1;
+										} else {
+											if (isTrue1 == 0) {
+												date.setHours(date.getHours()
+														+ isNightContinueHour);
+												date.setMinutes(date
+														.getMinutes()
+														+ isNightContinueMinute);
+												isTrues = 0;
+												isTrue1 = 1;
+												conpare = 1;
+											}
+										}
+									} else if (isTrues == 2) {
+										if (date.getHours() == isNightStartHour
+												&& date.getMinutes() <= isNightStartMinute) {
+											compare = 1;
+										} else {
+											if (isTrue1 == 0) {
+												date.setHours(date.getHours()
+														+ isNightContinueHour);
+												date.setMinutes(date
+														.getMinutes()
+														+ isNightContinueMinute);
+												isTrues = 0;
+												isTrue1 = 1;
+												conpare = 1;
+											}
+										}
+									} else if (isTrues == 3) {
+										if (date.getHours() == isNightStartHour
+												&& date.getMinutes() <= isNightStartMinute) {
+
+										} else {
+											if (isTrue1 == 0) {
+												date.setHours(date.getHours()
+														+ isNightContinueHour);
+												date.setMinutes(date
+														.getMinutes()
+														+ isNightContinueMinute);
+												isTrues = 0;
+												isTrue1 = 1;
+												conpare = 1;
 											}
 										}
 									}
@@ -1678,20 +2842,36 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 											isTrues = 1;
 										}
 										if (date.getHours() >= isNightStartHour) {
-											isTrues = 1;
-											isTrue1 = 0;
+											isGreater = 1;
+											if (isGreaters == 1) {
+												conpare = 0;
+												isGreater1 = 0;
+											}
 											if (date.getHours() == isNightStartHour
 													&& date.getMinutes() > isNightStartMinute) {
 												isTrues = 1;
 											} else {
-												isTrues = 2;
+												if (isGreater1 == 0) {
+													isTrues = 2;
+													if (conpare == 0) {
+														isTrue1 = 0;
+														isGreater1 = 1;
+													}
+												} else {
+													isTrues = 2;
+													isTrue1 = 1;
+												}
 											}
 										} else {
-											if (isGreater == 1) {
-
-											} else {
-												isTrues = 0;
+											isGreater = 0;
+										}
+										if (isGreater == 1) {
+											if (conpare == 0) {
+												isTrues = 1;
+												isTrue1 = 0;
 											}
+										} else {
+											isTrues = 0;
 										}
 									} else {
 										if (isNightStartHour == 0
@@ -1700,11 +2880,17 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 										} else {
 											isTrues = 2;
 										}
+										isNightStartHours = 24;
+										if (isNightStartHours - date.getHours() == 0) {
+											isTrues = 2;
+										} else {
+											isTrues = 0;
+										}
 									}
 									if (isTrues == 1) {
 										if (date.getHours() == isNightStartHour
 												&& date.getMinutes() <= isNightStartMinute) {
-
+											conpare = 1;
 										} else {
 											if (isTrue1 == 0) {
 												date.setHours(date.getHours()
@@ -1714,12 +2900,13 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 														+ isNightContinueMinute);
 												isTrues = 0;
 												isTrue1 = 1;
+												conpare = 1;
 											}
 										}
 									} else if (isTrues == 2) {
 										if (date.getHours() == isNightStartHour
 												&& date.getMinutes() <= isNightStartMinute) {
-
+											conpare = 1;
 										} else {
 											if (isTrue1 == 0) {
 												date.setHours(date.getHours()
@@ -1729,6 +2916,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 														+ isNightContinueMinute);
 												isTrues = 0;
 												isTrue1 = 1;
+												conpare = 1;
 											}
 										}
 									} else if (isTrues == 3) {
@@ -1744,6 +2932,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 														+ isNightContinueMinute);
 												isTrues = 0;
 												isTrue1 = 1;
+												conpare = 1;
 											}
 										}
 									}
@@ -1810,16 +2999,16 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 				}
 				now_rounds = now_round;
 				now_round1 = now_round;
-				for (int i = 1; i <= 4 * time_number; i++) {
+				for (int i = 1; i <= MatchedNum * time_number; i++) {
 					irrigationProject = new IrrigationProject();
 					irrigationProject.setIrrigation(units);
 					irrigationProject.setProjectstart("0000-00-00 00:00");
 					irrigationProject.setProjectend("0000-00-00 00:00");
-					if (a >= 5) {
+					if (a >= MatchedNum + 1) {
 						now_rounds = now_rounds + 1;
 						a = 1;
 					}
-					if (Marshalling >= 5) {
+					if (Marshalling >= MatchedNum + 1) {
 						Marshalling = 1;
 					}
 					irrigationProject.setRound((now_rounds + 1) + "");
@@ -1830,17 +3019,17 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 				}
 				a = 1;
 				Marshalling = 1;
-				int randomCommon[] = randomCommon(1, 5, 4);
+				int randomCommon[] = randomCommon(1, MatchedNum + 1, MatchedNum);
 				time_long = 24 - long_hour;
-				for (int i = 1; i <= 4 * time_number; i++) {
+				for (int i = 1; i <= MatchedNum * time_number; i++) {
 					Date date = new Date();
 					SimpleDateFormat format = new SimpleDateFormat(
 							"yyyy-MM-dd HH:mm");
-					if (a >= 5) {
+					if (a >= MatchedNum + 1) {
 						now_round1 = now_round1 + 1;
 						a = 1;
 					}
-					if (Marshalling >= 5) {
+					if (Marshalling >= MatchedNum + 1) {
 						Marshalling = 1;
 					}
 					s++;
@@ -1852,7 +3041,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 							date.setMinutes(date.getMinutes() + nMinutes);
 						} else {
 							date = format.parse(time_end);
-							if (s > 4) {
+							if (s > MatchedNum) {
 								date.setDate(date.getDate() + 10);
 								s = 1;
 							}

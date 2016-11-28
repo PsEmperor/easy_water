@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.view.MainActionBar;
+import ps.emperor.easy_water.view.MainActionBars;
 
 /**
  * 闸门信息（维护）
@@ -22,7 +23,7 @@ public class MainTainGateInfoFragment extends Fragment implements
 		OnClickListener {
 
 	private LayoutInflater mInflater;
-	private MainActionBar actionBar;
+	private MainActionBars actionBar;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -30,10 +31,10 @@ public class MainTainGateInfoFragment extends Fragment implements
 		mInflater = inflater;
 		View view = inflater.inflate(R.layout.fragment_maintain_gate_info,
 				container, false);
-		actionBar = (MainActionBar) view
+		actionBar = (MainActionBars) view
 				.findViewById(R.id.actionbar_maintain_gate_info);
 		actionBar.setLeftIcon(R.drawable.btn_back_selector);
-		actionBar.setRightIcon(R.drawable.ic_launcher);
+		actionBar.setRightText("保存");
 		actionBar.setTitle("阀门信息维护");
 		actionBar.setActionBarOnClickListener(this);
 

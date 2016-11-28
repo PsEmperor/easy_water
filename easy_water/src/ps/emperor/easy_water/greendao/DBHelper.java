@@ -60,6 +60,19 @@ public class DBHelper {
           }  
           return irrigations;  
       }
+      //根据灌溉单元查询计划 倒序
+      public List<IrrigationProject> loadLastMsgBySessionidOnle(String irrigation){  
+    	  QueryBuilder<IrrigationProject> mqBuilder = irrigationprojectDao.queryBuilder();  
+    	  mqBuilder.where(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Irrigation.eq(irrigation))  
+    	  .orderDesc(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Irrigation).limit(10) 
+    	  ;  
+    	  List<IrrigationProject> irrigations = new ArrayList<IrrigationProject>();  
+    	  int len = mqBuilder.list().size();  
+    	  for (int i = len-1; i >=0; i--) {  
+    		  irrigations.add(mqBuilder.list().get(i));  
+    	  }  
+    	  return irrigations;  
+      }
     //根据灌溉单元查询计划 正序
       public List<IrrigationProject> loadLastMsgBySessionids(String irrigation){  
           QueryBuilder<IrrigationProject> mqBuilder = irrigationprojectDao.queryBuilder();  
@@ -67,6 +80,19 @@ public class DBHelper {
           .orderDesc(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Irrigation)  
           ;  
           List<IrrigationProject> irrigations = new ArrayList<IrrigationProject>();  
+          int len = mqBuilder.list().size();  
+          for (int i = 0; i <len ; i++) {  
+          	irrigations.add(mqBuilder.list().get(i));  
+          }  
+          return irrigations;  
+      }
+      //根据灌溉单元查询灌溉组 正序
+      public List<IrrigationGroup> loadGroupByUnits(String irrigation){  
+          QueryBuilder<IrrigationGroup> mqBuilder = irrigationGroupDao.queryBuilder();  
+          mqBuilder.where(IrrigationGroupDao.Properties.Irrigation.eq(irrigation))  
+          .orderDesc(IrrigationGroupDao.Properties.Irrigation)  
+          ;  
+          List<IrrigationGroup> irrigations = new ArrayList<IrrigationGroup>();  
           int len = mqBuilder.list().size();  
           for (int i = 0; i <len ; i++) {  
           	irrigations.add(mqBuilder.list().get(i));  
@@ -232,7 +258,11 @@ public class DBHelper {
   //插入或者删除irrigations项  
     public long saveSessions(IrrigationProject irrigation){    
         return irrigationprojectDao.insertOrReplace(irrigation);    
-    }    
+    } 
+  //插入或者删除irrigations项  
+    public long saveGroup(IrrigationGroup irrigationGroup){    
+        return irrigationGroupDao.insertOrReplace(irrigationGroup);    
+    }
   
     //获得所有的Irrigations倒序排存到List列表里面  
     public List<Irrigation> loadAllSession() {  
