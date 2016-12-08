@@ -31,7 +31,7 @@ public class ApplyIrrigateControlAdapter extends MyBaseAdapter<ApplyIrrigateCont
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.fragment_apply_irrigate_control_list, null);
 			viewHolder = new ViewHolder();
-			viewHolder.valves = (TextView) convertView.findViewById(R.id.text_irriagte_control_list);
+			viewHolder.valves = (TextView) convertView.findViewById(R.id.text_irriagte_control_list_text);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();

@@ -34,16 +34,17 @@ import ps.emperor.easy_water.view.WheelView;
 
 @SuppressLint("NewApi")
 public class ApplyIrrigateControlValveFragment extends Fragment implements
-		OnClickListener{
+		OnClickListener {
 
 	private LayoutInflater mInflater;
 	private MainActionBars actionBar;
 	private ImageView isOpen;
 	private Dialog dialog;
 	private String hour, minute;
-	private RelativeLayout valve_control; 
+	private RelativeLayout valve_control;
 	private TextView text_apply_irriagte_valve_control;
 	private String units;
+	private int isOpens;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,13 +70,14 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 		// 灌水延续时间显示
 		text_apply_irriagte_valve_control = (TextView) view
 				.findViewById(R.id.text_apply_irriagte_valve_control);
-		text_apply_irriagte_valve_control.setText(hour + "时" + ":" + minute+"分");
+		text_apply_irriagte_valve_control.setText(hour + "时" + minute + "分");
 
 		isOpen = (ImageView) view
 				.findViewById(R.id.image_irriagte_valve_control_isopen);
 		isOpen.setOnClickListener(this);
 		return view;
 	}
+
 
 	private void init() {
 		hour = (String) SharedUtils.getParam(getActivity(), "hour_control",
@@ -105,6 +107,16 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 			Toast.makeText(getActivity(), "保存", Toast.LENGTH_SHORT).show();
 			break;
 		case R.id.image_irriagte_valve_control_isopen:
+			if (isOpens == 0) {
+				isOpens = 1;
+			} else {
+				isOpens = 0;
+			}
+			if(isOpens == 0){
+				isOpen.setImageResource(R.drawable.off);
+			}else{
+				isOpen.setImageResource(R.drawable.on);
+			}
 			break;
 		case R.id.layout_apply_irriagte_valve_control:
 			showDateTimePicker(mInflater);

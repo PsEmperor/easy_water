@@ -15,8 +15,10 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -158,27 +160,17 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 							name = (EditText) contentview
 									.findViewById(R.id.edit_mine_user_name);
 							String names = name.getText().toString().trim();
-							if(checkNameChese(names) == true){
+							if(checkNameChese(names) == true && !CheckUtil.IsEmpty(names)){
 								name.setText(names);
 								name_show.setText(names);
 								SharedUtils.setParam(getActivity(),
 										"dialog_user_name", names);
-								try {
-									Field field = dialog.getClass().getSuperclass().getDeclaredField("mShowing");
-									field.setAccessible(true);
-									field.set(dialog, true);
-									} catch (Exception e) {
-									e.printStackTrace();
-									}
 							}else{
-								  try {
-					                    Field field = dialog.getClass().getSuperclass().getDeclaredField("mShowing");
-					                    field.setAccessible(true);
-					                    field.set(dialog, false);
-					                } catch (Exception e) {
-					                    e.printStackTrace();
-					                }
+								if(CheckUtil.IsEmpty(names)){
+								Toast.makeText(getActivity(), "姓名不能为空！", Toast.LENGTH_SHORT).show();
+								}else{
 								Toast.makeText(getActivity(), "请输入正确的姓名！", Toast.LENGTH_SHORT).show();
+								}
 							}
 						}
 					});
@@ -217,6 +209,11 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 		}
 	}
 		
+	protected void setOnKeyListener(OnKeyListener onKeyListener) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	private View.OnClickListener changlistener = new View.OnClickListener() {
 
 		@Override

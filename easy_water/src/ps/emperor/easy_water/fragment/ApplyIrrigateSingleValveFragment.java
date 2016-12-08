@@ -18,6 +18,7 @@ import ps.emperor.easy_water.adapter.ImageAdapters;
 import ps.emperor.easy_water.entity.ApplyIrrigateSingleValveBean;
 import ps.emperor.easy_water.entity.MainTainIrrigationInfoBean;
 import ps.emperor.easy_water.view.MainActionBar;
+import ps.emperor.easy_water.view.MainActionBars;
 import ps.emperor.easy_water.view.MyGridView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -35,9 +36,8 @@ public class ApplyIrrigateSingleValveFragment extends Fragment implements
 		OnClickListener, OnItemClickListener {
 
 	private LayoutInflater mInflater;
-	private MainActionBar actionBar;
+	private MainActionBars actionBar;
 	private MyGridView gridView;
-	private ImageAdapters adapter;
 	private Vector<ApplyIrrigateSingleValveBean> beans;
 	private ApplyIrrigateSingleValveAdapter adapter2;
 	private String units;
@@ -49,10 +49,10 @@ public class ApplyIrrigateSingleValveFragment extends Fragment implements
 		View view = inflater
 				.inflate(R.layout.fragment_apply_irrigate_single_valve,
 						container, false);
-		actionBar = (MainActionBar) view
+		actionBar = (MainActionBars) view
 				.findViewById(R.id.actionbar_apply_irrigat_single_valve);
 		actionBar.setLeftIcon(R.drawable.btn_back_selector);
-		actionBar.setRightIcon(R.drawable.ic_launcher);
+		actionBar.setRightText("切换");	
 		actionBar.setTitle("单阀显示");
 		actionBar.setActionBarOnClickListener(this);
 
@@ -63,19 +63,36 @@ public class ApplyIrrigateSingleValveFragment extends Fragment implements
 		gridView.setOnItemClickListener(this);
 		beans = new Vector<ApplyIrrigateSingleValveBean>();
 		ApplyIrrigateSingleValveBean bean;
-		for (int i = 0; i < 10; i++) {
-			bean = new ApplyIrrigateSingleValveBean();
-			bean.setValve("A");
-			bean.setNames("王");
-			bean.setCrops("土");
-			beans.add(bean);
-		}
-		adapter = new ImageAdapters(getActivity(), beans);
+		bean = new ApplyIrrigateSingleValveBean();
+		bean.setValve("1-1");
+		bean.setNames("王");
+		bean.setCrops("土");
+		beans.add(bean);
+		bean = new ApplyIrrigateSingleValveBean();
+		bean.setValve("1-2");
+		bean.setNames("王");
+		bean.setCrops("土");
+		beans.add(bean);
+		bean = new ApplyIrrigateSingleValveBean();
+		bean.setValve("1-3");
+		bean.setNames("王");
+		bean.setCrops("土");
+		beans.add(bean);
+		bean = new ApplyIrrigateSingleValveBean();
+		bean.setValve("1-4");
+		bean.setNames("王");
+		bean.setCrops("土");
+		beans.add(bean);
+		bean = new ApplyIrrigateSingleValveBean();
+		bean.setValve("1-5");
+		bean.setNames("王");
+		bean.setCrops("土");
+		beans.add(bean);
 		adapter2 = new ApplyIrrigateSingleValveAdapter(getActivity());
 		adapter2.addData(beans, true);
 		gridView.setAdapter(adapter2);
 		gridView.setVerticalSpacing(5);
-		gridView.setPadding(10, 10, 5, 5);
+		gridView.setPadding(10, 10, 5, 10);
 		return view;
 
 	}

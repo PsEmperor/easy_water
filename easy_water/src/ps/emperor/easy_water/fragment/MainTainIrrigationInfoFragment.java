@@ -86,7 +86,8 @@ public class MainTainIrrigationInfoFragment extends Fragment implements
 		value = new ArrayList<Integer>();
 		dbHelper = DBHelper.getInstance(getActivity()); // 得到DBHelper对象
 		units = (String) SharedUtils.getParam(getActivity(), "units", 1+"");
-		
+		btn_main_irrigate_info_group = (Button) view.findViewById(R.id.btn_main_irrigate_info_group);
+		btn_main_irrigate_info_group.setOnClickListener(this);
 		irrigationGroups = dbHelper.loadGroupByUnits(units);
 		if(CheckUtil.IsEmpty(irrigationGroups)){
 			for (int i = 1; i <= 5; i++) {
@@ -231,7 +232,8 @@ public class MainTainIrrigationInfoFragment extends Fragment implements
 		transaction.replace(R.id.fragment_maintain_present_irrigate,
 				fragment1, "main");
 		transaction.commit();
-		case R.id.text_irrigation_info_group:// 重置编组信息
+		break;
+		case R.id.btn_main_irrigate_info_group:// 重置编组信息
 			new AlertDialog.Builder(getActivity())
 					.setTitle("系统提示")
 					// 设置对话框标题

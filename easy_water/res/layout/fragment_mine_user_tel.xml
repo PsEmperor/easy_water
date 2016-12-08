@@ -13,18 +13,18 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:background="@color/white" >
 
         <ImageView
             android:id="@+id/imageView1"
-            android:layout_width="65dp"
-            android:layout_height="65dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
-            android:src="@drawable/ic_launcher" />
+            android:src="@drawable/phone1" />
 
         <TextView
             android:id="@+id/text_mine_user_info_tel"
@@ -42,9 +42,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_mine_user_info_tel"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
+            android:paddingBottom="10dp"
             android:text="该手机号可用于登录"
             android:textColor="@color/gray_1" />
+        
     </RelativeLayout>
 
     <RelativeLayout
@@ -124,6 +126,6 @@
         android:layout_marginTop="20dp"
         android:text="提示:手机号码是用户唯一的身份识别码，修改后该用户所有权限和相关信息将与新手机号进行绑定，原号码将失去所有功能，请谨慎操作。"
         android:textColor="@color/gray_1"
-        android:textSize="13sp" />
+        android:textSize="14sp" />
 
 </LinearLayout>

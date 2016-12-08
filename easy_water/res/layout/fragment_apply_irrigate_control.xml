@@ -5,11 +5,11 @@
     android:background="@color/gray_3"
     android:orientation="vertical" >
 
-    <ps.emperor.easy_water.view.MainActionBar
+    <ps.emperor.easy_water.view.MainActionBars
         android:id="@+id/actionbar_apply_irrigate_control"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
-    </ps.emperor.easy_water.view.MainActionBar>
+    </ps.emperor.easy_water.view.MainActionBars>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:text="TextView" />
+            android:text="141团6连1#地块" />
 
         <TextView
             android:id="@+id/text_apply_irrigate_control_element"
@@ -32,7 +32,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignRight="@+id/text_apply_irrigate_control_unit"
             android:layout_marginBottom="10dp"
-            android:text="TextView" />
+            android:text="2#灌溉单元" />
     </RelativeLayout>
 
     <LinearLayout
@@ -95,15 +95,29 @@
                 android:layout_marginTop="8dp"
                 android:text="2016-05-04 12:00" />
         </RelativeLayout>
-
-        <ImageView
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1">
+        <ImageView
             android:id="@+id/image_apply_irrigate_control"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/ic_launcher" />
-    </LinearLayout>
+            android:paddingTop="5dp"
+            android:src="@drawable/group_cut" />
 
+        <TextView
+            android:id="@+id/text_apply_irrigate_control_group_cut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="A组"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+</RelativeLayout>
+    </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="170dp"
@@ -126,7 +140,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="fill_parent" 
+        android:layout_height="0dp" 
         android:layout_weight="1">
 
         <Button

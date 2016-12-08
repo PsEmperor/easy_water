@@ -11,7 +11,14 @@ public class ApplyWaterDistrbutionGateBean {
 	public String percentage; //当前百分比
 	public String aperture ; //开度
 	public String high; //开高
+	public String num;//闸门编号
 	
+	public String getNum() {
+		return num;
+	}
+	public void setNum(String num) {
+		this.num = num;
+	}
 	public String getPercentage() {
 		return percentage;
 	}
@@ -30,7 +37,5 @@ public class ApplyWaterDistrbutionGateBean {
 	public void setHigh(String high) {
 		this.high = high;
 	}
-	
-
 	
 }

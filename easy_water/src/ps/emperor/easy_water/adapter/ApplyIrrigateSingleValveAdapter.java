@@ -30,7 +30,7 @@ public class ApplyIrrigateSingleValveAdapter extends MyBaseAdapter<ApplyIrrigate
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.fragment_apply_irrigate_single_valve_list, null);
 			viewHolder = new ViewHolder();
-			viewHolder.valves = (TextView) convertView.findViewById(R.id.text_apply_irrigate_single_valve_list);
+			viewHolder.valves = (TextView) convertView.findViewById(R.id.text_apply_irrigate_single_valve_list_text);
 			viewHolder.names = (TextView) convertView.findViewById(R.id.text_apply_irrigate_single_valve_user_name);
 			viewHolder.crops = (TextView) convertView.findViewById(R.id.text_apply_irrigate_single_valve_crop);
 			convertView.setTag(viewHolder);

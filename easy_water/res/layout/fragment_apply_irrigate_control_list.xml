@@ -3,16 +3,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+<RelativeLayout 
+    android:layout_width="wrap_content"
+    android:layout_height="60dp">
+    <ImageView
+        android:id="@+id/text_irriagte_control_list"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_margin="5dp"
+        android:src="@drawable/value_on" />
 
     <TextView
-        android:id="@+id/text_irriagte_control_list"
-        android:layout_width="55dp"
-        android:layout_height="50dp"
-        android:layout_margin="5dp"
-        android:layout_marginLeft="10dp"
-        android:background="@color/red"
-        android:gravity="center"
-        android:text="A"
-        android:textSize="15sp" />
+        android:id="@+id/text_irriagte_control_list_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/text_irriagte_control_list"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
+        android:text="1-1"
+        android:textColor="@color/black"
+        android:textSize="16sp" 
+        />
 
+</RelativeLayout>
 </LinearLayout>

@@ -24,6 +24,7 @@ import ps.emperor.easy_water.adapter.ApplyIrrigateControlAdapter;
 import ps.emperor.easy_water.adapter.ArrayWheelAdapter;
 import ps.emperor.easy_water.entity.ApplyIrrigateControlBean;
 import ps.emperor.easy_water.view.MainActionBar;
+import ps.emperor.easy_water.view.MainActionBars;
 import ps.emperor.easy_water.view.MyGridView;
 import ps.emperor.easy_water.view.WheelView;
 
@@ -39,7 +40,7 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 		OnClickListener, OnItemClickListener {
 
 	private LayoutInflater mInflater;
-	private MainActionBar actionBar;
+	private MainActionBars actionBar;
 	private MyGridView gridView;
 	private ApplyIrrigateControlAdapter adapter; //灌溉组控制adapter
 	private List<ApplyIrrigateControlBean> beans; //灌溉组控制实体类
@@ -53,10 +54,10 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 		View view = inflater.inflate(R.layout.fragment_apply_irrigate_control,
 				container, false);
 
-		actionBar = (MainActionBar) view
+		actionBar = (MainActionBars) view
 				.findViewById(R.id.actionbar_apply_irrigate_control);
 		actionBar.setLeftIcon(R.drawable.btn_back_selector);
-		actionBar.setRightIcon(R.drawable.ic_launcher);
+		actionBar.setRightText("切换");
 		actionBar.setTitle("灌溉组控制");
 		actionBar.setActionBarOnClickListener(this);
 
@@ -72,11 +73,18 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 		adapter = new ApplyIrrigateControlAdapter(getActivity());
 		beans = new ArrayList<ApplyIrrigateControlBean>();
 		ApplyIrrigateControlBean bean;
-		for (int i = 0; i < 4; i++) {
-			bean = new ApplyIrrigateControlBean();
-			bean.setValve("A");
-			beans.add(bean);
-		}
+		bean = new ApplyIrrigateControlBean();
+		bean.setValve("1-1");
+		beans.add(bean);
+		bean = new ApplyIrrigateControlBean();
+		bean.setValve("1-2");
+		beans.add(bean);
+		bean = new ApplyIrrigateControlBean();
+		bean.setValve("1-3");
+		beans.add(bean);
+		bean = new ApplyIrrigateControlBean();
+		bean.setValve("1-4");
+		beans.add(bean);
 		adapter.addData(beans, false);
 		gridView.setAdapter(adapter);
 		beans = adapter.getData();

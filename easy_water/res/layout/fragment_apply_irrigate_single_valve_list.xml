@@ -8,16 +8,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
-
-        <TextView
+        <ImageView
             android:id="@+id/text_apply_irrigate_single_valve_list"
             android:layout_width="55dp"
             android:layout_height="55dp"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/text_apply_irrigate_single_valve_list"
-            android:background="@color/color_grid_header"
+            android:src="@drawable/value_on"
             android:gravity="center"
-            android:text="A"
             android:textSize="15sp" />
 
         <TextView
@@ -28,7 +26,9 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="1dp"
-            android:text="王" />
+            android:text="王" 
+            android:textColor="@color/black"
+            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/text_apply_irrigate_single_valve_crop"
@@ -37,7 +37,21 @@
             android:layout_alignBaseline="@+id/text_apply_irrigate_single_valve_user_name"
             android:layout_alignBottom="@+id/text_apply_irrigate_single_valve_user_name"
             android:layout_alignRight="@+id/text_apply_irrigate_single_valve_list"
-            android:text="土" />
+            android:text="土"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/text_apply_irrigate_single_valve_list_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/text_apply_irrigate_single_valve_list"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            android:text="1-1"
+            android:layout_marginBottom="7dp"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
 
     </RelativeLayout>
 

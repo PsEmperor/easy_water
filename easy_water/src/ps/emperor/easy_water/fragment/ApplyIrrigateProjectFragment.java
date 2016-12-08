@@ -74,7 +74,7 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 	EditText runPager;
 	private String time, units, compareTime;
 	private Long deletePage;
-	private int MatchedNum;
+	private int MatchedNum,names;
 	private ProgressDialog progressDialog;
 	
 	private Handler handler = new Handler() {
@@ -572,12 +572,18 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 						public void onClick(DialogInterface dialog, int which) {
 							runPager = (EditText) contentview
 									.findViewById(R.id.edit_pager);
-							int names = Integer.valueOf(runPager.getText()
-									.toString().trim()) - 1;
-							if(CheckUtil.IsEmpty(names)){
-								pager.setCurrentItem(nowPage);
+							if(CheckUtil.IsEmpty(runPager.getText()
+									.toString().trim())||"".equals(runPager.getText()
+									.toString().trim())){
+							names = 0;
 							}else{
-								pager.setCurrentItem(names);
+								names = Integer.valueOf(runPager.getText()
+										.toString().trim()) - 1;
+								if(CheckUtil.IsEmpty(names)){
+									pager.setCurrentItem(nowPage);
+								}else{
+									pager.setCurrentItem(names);
+								}
 							}
 						}
 					});

@@ -41,6 +41,7 @@ public class ApplyWaterDistrbutionGateAdapter extends MyBaseAdapter<ApplyWaterDi
 			viewHolder.high = (TextView) convertView.findViewById(R.id.tv_gate_control_hight_list);
 			viewHolder.layout = (RelativeLayout) convertView.findViewById(R.id.layout_hight_change_list);
 			viewHolder.layout_relative_change_list = (RelativeLayout) convertView.findViewById(R.id.layout_relative_change_list);
+			viewHolder.num = (TextView) convertView.findViewById(R.id.tv_gate_control_number_list);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
@@ -48,6 +49,7 @@ public class ApplyWaterDistrbutionGateAdapter extends MyBaseAdapter<ApplyWaterDi
 		ApplyWaterDistrbutionGateBean applyWaterDistrbutionGateBean = list.get(position);
 		viewHolder.aperture.setText(applyWaterDistrbutionGateBean.aperture);
 		viewHolder.high.setText(applyWaterDistrbutionGateBean.high);
+		viewHolder.num.setText(applyWaterDistrbutionGateBean.num);
 		RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)viewHolder.layout.getLayoutParams();
 		int height = DensityUtil.dip2px(context, (float)((100-Integer.valueOf(applyWaterDistrbutionGateBean.getPercentage()))*1.85));
 		layoutParams.height = height;
@@ -68,6 +70,7 @@ public class ApplyWaterDistrbutionGateAdapter extends MyBaseAdapter<ApplyWaterDi
 		TextView percentage;
 		TextView aperture;
 		TextView high;
+		TextView num;
 		RelativeLayout layout,layout_relative_change_list;
 		
 	}

@@ -6,6 +6,7 @@ import java.util.Vector;
 
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.entity.MainTainIrrigationInfoBean;
+import ps.emperor.easy_water.utils.SharedUtils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -14,6 +15,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +29,7 @@ public class ImageAdapter extends BaseAdapter{
     private Vector<Boolean> mImage_bs = new Vector<Boolean>();	// 定义一个向量作为选中与否容器
     private int lastPosition = -1;		//记录上一次选中的图片位置，-1表示未选中任何图片
     private boolean multiChoose;		//表示当前适配器是否允许多选
-    
+    private int screenWidth,screenHeigh;
     
     public ImageAdapter(Context c, boolean isMulti,Vector<MainTainIrrigationInfoBean>  mImageId){
     	mContext = c;
@@ -75,8 +77,14 @@ public class ImageAdapter extends BaseAdapter{
 //        	imageView = new ImageView(mContext);		// 给ImageView设置资源
 //            imageView.setLayoutParams(new GridView.LayoutParams(110, 120));	// 设置布局图片
 //            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);		// 设置显示比例类型
-            textView = new TextView(mContext);
-            textView.setLayoutParams(new GridView.LayoutParams(95, 95));
+        	screenWidth = (int) SharedUtils.getParam(mContext, "screenWidth", 0);
+        	screenHeigh = (int) SharedUtils.getParam(mContext, "screenHeigh", 0);
+        	textView = new TextView(mContext);
+            if(screenWidth == 0){
+            	textView.setLayoutParams(new GridView.LayoutParams(100, 100));
+            }else{
+            	textView.setLayoutParams(new GridView.LayoutParams(screenWidth/5-40, 100));
+            }
         }
         else
         {
@@ -86,17 +94,17 @@ public class ImageAdapter extends BaseAdapter{
 //        imageView.setImageDrawable(makeBmp(mImageIds.elementAt(position).getGates(),
 //        		mImage_bs.elementAt(position)));
         textView.setText(mImageIds.elementAt(position).getGate());
-        textView.setBackgroundResource(R.color.black);
-        textView.setGravity(Gravity.CENTER);
-        textView.setPadding(5, 5, 5, 5);
+        textView.setBackgroundResource(R.drawable.value_on);
+        textView.setGravity(Gravity.BOTTOM|Gravity.CENTER);
+        textView.setPadding(10, 10, 5, 10);
         if(mImageIds.get(position).getState() == 1){
         	textView.setClickable(false);
         	textView.setBackgroundResource(R.color.gray_1);
         }
         else if(mImage_bs.get(position)==true){
-        	textView.setBackgroundResource(R.color.red);
+        	textView.setBackgroundResource(R.drawable.value_selected);
         }else{
-        	textView.setBackgroundResource(R.color.black);
+        	textView.setBackgroundResource(R.drawable.value_on);
         }
         return textView;
 	}

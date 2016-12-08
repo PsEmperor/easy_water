@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import ps.emperor.easy_water.R;
@@ -48,7 +49,7 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements
 
 	private LayoutInflater mInflater;
 	private MainActionBars actionBar;
-	private TextView unit_control_plan;
+	private ImageView unit_control_plan;
 	private Button btn_control_true;
 	private ListView listView;
 	private List<ApplyIrrigationUnitControlBean> beans;
@@ -66,9 +67,9 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements
 			switch (msg.what) {
 			case 0:
 				if (CheckUtil.IsEmpty(listentity)) {
-					unit_control_plan.setText("设定计划");
+					unit_control_plan.setImageResource(R.drawable.project1);
 				} else {
-					unit_control_plan.setText("更改计划");
+					unit_control_plan.setImageResource(R.drawable.project);
 				}
 				break;
 			}}};
@@ -107,8 +108,8 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements
 
 		init();
 
-		unit_control_plan = (TextView) view
-				.findViewById(R.id.text_apply_irrigate_unit_control_plan);
+		unit_control_plan = (ImageView) view
+				.findViewById(R.id.unit_control_plan);
 		unit_control_plan.setOnClickListener(this);
 		btn_control_true = (Button) view
 				.findViewById(R.id.btn_apply_irrigate_unit_control_true);
@@ -174,7 +175,7 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements
 			transaction.replace(R.id.fl, fragment3, "main");
 			transaction.commit();
 			break;
-		case R.id.text_apply_irrigate_unit_control_plan: // 设定计划(此处需要传值
+		case R.id.unit_control_plan: // 设定计划(此处需要传值
 															// 需要授权单位、灌溉单元)
 			ApplyIrrigateProjectFragment fragment1 = new ApplyIrrigateProjectFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,

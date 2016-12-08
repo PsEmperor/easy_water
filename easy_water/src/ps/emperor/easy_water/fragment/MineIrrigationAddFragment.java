@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.adapter.IrrigationAddAdapter;
+import ps.emperor.easy_water.entity.ApplyIrrigationBean;
 import ps.emperor.easy_water.entity.KeyWordBean;
 import ps.emperor.easy_water.greendao.DBHelper;
 import ps.emperor.easy_water.greendao.Irrigation;
@@ -41,6 +42,8 @@ public class MineIrrigationAddFragment extends Fragment implements OnClickListen
 	private TextView irrigation_add, irrigation_canel;
 	private DBHelper dBManager;
 	private Irrigation entity ;
+	private DBHelper dbHelper;
+	private List<Irrigation> irrigation;
 	// private CheckBox checkBox;
 
 	@Override
@@ -61,15 +64,26 @@ public class MineIrrigationAddFragment extends Fragment implements OnClickListen
 		irrigation_canel.setOnClickListener(this);
 
 		dBManager = DBHelper.getInstance(getActivity());    //得到DBHelper对象  
-	       
+		dbHelper = DBHelper.getInstance(getActivity()); // 得到DBHelper对象
 		adapter = new IrrigationAddAdapter(getActivity());
 		beans = new ArrayList<KeyWordBean>();
 		KeyWordBean bean;
-		for (int i = 0; i < 10; i++) {
-			bean = new KeyWordBean();
-			bean.setkeyword("141团5连4#灌溉单元");
-			beans.add(bean);
-		}
+		bean = new KeyWordBean();
+		bean.setkeyword("第二大队第四中队第三小队");
+		bean.setCheck(true);
+		beans.add(bean);
+		bean = new KeyWordBean();
+		bean.setkeyword("第三大队第四中队第三小队");
+		bean.setCheck(true);
+		beans.add(bean);
+		bean = new KeyWordBean();
+		bean.setkeyword("第四大队第四中队第三小队");
+		bean.setCheck(true);
+		beans.add(bean);
+		bean = new KeyWordBean();
+		bean.setkeyword("第五大队第四中队第三小队");
+		bean.setCheck(true);
+		beans.add(bean);
 		adapter.addData(beans, false);
 		listView.setAdapter(adapter);
 		beans = adapter.getData();
@@ -90,12 +104,24 @@ public class MineIrrigationAddFragment extends Fragment implements OnClickListen
 			break;
 		case R.id.text_irrigation_add:
 			for (int i = 0; i < beans.size(); i++) {
-		    	   entity = new Irrigation();    //创建一个SessionEntity实体对象，并赋值  
-		    	   entity.setIrrigation(beans.get(i).getkeyword());
-		    	   entity.setGroupnumber(5);
-		    	   entity.setValuenumber(5);
-		    	   entity.setIsrelevance(0);
-		    	   dBManager.saveSession(entity);    //保存到数据库  
+					Irrigation irrigation = new Irrigation();
+					irrigation.setIrrigation(beans.get(i).getkeyword());
+					irrigation.setNHour(0);
+					irrigation.setNMinutes(0);
+					irrigation.setNNumber(0);
+					irrigation.setNRound(0);
+					irrigation.setIsNightStartHour(0);
+					irrigation.setIsNightStartMinute(0);
+					irrigation.setIsNightContinueHour(0);
+					irrigation.setIsNightContinueMinute(0);
+					irrigation.setIsNightEndHour(0);
+					irrigation.setIsNightEndMinute(0);
+					irrigation.setIsTimeLong(0);
+					irrigation.setGroupnumber(0);
+					irrigation.setValuenumber(0);
+					irrigation.setFilterHour(0);
+					irrigation.setFilterMinute(0);
+					dbHelper.saveSession(irrigation);
 			}
 			MineIrrigationEquipmentFragment fragment1 = new MineIrrigationEquipmentFragment();
 //			transaction.setCustomAnimations(R.anim.right_in, R.anim.right_out);

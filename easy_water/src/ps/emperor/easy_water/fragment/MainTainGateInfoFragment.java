@@ -35,7 +35,7 @@ public class MainTainGateInfoFragment extends Fragment implements
 				.findViewById(R.id.actionbar_maintain_gate_info);
 		actionBar.setLeftIcon(R.drawable.btn_back_selector);
 		actionBar.setRightText("保存");
-		actionBar.setTitle("阀门信息维护");
+		actionBar.setTitle("闸门信息维护");
 		actionBar.setActionBarOnClickListener(this);
 
 		return view;
