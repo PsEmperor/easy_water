@@ -651,7 +651,7 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 							irrigationProject.setProjectend("0000-00-00 00:00");
 							irrigationProject.setRound((now_round + 1) + "");
 							irrigationProject.setMarshalling(i + "");
-							dbHelper.saveSessions(irrigationProject);
+							dbHelper.saveProject(irrigationProject);
 						}
 						int randomCommon[] = randomCommon(1, MatchedNum+1, MatchedNum);
 						time_long = 24 - long_hour;
@@ -1481,7 +1481,7 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 							irrigationProject.setProjectend("0000-00-00 00:00");
 							irrigationProject.setRound((now_round + 1) + "");
 							irrigationProject.setMarshalling(i + "");
-							dbHelper.saveSessions(irrigationProject);
+							dbHelper.saveProject(irrigationProject);
 						}
 						int randomCommon[] = randomCommon(1, MatchedNum+1, MatchedNum);
 						time_long = 24 - long_hour;
@@ -2528,7 +2528,7 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 							irrigationProject.setProjectend("0000-00-00 00:00");
 							irrigationProject.setRound((now_round + 1) + "");
 							irrigationProject.setMarshalling(i + "");
-							dbHelper.saveSessions(irrigationProject);
+							dbHelper.saveProject(irrigationProject);
 						}
 						int randomCommon[] = randomCommon(1, MatchedNum+1, MatchedNum);
 						time_long = 24 - long_hour;
@@ -3352,7 +3352,7 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 					irrigationProject.setProjectend("0000-00-00 00:00");
 					irrigationProject.setRound((now_round + 1) + "");
 					irrigationProject.setMarshalling(i + "");
-					dbHelper.saveSessions(irrigationProject);
+					dbHelper.saveProject(irrigationProject);
 				}
 				int randomCommon[] = randomCommon(1, MatchedNum+1, MatchedNum);
 				time_long = 24 - long_hour;
@@ -4272,7 +4272,7 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 					irrigationProject.setProjectend("0000-00-00 00:00");
 					irrigationProject.setRound((now_round + 1) + "");
 					irrigationProject.setMarshalling(i + "");
-					dbHelper.saveSessions(irrigationProject);
+					dbHelper.saveProject(irrigationProject);
 				}
 				int randomCommon[] = randomCommon(1, MatchedNum + 1, MatchedNum);
 				time_long = 24 - long_hour;

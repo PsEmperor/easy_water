@@ -25,7 +25,7 @@ public class SingleValueDao extends AbstractDao<SingleValue, Long> {
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Irrigation = new Property(1, String.class, "irrigation", false, "IRRIGATION");
-        public final static Property Allvalue = new Property(2, String.class, "allvalue", false, "ALLVALUE");
+        public final static Property ValueID = new Property(2, String.class, "valueID", false, "VALUE_ID");
         public final static Property Valuestate = new Property(3, String.class, "valuestate", false, "VALUESTATE");
         public final static Property Durationtime = new Property(4, String.class, "durationtime", false, "DURATIONTIME");
     };
@@ -45,7 +45,7 @@ public class SingleValueDao extends AbstractDao<SingleValue, Long> {
         db.execSQL("CREATE TABLE " + constraint + "'SINGLE_VALUE' (" + //
                 "'_id' INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "'IRRIGATION' TEXT," + // 1: irrigation
-                "'ALLVALUE' TEXT," + // 2: allvalue
+                "'VALUE_ID' TEXT," + // 2: valueID
                 "'VALUESTATE' TEXT," + // 3: valuestate
                 "'DURATIONTIME' TEXT);"); // 4: durationtime
     }
@@ -71,9 +71,9 @@ public class SingleValueDao extends AbstractDao<SingleValue, Long> {
             stmt.bindString(2, irrigation);
         }
  
-        String allvalue = entity.getAllvalue();
-        if (allvalue != null) {
-            stmt.bindString(3, allvalue);
+        String valueID = entity.getValueID();
+        if (valueID != null) {
+            stmt.bindString(3, valueID);
         }
  
         String valuestate = entity.getValuestate();
@@ -99,7 +99,7 @@ public class SingleValueDao extends AbstractDao<SingleValue, Long> {
         SingleValue entity = new SingleValue( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // irrigation
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // allvalue
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // valueID
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // valuestate
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4) // durationtime
         );
@@ -111,7 +111,7 @@ public class SingleValueDao extends AbstractDao<SingleValue, Long> {
     public void readEntity(Cursor cursor, SingleValue entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setIrrigation(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setAllvalue(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setValueID(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setValuestate(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setDurationtime(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
      }

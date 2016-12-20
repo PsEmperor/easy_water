@@ -102,7 +102,6 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 			}
 		};
 	};
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -309,7 +308,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 						}
 						irrigationProject.setRound(now_rounds + 1 + "");
 						irrigationProject.setMarshalling(Marshalling + "");
-						dbHelper.saveSessions(irrigationProject);
+						dbHelper.saveProject(irrigationProject);
 						a++;
 						Marshalling++;
 					}
@@ -732,7 +731,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 							}
 							irrigationProject.setRound((now_rounds + 1) + "");
 							irrigationProject.setMarshalling(Marshalling + "");
-							dbHelper.saveSessions(irrigationProject);
+							dbHelper.saveProject(irrigationProject);
 							a++;
 							Marshalling++;
 						}
@@ -1679,7 +1678,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 							}
 							irrigationProject.setRound((now_rounds + 1) + "");
 							irrigationProject.setMarshalling(Marshalling + "");
-							dbHelper.saveSessions(irrigationProject);
+							dbHelper.saveProject(irrigationProject);
 							a++;
 							Marshalling++;
 						}
@@ -2103,7 +2102,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 						}
 						irrigationProject.setRound((now_rounds + 1) + "");
 						irrigationProject.setMarshalling(Marshalling + "");
-						dbHelper.saveSessions(irrigationProject);
+						dbHelper.saveProject(irrigationProject);
 						a++;
 						Marshalling++;
 					}
@@ -3013,7 +3012,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 					}
 					irrigationProject.setRound((now_rounds + 1) + "");
 					irrigationProject.setMarshalling(Marshalling + "");
-					dbHelper.saveSessions(irrigationProject);
+					dbHelper.saveProject(irrigationProject);
 					a++;
 					Marshalling++;
 				}

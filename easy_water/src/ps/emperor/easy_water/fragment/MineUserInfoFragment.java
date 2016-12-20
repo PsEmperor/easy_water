@@ -34,6 +34,7 @@ import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.PutToFile;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.view.MainActionBar;
+import ps.emperor.easy_water.view.MainActionBars;
 
 /**
  * 个人信息
@@ -49,7 +50,7 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 			info_user_name;
 	private Bitmap bitmap;
 	private ImageView image_info_head;
-	private MainActionBar actionBar;
+	private MainActionBars actionBar;
 	private String names;
 	private EditText name;
 	private TextView name_show;
@@ -61,9 +62,9 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 		View view = inflater.inflate(R.layout.fragment_mine_user_info,
 				container, false);
 
-		actionBar = (MainActionBar) view.findViewById(R.id.actionbar_user_info);
+		actionBar = (MainActionBars) view.findViewById(R.id.actionbar_user_info);
 		actionBar.setLeftIcon(R.drawable.btn_back_selector);
-		actionBar.setRightGone();
+		actionBar.setRightText("保存");
 		actionBar.setTitle("个人信息");
 		actionBar.setActionBarOnClickListener(this);
 

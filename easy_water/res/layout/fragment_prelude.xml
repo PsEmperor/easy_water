@@ -72,7 +72,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="40dp"
-                android:text="过滤器反冲洗" />
+                android:text="过滤器反冲洗"
+                android:textSize="15sp" />
 
             <ToggleButton
                 android:id="@+id/Toggle_prelude_filter"
@@ -99,7 +100,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="40dp"
-                android:text="施肥机" />
+                android:text="施肥机"
+                android:textSize="15sp" />
 
             <ToggleButton
                 android:id="@+id/Toggle_prelude_fertilizer_drill"
@@ -165,7 +167,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="40dp"
-                android:text="过滤器压差" />
+                android:text="过滤器压差"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/text_prelude_filter_pressure"
@@ -189,7 +192,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="40dp"
-                android:text="瞬时流量" />
+                android:text="瞬时流量"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/text_prelude_flow_rate"
@@ -247,7 +251,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="40dp"
-                android:text="累计电量" />
+                android:text="累计电量"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/text_prelude_cumulative_power"

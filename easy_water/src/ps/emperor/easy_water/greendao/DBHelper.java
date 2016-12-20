@@ -255,9 +255,13 @@ public class DBHelper {
     public long saveIsFirst(IrrigationIsFirst irrigation){    
         return irrigationIsFirstDao.insertOrReplace(irrigation);    
     } 
-  //插入或者删除irrigations项  
-    public long saveSessions(IrrigationProject irrigation){    
+  //插入或者删除灌溉计划项  
+    public long saveProject(IrrigationProject irrigation){    
         return irrigationprojectDao.insertOrReplace(irrigation);    
+    } 
+  //插入或者删除阀门项  
+    public long saveValue(SingleValue value){    
+        return valueDao.insertOrReplace(value);    
     } 
   //插入或者删除irrigations项  
     public long saveGroup(IrrigationGroup irrigationGroup){    

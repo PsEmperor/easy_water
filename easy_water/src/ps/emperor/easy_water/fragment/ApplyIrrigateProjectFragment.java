@@ -823,7 +823,7 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 																		+ "");
 														irrigationProject
 																.setMarshalling(i + "");
-														dbHelper.saveSessions(irrigationProject);
+														dbHelper.saveProject(irrigationProject);
 													}
 													beans.clear();
 													beans = new ArrayList<ApplyIrrigationProjectBean>();

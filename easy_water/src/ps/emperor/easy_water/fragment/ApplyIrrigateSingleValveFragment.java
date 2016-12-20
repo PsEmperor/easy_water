@@ -17,6 +17,8 @@ import ps.emperor.easy_water.adapter.ApplyIrrigateSingleValveAdapter;
 import ps.emperor.easy_water.adapter.ImageAdapters;
 import ps.emperor.easy_water.entity.ApplyIrrigateSingleValveBean;
 import ps.emperor.easy_water.entity.MainTainIrrigationInfoBean;
+import ps.emperor.easy_water.greendao.DBHelper;
+import ps.emperor.easy_water.greendao.SingleValue;
 import ps.emperor.easy_water.view.MainActionBar;
 import ps.emperor.easy_water.view.MainActionBars;
 import ps.emperor.easy_water.view.MyGridView;
@@ -41,7 +43,9 @@ public class ApplyIrrigateSingleValveFragment extends Fragment implements
 	private Vector<ApplyIrrigateSingleValveBean> beans;
 	private ApplyIrrigateSingleValveAdapter adapter2;
 	private String units;
-
+//	private DBHelper dbHelper;
+//	private SingleValue singleValue;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -57,7 +61,7 @@ public class ApplyIrrigateSingleValveFragment extends Fragment implements
 		actionBar.setActionBarOnClickListener(this);
 
 		units = getArguments().getString("units");
-		
+//		dbHelper = DBHelper.getInstance(getActivity()); // 得到DBHelper对象
 		gridView = (MyGridView) view
 				.findViewById(R.id.grid_maintain_irrigate_infos_single);
 		gridView.setOnItemClickListener(this);
@@ -70,13 +74,13 @@ public class ApplyIrrigateSingleValveFragment extends Fragment implements
 		beans.add(bean);
 		bean = new ApplyIrrigateSingleValveBean();
 		bean.setValve("1-2");
-		bean.setNames("王");
-		bean.setCrops("土");
+		bean.setNames("张");
+		bean.setCrops("玉");
 		beans.add(bean);
 		bean = new ApplyIrrigateSingleValveBean();
 		bean.setValve("1-3");
-		bean.setNames("王");
-		bean.setCrops("土");
+		bean.setNames("李");
+		bean.setCrops("苹");
 		beans.add(bean);
 		bean = new ApplyIrrigateSingleValveBean();
 		bean.setValve("1-4");
@@ -93,6 +97,11 @@ public class ApplyIrrigateSingleValveFragment extends Fragment implements
 		gridView.setAdapter(adapter2);
 		gridView.setVerticalSpacing(5);
 		gridView.setPadding(10, 10, 5, 10);
+//		for (int i = 0; i < beans.size(); i++) {
+//			singleValue = new SingleValue();
+//			singleValue.setValueID(beans.get(i).getValve());
+//			dbHelper.saveValue(singleValue);
+//		}
 		return view;
 
 	}
