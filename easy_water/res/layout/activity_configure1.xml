@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <ps.emperor.easy_water.utils.Ltitle 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        />
+    
+    
+<!--     <ListView 
+        android:id="@+id/lv_configure"
+        android:layout_width="match_parent"
+        android:dividerHeight="2dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        /> -->
+        
+       <LinearLayout 
+           android:layout_width="match_parent"
+           android:layout_height="0dp"
+           android:layout_weight="1"
+           android:orientation="horizontal"
+           >
+           
+           <Button 
+               android:text="打开NFC"
+               android:id="@+id/bt_nfc"
+               android:layout_width="0dp"
+               android:layout_weight="1"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center_vertical"
+               />
+           <Button 
+               android:text="手动配置"
+               android:id="@+id/bt_hand"
+               android:layout_width="0dp"
+               android:layout_weight="1"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center_vertical"
+               />
+       </LinearLayout>
+       
+       <TextView 
+           android:layout_margin="10dp"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:textSize="18sp"
+           android:text="温馨提示：\n如果您的手机支持NFC功能请点击打开NFC，如果没有则选择手动配置！！！"
+           />
+    
+
+</LinearLayout>

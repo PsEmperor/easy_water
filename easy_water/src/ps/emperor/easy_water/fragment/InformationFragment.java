@@ -88,7 +88,17 @@ public class InformationFragment extends Fragment implements OnClickListener {
 		
 		irrigate.setOnClickListener(this);
 		water.setOnClickListener(this);
+		initData();
 		return view;
+	}
+
+	private void initData() {
+		gethistogram();
+		mLinear.removeAllViews();
+		mLinear.addView(mChartView, new LayoutParams(LayoutParams.FILL_PARENT,
+				LayoutParams.FILL_PARENT));
+		index = 1;
+		clearStatus();		
 	}
 
 	public void gethistogram() {
@@ -131,7 +141,7 @@ public class InformationFragment extends Fragment implements OnClickListener {
 		renderer.setZoomEnabled(false);
 		renderer.setAntialiasing(true);
 		renderer.setZoomButtonsVisible(false);// 显示放大缩小功能按钮
-		renderer.setZoomRate(0f);
+		renderer.setZoomRate(5f);
 		renderer.setBarSpacing(0.5f);// 柱形图间隔
 
 		mChartView = ChartFactory.getBarChartView(getActivity(),
