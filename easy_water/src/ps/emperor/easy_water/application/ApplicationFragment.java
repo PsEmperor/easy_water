@@ -21,9 +21,12 @@ import ps.emperor.easy_water.activity.IrriagteOrWaterActivity;
 import ps.emperor.easy_water.entity.Person;
 import ps.emperor.easy_water.fragment.ApplyIrrigateFragment;
 import ps.emperor.easy_water.fragment.ApplyWaterDistrbutionFragment;
+import ps.emperor.easy_water.fragment.InformationFragment;
+import ps.emperor.easy_water.utils.SharedUtils;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Xml;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,7 +53,17 @@ public class ApplicationFragment extends Fragment implements
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_application, null);
+		DisplayMetrics dm = new DisplayMetrics();
+   	 	//获取屏幕信息
+   	    getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+   	 
+   	    int screenWidth = dm.widthPixels;
+   	
+   	    int screenHeigh = dm.heightPixels;
+   	    SharedUtils.setParam(getActivity(), "screenWidth", screenWidth);
+   	    SharedUtils.setParam(getActivity(), "screenHeigh", screenHeigh);
 		findView(view);
+		
 		return view;
 
 	}
@@ -135,6 +148,9 @@ public class ApplicationFragment extends Fragment implements
 			break;
 		case 3:
 			//数据
+//			InformationFragment sj = new InformationFragment();
+//			getActivity().getFragmentManager().beginTransaction()
+//					.replace(R.id.fl, sj).addToBackStack(null).commit();
 			Toast.makeText(getActivity(),
 					position + "" + ((TextView) view).getText() + "被点击", 0)
 					.show();

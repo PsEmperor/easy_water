@@ -75,15 +75,7 @@ public class MainTainIrrigationUserInfoFragment extends Fragment implements
 		
 		btn_main_irrigate_info_group = (Button) view.findViewById(R.id.btn_main_irrigate_info_group);
 		btn_main_irrigate_info_group.setVisibility(View.GONE);
-		DisplayMetrics dm = new DisplayMetrics();
-   	 //获取屏幕信息
-   	    getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-   	 
-   	    int screenWidth = dm.widthPixels;
-   	
-   	    int screenHeigh = dm.heightPixels;
-   	    SharedUtils.setParam(getActivity(), "screenWidth", screenWidth);
-   	    SharedUtils.setParam(getActivity(), "screenHeigh", screenHeigh);
+		
 		infoBeans = new ArrayList<String>();
 		for (int i = 0; i < 364; i++) {
 			MainTainIrrigationInfoBean bean = new MainTainIrrigationInfoBean();

@@ -8,6 +8,7 @@ import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.Interface.OnWheelChangedListener;
 import ps.emperor.easy_water.Interface.OnWheelScrollListener;
 import ps.emperor.easy_water.adapter.WheelAdapter;
+import ps.emperor.easy_water.utils.SharedUtils;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -37,6 +38,7 @@ import android.widget.Scroller;
  * 
  */
 public class WheelView extends View {
+	private int screenWidth,screenHidth;
 	/** 滚动持续的时间 */
 	private static final int SCROLLING_DURATION = 400;
 
@@ -55,12 +57,12 @@ public class WheelView extends View {
 
 	/** 附加的item的高度 */
 	private static final int ADDITIONAL_ITEM_HEIGHT = 15;
-
+	
 	/** 字体大小 */
-	private static final int TEXT_SIZE = 30;
+	private int TEXT_SIZE = 30;
 
 	/** 顶部和底部item的偏移值 */
-	private static final int ITEM_OFFSET = TEXT_SIZE / 5;
+	private int ITEM_OFFSET = TEXT_SIZE / 5;
 
 	/** item布局的附加宽度 */
 	private static final int ADDITIONAL_ITEMS_SPACE = 10;
@@ -158,7 +160,13 @@ public class WheelView extends View {
 	private void initData(Context context) {
 		gestureDetector = new GestureDetector(context, gestureListener);
 		gestureDetector.setIsLongpressEnabled(false);// 设置手势长按不起作用
-
+		screenWidth = (int) SharedUtils.getParam(context, "screenWidth", 0);
+		screenHidth = (int) SharedUtils.getParam(context, "screenHeigh", 0);
+		if(screenWidth>1080||screenHidth>1440){
+			TEXT_SIZE = 50;
+		}else{
+			TEXT_SIZE = 30;
+		}
 		scroller = new Scroller(context);
 	}
 

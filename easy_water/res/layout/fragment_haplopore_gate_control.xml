@@ -172,7 +172,7 @@
             android:layout_weight="1" >
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/textView_test1"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_alignParentLeft="true"
@@ -189,7 +189,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@+id/textView1" >
+                android:layout_below="@+id/textView_test1" >
 
                 <TextView
                     android:id="@+id/tv_apply_water_before_now"
@@ -204,7 +204,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@+id/textView1"
+                android:layout_above="@+id/textView_test1"
                 android:layout_alignParentLeft="true" >
 
                 <TextView
@@ -224,7 +224,7 @@
             android:layout_weight="1" >
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/textView_test2"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_alignParentLeft="true"
@@ -240,7 +240,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@+id/textView1"
+                android:layout_above="@+id/textView_test2"
                 android:layout_alignParentLeft="true" >
 
                 <TextView
@@ -256,7 +256,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@+id/textView1" >
+                android:layout_below="@+id/textView_test2" >
 
                 <TextView
                     android:id="@+id/tv_apply_water_after_now"
@@ -276,7 +276,7 @@
             android:layout_weight="1" >
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/textView_test3"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_alignParentLeft="true"
@@ -285,17 +285,17 @@
 
 
             <RelativeLayout
-                android:id="@+id/relativeLayout1"
+                android:id="@+id/relativeLayout_test1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textView1"
+                android:layout_below="@+id/textView_test3"
                 android:layout_marginTop="30dp" >
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@+id/textView1"
+                android:layout_above="@+id/textView_test3"
                 android:layout_alignParentLeft="true" >
 
                 <TextView
@@ -311,7 +311,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
-                android:layout_alignTop="@+id/textView1" >
+                android:layout_alignTop="@+id/textView_test3" >
 
                 <TextView
                     android:id="@+id/tv_apply_water_flow_now"
@@ -344,7 +344,7 @@
             android:layout_weight="1" >
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/textView_test4"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_alignParentLeft="true"
@@ -361,7 +361,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@+id/textView1" >
+                android:layout_below="@+id/textView_test4" >
 
                 <TextView
                     android:id="@+id/tv_apply_water_before_history"
@@ -376,7 +376,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@+id/textView1"
+                android:layout_above="@+id/textView_test4"
                 android:layout_alignParentLeft="true" >
 
                 <TextView
@@ -396,7 +396,7 @@
             android:layout_weight="1" >
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/textView_test5"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_alignParentLeft="true"
@@ -412,7 +412,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@+id/textView1"
+                android:layout_above="@+id/textView_test5"
                 android:layout_alignParentLeft="true" >
 
                 <TextView
@@ -428,7 +428,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@+id/textView1" >
+                android:layout_below="@+id/textView_test5" >
 
                 <TextView
                     android:id="@+id/tv_apply_water_after_history"
@@ -448,7 +448,7 @@
             android:layout_weight="1" >
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/textView_test6"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_alignParentLeft="true"
@@ -457,17 +457,17 @@
 
 
             <RelativeLayout
-                android:id="@+id/relativeLayout1"
+                android:id="@+id/relativeLayout_test2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textView1"
+                android:layout_below="@+id/textView_test6"
                 android:layout_marginTop="30dp" >
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@+id/textView1"
+                android:layout_above="@+id/textView_test6"
                 android:layout_alignParentLeft="true" >
 
                 <TextView
@@ -483,7 +483,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
-                android:layout_alignTop="@+id/textView1" >
+                android:layout_alignTop="@+id/textView_test6" >
 
                 <TextView
                     android:id="@+id/tv_apply_water_flow_history"

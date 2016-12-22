@@ -83,7 +83,11 @@ public class ImageAdapter extends BaseAdapter{
             if(screenWidth == 0){
             	textView.setLayoutParams(new GridView.LayoutParams(100, 100));
             }else{
+            	if(screenWidth>1080||screenHeigh>1440){
+            	textView.setLayoutParams(new GridView.LayoutParams(screenWidth/5-60, 150));
+            	}else{
             	textView.setLayoutParams(new GridView.LayoutParams(screenWidth/5-40, 100));
+            	}
             }
         }
         else

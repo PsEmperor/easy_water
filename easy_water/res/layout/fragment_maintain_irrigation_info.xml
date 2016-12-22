@@ -18,12 +18,14 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="5dp"
         android:text="114团5连7#地块1#灌溉单元"
+        android:layout_marginBottom="5dp"
         android:textColor="@color/black" />
 
     <RelativeLayout
         android:id="@+id/text_maintain_irrigat_info_round_of_irrigation_group"
         android:layout_width="match_parent"
-        android:layout_height="50dp" >
+        android:layout_height="50dp" 
+        android:background="@color/white">
 
         <TextView
             android:layout_width="wrap_content"
@@ -42,7 +44,7 @@
             android:src="@drawable/image_gray_row" />
 
         <TextView
-            android:id="@+id/text_maintain_irrigat_info_round_of_irrigation_group"
+            android:id="@+id/text_maintain_irrigat_round"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

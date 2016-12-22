@@ -25,7 +25,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
+                android:layout_height="wrap_content"
                 android:background="@color/gray_3" >
 
                 <TextView
@@ -218,7 +218,7 @@
                     android:text="0" />
 
                 <ImageView
-                    android:id="@+id/imageView2"
+                    android:id="@+id/imageView_right"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -230,7 +230,7 @@
             <RelativeLayout
                 android:id="@+id/layout_maintain_basic_info_max_orroagte_restnight_examine"
                 android:layout_width="match_parent"
-                android:layout_height="85dp"
+                android:layout_height="80dp"
                 android:layout_below="@+id/layout_maintain_basic_info_max_orroagte_filter_examine" >
 
                 <ImageView
@@ -253,7 +253,7 @@
                     android:text="夜间休息时间" />
 
                 <TextView
-                    android:id="@+id/textView1"
+                    android:id="@+id/textView_test_start"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_above="@+id/TextViewX"
@@ -263,10 +263,10 @@
                     android:text="开始时间" />
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/textView_test_end"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@+id/textView1"
+                    android:layout_alignLeft="@+id/textView_test_start"
                     android:layout_below="@+id/TextViewX"
                     android:layout_marginTop="2dp"
                     android:text="结束时间" />
@@ -275,8 +275,8 @@
                     android:id="@+id/text_maintain_basic_info_max_orroagte_restnight_end_examine"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/textView2"
-                    android:layout_alignBottom="@+id/textView2"
+                    android:layout_alignBaseline="@+id/textView_test_end"
+                    android:layout_alignBottom="@+id/textView_test_end"
                     android:layout_alignLeft="@+id/text_maintain_basic_info_max_orroagte_restnight_start_examine"
                     android:gravity="center_vertical"
                     android:text="00：00" />
@@ -285,8 +285,8 @@
                     android:id="@+id/text_maintain_basic_info_max_orroagte_restnight_start_examine"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/textView1"
-                    android:layout_alignBottom="@+id/textView1"
+                    android:layout_alignBaseline="@+id/textView_test_start"
+                    android:layout_alignBottom="@+id/textView_test_start"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="55dp"
                     android:gravity="center_vertical"
@@ -310,7 +310,7 @@
                     android:src="@drawable/image_gray_row" />
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/textView_test_examine"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
@@ -323,7 +323,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@+id/TextView01"
-                    android:layout_below="@+id/textView3"
+                    android:layout_below="@+id/textView_test_examine"
                     android:layout_marginTop="2dp"
                     android:text="结束时间" />
 
@@ -342,7 +342,7 @@
                     android:id="@+id/TextView01"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_above="@+id/textView3"
+                    android:layout_above="@+id/textView_test_examine"
                     android:layout_marginBottom="2dp"
                     android:layout_marginRight="15dp"
                     android:layout_toLeftOf="@+id/text_maintain_basic_info_max_orroagte_season_start_examine"

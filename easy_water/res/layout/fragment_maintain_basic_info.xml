@@ -165,7 +165,7 @@
             android:layout_below="@+id/layout_apply_irriagte_project_single_time_long" >
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/imageView_test_gray_row"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"

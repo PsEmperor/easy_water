@@ -67,7 +67,7 @@ public class MainTainIrrigationfarmarcropInfoFragment extends Fragment
 		actionBar = (MainActionBars) view
 				.findViewById(R.id.actionbar_main_irrigate_info);
 		actionBar.setLeftIcon(R.drawable.btn_back_selector);
-		actionBar.setRightText("'''");
+		actionBar.setRightText("下一步");
 		actionBar.setTitle("种植作物信息维护");
 		infoBeans = new ArrayList<String>();
 		

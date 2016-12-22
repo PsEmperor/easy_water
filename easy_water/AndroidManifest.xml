@@ -93,7 +93,6 @@
         </activity>
         <activity android:name="ps.emperor.easy_water.activity.TimeAvtivityDialog" />
         <activity android:name="ps.emperor.easy_water.activity.TimeAvtivityDialogWater" />
-        <activity android:name="ps.emperor.easy_water.activity.TimeAvtivityDialogNight" />
         <activity
             android:name="ps.emperor.easy_water.activity.IrriagteOrWaterActivity"  
             android:windowSoftInputMode="adjustPan" />

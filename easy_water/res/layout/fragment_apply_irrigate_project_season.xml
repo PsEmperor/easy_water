@@ -23,7 +23,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:text="141团6连1#地块"
                     android:textColor="@color/black" />
 
@@ -58,7 +58,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentTop="true"
                         android:layout_marginLeft="20dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:text="开始时间"
                         android:textColor="@color/black" />
 
@@ -95,7 +95,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentTop="true"
                         android:layout_marginLeft="20dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:text="灌溉延续时间/组"
                         android:textColor="@color/black" />
 
@@ -131,7 +131,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentTop="true"
                         android:layout_marginLeft="20dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:text="灌溉次数"
                         android:textColor="@color/black" />
 
@@ -167,7 +167,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentTop="true"
                         android:layout_marginLeft="20dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:text="间隔时间/轮"
                         android:textColor="@color/black" />
 
@@ -300,8 +300,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="0" 
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
                 android:layout_marginTop="5dp"
                >
 
@@ -309,11 +309,11 @@
                     android:id="@+id/button_apply_irriagte_project_season"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
                     android:layout_alignParentLeft="true"
-                    android:layout_marginBottom="10dp"
+                     android:layout_marginBottom="20dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
+                    android:layout_marginTop="20dp"
                     android:background="@color/blue"
                     android:text="确定" />
             </RelativeLayout>

@@ -32,7 +32,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:text="141团6连1#地块"
                     android:textColor="@color/black" />
 
@@ -96,7 +96,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentTop="true"
                         android:layout_marginLeft="20dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:text="开始时间"
                         android:textColor="@color/black" />
 
@@ -134,7 +134,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentTop="true"
                         android:layout_marginLeft="20dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:text="灌溉延续时间/组"
                         android:textColor="@color/black" />
 
