@@ -33,7 +33,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-@ContentView(R.layout.activity_configure)
+@ContentView(R.layout.activity_configure1)
 public class ConfigureActivity extends BaseActivity implements
 		OnItemClickListener, OnClickListener {
 
