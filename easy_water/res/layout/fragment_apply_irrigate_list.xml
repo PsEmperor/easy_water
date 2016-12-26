@@ -11,35 +11,6 @@
         android:layout_marginTop="10dp"
         android:background="@color/white" >
 
-        <ps.emperor.easy_water.view.PieChatView
-            android:id="@+id/image_apply_status"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="5dp" />
-
-        <TextView
-            android:id="@+id/text_apply_units"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/image_apply_status"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="15dp"
-            android:layout_toRightOf="@+id/image_apply_status"
-            android:text="111团5连"
-            android:textColor="@color/gray_1" />
-
-        <TextView
-            android:id="@+id/text_apply_element"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/text_apply_units"
-            android:layout_below="@+id/text_apply_units"
-            android:layout_marginTop="10dp"
-            android:text="4#灌溉单元"
-            android:textColor="@color/gray_1" />
-
         <TextView
             android:id="@+id/text_apply_whether"
             android:layout_width="wrap_content"
@@ -59,6 +30,50 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
             android:src="@drawable/image_gray_row" />
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true" >
+
+            <ps.emperor.easy_water.view.PieChatView
+                android:id="@+id/image_apply_status"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_margin="5dp" />
+
+            <TextView
+                android:id="@+id/text_apply_whether_percent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:text="TextView"
+                android:textColor="@color/white" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/text_apply_units"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="85dp"
+            android:layout_marginTop="20dp"
+            android:text="111团5连"
+            android:textColor="@color/gray_1" />
+
+        <TextView
+            android:id="@+id/text_apply_element"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/text_apply_units"
+            android:layout_below="@+id/text_apply_whether"
+            android:text="6连7#灌溉单元"
+            android:textColor="@color/gray_1" />
+
     </RelativeLayout>
 
 </LinearLayout>

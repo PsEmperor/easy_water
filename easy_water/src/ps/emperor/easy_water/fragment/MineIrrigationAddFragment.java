@@ -44,6 +44,7 @@ public class MineIrrigationAddFragment extends Fragment implements OnClickListen
 	private Irrigation entity ;
 	private DBHelper dbHelper;
 	private List<Irrigation> irrigation;
+	KeyWordBean bean;
 	// private CheckBox checkBox;
 
 	@Override
@@ -67,22 +68,21 @@ public class MineIrrigationAddFragment extends Fragment implements OnClickListen
 		dbHelper = DBHelper.getInstance(getActivity()); // 得到DBHelper对象
 		adapter = new IrrigationAddAdapter(getActivity());
 		beans = new ArrayList<KeyWordBean>();
-		KeyWordBean bean;
 		bean = new KeyWordBean();
-		bean.setkeyword("第二大队第四中队第三小队");
-		bean.setCheck(true);
+		bean.setkeyword("141团5连7#地块1#灌溉单元");
+		bean.setCheck(false);
 		beans.add(bean);
 		bean = new KeyWordBean();
-		bean.setkeyword("第三大队第四中队第三小队");
-		bean.setCheck(true);
+		bean.setkeyword("141团5连7#地块2#灌溉单元");
+		bean.setCheck(false);
 		beans.add(bean);
 		bean = new KeyWordBean();
-		bean.setkeyword("第四大队第四中队第三小队");
-		bean.setCheck(true);
+		bean.setkeyword("141团5连7#地块3#灌溉单元");
+		bean.setCheck(false);
 		beans.add(bean);
 		bean = new KeyWordBean();
-		bean.setkeyword("第五大队第四中队第三小队");
-		bean.setCheck(true);
+		bean.setkeyword("141团5连7#地块4#灌溉单元");
+		bean.setCheck(false);
 		beans.add(bean);
 		adapter.addData(beans, false);
 		listView.setAdapter(adapter);
@@ -104,6 +104,7 @@ public class MineIrrigationAddFragment extends Fragment implements OnClickListen
 			break;
 		case R.id.text_irrigation_add:
 			for (int i = 0; i < beans.size(); i++) {
+				if(beans.get(i).isCheck()){
 					Irrigation irrigation = new Irrigation();
 					irrigation.setIrrigation(beans.get(i).getkeyword());
 					irrigation.setNHour(0);
@@ -122,6 +123,7 @@ public class MineIrrigationAddFragment extends Fragment implements OnClickListen
 					irrigation.setFilterHour(0);
 					irrigation.setFilterMinute(0);
 					dbHelper.saveSession(irrigation);
+				}
 			}
 			MineIrrigationEquipmentFragment fragment1 = new MineIrrigationEquipmentFragment();
 //			transaction.setCustomAnimations(R.anim.right_in, R.anim.right_out);

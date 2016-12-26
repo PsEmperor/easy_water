@@ -148,12 +148,12 @@ public class ApplicationFragment extends Fragment implements
 			break;
 		case 3:
 			//数据
-			InformationFragment sj = new InformationFragment();
-			getActivity().getFragmentManager().beginTransaction()
-					.replace(R.id.fl, sj).addToBackStack(null).commit();
-//			Toast.makeText(getActivity(),
-//					position + "" + ((TextView) view).getText() + "被点击", 0)
-//					.show();
+//			InformationFragment sj = new InformationFragment();
+//			getActivity().getFragmentManager().beginTransaction()
+//					.replace(R.id.fl, sj).addToBackStack(null).commit();
+			Toast.makeText(getActivity(),
+					position + "" + ((TextView) view).getText() + "被点击", 0)
+					.show();
 			break;
 		case 4:
 			// 配置

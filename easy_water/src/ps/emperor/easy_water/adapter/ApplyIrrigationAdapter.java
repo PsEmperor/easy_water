@@ -35,6 +35,7 @@ public class ApplyIrrigationAdapter extends MyBaseAdapter<ApplyIrrigationBean> i
 			viewHolder.element = (TextView) convertView.findViewById(R.id.text_apply_element);
 			viewHolder.whether = (TextView) convertView.findViewById(R.id.text_apply_whether);
 			viewHolder.current_state = (PieChatView) convertView.findViewById(R.id.image_apply_status);
+			viewHolder.whether_percent = (TextView) convertView.findViewById(R.id.text_apply_whether_percent);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
@@ -44,6 +45,7 @@ public class ApplyIrrigationAdapter extends MyBaseAdapter<ApplyIrrigationBean> i
 		viewHolder.element.setText(applyIrrigationBean.element);
 		viewHolder.whether.setText(applyIrrigationBean.whether);
 		viewHolder.current_state.setAngle(applyIrrigationBean.current_state);
+		viewHolder.whether_percent.setText(applyIrrigationBean.whether_percent);
 		return convertView;
 
 	}
@@ -52,6 +54,7 @@ public class ApplyIrrigationAdapter extends MyBaseAdapter<ApplyIrrigationBean> i
 		TextView units;
 		TextView element;
 		TextView whether;
+		TextView whether_percent;
 		PieChatView current_state;
 	}
 

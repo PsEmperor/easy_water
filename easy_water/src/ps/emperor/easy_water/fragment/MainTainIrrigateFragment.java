@@ -54,19 +54,13 @@ public class MainTainIrrigateFragment extends Fragment implements OnClickListene
 		listView.setOnItemClickListener(this);
 		adapter = new MainTainIrrigationAdapter(getActivity());
 		beans = new ArrayList<MainTainIrrigationBean>();
+		List<Irrigation> listentity = dbHelper.loadAllSession(); 
 		MainTainIrrigationBean bean;
-		bean = new MainTainIrrigationBean();
-		bean.setMaintain("第二大队第四中队第三小队");
-		beans.add(bean);
-		bean = new MainTainIrrigationBean();
-		bean.setMaintain("第三大队第四中队第三小队");
-		beans.add(bean);
-		bean = new MainTainIrrigationBean();
-		bean.setMaintain("第四大队第四中队第三小队");
-		beans.add(bean);
-		bean = new MainTainIrrigationBean();
-		bean.setMaintain("第五大队第四中队第三小队");
-		beans.add(bean);
+		for (int i = 0; i < listentity.size(); i++) {
+			bean = new MainTainIrrigationBean();
+			bean.setMaintain(listentity.get(i).getIrrigation());
+			beans.add(bean);
+		}
 		adapter.addData(beans, false);
 		listView.setAdapter(adapter);
 		beans = adapter.getData();

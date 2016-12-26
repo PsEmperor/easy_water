@@ -99,30 +99,30 @@ public class MineUserRoleFragment extends Fragment implements OnClickListener {
 
 		} else if (position == 1) {
 			tag = 1;
-			MineIrrigationAddChangeFragment fragment1 = new MineIrrigationAddChangeFragment();
-			// transaction.setCustomAnimations(R.anim.right_in,
-			// R.anim.right_out);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-			transaction.replace(R.id.fl, fragment1, "main");
-			transaction.commit();
+//			MineIrrigationAddChangeFragment fragment1 = new MineIrrigationAddChangeFragment();
+//			// transaction.setCustomAnimations(R.anim.right_in,
+//			// R.anim.right_out);
+//			transaction
+//					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+//			transaction.replace(R.id.fl, fragment1, "main");
+//			transaction.commit();
 			SharedUtils.setParam(getActivity(), "tag", tag);
 		} else if (position == 2) {
-			MineIrrigationAddChangeFragment fragment1 = new MineIrrigationAddChangeFragment();
-			// transaction.setCustomAnimations(R.anim.right_in,
-			// R.anim.right_out);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-			transaction.replace(R.id.fl, fragment1, "main");
-			transaction.commit();
+//			MineIrrigationAddChangeFragment fragment1 = new MineIrrigationAddChangeFragment();
+//			// transaction.setCustomAnimations(R.anim.right_in,
+//			// R.anim.right_out);
+//			transaction
+//					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+//			transaction.replace(R.id.fl, fragment1, "main");
+//			transaction.commit();
 		} else if (position == 3) {
-			MineWaterAddChangeFragment fragment1 = new MineWaterAddChangeFragment();
-			// transaction.setCustomAnimations(R.anim.right_in,
-			// R.anim.right_out);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-			transaction.replace(R.id.fl, fragment1, "main");
-			transaction.commit();
+//			MineWaterAddChangeFragment fragment1 = new MineWaterAddChangeFragment();
+//			// transaction.setCustomAnimations(R.anim.right_in,
+//			// R.anim.right_out);
+//			transaction
+//					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+//			transaction.replace(R.id.fl, fragment1, "main");
+//			transaction.commit();
 		} else if (position == 4) {
 
 		} else if (position == 5) {

@@ -72,7 +72,7 @@ public class MineUserUnitsFragment extends android.app.Fragment implements
 		KeyWordBean bean;
 		for (int i = 0; i < 10; i++) {
 			bean = new KeyWordBean();
-			bean.setkeyword("141团5连4#灌溉单元");
+			bean.setkeyword("第八师141团");
 			beans.add(bean);
 		}
 		adapter.addData(beans, false);

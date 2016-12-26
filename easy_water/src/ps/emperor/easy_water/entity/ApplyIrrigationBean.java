@@ -11,6 +11,16 @@ public class ApplyIrrigationBean {
 	public String element; // 灌溉单元
 	public String whether; // 当前状态
 	public int current_state; // 饼状图角度
+	public String whether_percent; // 饼状图角度
+
+
+	public String getWhether_percent() {
+		return whether_percent;
+	}
+
+	public void setWhether_percent(String whether_percent) {
+		this.whether_percent = whether_percent;
+	}
 
 	public String getUnits() {
 		return units;
