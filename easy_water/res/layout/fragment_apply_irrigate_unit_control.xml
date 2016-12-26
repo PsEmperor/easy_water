@@ -187,13 +187,13 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
+                    android:layout_height="155dp"
                     android:background="@color/white" >
 
                     <ListView
                         android:id="@+id/list_apply_irrigate_unit_control_plant"
                         android:layout_width="match_parent"
-                        android:layout_height="150dp"
+                        android:layout_height="155dp"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentTop="true" >
                     </ListView>
@@ -254,5 +254,6 @@
     android:layout_marginLeft="20dp"
     android:layout_marginRight="20dp"
     android:layout_weight="0"
+    android:layout_marginTop="5dp"
     android:text="立刻控制" />
 </LinearLayout>

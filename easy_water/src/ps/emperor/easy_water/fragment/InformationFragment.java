@@ -17,6 +17,7 @@ import org.achartengine.renderer.XYMultipleSeriesRenderer;
 
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.adapter.ApplyWaterGateLinkageAdapter;
+import ps.emperor.easy_water.application.ApplicationFragment;
 import ps.emperor.easy_water.entity.ApplyWaterGateLinkageBean;
 import ps.emperor.easy_water.utils.DensityUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
@@ -77,6 +78,7 @@ public class InformationFragment extends Fragment implements OnClickListener {
 				.findViewById(R.id.fragment_informationfragment);
 		actionBar.setLeftIcon(R.drawable.btn_back_selector);
 		actionBar.setRightGone();
+		actionBar.setActionBarOnClickListener(this);
 		irrigate = (TextView) view.findViewById(R.id.histogram);
 		water = (TextView) view.findViewById(R.id.piechart);
 		mLinear = (LinearLayout) view.findViewById(
@@ -103,22 +105,24 @@ public class InformationFragment extends Fragment implements OnClickListener {
 
 	public void gethistogram() {
 		list.add("灌溉时间");
-		list.add("开闸时间");
-		list.add("累计水量");
-		list.add("累计电量");
 		list.add("面积");
+		list.add("开闸时间");
+		list.add("水量");
+		list.add("开闸次数");
+		list.add("电量");
+		list.add("循环次数");
 		list.add("反过滤");
 		list.add("流量");
 		// String[] titles = new String[] { "2012", "2013" };
-		String[] titles = new String[] { "数据统计" };
+		String[] titles = new String[] { "累计数据统计" };
 		List<double[]> values = new ArrayList<double[]>();
-		values.add(new double[] { 250, 240, 180, 150, 360, 122, 850 });
+		values.add(new double[] { 660, 740, 660 ,780, 750, 580 ,690, 522,700});
 		// values.add(new double[] { 523, 730, 924, 1054, 790, 920, 1200, 1100,
 		// 950, 1500, 1100, 1500 });
 		// int[] colors = new int[] { Color.RED, Color.BLUE };
 		int[] colors = new int[] { Color.RED };
 		XYMultipleSeriesRenderer renderer = buildBarRenderer(colors);// 柱形图颜色设置
-		setChartSettings(renderer, "", "", "", 0.5, 7.5, 0, 1000, Color.BLUE,
+		setChartSettings(renderer, "", "", "", 0.5, 9.5, 0, 1000, Color.BLUE,
 				Color.BLUE);// 设置柱形图标题，横轴（X轴）、纵轴（Y轴）、最小的伸所刻度、最大的伸所刻度
 		renderer.getSeriesRendererAt(0).setDisplayChartValues(true);// 在第0条柱形图上显示数据
 		// renderer.getSeriesRendererAt(1).setDisplayChartValues(true);//
@@ -135,13 +139,16 @@ public class InformationFragment extends Fragment implements OnClickListener {
 			list_num--;
 		} while (list_num > 0);
 		renderer.setYLabels(10);
+		renderer.setMargins(new int[] { 20, 30, 15, 15 }); // 设置4边留白  
+        renderer.setMarginsColor(Color.argb(0, 0xff, 0, 0));// 设置4边留白透明  
 		renderer.setXLabelsAlign(Align.CENTER);// 数据从左到右显示
 		renderer.setYLabelsAlign(Align.CENTER);
-		renderer.setPanEnabled(false, false);
+		renderer.setPanEnabled(true, true);
 		renderer.setZoomEnabled(false);
 		renderer.setAntialiasing(true);
 		renderer.setZoomButtonsVisible(false);// 显示放大缩小功能按钮
 		renderer.setZoomRate(5f);
+		renderer.setInScroll(true);
 		renderer.setBarSpacing(0.5f);// 柱形图间隔
 
 		mChartView = ChartFactory.getBarChartView(getActivity(),
@@ -156,7 +163,7 @@ public class InformationFragment extends Fragment implements OnClickListener {
 		FragmentTransaction transaction = fgManager.beginTransaction();
 		switch (v.getId()) {
 		case R.id.acitionbar_left:
-			ApplyWaterDistrbutionGate fragment = new ApplyWaterDistrbutionGate();
+			ApplicationFragment fragment = new ApplicationFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
 			transaction
@@ -201,10 +208,10 @@ public class InformationFragment extends Fragment implements OnClickListener {
 
 	protected XYMultipleSeriesRenderer buildBarRenderer(int[] colors) {
 		XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer();
-		renderer.setAxisTitleTextSize(20);
+		renderer.setAxisTitleTextSize(15);
 		renderer.setChartTitleTextSize(20);
 		renderer.setLabelsTextSize(20);
-		renderer.setLegendTextSize(25);
+		renderer.setLegendTextSize(20);
 		int length = colors.length;
 		for (int i = 0; i < length; i++) {
 			SimpleSeriesRenderer r = new SimpleSeriesRenderer();
@@ -253,7 +260,7 @@ public class InformationFragment extends Fragment implements OnClickListener {
 		// 设置背景颜色
 		renderer.setBackgroundColor(Color.DKGRAY);
 		// 设置坐标颜色
-		renderer.setLabelsColor(Color.GRAY);
+		renderer.setLabelsColor(Color.MAGENTA);
 		// 设置移动
 		renderer.setPanEnabled(false);
 		// 设置放大

@@ -1,6 +1,7 @@
 package ps.emperor.easy_water;
 
 import java.io.InputStream;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,6 @@ import org.xutils.http.RequestParams;
 
 import cn.jpush.android.api.JPushInterface;
 import ps.emperor.easy_water.application.AppBeen;
-import ps.emperor.easy_water.entity.Person;
 import ps.emperor.easy_water.register.ForgotActivity;
 import ps.emperor.easy_water.register.RegisterActivity;
 import android.app.Activity;

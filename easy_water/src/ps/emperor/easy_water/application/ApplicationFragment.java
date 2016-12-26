@@ -2,6 +2,7 @@ package ps.emperor.easy_water.application;
 
 
 import java.io.InputStream;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,6 @@ import org.xutils.http.RequestParams;
 
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.activity.IrriagteOrWaterActivity;
-import ps.emperor.easy_water.entity.Person;
 import ps.emperor.easy_water.fragment.ApplyIrrigateFragment;
 import ps.emperor.easy_water.fragment.ApplyWaterDistrbutionFragment;
 import ps.emperor.easy_water.fragment.InformationFragment;

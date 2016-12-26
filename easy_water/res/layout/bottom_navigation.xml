@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="62dp"
+    android:layout_height="52dp"
     android:background="@android:color/darker_gray"
     android:orientation="horizontal" >
 
@@ -14,8 +14,8 @@
 
         <ImageView
             android:id="@+id/iv_first"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
             android:background="@drawable/apple_black" />
@@ -40,8 +40,8 @@
 
         <ImageView
             android:id="@+id/iv_second"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
             android:background="@drawable/apple_black" />
@@ -66,8 +66,8 @@
 
         <ImageView
             android:id="@+id/iv_third"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
             android:background="@drawable/apple_black" />
@@ -93,8 +93,8 @@
 
         <ImageView
             android:id="@+id/iv_forth"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
             android:background="@drawable/apple_black" />
