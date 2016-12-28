@@ -17,6 +17,7 @@ import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.activity.MainTainGateInfoActivity;
 import ps.emperor.easy_water.adapter.MainTainIrrigationAdapter;
 import ps.emperor.easy_water.entity.MainTainIrrigationBean;
+import ps.emperor.easy_water.entity.MainTainIrrigationBean;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -49,11 +50,21 @@ public class MainTainWaterFragment extends Fragment implements OnClickListener,
 		adapter = new MainTainIrrigationAdapter(getActivity());
 		beans = new ArrayList<MainTainIrrigationBean>();
 		MainTainIrrigationBean bean;
-		for (int i = 0; i < 18; i++) {
-			bean = new MainTainIrrigationBean();
-			bean.setMaintain("第九大队第八中队第七小队");
-			beans.add(bean);
-		}
+		bean = new MainTainIrrigationBean();
+		bean.setMaintain("141团5连支渠进水闸");
+		beans.add(bean);
+		bean = new MainTainIrrigationBean();
+		bean.setMaintain("141团5连支渠一斗渠进水闸");
+		beans.add(bean);
+		bean = new MainTainIrrigationBean();
+		bean.setMaintain("141团5连支渠二斗渠进水闸");
+		beans.add(bean);
+		bean = new MainTainIrrigationBean();
+		bean.setMaintain("141团6连支渠进水闸");
+		beans.add(bean);
+		bean = new MainTainIrrigationBean();
+		bean.setMaintain("141团5连干渠进水闸");
+		beans.add(bean);
 		adapter.addData(beans, false);
 		listView.setAdapter(adapter);
 		beans = adapter.getData();

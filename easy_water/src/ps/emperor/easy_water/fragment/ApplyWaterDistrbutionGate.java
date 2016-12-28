@@ -662,6 +662,8 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
+		all = 0;
+		SharedUtils.setParam(getActivity(), "all", all);
 		FragmentManager fgManager = getFragmentManager();
 		FragmentTransaction transaction = fgManager.beginTransaction();
 		AppayWaterGateHaploporeFragment fragment1 = new AppayWaterGateHaploporeFragment();

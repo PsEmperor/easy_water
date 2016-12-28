@@ -16,6 +16,7 @@ import android.widget.ListView;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.adapter.IrrigationEquipmentAdapter;
 import ps.emperor.easy_water.entity.IrrigationEquipmentBean;
+import ps.emperor.easy_water.entity.IrrigationEquipmentBean;
 import ps.emperor.easy_water.view.MainActionBar;
 
 /**
@@ -52,12 +53,26 @@ public class MineWaterDistributionFragment extends Fragment implements
 		adapter = new IrrigationEquipmentAdapter(getActivity());
 		beans = new ArrayList<IrrigationEquipmentBean>();
 		IrrigationEquipmentBean bean;
-		for (int i = 0; i < 10; i++) {
-			bean = new IrrigationEquipmentBean();
-			bean.setIrrigation("141团7连4#地块2#灌溉单元");
-			bean.setIsCheck(true);
-			beans.add(bean);
-		}
+		bean = new IrrigationEquipmentBean();
+		bean.setEquipment("141团5连支渠进水闸");
+		bean.setIsCheck(false);
+		beans.add(bean);
+		bean = new IrrigationEquipmentBean();
+		bean.setEquipment("141团5连支渠一斗渠进水闸");
+		bean.setIsCheck(false);
+		beans.add(bean);
+		bean = new IrrigationEquipmentBean();
+		bean.setEquipment("141团5连支渠二斗渠进水闸");
+		bean.setIsCheck(false);
+		beans.add(bean);
+		bean = new IrrigationEquipmentBean();
+		bean.setEquipment("141团6连支渠进水闸");
+		bean.setIsCheck(false);
+		beans.add(bean);
+		bean = new IrrigationEquipmentBean();
+		bean.setEquipment("141团5连干渠进水闸");
+		bean.setIsCheck(false);
+		beans.add(bean);
 		adapter.addData(beans, false);
 		listView.setAdapter(adapter);
 		beans = adapter.getData();

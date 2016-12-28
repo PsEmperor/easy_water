@@ -29,7 +29,7 @@
             android:background="@color/white"
             android:gravity="center_vertical"
             android:paddingLeft="15dp"
-            android:hint="請輸入授權單位"
+            android:hint="請輸入设备名称"
             android:textColor="@color/gray_1"
             android:layout_marginRight="60dp" 
             android:singleLine="true"/>

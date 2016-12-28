@@ -64,7 +64,7 @@ public class MineIrrigationEquipmentFragment extends Fragment implements OnClick
 		IrrigationEquipmentBean bean;
 		for (int i = 0; i < listentity.size(); i++) {
 			bean = new IrrigationEquipmentBean();
-			bean.setIrrigation(listentity.get(i).getIrrigation());
+			bean.setEquipment(listentity.get(i).getIrrigation());
 			bean.setIsCheck(true);
 			beans.add(bean);
 		}

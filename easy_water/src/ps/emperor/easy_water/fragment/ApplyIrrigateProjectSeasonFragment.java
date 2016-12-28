@@ -37,6 +37,7 @@ import ps.emperor.easy_water.greendao.IrrigationIsFirst;
 import ps.emperor.easy_water.greendao.IrrigationProject;
 import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
+import ps.emperor.easy_water.view.CustomDialog;
 import ps.emperor.easy_water.view.MainActionBar;
 import ps.emperor.easy_water.view.WheelView;
 import android.widget.CompoundButton;
@@ -62,7 +63,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 			tv_time_start;
 	private RelativeLayout layout_time_start, layout_time_continue,
 			layout_time_number, layout_time_interval;
-	private int id, now_round, now_rounds, now_round1, setNight, setLong;
+	private int id, now_round, now_rounds, now_round1, setNight, setLong,round;
 	private int isBefore, nHour, nHours, nMinutes, long_hour, time_number,
 			time_intervals, isNightStartHour, isNightStartMinute, isNightEnd,
 			isNightEndMinutes, isNightContinueHour, isNightContinueMinute;
@@ -294,6 +295,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 					}
 					now_rounds = now_round;
 					now_round1 = now_round;
+					round = listentity.size() / MatchedNum + time_number;
 					for (int i = 1; i <= MatchedNum * time_number; i++) {
 						irrigationProject = new IrrigationProject();
 						irrigationProject.setIrrigation(units);
@@ -716,6 +718,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 						}
 						now_rounds = now_round;
 						now_round1 = now_round;
+						round = listentity.size() / MatchedNum + time_number;
 						for (int i = 1; i <= MatchedNum * time_number; i++) {
 							irrigationProject = new IrrigationProject();
 							irrigationProject.setIrrigation(units);
@@ -1663,6 +1666,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 						}
 						now_rounds = now_round;
 						now_round1 = now_round;
+						round = listentity.size() / MatchedNum + time_number;
 						for (int i = 1; i <= MatchedNum * time_number; i++) {
 							irrigationProject = new IrrigationProject();
 							irrigationProject.setIrrigation(units);
@@ -2016,9 +2020,8 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 							irrigationIsFirst.setIsFirst(0);
 							dbHelper.saveIsFirst(irrigationIsFirst);
 						}
-						// }
+						 }
 					}
-				}
 			} else if (isLong == false && isNight == true) {
 				irrigationProject = new IrrigationProject();
 				List<IrrigationProject> listentity = dbHelper
@@ -2088,6 +2091,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 					}
 					now_rounds = now_round;
 					now_round1 = now_round;
+					round = listentity.size() / MatchedNum + time_number;
 					for (int i = 1; i <= MatchedNum * time_number; i++) {
 						irrigationProject = new IrrigationProject();
 						irrigationProject.setIrrigation(units);
@@ -2972,8 +2976,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 						irrigationIsFirst.setIsFirst(0);
 						dbHelper.saveIsFirst(irrigationIsFirst);
 					}
-					// }
-				}
+					 }
 			} else if (isLong == false && isNight == false) {
 				irrigationProject = new IrrigationProject();
 				List<IrrigationProject> listentity = dbHelper
@@ -2998,6 +3001,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 				}
 				now_rounds = now_round;
 				now_round1 = now_round;
+				round = listentity.size() / MatchedNum + time_number;
 				for (int i = 1; i <= MatchedNum * time_number; i++) {
 					irrigationProject = new IrrigationProject();
 					irrigationProject.setIrrigation(units);
@@ -3079,7 +3083,6 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 					irrigationIsFirst.setIsFirst(0);
 					dbHelper.saveIsFirst(irrigationIsFirst);
 				}
-				// }
 			}
 			break;
 		default:

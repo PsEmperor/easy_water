@@ -62,11 +62,21 @@ public class MineWaterAddFragment extends Fragment implements OnClickListener {
 		adapter = new IrrigationAddAdapter(getActivity());
 		beans = new ArrayList<KeyWordBean>();
 		KeyWordBean bean;
-		for (int i = 0; i < 18; i++) {
-			bean = new KeyWordBean();
-			bean.setkeyword("141团4连7#地块3#灌溉单元");
-			beans.add(bean);
-		}
+		bean = new KeyWordBean();
+		bean.setkeyword("141团5连支渠进水闸");
+		beans.add(bean);
+		bean = new KeyWordBean();
+		bean.setkeyword("141团5连支渠一斗渠进水闸");
+		beans.add(bean);
+		bean = new KeyWordBean();
+		bean.setkeyword("141团5连支渠二斗渠进水闸");
+		beans.add(bean);
+		bean = new KeyWordBean();
+		bean.setkeyword("141团6连支渠进水闸");
+		beans.add(bean);
+		bean = new KeyWordBean();
+		bean.setkeyword("141团5连干渠进水闸");
+		beans.add(bean);
 		adapter.addData(beans, false);
 		listView.setAdapter(adapter);
 		beans = adapter.getData();

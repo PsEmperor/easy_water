@@ -8,7 +8,7 @@ import android.widget.ToggleButton;
  */
 public class IrrigationEquipmentBean {
 	
-	public String irrigation;
+	public String equipment;
 	public ToggleButton button;
 	public Boolean isCheck;
 	
@@ -18,11 +18,11 @@ public class IrrigationEquipmentBean {
 	public void setIsCheck(Boolean isCheck) {
 		this.isCheck = isCheck;
 	}
-	public String getIrrigation() {
-		return irrigation;
+	public String getEquipment() {
+		return equipment;
 	}
-	public void setIrrigation(String irrigation) {
-		this.irrigation = irrigation;
+	public void setEquipment(String equipment) {
+		this.equipment = equipment;
 	}
 	public ToggleButton getButton() {
 		return button;

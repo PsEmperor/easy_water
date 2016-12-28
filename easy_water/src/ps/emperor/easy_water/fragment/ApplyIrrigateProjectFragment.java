@@ -42,6 +42,7 @@ import ps.emperor.easy_water.greendao.IrrigationIsFirst;
 import ps.emperor.easy_water.greendao.IrrigationProject;
 import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
+import ps.emperor.easy_water.view.CustomDialog;
 import ps.emperor.easy_water.view.MainActionBar;
 
 /**
@@ -361,7 +362,7 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 	                //需要花时间计算的方法  
 	            	irrigationGroups = dbHelper.loadGroupByUnits(units);
 	            	MatchedNum  = irrigationGroups.size();
-	            	listentity = dbHelper.loadLastMsgBySessionids(units);
+	            	listentity = dbHelper.loadProjectByOne(units, MatchedNum);
 	        		ApplyIrrigationProjectBean bean;
 	        		for (int i = 0; i < listentity.size(); i++) {
 	        			bean = new ApplyIrrigationProjectBean();
@@ -410,7 +411,7 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 	        				}
 	        			}
 	        			beans.clear();
-	        			listentity = dbHelper.loadLastMsgBySessionids(units);
+	        			listentity = dbHelper.loadProjectByOne(units, MatchedNum);
 	        			for (int i = 0; i < listentity.size(); i++) {
 		        			bean = new ApplyIrrigationProjectBean();
 		        			if (i > MatchedNum - 1) {
@@ -485,6 +486,7 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 			System.out.println(arg0 + "");
 			nowPage = arg0 + 1;
 			SharedUtils.setParam(getActivity(), "nowPage", nowPage);
+			listentity = dbHelper.loadProjectByOne(units, MatchedNum);
 		}
 
 		@Override
@@ -591,6 +593,10 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 			builder.show();
 			break;
 		case R.id.btn_project_add:
+			if(pageNum > 30){
+				showAlertDialog(getView());
+			}else{
+
 //			firsts = dbHelper.loadisFirst(units);
 //			if (CheckUtil.IsEmpty(firsts)) {
 //				isFirst = 0;
@@ -810,6 +816,7 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 																		.get(0)
 																		.getRound());
 													}
+													
 													for (int i = 1; i <= MatchedNum; i++) {
 														irrigationProject = new IrrigationProject();
 														irrigationProject
@@ -874,6 +881,7 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 
 				dialog.show();
 //			}
+			}
 			break;
 		case R.id.btn_project_del:
 			progressDialog = ProgressDialog.show(getActivity(), "Loading...", "Please wait...", true, false);  
@@ -945,5 +953,26 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 			final int position, long id) {
 
 	}
+	public void showAlertDialog(View view) {
 
+		CustomDialog.Builder builder = new CustomDialog.Builder(getActivity());
+		builder.setMessage("当前灌溉轮次较多!	请在网络状态良好的环境下进行此操作！ ");
+		builder.setTitle("温馨提示");
+		builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+				//设置你的操作事项
+			}
+		});
+
+		builder.setNegativeButton("取消",
+				new android.content.DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+
+		builder.create().show();
+
+	}
 }

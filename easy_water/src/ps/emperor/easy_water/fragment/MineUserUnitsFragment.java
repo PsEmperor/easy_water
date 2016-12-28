@@ -16,14 +16,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 import ps.emperor.easy_water.R;
-import ps.emperor.easy_water.adapter.IrrigationAddAdapter;
 import ps.emperor.easy_water.entity.KeyWordBean;
-import ps.emperor.easy_water.view.MainActionBar;
+import ps.emperor.easy_water.view.MainActionBars;
 
 /**
  * 授权单位
@@ -34,13 +33,12 @@ import ps.emperor.easy_water.view.MainActionBar;
 
 @SuppressLint("NewApi")
 public class MineUserUnitsFragment extends android.app.Fragment implements
-		OnClickListener,OnItemClickListener{
+		OnClickListener{
 	private LayoutInflater mInflater;
-	private MainActionBar actionBar;
+	private MainActionBars actionBar;
 	private TextView hint;
 	private ListView listView;
-	private IrrigationAddAdapter adapter;
-	private List<KeyWordBean> beans;
+	private List<String> beans;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,27 +60,25 @@ public class MineUserUnitsFragment extends android.app.Fragment implements
 			}
 		};
 		style.setSpan(what, 35, 39, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-		actionBar = (MainActionBar) view.findViewById(R.id.actionbar_user_unit);
+		actionBar = (MainActionBars) view.findViewById(R.id.actionbar_user_unit);
+		actionBar.setLeftIcon(R.drawable.btn_back_selector);
+		actionBar.setRightText("保存");
+		actionBar.setTitle("授权单位");
+		actionBar.setActionBarOnClickListener(this);
+		
 		hint.setText(style);
 		hint.setMovementMethod(LinkMovementMethod.getInstance());
 		
 		listView = (ListView) view.findViewById(R.id.list_mine_user_authorized_utils);
-		adapter = new IrrigationAddAdapter(getActivity());
-		beans = new ArrayList<KeyWordBean>();
+		beans = new ArrayList<String>();
 		KeyWordBean bean;
 		for (int i = 0; i < 10; i++) {
 			bean = new KeyWordBean();
 			bean.setkeyword("第八师141团");
-			beans.add(bean);
+			beans.add(bean.getkeyword());
 		}
-		adapter.addData(beans, false);
-		listView.setAdapter(adapter);
-		beans = adapter.getData();
-		
-		actionBar.setLeftIcon(R.drawable.btn_back_selector);
-		actionBar.setRightGone();
-		actionBar.setTitle("授权单位");
-		actionBar.setActionBarOnClickListener(this);
+		listView.setAdapter(new ArrayAdapter<String>(getActivity(),
+				android.R.layout.simple_list_item_single_choice, beans));
 		
 		init();
 		
@@ -108,13 +104,13 @@ public class MineUserUnitsFragment extends android.app.Fragment implements
 			transaction.replace(R.id.fl, fragment, "main");
 			transaction.commit();
 			break;
+		case R.id.acitionbar_right:
+			int position = listView.getCheckedItemPosition();
+	        Toast.makeText(getActivity(), position+"", Toast.LENGTH_LONG).show();
+			break;
 		default:
 			break;
 		}
 	}
 
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,
-			long id) {
-	}
 }

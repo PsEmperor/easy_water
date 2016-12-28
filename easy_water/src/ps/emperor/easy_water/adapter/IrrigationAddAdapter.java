@@ -1,5 +1,10 @@
 package ps.emperor.easy_water.adapter;
 
+import java.util.HashMap;
+
+import cn.jpush.a.a.a;
+
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -7,10 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.entity.KeyWordBean;
+import ps.emperor.easy_water.utils.SharedUtils;
 
 /**
  * 添加灌溉/配水设备关联适配器
@@ -21,21 +29,24 @@ import ps.emperor.easy_water.entity.KeyWordBean;
 public class IrrigationAddAdapter extends MyBaseAdapter<KeyWordBean> implements OnClickListener {
 
 	private Context context;
-
+	Activity activity;
+	  
 	public IrrigationAddAdapter(Context context) {
 		super(context);
 		this.context = context;
+		this.activity = (Activity) context;
 	}
 
 	@Override
-	public View MyGetView(int position, View convertView, ViewGroup parent) {
+	public View MyGetView(final int position, View convertView, ViewGroup parent) {
 		final ViewHolder viewHolder;
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.fragment_mine_irrigation_add_list, null);
 			viewHolder = new ViewHolder();
-			viewHolder.irrigation = (TextView) convertView.findViewById(R.id.tv_irrigation_add);
-			viewHolder.checkBox = (CheckBox) convertView.findViewById(R.id.ck_irrigation_add);
+			viewHolder.irrigation = (TextView) convertView.findViewById(R.id.tv_equipment_add);
+			viewHolder.checkBox = (CheckBox) convertView.findViewById(R.id.ck_equipment_add);
 			viewHolder.checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+				
 
 				@Override
 				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -51,8 +62,14 @@ public class IrrigationAddAdapter extends MyBaseAdapter<KeyWordBean> implements 
 		viewHolder.checkBox.setTag(position);
 		viewHolder.irrigation.setText(IrrigationAddBean.keyword);
 		viewHolder.checkBox.setChecked(IrrigationAddBean.isCheck);
+			convertView.setTag(viewHolder);
 		return convertView;
 
+	}
+
+	protected RadioButton findViewById(int temp2) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	class ViewHolder {

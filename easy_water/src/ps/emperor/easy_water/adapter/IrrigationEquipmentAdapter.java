@@ -50,7 +50,7 @@ public class IrrigationEquipmentAdapter extends MyBaseAdapter<IrrigationEquipmen
 		}
 		IrrigationEquipmentBean bean = list.get(position);
 		viewHolder.button.setTag(position);
-		viewHolder.Irrigation.setText(bean.irrigation);
+		viewHolder.Irrigation.setText(bean.equipment);
 		viewHolder.button.setChecked(bean.isCheck);
 		return convertView;
 	}

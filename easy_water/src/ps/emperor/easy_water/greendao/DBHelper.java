@@ -52,7 +52,7 @@ public class DBHelper {
           QueryBuilder<IrrigationProject> mqBuilder = irrigationprojectDao.queryBuilder();  
           mqBuilder.where(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Irrigation.eq(irrigation))  
           .orderDesc(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Irrigation)  
-          ;  
+          .limit(1);  
           List<IrrigationProject> irrigations = new ArrayList<IrrigationProject>();  
           int len = mqBuilder.list().size();  
           for (int i = len-1; i >=0; i--) {  
@@ -60,31 +60,44 @@ public class DBHelper {
           }  
           return irrigations;  
       }
-      //根据灌溉单元查询计划 倒序
-      public List<IrrigationProject> loadLastMsgBySessionidOnle(String irrigation){  
-    	  QueryBuilder<IrrigationProject> mqBuilder = irrigationprojectDao.queryBuilder();  
-    	  mqBuilder.where(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Irrigation.eq(irrigation))  
-    	  .orderDesc(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Irrigation).limit(10) 
-    	  ;  
-    	  List<IrrigationProject> irrigations = new ArrayList<IrrigationProject>();  
-    	  int len = mqBuilder.list().size();  
-    	  for (int i = len-1; i >=0; i--) {  
-    		  irrigations.add(mqBuilder.list().get(i));  
-    	  }  
-    	  return irrigations;  
-      }
+//      //根据灌溉单元查询计划 倒序
+//      public List<IrrigationProject> loadLastMsgBySessionidOnle(String irrigation){  
+//    	  QueryBuilder<IrrigationProject> mqBuilder = irrigationprojectDao.queryBuilder();  
+//    	  mqBuilder.where(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Irrigation.eq(irrigation))  
+//    	  .orderDesc(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Irrigation).limit(10) 
+//    	  ;  
+//    	  List<IrrigationProject> irrigations = new ArrayList<IrrigationProject>();  
+//    	  int len = mqBuilder.list().size();  
+//    	  for (int i = len-1; i >=0; i--) {  
+//    		  irrigations.add(mqBuilder.list().get(i));  
+//    	  }  
+//    	  return irrigations;  
+//      }
     //根据灌溉单元查询计划 正序
-      public List<IrrigationProject> loadLastMsgBySessionids(String irrigation){  
+      public List<IrrigationProject> loadLastMsgBySessionids(String irrigation){ 
           QueryBuilder<IrrigationProject> mqBuilder = irrigationprojectDao.queryBuilder();  
           mqBuilder.where(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Irrigation.eq(irrigation))  
           .orderDesc(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Irrigation)  
-          ;  
+          .limit(10);  
           List<IrrigationProject> irrigations = new ArrayList<IrrigationProject>();  
           int len = mqBuilder.list().size();  
           for (int i = 0; i <len ; i++) {  
           	irrigations.add(mqBuilder.list().get(i));  
           }  
           return irrigations;  
+      }
+      //根据灌溉单元分段查询计划 每次查一条
+      public List<IrrigationProject> loadProjectByOne(String irrigation,int MatchedNum){ 
+    	  QueryBuilder<IrrigationProject> mqBuilder = irrigationprojectDao.queryBuilder();  
+    	  mqBuilder.where(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Irrigation.eq(irrigation))  
+    	  .offset(MatchedNum).limit(MatchedNum).orderDesc(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Irrigation)  
+    	  ;  
+    	  List<IrrigationProject> irrigations = new ArrayList<IrrigationProject>();  
+    	  int len = mqBuilder.list().size();  
+    	  for (int i = 0; i <len ; i++) {  
+    		  irrigations.add(mqBuilder.list().get(i));  
+    	  }  
+    	  return irrigations;  
       }
       //根据灌溉单元查询灌溉组 正序
       public List<IrrigationGroup> loadGroupByUnits(String irrigation){  

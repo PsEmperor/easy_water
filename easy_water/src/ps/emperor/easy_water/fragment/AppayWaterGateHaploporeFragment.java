@@ -59,12 +59,6 @@ public class AppayWaterGateHaploporeFragment extends Fragment implements
 				.findViewById(R.id.actionbar_apply_water_haplopore_gate_control);
 		actionBar.setLeftIcon(R.drawable.btn_back_selector);
 		actionBar.setRightText("保存");
-		all = (Integer) SharedUtils.getParam(getActivity(), "all", 2);
-		if(all == 1){
-			actionBar.setTitle("多孔闸门联动");
-		}else if(all == 0){
-			actionBar.setTitle("单孔闸门控制");
-		}
 		actionBar.setActionBarOnClickListener(this);
 		
 		hight = (TextView) view.findViewById(R.id.tv_apply_water_haplopore_gate_hight);
@@ -91,8 +85,17 @@ public class AppayWaterGateHaploporeFragment extends Fragment implements
 		layout_hight_change.setOnTouchListener(this);
 		return view;
 	}
-
 	
+	@Override
+	public void onResume() {
+		super.onResume();
+		all = (Integer) SharedUtils.getParam(getActivity(), "all", 2);
+		if(all == 1){
+			actionBar.setTitle("多孔闸门联动");
+		}else if(all == 0){
+			actionBar.setTitle("单孔闸门控制");
+		}
+	}
 	@Override
 	public void onClick(View v) {
 		FragmentManager fgManager = getFragmentManager();
