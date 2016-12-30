@@ -27,6 +27,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class ListViewPagerAdapter1 extends PagerAdapter implements OnItemClickListener{
 	Context context;
@@ -102,7 +103,9 @@ public class ListViewPagerAdapter1 extends PagerAdapter implements OnItemClickLi
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
-					
+					if(pageNum > 30){
+						Toast.makeText(context, "当前轮次过多 请联网操作！", Toast.LENGTH_SHORT).show();
+					}else{
 					if(list.get(position).getGroup().equals("A")){
 						nowItem = 1;
 					}
@@ -198,6 +201,7 @@ public class ListViewPagerAdapter1 extends PagerAdapter implements OnItemClickLi
 						intent.putExtras(bundle);
 						context.startActivity(intent);
 //					((Activity)context).finish();
+				}
 				}
 			});
 		}

@@ -52,7 +52,7 @@ public class DBHelper {
           QueryBuilder<IrrigationProject> mqBuilder = irrigationprojectDao.queryBuilder();  
           mqBuilder.where(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Irrigation.eq(irrigation))  
           .orderDesc(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Irrigation)  
-          .limit(1);  
+          ;  
           List<IrrigationProject> irrigations = new ArrayList<IrrigationProject>();  
           int len = mqBuilder.list().size();  
           for (int i = len-1; i >=0; i--) {  
@@ -78,7 +78,7 @@ public class DBHelper {
           QueryBuilder<IrrigationProject> mqBuilder = irrigationprojectDao.queryBuilder();  
           mqBuilder.where(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Irrigation.eq(irrigation))  
           .orderDesc(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Irrigation)  
-          .limit(10);  
+          ;  
           List<IrrigationProject> irrigations = new ArrayList<IrrigationProject>();  
           int len = mqBuilder.list().size();  
           for (int i = 0; i <len ; i++) {  
@@ -86,11 +86,24 @@ public class DBHelper {
           }  
           return irrigations;  
       }
-      //根据灌溉单元分段查询计划 每次查一条
-      public List<IrrigationProject> loadProjectByOne(String irrigation,int MatchedNum){ 
+      //根据灌溉单元查询十轮计划 正序
+      public List<IrrigationProject> loadLastMsgBySessionidTen(String irrigation,int limit){ 
     	  QueryBuilder<IrrigationProject> mqBuilder = irrigationprojectDao.queryBuilder();  
     	  mqBuilder.where(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Irrigation.eq(irrigation))  
-    	  .offset(MatchedNum).limit(MatchedNum).orderDesc(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Irrigation)  
+    	  .orderDesc(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Irrigation)  
+    	  .limit(limit);  
+    	  List<IrrigationProject> irrigations = new ArrayList<IrrigationProject>();  
+    	  int len = mqBuilder.list().size();  
+    	  for (int i = 0; i <len ; i++) {  
+    		  irrigations.add(mqBuilder.list().get(i));  
+    	  }  
+    	  return irrigations;  
+      }
+      //根据灌溉单元分段查询计划 
+      public List<IrrigationProject> loadProjectByOne(String irrigation,int MatchedNum,int limit){ 
+    	  QueryBuilder<IrrigationProject> mqBuilder = irrigationprojectDao.queryBuilder();  
+    	  mqBuilder.where(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Irrigation.eq(irrigation))  
+    	  .offset(MatchedNum);mqBuilder.limit(limit).orderDesc(ps.emperor.easy_water.greendao.IrrigationProjectDao.Properties.Irrigation)  
     	  ;  
     	  List<IrrigationProject> irrigations = new ArrayList<IrrigationProject>();  
     	  int len = mqBuilder.list().size();  
