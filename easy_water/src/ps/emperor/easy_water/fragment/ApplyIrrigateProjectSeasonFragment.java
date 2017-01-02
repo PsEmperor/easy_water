@@ -36,6 +36,7 @@ import ps.emperor.easy_water.greendao.IrrigationGroup;
 import ps.emperor.easy_water.greendao.IrrigationIsFirst;
 import ps.emperor.easy_water.greendao.IrrigationProject;
 import ps.emperor.easy_water.utils.CheckUtil;
+import ps.emperor.easy_water.utils.NetworkUtils;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.view.CustomDialog;
 import ps.emperor.easy_water.view.MainActionBar;
@@ -233,6 +234,9 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 			showDateTimePicker1(mInflater);
 			break;
 		case R.id.button_apply_irriagte_project_season:
+			if(NetworkUtils.isNetworkAvailable(getActivity())==true){
+				Toast.makeText(getActivity(), "网络状态良好", Toast.LENGTH_SHORT).show();
+			}else{
 			if (CheckUtil.IsEmpty(time_start)
 					|| time_start.equals("0000-00-00 00:00")) {
 
@@ -3083,6 +3087,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 					irrigationIsFirst.setIsFirst(0);
 					dbHelper.saveIsFirst(irrigationIsFirst);
 				}
+			}
 			}
 			break;
 		default:
