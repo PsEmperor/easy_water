@@ -1,6 +1,8 @@
 package ps.emperor.easy_water.fragment;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -52,8 +54,11 @@ public class AppayWaterGateLinkageFragment extends Fragment implements
 	private WheelView day;
 	private WheelView wv_hour;
 	private WheelView wv_minute;
-	private TextView tv_apply_water_time_operation;
+	private WheelView hour;
+	private WheelView minute;
+	private TextView tv_apply_water_time_operation,tv_apply_water_time_operations;
 	private int isBefore;
+	private String timestart,timeend;
 	
 	@SuppressLint("CutPasteId")
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,6 +81,7 @@ public class AppayWaterGateLinkageFragment extends Fragment implements
 		 view.findViewById(R.id.list_apply_water_haplopore_gate);
 
 		 tv_apply_water_time_operation = (TextView) view.findViewById(R.id.tv_apply_water_time_operation);
+		 tv_apply_water_time_operations = (TextView) view.findViewById(R.id.tv_apply_water_time_operations);
 		 
 		 layout_apply_water_time_operation = (RelativeLayout) view.findViewById(R.id.layout_apply_water_time_operation);
 		 layout_apply_water_time_operation.setOnClickListener(this);
@@ -157,6 +163,16 @@ public class AppayWaterGateLinkageFragment extends Fragment implements
 		wv_minute.setAdapter(new NumbericWheelAdapter(0, 23));
 		wv_minute.setCyclic(true);
 		wv_minute.setLabel("分");
+		
+		hour = (WheelView) view.findViewById(R.id.hour_gate);
+		hour.setAdapter(new NumbericWheelAdapter(0, 23));
+		hour.setCyclic(true);
+		hour.setLabel("时");// 添加文字
+
+		minute = (WheelView) view.findViewById(R.id.minute_gate);
+		minute.setAdapter(new NumbericWheelAdapter(0, 59));
+		minute.setCyclic(true);
+		minute.setLabel("分");
 
 		wv_hour.setCurrentItem(currentHour);
 		wv_minute.setCurrentItem(currentMinute);
@@ -274,10 +290,25 @@ public class AppayWaterGateLinkageFragment extends Fragment implements
 					isBefore = -1;
 				}
 				if (isBefore == 1) {
-					tv_apply_water_time_operation.setText("定时操作   "+decimal.format(year.getCurrentItem() + 2016) + "-"
+					timestart = decimal.format(year.getCurrentItem() + 2016) + "-"
 							+ decimal.format(month.getCurrentItem() + 1) + "-"
-							+ decimal.format(day.getCurrentItem() + 1)+"	"+ decimal.format(wv_hour.getCurrentItem())
-							+":"+decimal.format(wv_minute.getCurrentItem()));
+							+ decimal.format(day.getCurrentItem() + 1)+" "+ decimal.format(wv_hour.getCurrentItem())
+							+":"+decimal.format(wv_minute.getCurrentItem());
+					tv_apply_water_time_operation.setText("开始时间"+timestart);
+					java.util.Date date = new java.util.Date();
+					SimpleDateFormat format = new SimpleDateFormat(
+							"yyyy-MM-dd HH:mm");
+					try {
+						date = format.parse(timestart);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+					date.setHours(date.getHours()
+							+ Integer.valueOf(hour.getCurrentItem()));
+					date.setMinutes(date.getMinutes()
+							+ Integer.valueOf(minute.getCurrentItem()));
+					timeend = format.format(date);
+					tv_apply_water_time_operations.setText("结束时间"+timeend);
 					dialog.dismiss();
 				}else{
 						new AlertDialog.Builder(getActivity())

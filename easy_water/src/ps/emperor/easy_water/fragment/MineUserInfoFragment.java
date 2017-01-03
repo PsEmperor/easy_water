@@ -188,7 +188,7 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 			transaction.commit();
 			break;
 		case R.id.layout_info_units: // 授权单位
-			MineUserUnitsFragment fragment2 = new MineUserUnitsFragment();
+			MineUserUnitFragment fragment2 = new MineUserUnitFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
 			transaction

@@ -7,7 +7,6 @@ package ps.emperor.easy_water.entity;
  */
 public class MineUserUnitBean {
 
-
 	public String unit; //授权单位
 
 	public String getUnit() {
@@ -17,7 +16,5 @@ public class MineUserUnitBean {
 	public void setUnit(String unit) {
 		this.unit = unit;
 	}
-
-
 }
  

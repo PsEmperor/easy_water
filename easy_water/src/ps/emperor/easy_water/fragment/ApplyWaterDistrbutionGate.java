@@ -79,15 +79,17 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 
 	private LayoutInflater mInflater;
 	private MainActionBar actionBar;
-	private TextView tv_indicator,tv_superior;
+	private TextView tv_indicator,tv_superior,tv_time_operation_start,tv_time_operation_end;
 	private Button btn_time_operation;
-	private TextView tv_time_operation;
+	private RelativeLayout tv_time_operation;
 	private Dialog dialog;
 	private WheelView year;
 	private WheelView month;
 	private WheelView day;
 	private WheelView wv_hour;
 	private WheelView wv_minute;
+	private WheelView hour;
+	private WheelView minute;
 	private RelativeLayout layout,layout_relative_changes,layout_relative_changes_left,layout_relative_changes_right;
 	private LinearLayout layout_linear_change,layout_linear_changes;
 	private List<ApplyWaterDistrbutionGateBean> beans;
@@ -100,6 +102,7 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 	private int lastVisibleItemPosition = 0;// 标记上次滑动位置
 	private ImageView imageLeft,imageRight;
 	private int isBefore,all;
+	private String timestart,timeend;
 	    
 	@SuppressLint("CutPasteId")
 	@Override
@@ -119,7 +122,7 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 
 		tv_indicator = (TextView) view.findViewById(R.id.tv_indicator);
 		tv_indicator.setOnClickListener(this);
-		tv_time_operation = (TextView) view.findViewById(R.id.tv_time_operation);
+		tv_time_operation = (RelativeLayout) view.findViewById(R.id.tv_time_operation);
 		tv_time_operation.setOnClickListener(this);
 		
 		btn_time_operation = (Button) view.findViewById(R.id.btn_time_operation);
@@ -139,6 +142,8 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 		layout_relative_changes_two = (RelativeLayout) view.findViewById(R.id.layout_relative_changes_twos);
 		layout_relative_changes_three = (RelativeLayout) view.findViewById(R.id.layout_relative_changes_threes);
 		layout_linear_changes = (LinearLayout) view.findViewById(R.id.layout_linear_changes);
+		tv_time_operation_start = (TextView) view.findViewById(R.id.tv_time_operation_start);
+		tv_time_operation_end = (TextView) view.findViewById(R.id.tv_time_operation_end);
 		
 		tv_superior = (TextView) view.findViewById(R.id.tv_apply_water_distrbution_gate_control_superior);
 		
@@ -471,6 +476,8 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 		int currentDay = c.get(Calendar.DATE);
 		int currentHour = c.get(Calendar.HOUR_OF_DAY);
 		int currentMinute = c.get(Calendar.MINUTE);
+//		int Hour = c.get(Calendar.HOUR_OF_DAY);
+//		int Minute = c.get(Calendar.MINUTE);
 
 		String[] months_big = { "1", "3", "5", "7", "8", "10", "12" };
 		String[] months_little = { "4", "6", "9", "11" };
@@ -491,14 +498,24 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 		month.setCurrentItem(currentMonth);
 
 		wv_hour = (WheelView) view.findViewById(R.id.hours_gate);
-		wv_hour.setAdapter(new NumbericWheelAdapter(1, 12));
+		wv_hour.setAdapter(new NumbericWheelAdapter(0, 23));
 		wv_hour.setCyclic(true);
 		wv_hour.setLabel("时");// 添加文字
 
 		wv_minute = (WheelView) view.findViewById(R.id.minutes_gate);
-		wv_minute.setAdapter(new NumbericWheelAdapter(0, 23));
+		wv_minute.setAdapter(new NumbericWheelAdapter(0, 59));
 		wv_minute.setCyclic(true);
 		wv_minute.setLabel("分");
+		
+		hour = (WheelView) view.findViewById(R.id.hour_gate);
+		hour.setAdapter(new NumbericWheelAdapter(0, 23));
+		hour.setCyclic(true);
+		hour.setLabel("时");// 添加文字
+
+		minute = (WheelView) view.findViewById(R.id.minute_gate);
+		minute.setAdapter(new NumbericWheelAdapter(0, 59));
+		minute.setCyclic(true);
+		minute.setLabel("分");
 
 		wv_hour.setCurrentItem(currentHour);
 		wv_minute.setCurrentItem(currentMinute);
@@ -616,10 +633,25 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 					isBefore = -1;
 				}
 				if (isBefore == 1) {
-					tv_time_operation.setText("预约调闸   "+decimal.format(year.getCurrentItem() + 2016) + "-"
+					timestart = decimal.format(year.getCurrentItem() + 2016) + "-"
 							+ decimal.format(month.getCurrentItem() + 1) + "-"
-							+ decimal.format(day.getCurrentItem() + 1)+"	"+ decimal.format(wv_hour.getCurrentItem())
-							+":"+decimal.format(wv_minute.getCurrentItem()));
+							+ decimal.format(day.getCurrentItem() + 1)+" "+ decimal.format(wv_hour.getCurrentItem())
+							+":"+decimal.format(wv_minute.getCurrentItem());
+					tv_time_operation_start.setText("开始时间"+timestart);
+					java.util.Date date = new java.util.Date();
+					SimpleDateFormat format = new SimpleDateFormat(
+							"yyyy-MM-dd HH:mm");
+					try {
+						date = format.parse(timestart);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+					date.setHours(date.getHours()
+							+ Integer.valueOf(hour.getCurrentItem()));
+					date.setMinutes(date.getMinutes()
+							+ Integer.valueOf(minute.getCurrentItem()));
+					timeend = format.format(date);
+					tv_time_operation_end.setText("结束时间"+timeend);
 					dialog.dismiss();
 				}
 				 else {

@@ -25,16 +25,19 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.adapter.MineUserDistrictAdapter;
+import ps.emperor.easy_water.adapter.MineUserEvenAdapter;
 import ps.emperor.easy_water.adapter.MineUserStateAdapter;
 import ps.emperor.easy_water.adapter.MineUserProvinceAdapter;
 import ps.emperor.easy_water.adapter.MineUserUnitAdapter;
 import ps.emperor.easy_water.entity.MineUserDistrictBean;
+import ps.emperor.easy_water.entity.MineUserEvenBean;
 import ps.emperor.easy_water.entity.MineUserProvinceBean;
 import ps.emperor.easy_water.entity.MineUserStateBean;
 import ps.emperor.easy_water.entity.MineUserUnitBean;
 import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.view.MainActionBar;
+import ps.emperor.easy_water.view.MainActionBars;
 
 /**
  * 授权单位
@@ -47,19 +50,21 @@ import ps.emperor.easy_water.view.MainActionBar;
 public class MineUserUnitFragment extends android.app.Fragment implements
 		OnClickListener,OnItemClickListener{
 	private LayoutInflater mInflater;
-	private MainActionBar actionBar;
-	private TextView hint,tvProvince, tvState, tvDistrict, tvUnits;
+	private MainActionBars actionBar;
+	private TextView hint,tvProvince, tvState, tvDistrict, tvUnits,tvEven;
 	private PopupWindow popupWindow;
 	private List<MineUserProvinceBean> provinceBeans;
 	private List<MineUserStateBean> stateBeans;
 	private List<MineUserDistrictBean> districtBeans;
 	private List<MineUserUnitBean> unitBeans;
+	private List<MineUserEvenBean> evenBeans;
 	private MineUserProvinceAdapter adapter;
 	private MineUserStateAdapter adapter1;
 	private MineUserDistrictAdapter adapter2;
 	private MineUserUnitAdapter adapter3;
+	private MineUserEvenAdapter adapter4;
 	private ListView listView;
-	private String province,state,district,units,shareProvince,shareState,shareDistrict,shareUnit;//保存在shard中的
+	private String province,state,district,units,event,shareProvince,shareState,shareDistrict,shareEven,shareUnit;//保存在shard中的
 	private int chose;
 	
 	@Override
@@ -82,11 +87,11 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			}
 		};
 		style.setSpan(what, 35, 39, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-		actionBar = (MainActionBar) view.findViewById(R.id.actionbar_user_unit);
+		actionBar = (MainActionBars) view.findViewById(R.id.actionbar_user_unit);
 		hint.setText(style);
 		hint.setMovementMethod(LinkMovementMethod.getInstance());
 		actionBar.setLeftIcon(R.drawable.btn_back_selector);
-		actionBar.setRightGone();
+		actionBar.setRightText("保存");
 		actionBar.setTitle("授权单位");
 		actionBar.setActionBarOnClickListener(this);
 		
@@ -96,6 +101,7 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 		tvState = (TextView) view.findViewById(R.id.text_mine_user_info_state);
 		tvDistrict = (TextView) view.findViewById(R.id.text_mine_user_info_district);
 		tvUnits = (TextView) view.findViewById(R.id.text_mine_user_info_units);
+		tvEven = (TextView) view.findViewById(R.id.text_mine_user_info_even);
 		
 		if(!CheckUtil.IsEmpty(shareProvince)){
 			tvProvince.setText(shareProvince);
@@ -106,6 +112,9 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 		if(!CheckUtil.IsEmpty(shareDistrict)){
 			tvDistrict.setText(shareDistrict);
 		}
+		if(!CheckUtil.IsEmpty(shareEven)){
+			tvEven.setText(shareEven);
+		}
 		if(!CheckUtil.IsEmpty(shareUnit)){
 			tvUnits.setText(shareUnit);
 		}
@@ -113,6 +122,7 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 		tvState.setOnClickListener(this);
 		tvDistrict.setOnClickListener(this);
 		tvUnits.setOnClickListener(this);
+		tvEven.setOnClickListener(this);
 		return view;
 	}
 
@@ -121,11 +131,13 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 		adapter1 = new MineUserStateAdapter(getActivity());
 		adapter2 = new MineUserDistrictAdapter(getActivity());
 		adapter3 = new MineUserUnitAdapter(getActivity());
+		adapter4 = new MineUserEvenAdapter(getActivity());
 		
 		shareProvince = (String) SharedUtils.getParam(getActivity(), "shareProvince", "无数据");
 		shareState = (String) SharedUtils.getParam(getActivity(), "shareState", "无数据");
 		shareDistrict = (String) SharedUtils.getParam(getActivity(), "shareDistrict", "无数据");
 		shareUnit = (String) SharedUtils.getParam(getActivity(), "shareUnit", "无数据");
+		shareEven = (String) SharedUtils.getParam(getActivity(), "shareEven", "无数据");
 	}
 
 	@Override
@@ -148,7 +160,7 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			provinceBeans = new ArrayList<MineUserProvinceBean>();
 			for (int i = 0; i < 4; i++) {
 				MineUserProvinceBean bean = new MineUserProvinceBean();
-				bean.setProvince("第一大队第二小队");
+				bean.setProvince("新疆生产建设兵团");
 				provinceBeans.add(bean);
 			}
 			adapter.addData(provinceBeans, true);
@@ -171,7 +183,7 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			stateBeans = new ArrayList<MineUserStateBean>();
 			for (int i = 0; i < 6; i++) {
 				MineUserStateBean bean = new MineUserStateBean();
-				bean.setState("第二大队第三小队");
+				bean.setState("第八师");
 				stateBeans.add(bean);
 			}
 			adapter1.addData(stateBeans, true);
@@ -194,7 +206,7 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			districtBeans = new ArrayList<MineUserDistrictBean>();
 			for (int i = 0; i < 8; i++) {
 				MineUserDistrictBean bean = new MineUserDistrictBean();
-				bean.setDistrict("第三大队第四小队");
+				bean.setDistrict("141团");
 				districtBeans.add(bean);
 			}
 			adapter2.addData(districtBeans, true);
@@ -212,29 +224,53 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			// Gravity.TOP, 0, 0);
 			popupWindow.showAsDropDown(tvDistrict);
 			break;
-		case R.id.text_mine_user_info_units:
+		case R.id.text_mine_user_info_even:
 			chose = 4;
+			evenBeans = new ArrayList<MineUserEvenBean>();
+			for (int i = 0; i < 11; i++) {
+				MineUserEvenBean bean = new MineUserEvenBean();
+				bean.setEven("待定");
+				evenBeans.add(bean);
+			}
+			adapter4.addData(evenBeans, true);
+			View view4 = mInflater.inflate(
+					R.layout.layout_mine_user_units_popu, null);
+			popupWindow = new PopupWindow(view4,
+					ViewGroup.LayoutParams.WRAP_CONTENT,
+					ViewGroup.LayoutParams.WRAP_CONTENT);
+			popupWindow.setFocusable(true);
+			popupWindow.setBackgroundDrawable(new ColorDrawable());
+			listView = (ListView) view4.findViewById(R.id.list_mine_user_units);
+			listView.setAdapter(adapter4);
+			listView.setOnItemClickListener(this);
+			// popupWindow.showAtLocation(getActivity().findViewById(R.id.setting),
+			// Gravity.TOP, 0, 0);
+			popupWindow.showAsDropDown(tvEven);
+			break;
+		case R.id.text_mine_user_info_units:
+			chose = 5;
 			unitBeans = new ArrayList<MineUserUnitBean>();
 			for (int i = 0; i < 11; i++) {
 				MineUserUnitBean bean = new MineUserUnitBean();
-				bean.setUnit("第四大队第五小队");
+				bean.setUnit("水利局");
 				unitBeans.add(bean);
 			}
 			adapter3.addData(unitBeans, true);
-				View view4 = mInflater.inflate(
+				View view5 = mInflater.inflate(
 						R.layout.layout_mine_user_units_popu, null);
-				popupWindow = new PopupWindow(view4,
+				popupWindow = new PopupWindow(view5,
 						ViewGroup.LayoutParams.WRAP_CONTENT,
 						ViewGroup.LayoutParams.WRAP_CONTENT);
 				popupWindow.setFocusable(true);
 				popupWindow.setBackgroundDrawable(new ColorDrawable());
-				listView = (ListView) view4.findViewById(R.id.list_mine_user_units);
+				listView = (ListView) view5.findViewById(R.id.list_mine_user_units);
 				listView.setAdapter(adapter3);
 				listView.setOnItemClickListener(this);
 			// popupWindow.showAtLocation(getActivity().findViewById(R.id.setting),
 			// Gravity.TOP, 0, 0);
 			popupWindow.showAsDropDown(tvUnits);
 			break;
+		
 		default:
 			break;
 		}
@@ -262,6 +298,12 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			popupWindow.dismiss();
 		}
 		if(chose == 4){
+			event = evenBeans.get(position).getEven();
+			tvEven.setText(event);
+			SharedUtils.setParam(getActivity(), "shareEven", event);
+			popupWindow.dismiss();
+		}
+		if(chose == 5){
 			units = unitBeans.get(position).getUnit();
 			tvUnits.setText(units);
 			SharedUtils.setParam(getActivity(), "shareUnit", units);

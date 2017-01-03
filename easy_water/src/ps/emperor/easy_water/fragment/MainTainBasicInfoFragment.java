@@ -222,6 +222,8 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				// R.anim.right_out);
 				Bundle bundle = new Bundle();
 				bundle.putString("units", units);
+				isFront = 1;
+				bundle.putInt("isFront", isFront);
 				fragment.setArguments(bundle);
 				transaction
 						.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
@@ -242,6 +244,8 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				// R.anim.right_out);
 				Bundle bundle = new Bundle();
 				bundle.putString("units", units);
+				isFront = 1;
+				bundle.putInt("isFront", isFront);
 				fragment.setArguments(bundle);
 				transaction
 						.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
@@ -278,6 +282,8 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				// R.anim.right_out);
 				Bundle bundle = new Bundle();
 				bundle.putString("units", units);
+				isFront = 1;
+				bundle.putInt("isFront", isFront);
 				fragment.setArguments(bundle);
 				transaction
 						.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
@@ -313,6 +319,8 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				// R.anim.right_out);
 				Bundle bundle = new Bundle();
 				bundle.putString("units", units);
+				isFront = 1;
+				bundle.putInt("isFront", isFront);
 				fragment.setArguments(bundle);
 				transaction
 						.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);

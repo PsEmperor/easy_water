@@ -927,20 +927,10 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/tv_time_operation"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:layout_weight="0" >
-
-        <TextView
-            android:id="@+id/tv_time_operation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:layout_toLeftOf="@+id/btn_time_operation"
-            android:text="预约调闸 	2016-11-17 18:16"
-            android:textSize="17sp" />
 
         <Button
             android:id="@+id/btn_time_operation"
@@ -950,6 +940,34 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
             android:text="设定" />
+
+        <TextView
+            android:id="@+id/tv_time_operation_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/tv_time_operation_start"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp"
+            android:text="结束时间: 2016-11-17 19:03" />
+
+        <TextView
+            android:id="@+id/tv_time_operations"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="预约调闸 "
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_time_operation_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/btn_time_operation"
+            android:layout_centerHorizontal="true"
+            android:text="开始时间: 2016-11-17 18:16" />
+
     </RelativeLayout>
 
 </LinearLayout>
