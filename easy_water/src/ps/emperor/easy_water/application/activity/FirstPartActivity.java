@@ -33,8 +33,8 @@ public class FirstPartActivity extends BaseActivity {
 	private String bestProvider;
 	@ViewInject(R.id.tv_location)
 	private TextView tv_lo;
-	@ViewInject(R.id.tv_change)
-	private Button tvc;
+//	@ViewInject(R.id.tv_change)
+//	private Button tvc;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,26 +63,26 @@ public class FirstPartActivity extends BaseActivity {
 	 * 进入阀控器配置
 	 * @param v
 	 */
-//	@Event(R.id.bt_inConDevice)
+	@Event(R.id.bt_inConDevice)
 	private void inValueDevice(View v){
 		startActivity(new Intent(this,ValveDeviceActivity.class));
-		finish();
+//		finish();
 	}
 	
 	/**
-	 * 进入阀控器配置
+	 * 进入首部设备activity
 	 * @param v
 	 */
-//	@Event(R.id.bt_inFirstDevice)
+	@Event(R.id.bt_inFirstDevice)
 	private void inFirstDevice(View v){
 		startActivity(new Intent(this,FirstPartDeviceActivity.class));
 	}
 	
-	@Event(R.id.tv_change)
-	private void onClickTvc(View v){
-		String [] arr = {"阀控器","首部控制器","闸门控制器"};
-		eject(arr, tvc);
-	}
+//	@Event(R.id.tv_change)
+//	private void onClickTvc(View v){
+//		String [] arr = {"阀控器","首部控制器","闸门控制器"};
+//		eject(arr, tvc);
+//	}
 	
 	
 	/**

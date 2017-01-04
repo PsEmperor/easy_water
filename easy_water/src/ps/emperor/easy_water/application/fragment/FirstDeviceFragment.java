@@ -30,11 +30,11 @@ public class FirstDeviceFragment extends Fragment implements OnClickListener {
 	@ViewInject(R.id.tv_stitle)
 	private TextView tv_t;
 	//水源
-	@ViewInject(R.id.tv_qd)
-	private TextView tv_sy;
+//	@ViewInject(R.id.tv_qd)
+//	private TextView tv_sy;
 	//轮灌
-	@ViewInject(R.id.tv_lg)
-	private TextView tv_lg;
+//	@ViewInject(R.id.tv_lg)
+//	private TextView tv_lg;
 	//水泵
 	@ViewInject(R.id.tv_sb)
 	private TextView tv_sb;
@@ -81,8 +81,8 @@ public class FirstDeviceFragment extends Fragment implements OnClickListener {
 	
 	private void control() {
 		tvc.setText("首部设备");
-		ll_sy.setOnClickListener(this);
-		ll_lg.setOnClickListener(this);
+//		ll_sy.setOnClickListener(this);
+//		ll_lg.setOnClickListener(this);
 		ll_sb.setOnClickListener(this);
 		ll_cx.setOnClickListener(this);
 		ll_sf.setOnClickListener(this);
@@ -98,16 +98,16 @@ public class FirstDeviceFragment extends Fragment implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.ll_sy:
-			final String[] arr = {"渠道之蓄水池取水","渠道之直接取水","机井取水","管道自压取水"};
-			eject(arr,tv_sy,null);
+//		case R.id.ll_sy:
+//			final String[] arr = {"渠道之蓄水池取水","渠道之直接取水","机井取水","管道自压取水"};
+//			eject(arr,tv_sy,null);
 			
-			break;
-		case R.id.ll_lg:
-			final String[] arr1 = {"支管轮灌","辅管轮灌"};
-			eject(arr1, tv_lg,null);
-			
-			break;
+//			break;
+//		case R.id.ll_lg:
+//			final String[] arr1 = {"支管轮灌","辅管轮灌"};
+//			eject(arr1, tv_lg,null);
+//			
+//			break;
 		case R.id.ll_sb://水泵
 			final String[] arrsb = {"有","无"};
 			WaterPumpFragment sb = new WaterPumpFragment();

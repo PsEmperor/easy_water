@@ -31,12 +31,29 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="设备类别" />
+                
+                
+                
+                 <TextView
+                     android:id="@+id/tv_lb"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                     />
 
-                <Button
+<!--                 <EditText
+                    android:id="@+id/et_lb"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:inputType="text" /> -->
+
+<!--                 <Button
                     android:id="@+id/tv_change"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2" />
+                    android:layout_weight="2" /> -->
             </LinearLayout>
 
             <LinearLayout
@@ -53,12 +70,20 @@
                     android:gravity="center"
                     android:text="设备ID" />
 
-                <EditText
+<!--                 <EditText
                     android:id="@+id/et_id"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
+                    android:inputType="text" /> -->
+                
+                <TextView
+                    android:id="@+id/tv_id"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
                     android:inputType="text" />
+                
             </LinearLayout>
 
             <LinearLayout
@@ -109,7 +134,6 @@
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:orientation="horizontal"
                 android:padding="10dp" >
@@ -121,11 +145,13 @@
                     android:gravity="center"
                     android:text="授权单位" />
 
-                <EditText
-                    android:id="@+id/et_dw"
+                <TextView
+                    android:id="@+id/tv_dw"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
+                    android:gravity="center"
+       				android:text="搜索"
                     android:inputType="text" />
             </LinearLayout>
 
@@ -143,9 +169,11 @@
                     android:gravity="center"
                     android:text="上级设备" />
 
-                <EditText
+                <TextView
                     android:id="@+id/et_sb"
                     android:layout_width="0dp"
+                    android:gravity="center"
+       				android:text="搜索"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:inputType="text" />

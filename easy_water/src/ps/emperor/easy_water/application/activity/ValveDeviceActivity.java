@@ -10,7 +10,6 @@ import org.xutils.view.annotation.ViewInject;
 
 import ps.emperor.easy_water.BaseActivity;
 import ps.emperor.easy_water.R;
-import ps.emperor.easy_water.utils.PsUtils;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
@@ -21,11 +20,36 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 @ContentView(R.layout.activity_valvedevice)
 public class ValveDeviceActivity extends BaseActivity {
+	@ViewInject(R.id.ll_1_td)
+	private LinearLayout ll1_td;
+	@ViewInject(R.id.ll_1_mj)
+	private LinearLayout ll1_mj;
+	//判断通道1和面积是否隐藏
+	private boolean t1;
+	
+	@ViewInject(R.id.ll_2_td)
+	private LinearLayout ll2_td;
+	@ViewInject(R.id.ll_2_mj)
+	private LinearLayout ll2_mj;
+	private boolean t2;
+	
+	@ViewInject(R.id.ll_3_td)
+	private LinearLayout ll3_td;
+	@ViewInject(R.id.ll_3_mj)
+	private LinearLayout ll3_mj;
+	private boolean t3;
+	
+	@ViewInject(R.id.ll_4_td)
+	private LinearLayout ll4_td;
+	@ViewInject(R.id.ll_4_mj)
+	private LinearLayout ll4_mj;
+	private boolean t4;
 	
 	private TextView tvt;
 	private Button bte;
@@ -56,7 +80,7 @@ public class ValveDeviceActivity extends BaseActivity {
 	@Event(R.id.tv_td)
 	private void tdOnClick(View v){
 		np = new NumberPicker(this);
-		final String[] arr = { "1", "2", "3", "4","1","2","3","4"};
+		final String[] arr = {"0", "1", "2", "3", "4","0","1","2","3","4"};
 		np.setDisplayedValues(arr);
 		np.setMinValue(0);
 		np.setMaxValue(arr.length-1);
@@ -75,11 +99,15 @@ public class ValveDeviceActivity extends BaseActivity {
 		tag = np.getValue();
 		// str[tag] 取得才是角标对应数组中的值
 		tv_td.setText("\t\t\t\t"+arr[tag]);
+		System.out.println("11111111111111111========================"+arr[tag]);
+		tagIf(Integer.parseInt(arr[tag]));
 
 		}
 		}).show();
 		// 设置弹出框的大小
 		b.getWindow().setLayout(500, 500);
+		
+		
 		
 	}
 	
@@ -124,6 +152,94 @@ public class ValveDeviceActivity extends BaseActivity {
 		bte.setVisibility(View.VISIBLE);
 		bte.setText("保存");
 	}
+	
+	/*
+	 * 判断通道是否隐藏方法
+	 */
+	private void tdIf(){
+		if(t1){
+			ll1_td.setVisibility(View.VISIBLE);
+			ll1_mj.setVisibility(View.VISIBLE);
+		}else{
+			ll1_td.setVisibility(View.GONE);
+			ll1_mj.setVisibility(View.GONE);
+		}
+		
+		if(t2){
+			ll2_td.setVisibility(View.VISIBLE);
+			ll2_mj.setVisibility(View.VISIBLE);
+		}else{
+			ll2_td.setVisibility(View.GONE);
+			ll2_mj.setVisibility(View.GONE);
+		}
+		if(t3){
+			ll3_td.setVisibility(View.VISIBLE);
+			ll3_mj.setVisibility(View.VISIBLE);
+		}else{
+			ll3_td.setVisibility(View.GONE);
+			ll3_mj.setVisibility(View.GONE);
+		}
+		if(t4){
+			ll4_td.setVisibility(View.VISIBLE);
+			ll4_mj.setVisibility(View.VISIBLE);
+		}else{
+			ll4_td.setVisibility(View.GONE);
+			ll4_mj.setVisibility(View.GONE);
+		}
+		
+	}
+	
+	/**
+	 * 根据tag的数量判断td是否隐藏
+	 */
+	private void tagIf(int tag){
+		switch (tag) {
+		case 0:
+			t1 = false;
+			t2 = false;
+			t3 = false;
+			t4 = false;
+			
+			break;
+		case 1:
+			t1 = true;
+			t2 = false;
+			t3 = false;
+			t4 = false;
+			
+			break;
+		case 2:
+			t1 = true;
+			t2 = true;
+			t3 = false;
+			t4 = false;
+			
+			break;
+		case 3:
+			t1 = true;
+			t2 = true;
+			t3 = true;
+			t4 = false;
+			
+			break;
+		case 4:
+			t1 = true;
+			t2 = true;
+			t3 = true;
+			t4 = true;
+			
+			break;
+			
+		
+
+		default:
+			break;
+		}
+		
+		tdIf();
+		
+	}
+	
 
 
 }

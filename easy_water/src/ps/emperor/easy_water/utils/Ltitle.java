@@ -51,6 +51,7 @@ public class Ltitle extends RelativeLayout  {
 	}
 	//设置右菜单名称
 	public void setEditText(String tv){
+		btEdit.setVisibility(View.VISIBLE);
 		btEdit.setText(tv);
 	}
 
