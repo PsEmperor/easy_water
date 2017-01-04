@@ -9,5 +9,6 @@
     <string name="home_forth">我</string>
     <string name="application_name">应用</string>
     <string name="title_configure">配置</string>
-    <string name="find">发现</string>
+    <string name="find">搜索</string>
+    <string name="scan_text">将二维码放入框内, 即可自动扫描</string>
 </resources>

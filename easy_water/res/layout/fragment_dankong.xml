@@ -27,6 +27,16 @@
             android:text="设备名称"
             />
         
+        <EditText 
+            android:visibility="gone"
+            android:id="@+id/et_getUpInfo"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_weight="1"
+            />
+        
         <TextView 
             android:id="@+id/tv_getUpInfo"
             android:gravity="center"
@@ -126,161 +136,16 @@
         
         
     </LinearLayout>
-    <LinearLayout 
-        android:layout_width="match_parent"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
-        <TextView 
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:text="设计流量(m³/s)"
-            />
-        
-        <EditText 
-            android:id="@+id/et_plan"
-            android:gravity="center"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_weight="1"
-            />
-        
-        
-    </LinearLayout>
-<!--     <LinearLayout 
-        android:layout_width="match_parent"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
-        <TextView 
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:text="上游水位"
-            />
-        
-        <ToggleButton 
-            android:id="@+id/tb_up"
-            android:gravity="center"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_weight="1"
-            />
-        
-        
-    </LinearLayout>
-    <LinearLayout 
-        android:layout_width="match_parent"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
-        <TextView 
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:text="量程(m)"
-            />
-        
-        <EditText 
-            android:id="@+id/et_writeUpN"
-            android:gravity="center"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_weight="1"
-            />
-        
-        
-    </LinearLayout>
-    <LinearLayout 
-        android:layout_width="match_parent"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
-        <TextView 
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:text="下游水位"
-            />
-        
-        <ToggleButton 
-            android:id="@+id/tb_down"
-            android:gravity="center"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_weight="1"
-            />
-        
-        
-    </LinearLayout>
-    <LinearLayout 
-        android:layout_width="match_parent"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
-        <TextView 
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:text="量程(m)"
-            />
-        
-        <EditText 
-            android:id="@+id/et_writeDownN"
-            android:gravity="center"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_weight="1"
-            />
-        
-        
-    </LinearLayout> -->
+
+
     
     <Button
           android:id="@+id/bt_next"
           android:onClick="configDanKong"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:padding="5dp"
+		android:layout_gravity="center"
         android:background="@drawable/login_btn_selector"
         android:text="下一个"
         android:textColor="#fff" />

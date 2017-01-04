@@ -5,7 +5,7 @@ import java.util.List;
 
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.adapter.ApplyIrrigationAdapter;
-import ps.emperor.easy_water.application.ApplicationFragment;
+import ps.emperor.easy_water.application.fragment.ApplicationFragment;
 import ps.emperor.easy_water.entity.ApplyIrrigationBean;
 import ps.emperor.easy_water.greendao.DBHelper;
 import ps.emperor.easy_water.greendao.Irrigation;

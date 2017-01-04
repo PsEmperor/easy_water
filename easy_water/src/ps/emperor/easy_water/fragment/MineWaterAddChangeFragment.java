@@ -20,7 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.adapter.IrrigationAddAdapter;
-import ps.emperor.easy_water.application.ApplicationFragment;
+import ps.emperor.easy_water.application.fragment.ApplicationFragment;
 import ps.emperor.easy_water.entity.KeyWordBean;
 import ps.emperor.easy_water.view.MainActionBar;
 

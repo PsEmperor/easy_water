@@ -12,6 +12,15 @@
     <permission
         android:name="ps.emperor.easy_water.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
+    
+    
+    <!-- 二维码 -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    
 
     <!-- Required  一些系统要求的权限，如访问网络等 -->
     <uses-permission android:name="ps.emperor.easy_water.permission.JPUSH_MESSAGE" />
@@ -73,7 +82,7 @@
         <activity android:name="ps.emperor.easy_water.register.ProtocolActivity" >
         </activity>
         <activity
-            android:name="ps.emperor.easy_water.application.ConfigureActivity"
+            android:name="ps.emperor.easy_water.application.activity.ConfigureActivity"
             android:launchMode="singleTask" >
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
@@ -83,13 +92,13 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
-        <activity android:name="ps.emperor.easy_water.application.FirstPartActivity" >
+        <activity android:name="ps.emperor.easy_water.application.activity.FirstPartActivity" >
         </activity>
-        <activity android:name="ps.emperor.easy_water.application.ValveDeviceActivity" >
+        <activity android:name="ps.emperor.easy_water.application.activity.ValveDeviceActivity" >
         </activity>
-        <activity android:name="ps.emperor.easy_water.application.WaterGateActivity" >
+        <activity android:name="ps.emperor.easy_water.application.activity.WaterGateActivity" >
         </activity>
-        <activity android:name="ps.emperor.easy_water.application.TestingActivity" >
+        <activity android:name="ps.emperor.easy_water.application.activity.TestingActivity" >
         </activity>
         <activity android:name="ps.emperor.easy_water.activity.TimeAvtivityDialog" />
         <activity android:name="ps.emperor.easy_water.activity.TimeAvtivityDialogWater" />
@@ -102,7 +111,11 @@
             android:name=".MainActivity"
             android:launchMode="singleTask" >
         </activity>
-        <activity android:name="ps.emperor.easy_water.application.FirstPartDeviceActivity" >
+        <activity android:name="ps.emperor.easy_water.application.activity.FirstPartDeviceActivity" >
+        </activity>
+        <activity android:name="ps.emperor.easy_water.application.activity.HandSelectActivity" >
+        </activity>
+        <activity android:name="ps.emperor.easy_water.application.activity.ConfigureSearchActivity" >
         </activity>
 
         <receiver android:name="ps.emperor.easy_water.application.BlueToothReceiver" >
@@ -160,6 +173,15 @@
                 <category android:name="ps.emperor.easy_water" />
             </intent-filter>
         </activity>
+        <!-- 二维码 -->
+        <activity
+            android:name="ps.emperor.easy_water.application.qrcode.MipcaActivityCapture"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" >
+        </activity>
+        
+        
         <!-- Required  SDK核心功能 -->
         <service
             android:name="cn.jpush.android.service.DownloadService"

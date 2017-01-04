@@ -8,15 +8,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
-public class Ltitle extends RelativeLayout {
+public class Ltitle extends RelativeLayout  {
+
+	private TextView text;
+	private Button btEdit;
 
 	public Ltitle(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		LayoutInflater.from(context).inflate(R.layout.title, this);
 		Button btBack = (Button) findViewById(R.id.bt_back);
-		Button btEdit = (Button) findViewById(R.id.bt_edit);
+		btEdit = (Button) findViewById(R.id.bt_edit);
+		text = (TextView) findViewById(R.id.tv_text);
+		
+		
+		
 		
 		btBack.setOnClickListener(new OnClickListener() {
 			
@@ -36,6 +44,14 @@ public class Ltitle extends RelativeLayout {
 				
 			}
 		});
+	}
+	//设置标题栏名称
+	public void setText(String tv){
+		text.setText(tv);
+	}
+	//设置右菜单名称
+	public void setEditText(String tv){
+		btEdit.setText(tv);
 	}
 
 }

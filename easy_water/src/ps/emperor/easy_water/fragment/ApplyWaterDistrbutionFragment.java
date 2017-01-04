@@ -5,7 +5,7 @@ import java.util.List;
 
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.adapter.ApplyWaterDistrbutionAdapter;
-import ps.emperor.easy_water.application.ApplicationFragment;
+import ps.emperor.easy_water.application.fragment.ApplicationFragment;
 import ps.emperor.easy_water.entity.ApplyWaterDistrbutionBean;
 import ps.emperor.easy_water.view.MainActionBar;
 import android.annotation.SuppressLint;

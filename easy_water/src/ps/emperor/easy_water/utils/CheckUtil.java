@@ -20,7 +20,7 @@ public class CheckUtil {
 
 	/**
 	 * 判断数组是否为空
-	 * 
+	 * S2T3Fo4
 	 * @paramr
 	 * @return true 为空 false 不为空
 	 */
