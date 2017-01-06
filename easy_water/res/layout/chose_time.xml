@@ -50,12 +50,15 @@
             android:id="@+id/chose_hour"
             android:layout_width="80dp"
             android:layout_height="120dp"
-            android:layout_marginLeft="80dp"/>
+            android:layout_marginLeft="50dp"
+            android:layout_weight="1"/>
         <ps.emperor.easy_water.view.WheelView
             android:id="@+id/chose_minute"
             android:layout_width="80dp"
             android:layout_height="120dp"
-            android:layout_marginLeft="20dp"/>
+            android:layout_weight="1"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="50dp"/>
     </LinearLayout>
 
     <LinearLayout

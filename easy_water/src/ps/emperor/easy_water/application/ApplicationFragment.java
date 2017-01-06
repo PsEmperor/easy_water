@@ -84,7 +84,7 @@ public class ApplicationFragment extends Fragment implements
 		gvApp.setAdapter(aga);
 
 		gvApp.setOnItemClickListener(this);
-
+		
 	}
 	
 	/**

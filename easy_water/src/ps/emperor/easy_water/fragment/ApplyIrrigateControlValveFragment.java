@@ -149,7 +149,7 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 		// 分
 		final WheelView wv_minute = (WheelView) view
 				.findViewById(R.id.minute_filter);
-		wv_minute.setAdapter(new NumericWheelAdapter(0, 59, "%02d"));
+		wv_minute.setAdapter(new NumericWheelAdapter(0, 59));
 		wv_minute.setCyclic(true);
 		wv_minute.setLabel("分");// 添加文字
 		wv_minute.setCurrentItem(minute);
