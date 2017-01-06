@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white" >
+    android:background="@color/gray_3"
+    >
 <ps.emperor.easy_water.view.MainActionBar
         android:id="@+id/actionbar_user_role_choose"
         android:layout_width="fill_parent"
@@ -26,16 +27,31 @@
             android:layout_marginTop="20dp"
             android:text="用户角色"
             android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_mines_role_choose_msg"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/tv_mines_role_choose"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="25dp"
+            android:textSize="15sp"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:background="@color/white"
+            android:text="此部分为该用户所申请角色的详细介绍" />
 	
     </RelativeLayout>
   <Button
     android:id="@+id/btn_role_choose"
     android:layout_width="match_parent"
-    android:layout_height="45dp"
+    android:layout_height="50dp"
     android:layout_marginLeft="20dp"
     android:layout_marginRight="20dp"
     android:layout_marginTop="5dp"
     android:text="确认" 
     android:layout_weight="0"
-    android:layout_marginBottom="20dp"/>
+    android:layout_marginBottom="30dp"/>
 </LinearLayout>

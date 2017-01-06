@@ -97,7 +97,7 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 	private ApplyWaterDistrbutionGateAdapter adapter;
 	private RelativeLayout layout_relative_changes_one,layout_relative_changes_two,layout_relative_changes_three;
 	private RelativeLayout layout_relative_change,layout_relative_change_left,layout_relative_change_right,layout_relative_changes_ones,
-	layout_relative_changes_twos,layout_relative_changes_threes;
+	layout_relative_changes_twos,layout_relative_changes_threes,layout_show_left_and_right;
 	private boolean scrollFlag = false;// 标记是否滑动
 	private int lastVisibleItemPosition = 0;// 标记上次滑动位置
 	private ImageView imageLeft,imageRight;
@@ -153,6 +153,7 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 		layout_relative_changes_ones = (RelativeLayout) view.findViewById(R.id.layout_relative_changes_one);
 		layout_relative_changes_twos = (RelativeLayout) view.findViewById(R.id.layout_relative_changes_two);
 		layout_relative_changes_threes = (RelativeLayout) view.findViewById(R.id.layout_relative_changes_three);
+		layout_show_left_and_right = (RelativeLayout) view.findViewById(R.id.layout_show_left_and_right);
 		
 		layout_relative_change.setOnClickListener(this);
 		layout_relative_change_left.setOnClickListener(this);
@@ -212,7 +213,11 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 			}
 		});
 		init();
-
+		
+		if(beans.size()<= 3){
+			layout_show_left_and_right.setVisibility(View.GONE);
+		}
+		
 		String str = "上级设备：	142团北干渠节制闸";
 		SpannableStringBuilder style = new SpannableStringBuilder(str);
 		// str代表要显示的全部字符串
@@ -286,12 +291,12 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 			bean.setPercentage(30+"");
 			bean.setNum("4");
 			beans.add(bean);
-			bean = new ApplyWaterDistrbutionGateBean();
-			bean.setHigh(0.8+"m");
-			bean.setAperture(80+"%");
-			bean.setPercentage(30+"");
-			bean.setNum("5");
-			beans.add(bean);
+//			bean = new ApplyWaterDistrbutionGateBean();
+//			bean.setHigh(0.8+"m");
+//			bean.setAperture(80+"%");
+//			bean.setPercentage(30+"");
+//			bean.setNum("5");
+//			beans.add(bean);
 //			bean = new ApplyWaterDistrbutionGateBean();
 //			bean.setHigh(0.8+"m");
 //			bean.setAperture(80+"%");

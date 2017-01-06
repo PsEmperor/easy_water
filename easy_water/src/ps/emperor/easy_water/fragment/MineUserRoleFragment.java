@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -24,6 +25,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import ps.emperor.easy_water.R;
+import ps.emperor.easy_water.activity.MineUserRoleChooseActivity;
 import ps.emperor.easy_water.adapter.RoleAdapter;
 import ps.emperor.easy_water.entity.UserBean;
 import ps.emperor.easy_water.utils.SharedUtils;
@@ -121,59 +123,29 @@ public class MineUserRoleFragment extends Fragment implements OnClickListener,On
 		FragmentManager fgManager = getFragmentManager();
 		FragmentTransaction transaction = fgManager.beginTransaction();
 		if (position == 0) {
-			MineUserRoleChooseFragment fragment = new MineUserRoleChooseFragment();
-			// transaction.setCustomAnimations(R.anim.right_in,
-			// R.anim.right_out);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-			transaction.replace(R.id.fl, fragment, "main");
-			transaction.commit();
+			Intent intent = new Intent(getActivity(),MineUserRoleChooseActivity.class);
+			startActivity(intent);
 			SharedUtils.setParam(getActivity(), "tag", tag);
 		} else if (position == 1) {
 			tag = 1;
-			MineUserRoleChooseFragment fragment1 = new MineUserRoleChooseFragment();
-			// transaction.setCustomAnimations(R.anim.right_in,
-			// R.anim.right_out);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-			transaction.replace(R.id.fl, fragment1, "main");
-			transaction.commit();
+			Intent intent = new Intent(getActivity(),MineUserRoleChooseActivity.class);
+			startActivity(intent);
 			SharedUtils.setParam(getActivity(), "tag", tag);
 		} else if (position == 2) {
-			MineUserRoleChooseFragment fragment1 = new MineUserRoleChooseFragment();
-			// transaction.setCustomAnimations(R.anim.right_in,
-			// R.anim.right_out);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-			transaction.replace(R.id.fl, fragment1, "main");
-			transaction.commit();
+			Intent intent = new Intent(getActivity(),MineUserRoleChooseActivity.class);
+			startActivity(intent);
 			SharedUtils.setParam(getActivity(), "tag", tag);
 		} else if (position == 3) {
-			MineUserRoleChooseFragment fragment1 = new MineUserRoleChooseFragment();
-			// transaction.setCustomAnimations(R.anim.right_in,
-			// R.anim.right_out);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-			transaction.replace(R.id.fl, fragment1, "main");
-			transaction.commit();
+			Intent intent = new Intent(getActivity(),MineUserRoleChooseActivity.class);
+			startActivity(intent);
 			SharedUtils.setParam(getActivity(), "tag", tag);
 		} else if (position == 4) {
-			MineUserRoleChooseFragment fragment1 = new MineUserRoleChooseFragment();
-			// transaction.setCustomAnimations(R.anim.right_in,
-			// R.anim.right_out);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-			transaction.replace(R.id.fl, fragment1, "main");
-			transaction.commit();
+			Intent intent = new Intent(getActivity(),MineUserRoleChooseActivity.class);
+			startActivity(intent);
 			SharedUtils.setParam(getActivity(), "tag", tag);
 		} else if (position == 5) {
-			MineUserRoleChooseFragment fragment1 = new MineUserRoleChooseFragment();
-			// transaction.setCustomAnimations(R.anim.right_in,
-			// R.anim.right_out);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-			transaction.replace(R.id.fl, fragment1, "main");
-			transaction.commit();
+			Intent intent = new Intent(getActivity(),MineUserRoleChooseActivity.class);
+			startActivity(intent);
 			SharedUtils.setParam(getActivity(), "tag", tag);
 		} 
 	}

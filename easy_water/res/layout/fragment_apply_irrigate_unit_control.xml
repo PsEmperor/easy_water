@@ -250,7 +250,7 @@
     <Button
     android:id="@+id/btn_apply_irrigate_unit_control_true"
     android:layout_width="match_parent"
-    android:layout_height="45dp"
+    android:layout_height="50dp"
     android:layout_marginLeft="20dp"
     android:layout_marginRight="20dp"
     android:layout_weight="0"

@@ -3293,16 +3293,18 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 							time_start = sdf.format(date);
 						}
 					}
-				}
-				if(!CheckUtil.IsEmpty(isFront)&&isFront!=0){
-					time_start = (String) SharedUtils.getParam(getActivity(), "time_start", "0000-00-00 00:00");
-				}else{
-					Date date = new Date(compares);
+				}else {
+					Date date = new Date(System.currentTimeMillis());
 					SimpleDateFormat sdf = new SimpleDateFormat(
 							"yyyy-MM-dd HH:mm");
 					time_start = sdf.format(date);
 					time_max_start = time_start;
 				}
+				if (!CheckUtil.IsEmpty(isFront) && isFront != 0) {
+					time_start = (String) SharedUtils.getParam(getActivity(),
+							"time_start", "0000-00-00 00:00");
+					time_max_start = time_start;
+				} 
 				Message message = new Message();
 				message.what = 100;
 				handler.sendMessage(message);

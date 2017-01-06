@@ -139,15 +139,6 @@
                     android:layout_marginRight="55dp"
                     android:text="0" />
 
-                <ImageView
-                    android:id="@+id/imageView4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="25dp"
-                    android:src="@drawable/image_gray_row" />
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -181,15 +172,6 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="55dp"
                     android:text="6" />
-
-                <ImageView
-                    android:id="@+id/imageView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="25dp"
-                    android:src="@drawable/image_gray_row" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -216,15 +198,6 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="55dp"
                     android:text="0" />
-
-                <ImageView
-                    android:id="@+id/imageView_right"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="25dp"
-                    android:src="@drawable/image_gray_row" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -232,15 +205,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_below="@+id/layout_maintain_basic_info_max_orroagte_filter_examine" >
-
-                <ImageView
-                    android:id="@+id/imageView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="25dp"
-                    android:src="@drawable/image_gray_row" />
 
                 <TextView
                     android:id="@+id/TextViewX"
@@ -300,14 +264,6 @@
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/layout_maintain_basic_info_max_orroagte_valve_examine" >
 
-                <ImageView
-                    android:id="@+id/ImageView01"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="25dp"
-                    android:src="@drawable/image_gray_row" />
 
                 <TextView
                     android:id="@+id/textView_test_examine"

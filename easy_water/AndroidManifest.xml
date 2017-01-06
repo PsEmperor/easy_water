@@ -98,6 +98,7 @@
             android:windowSoftInputMode="adjustPan" />
         <activity android:name="ps.emperor.easy_water.activity.MainTainPresentrrigateActivity" />
         <activity android:name="ps.emperor.easy_water.activity.MainTainGateInfoActivity" />
+        <activity android:name="ps.emperor.easy_water.activity.MineUserRoleChooseActivity" />
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTask" >

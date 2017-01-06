@@ -719,6 +719,7 @@
        
 
         <RelativeLayout
+            android:id="@+id/layout_show_left_and_right"
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:layout_alignParentLeft="true"

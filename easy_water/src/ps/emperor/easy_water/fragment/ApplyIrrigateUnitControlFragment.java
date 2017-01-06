@@ -105,7 +105,7 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements
 		adapter = new ApplyIrrigateUnitControlPlantAdapter(getActivity());
 		customData = new ArrayList<ApplyIrrigationProject>();
 		adapter1 = new CustomArrayAdapters(getActivity());
-
+		
 		init();
 
 		unit_control_plan = (ImageView) view
