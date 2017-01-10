@@ -27,7 +27,8 @@ import android.widget.Toast;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.activity.MineUserRoleChooseActivity;
 import ps.emperor.easy_water.adapter.RoleAdapter;
-import ps.emperor.easy_water.entity.UserBean;
+import ps.emperor.easy_water.entity.RoleBean;
+import ps.emperor.easy_water.entity.RoleBean;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.view.MainActionBar;
 
@@ -44,10 +45,10 @@ public class MineUserRoleFragment extends Fragment implements OnClickListener,On
 	private MainActionBar actionBar;
 	private TextView role;
 	private ListView listView;
-	private List<UserBean> userBeans;
+	private List<RoleBean> RoleBeans;
 	private RoleAdapter adapter;
 	private int tag;
-	UserBean bean;
+	RoleBean bean;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,35 +81,35 @@ public class MineUserRoleFragment extends Fragment implements OnClickListener,On
 
 		listView = (ListView) view.findViewById(R.id.list_user_role);
 
-		userBeans = new ArrayList<UserBean>();
+		RoleBeans = new ArrayList<RoleBean>();
 		 
-		bean = new UserBean();
+		bean = new RoleBean();
 		bean.setRole("灌溉管理员");
 		bean.setMsg("灌溉管理员是管理灌溉单元信息的角色 可以查看并操作有关灌溉的所有数据！");
-		userBeans.add(bean);
-		bean = new UserBean();
+		RoleBeans.add(bean);
+		bean = new RoleBean();
 		bean.setRole("配水管理员");
 		bean.setMsg("配水管理员是管理配水设备信息的角色 可以查看并操作有关配水的所有数据！");
-		userBeans.add(bean);
-		bean = new UserBean();
+		RoleBeans.add(bean);
+		bean = new RoleBean();
 		bean.setRole("综合管理员");
 		bean.setMsg("综合管理员是灌溉管理员与配水管理员的结合 可以查看并操作有关灌溉和配水的所有数据！");
-		userBeans.add(bean);
-		bean = new UserBean();
+		RoleBeans.add(bean);
+		bean = new RoleBean();
 		bean.setRole("种植户");
 		bean.setMsg("种植户是仅可以进行查询并修改有关自身的灌溉信息和配水信息的角色！");
-		userBeans.add(bean);
-		bean = new UserBean();
+		RoleBeans.add(bean);
+		bean = new RoleBean();
 		bean.setRole("高级管理员");
 		bean.setMsg("高级管理员是该系统中最高等级的管理员 可以查看并操作所有的数据！");
-		userBeans.add(bean);
-		bean = new UserBean();
+		RoleBeans.add(bean);
+		bean = new RoleBean();
 		bean.setRole("安装调试员");
 		bean.setMsg("安装调试员是管理设备配置信息的角色 可以查看并操作有关设备配置的所有数据！");
-		userBeans.add(bean);
+		RoleBeans.add(bean);
 		
 		adapter = new RoleAdapter(getActivity());
-		adapter.addData(userBeans, true);
+		adapter.addData(RoleBeans, true);
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(this);
 		return view;

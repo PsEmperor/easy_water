@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import ps.emperor.easy_water.R;
+import ps.emperor.easy_water.entity.AuthorizedBeen.infoList;
 import ps.emperor.easy_water.entity.MineUserDistrictBean;
 
 /**
@@ -14,7 +15,7 @@ import ps.emperor.easy_water.entity.MineUserDistrictBean;
  * @author 毛国江
  * @version 2016-5-18 上午11:12
  */
-public class MineUserDistrictAdapter extends MyBaseAdapter<MineUserDistrictBean> {
+public class MineUserDistrictAdapter extends MyBaseAdapter<infoList> {
 
 	private Context context;
 
@@ -34,8 +35,8 @@ public class MineUserDistrictAdapter extends MyBaseAdapter<MineUserDistrictBean>
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		MineUserDistrictBean mineUserDistrictBean = list.get(position);
-		viewHolder.district.setText(mineUserDistrictBean.district);
+		infoList authNameListBean = list.get(position);
+		viewHolder.district.setText(authNameListBean.getAuthCounty());
 		return convertView;
 
 	}

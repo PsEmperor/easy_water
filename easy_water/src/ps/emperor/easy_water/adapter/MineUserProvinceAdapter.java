@@ -2,11 +2,14 @@ package ps.emperor.easy_water.adapter;
 
 
 import android.content.Context;
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import ps.emperor.easy_water.R;
+import ps.emperor.easy_water.entity.AuthorizedBeen.infoList;
 import ps.emperor.easy_water.entity.MineUserProvinceBean;
+import ps.emperor.easy_water.entity.AuthorizedBeen;
 
 /**
  * (我)授权单位
@@ -14,7 +17,7 @@ import ps.emperor.easy_water.entity.MineUserProvinceBean;
  * @author 毛国江
  * @version 2016-5-18 上午11:12
  */
-public class MineUserProvinceAdapter extends MyBaseAdapter<MineUserProvinceBean> {
+public class MineUserProvinceAdapter extends MyBaseAdapter<infoList> {
 
 	private Context context;
 
@@ -34,8 +37,8 @@ public class MineUserProvinceAdapter extends MyBaseAdapter<MineUserProvinceBean>
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		MineUserProvinceBean mineUserUnitsBean = list.get(position);
-		viewHolder.province.setText(mineUserUnitsBean.province);
+		infoList authNameListBean = list.get(position);
+		viewHolder.province.setText(authNameListBean.getAuthProvince());
 		return convertView;
 
 	}

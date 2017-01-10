@@ -1,7 +1,19 @@
 package ps.emperor.easy_water.fragment;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+
 import java.util.List;
+
+import org.json.JSONObject;
+import org.xutils.x;
+import org.xutils.common.Callback.CancelledException;
+import org.xutils.common.Callback.CommonCallback;
+import org.xutils.ex.HttpException;
+import org.xutils.http.HttpMethod;
+import org.xutils.http.RequestParams;
+
+import com.google.gson.Gson;
 
 import android.annotation.SuppressLint;
 import android.app.FragmentTransaction;
@@ -14,6 +26,7 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +35,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.adapter.MineUserDistrictAdapter;
@@ -29,13 +43,17 @@ import ps.emperor.easy_water.adapter.MineUserEvenAdapter;
 import ps.emperor.easy_water.adapter.MineUserStateAdapter;
 import ps.emperor.easy_water.adapter.MineUserProvinceAdapter;
 import ps.emperor.easy_water.adapter.MineUserUnitAdapter;
+import ps.emperor.easy_water.entity.AuthorizedBeen.infoList;
 import ps.emperor.easy_water.entity.MineUserDistrictBean;
 import ps.emperor.easy_water.entity.MineUserEvenBean;
 import ps.emperor.easy_water.entity.MineUserProvinceBean;
 import ps.emperor.easy_water.entity.MineUserStateBean;
 import ps.emperor.easy_water.entity.MineUserUnitBean;
+import ps.emperor.easy_water.entity.AuthorizedBeen;
+import ps.emperor.easy_water.entity.MineUserProvinceBean.Bean;
 import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
+import ps.emperor.easy_water.utils.UrlUtil;
 import ps.emperor.easy_water.view.MainActionBar;
 import ps.emperor.easy_water.view.MainActionBars;
 
@@ -53,7 +71,6 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 	private MainActionBars actionBar;
 	private TextView hint,tvProvince, tvState, tvDistrict, tvUnits,tvEven;
 	private PopupWindow popupWindow;
-	private List<MineUserProvinceBean> provinceBeans;
 	private List<MineUserStateBean> stateBeans;
 	private List<MineUserDistrictBean> districtBeans;
 	private List<MineUserUnitBean> unitBeans;
@@ -64,8 +81,9 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 	private MineUserUnitAdapter adapter3;
 	private MineUserEvenAdapter adapter4;
 	private ListView listView;
-	private String province,state,district,units,event,shareProvince,shareState,shareDistrict,shareEven,shareUnit;//保存在shard中的
+	private String shareUnitID,province,state,district,units,event,shareProvince,shareState,shareDistrict,shareEven,shareUnit;//淇濆瓨鍦╯hard涓殑
 	private int chose;
+	AuthorizedBeen authorizedBeen;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -157,13 +175,66 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			break;
 		case R.id.text_mine_user_info_province:
 			chose = 1;
-			provinceBeans = new ArrayList<MineUserProvinceBean>();
-			for (int i = 0; i < 4; i++) {
-				MineUserProvinceBean bean = new MineUserProvinceBean();
-				bean.setProvince("新疆生产建设兵团");
-				provinceBeans.add(bean);
-			}
-			adapter.addData(provinceBeans, true);
+			RequestParams param1 = new RequestParams(UrlUtil.urluserAuthInfo); //  网址(请替换成实际的网址) 
+//			 params.addQueryStringParameter("key", "value");// 参数(请替换成实际的参数与值)   
+			JSONObject js_request = new JSONObject();
+			try {
+				param1.setAsJsonContent(true);
+//				
+				} catch (Exception e) {
+				// TODO Auto-generated catch block
+//				param1.setBodyContent("Content-Type: application/json"+js_request.toString());
+				e.printStackTrace();
+				param1.setAsJsonContent(true);
+			}//根据实际需求添加相应键值对
+			
+		        x.http().request(HttpMethod.GET ,param1, new CommonCallback<String>() {  
+		            @Override  
+		            public void onCancelled(CancelledException arg0) {  
+		                  
+		            }  
+		  
+		            // 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误  
+		            // 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看    
+		            @Override  
+		            public void onError(Throwable ex, boolean isOnCallback) {  
+		                  
+		                Toast.makeText(x.app(), ex.getMessage(), Toast.LENGTH_LONG).show();  
+		                if (ex instanceof HttpException) { // 网络错误  
+		                    HttpException httpEx = (HttpException) ex;  
+		                    int responseCode = httpEx.getCode();  
+		                    String responseMsg = httpEx.getMessage();  
+		                    String errorResult = httpEx.getResult();  
+		                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+		                    // ...  
+		                } else {  // 其他错误  
+		                    // ...  
+		                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+		                }  
+		                  
+		            }  
+		  
+		         // 不管成功或者失败最后都会回调该接口  
+		            @Override  
+		            public void onFinished() {    
+		            	Toast.makeText(getActivity(), "走了网络请求", Toast.LENGTH_SHORT);
+		            }  
+		  
+		            @Override  
+		            public void onSuccess(String arg0) {  
+		                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
+		                  Gson gson = new Gson();
+		                  System.out.println(arg0);
+		                  AuthorizedBeen fromJson = gson.fromJson(arg0, AuthorizedBeen.class);
+		                  authorizedBeen = new AuthorizedBeen();
+		                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
+		                  List<infoList> beens = fromJson.getAuthNameList();
+		                  for (infoList authNameListBean : beens) {
+		                	authNameListBean.getAuthProvince();
+						}
+		                  adapter.addData(beens, true);
+		            }  
+		        }); 
 			View view1 = mInflater.inflate(
 					R.layout.layout_mine_user_units_popu, null);
 			popupWindow = new PopupWindow(view1,
@@ -174,19 +245,76 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			listView = (ListView) view1.findViewById(R.id.list_mine_user_units);
 			listView.setAdapter(adapter);
 			listView.setOnItemClickListener(this);
-		// popupWindow.showAtLocation(getActivity().findViewById(R.id.setting),
-		// Gravity.TOP, 0, 0);
 		popupWindow.showAsDropDown(tvProvince);
 		break;
 		case R.id.text_mine_user_info_state:
 			chose = 2;
-			stateBeans = new ArrayList<MineUserStateBean>();
-			for (int i = 0; i < 6; i++) {
-				MineUserStateBean bean = new MineUserStateBean();
-				bean.setState("第八师");
-				stateBeans.add(bean);
+			String str = "";
+			try {
+				str = java.net.URLEncoder.encode("授","UTF-8");
+			} catch (UnsupportedEncodingException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
-			adapter1.addData(stateBeans, true);
+			System.out.println(str);
+			RequestParams param2 = new RequestParams(UrlUtil.urluserAuthInfo+str);  // 网址(请替换成实际的网址) 
+//			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
+			JSONObject js_request1 = new JSONObject();
+			try {
+				param2.setAsJsonContent(true);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				param2.setAsJsonContent(true);
+			}//根据实际需求添加相应键值对
+			
+		        x.http().request(HttpMethod.GET ,param2, new CommonCallback<String>() {  
+		            @Override  
+		            public void onCancelled(CancelledException arg0) {  
+		                  
+		            }  
+		  
+		         // 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误  
+		            // 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看  
+		            @Override  
+		            public void onError(Throwable ex, boolean isOnCallback) {  
+		                  
+		                Toast.makeText(x.app(), ex.getMessage(), Toast.LENGTH_LONG).show();  
+		                if (ex instanceof HttpException) { // 网络错误    
+		                    HttpException httpEx = (HttpException) ex;  
+		                    int responseCode = httpEx.getCode();  
+		                    String responseMsg = httpEx.getMessage();  
+		                    String errorResult = httpEx.getResult();  
+		                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+		                    // ...  
+		                } else { // 其他错误    
+		                    // ...  
+		                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+		                }  
+		                  
+		            }  
+		  
+		         // 不管成功或者失败最后都会回调该接口  
+		            @Override  
+		            public void onFinished() {    
+		            	Toast.makeText(getActivity(), "走了网络请求", Toast.LENGTH_SHORT);
+		            }  
+		  
+		            @Override  
+		            public void onSuccess(String arg0) {  
+		                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
+		                  Gson gson = new Gson();
+		                  System.out.println(arg0);
+		                  AuthorizedBeen fromJson = gson.fromJson(arg0, AuthorizedBeen.class);
+		                  authorizedBeen = new AuthorizedBeen();
+		                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
+		                  List<infoList> beens = fromJson.getAuthNameList();
+		                  for (infoList authNameListBean : beens) {
+		                	authNameListBean.getAuthCity();
+						}
+		                  adapter1.addData(beens, true);
+		            }  
+		        }); 
 				View view2 = mInflater.inflate(
 						R.layout.layout_mine_user_units_popu, null);
 				popupWindow = new PopupWindow(view2,
@@ -197,19 +325,76 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 				listView = (ListView) view2.findViewById(R.id.list_mine_user_units);
 				listView.setAdapter(adapter1);
 				listView.setOnItemClickListener(this);
-			// popupWindow.showAtLocation(getActivity().findViewById(R.id.setting),
-			// Gravity.TOP, 0, 0);
 			popupWindow.showAsDropDown(tvState);
 			break;
 		case R.id.text_mine_user_info_district:
 			chose = 3;
-			districtBeans = new ArrayList<MineUserDistrictBean>();
-			for (int i = 0; i < 8; i++) {
-				MineUserDistrictBean bean = new MineUserDistrictBean();
-				bean.setDistrict("141团");
-				districtBeans.add(bean);
+			String str1 = "";
+			String str2 = "";
+			try {
+				str1 = java.net.URLEncoder.encode("授","UTF-8");
+				str2 = java.net.URLEncoder.encode("权","UTF-8");
+			} catch (UnsupportedEncodingException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
-			adapter2.addData(districtBeans, true);
+			RequestParams param3 = new RequestParams(UrlUtil.urluserAuthInfo+str1+"/"+str2);  // 网址(请替换成实际的网址) 
+//			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
+			JSONObject js_request2 = new JSONObject();
+			try {
+				param3.setAsJsonContent(true);
+			} catch (Exception e) {
+				e.printStackTrace();
+				param3.setAsJsonContent(true);
+			}//根据实际需求添加相应键值对
+			
+		        x.http().request(HttpMethod.GET ,param3, new CommonCallback<String>() {  
+		            @Override  
+		            public void onCancelled(CancelledException arg0) {  
+		                  
+		            }  
+		  
+		         // 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误  
+		            // 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看  
+		            @Override  
+		            public void onError(Throwable ex, boolean isOnCallback) {  
+		                  
+		                Toast.makeText(x.app(), ex.getMessage(), Toast.LENGTH_LONG).show();  
+		                if (ex instanceof HttpException) { // 网络错误    
+		                    HttpException httpEx = (HttpException) ex;  
+		                    int responseCode = httpEx.getCode();  
+		                    String responseMsg = httpEx.getMessage();  
+		                    String errorResult = httpEx.getResult();  
+		                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+		                    // ...  
+		                } else { // 其他错误    
+		                    // ...  
+		                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+		                }  
+		                  
+		            }  
+		  
+		         // 不管成功或者失败最后都会回调该接口  
+		            @Override  
+		            public void onFinished() {    
+		            	Toast.makeText(getActivity(), "走了网络请求", Toast.LENGTH_SHORT);
+		            }  
+		  
+		            @Override  
+		            public void onSuccess(String arg0) {  
+		                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
+		                  Gson gson = new Gson();
+		                  System.out.println(arg0);
+		                  AuthorizedBeen fromJson = gson.fromJson(arg0, AuthorizedBeen.class);
+//		                  authorizedBeen = new AuthorizedBeen();
+//		                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
+		                  List<infoList> beens = fromJson.getAuthNameList();
+		                  for (infoList authNameListBean : beens) {
+		                	authNameListBean.getAuthCounty();
+						}
+		                  adapter2.addData(beens, true);
+		            }  
+		        }); 
 				View view3 = mInflater.inflate(
 						R.layout.layout_mine_user_units_popu, null);
 				popupWindow = new PopupWindow(view3,
@@ -226,13 +411,74 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			break;
 		case R.id.text_mine_user_info_even:
 			chose = 4;
-			evenBeans = new ArrayList<MineUserEvenBean>();
-			for (int i = 0; i < 11; i++) {
-				MineUserEvenBean bean = new MineUserEvenBean();
-				bean.setEven("待定");
-				evenBeans.add(bean);
+			String str3 = "";
+			String str4 = "";
+			String str5 = "";
+			try {
+				str3 = java.net.URLEncoder.encode("授","UTF-8");
+				str4 = java.net.URLEncoder.encode("权","UTF-8");
+				str5 = java.net.URLEncoder.encode("单","UTF-8");
+			} catch (UnsupportedEncodingException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
-			adapter4.addData(evenBeans, true);
+			RequestParams param4 = new RequestParams(UrlUtil.urluserAuthInfo+str3+"/"+str4+"/"+str5);  // 网址(请替换成实际的网址) 
+//			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
+			JSONObject js_request3 = new JSONObject();
+			try {
+				param4.setAsJsonContent(true);
+			} catch (Exception e) {
+				e.printStackTrace();
+				param4.setAsJsonContent(true);
+			}//根据实际需求添加相应键值对
+			
+		        x.http().request(HttpMethod.GET ,param4, new CommonCallback<String>() {  
+		            @Override  
+		            public void onCancelled(CancelledException arg0) {  
+		                  
+		            }  
+		  
+		         // 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误  
+		            // 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看  
+		            @Override  
+		            public void onError(Throwable ex, boolean isOnCallback) {  
+		                  
+		                Toast.makeText(x.app(), ex.getMessage(), Toast.LENGTH_LONG).show();  
+		                if (ex instanceof HttpException) { // 网络错误    
+		                    HttpException httpEx = (HttpException) ex;  
+		                    int responseCode = httpEx.getCode();  
+		                    String responseMsg = httpEx.getMessage();  
+		                    String errorResult = httpEx.getResult();  
+		                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+		                    // ...  
+		                } else { // 其他错误    
+		                    // ...  
+		                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+		                }  
+		                  
+		            }  
+		  
+		         // 不管成功或者失败最后都会回调该接口  
+		            @Override  
+		            public void onFinished() {    
+		            	Toast.makeText(getActivity(), "走了网络请求", Toast.LENGTH_SHORT);
+		            }  
+		  
+		            @Override  
+		            public void onSuccess(String arg0) {  
+		                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
+		                  Gson gson = new Gson();
+		                  System.out.println(arg0);
+		                  AuthorizedBeen fromJson = gson.fromJson(arg0, AuthorizedBeen.class);
+		                  authorizedBeen = new AuthorizedBeen();
+		                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
+		                  List<infoList> beens = fromJson.getAuthNameList();
+		                  for (infoList authNameListBean : beens) {
+		                	authNameListBean.getAuthTown();
+						}
+		                  adapter4.addData(beens, true);
+		            }  
+		        }); 
 			View view4 = mInflater.inflate(
 					R.layout.layout_mine_user_units_popu, null);
 			popupWindow = new PopupWindow(view4,
@@ -249,14 +495,77 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			break;
 		case R.id.text_mine_user_info_units:
 			chose = 5;
-			unitBeans = new ArrayList<MineUserUnitBean>();
-			for (int i = 0; i < 11; i++) {
-				MineUserUnitBean bean = new MineUserUnitBean();
-				bean.setUnit("水利局");
-				unitBeans.add(bean);
+			String str6 = "";
+			String str7 = "";
+			String str8 = "";
+			String str9 = "";
+			try {
+				str6 = java.net.URLEncoder.encode("授","UTF-8");
+				str7 = java.net.URLEncoder.encode("权","UTF-8");
+				str8 = java.net.URLEncoder.encode("单","UTF-8");
+				str9 = java.net.URLEncoder.encode("位","UTF-8");
+			} catch (UnsupportedEncodingException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
-			adapter3.addData(unitBeans, true);
-				View view5 = mInflater.inflate(
+			RequestParams param5 = new RequestParams(UrlUtil.urluserAuthInfo+str6+"/"+str7+"/"+str8+"/"+str9);  // 网址(请替换成实际的网址) 
+//			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
+			JSONObject js_request4 = new JSONObject();
+			try {
+				param5.setAsJsonContent(true);
+			} catch (Exception e) {
+				e.printStackTrace();
+				param5.setAsJsonContent(true);
+			}//根据实际需求添加相应键值对
+			
+		        x.http().request(HttpMethod.GET ,param5, new CommonCallback<String>() {  
+		            @Override  
+		            public void onCancelled(CancelledException arg0) {  
+		                  
+		            }  
+		  
+		         // 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误  
+		            // 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看  
+		            @Override  
+		            public void onError(Throwable ex, boolean isOnCallback) {  
+		                  
+		                Toast.makeText(x.app(), ex.getMessage(), Toast.LENGTH_LONG).show();  
+		                if (ex instanceof HttpException) { // 网络错误    
+		                    HttpException httpEx = (HttpException) ex;  
+		                    int responseCode = httpEx.getCode();  
+		                    String responseMsg = httpEx.getMessage();  
+		                    String errorResult = httpEx.getResult();  
+		                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+		                    // ...  
+		                } else { // 其他错误    
+		                    // ...  
+		                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+		                }  
+		                  
+		            }  
+		  
+		         // 不管成功或者失败最后都会回调该接口  
+		            @Override  
+		            public void onFinished() {    
+		            	Toast.makeText(getActivity(), "走了网络请求", Toast.LENGTH_SHORT);
+		            }  
+		  
+		            @Override  
+		            public void onSuccess(String arg0) {  
+		                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
+		                  Gson gson = new Gson();
+		                  System.out.println(arg0);
+		                  AuthorizedBeen fromJson = gson.fromJson(arg0, AuthorizedBeen.class);
+		                  authorizedBeen = new AuthorizedBeen();
+		                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
+		                  List<infoList> beens = fromJson.getAuthNameList();
+		                  for (infoList authNameListBean : beens) {
+		                	authNameListBean.getAuthManage();
+						}
+		                  adapter3.addData(beens, true);
+		            }  
+		        }); 
+		        View view5 = mInflater.inflate(
 						R.layout.layout_mine_user_units_popu, null);
 				popupWindow = new PopupWindow(view5,
 						ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -280,33 +589,35 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		if(chose == 1){
-			province = provinceBeans.get(position).getProvince();
+			province = authorizedBeen.getAuthNameList().get(position).getAuthProvince();
 			tvProvince.setText(province);
 			SharedUtils.setParam(getActivity(), "shareProvince", province);
 			popupWindow.dismiss();
 		}
 		if(chose == 2){
-			state = stateBeans.get(position).getState();
+			state = authorizedBeen.getAuthNameList().get(position).getAuthCity();
 			tvState.setText(state);
 			SharedUtils.setParam(getActivity(), "shareState", state);
 			popupWindow.dismiss();
 		}
 		if(chose == 3){
-			district = districtBeans.get(position).getDistrict();
+			district = authorizedBeen.getAuthNameList().get(position).getAuthCounty();
 			tvDistrict.setText(district);
 			SharedUtils.setParam(getActivity(), "shareDistrict", district);
 			popupWindow.dismiss();
 		}
 		if(chose == 4){
-			event = evenBeans.get(position).getEven();
+			event = authorizedBeen.getAuthNameList().get(position).getAuthTown();
 			tvEven.setText(event);
 			SharedUtils.setParam(getActivity(), "shareEven", event);
 			popupWindow.dismiss();
 		}
 		if(chose == 5){
-			units = unitBeans.get(position).getUnit();
+			units = authorizedBeen.getAuthNameList().get(position).getAuthManage();
+			shareUnitID = authorizedBeen.getAuthNameList().get(position).getAuthID();
 			tvUnits.setText(units);
 			SharedUtils.setParam(getActivity(), "shareUnit", units);
+			SharedUtils.setParam(getActivity(), "shareUnitID", shareUnitID);
 			popupWindow.dismiss();
 		}
 	}

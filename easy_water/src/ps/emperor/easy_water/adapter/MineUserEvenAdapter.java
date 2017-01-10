@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import ps.emperor.easy_water.R;
+import ps.emperor.easy_water.entity.AuthorizedBeen.infoList;
 import ps.emperor.easy_water.entity.MineUserEvenBean;
 import ps.emperor.easy_water.entity.MineUserUnitBean;
 
@@ -15,7 +16,7 @@ import ps.emperor.easy_water.entity.MineUserUnitBean;
  * @author 毛国江
  * @version 2016-5-18 上午11:12
  */
-public class MineUserEvenAdapter extends MyBaseAdapter<MineUserEvenBean> {
+public class MineUserEvenAdapter extends MyBaseAdapter<infoList> {
 
 	private Context context;
 
@@ -35,8 +36,8 @@ public class MineUserEvenAdapter extends MyBaseAdapter<MineUserEvenBean> {
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		MineUserEvenBean mineUserEvenBean = list.get(position);
-		viewHolder.even.setText(mineUserEvenBean.even);
+		infoList mineUserEvenBean = list.get(position);
+		viewHolder.even.setText(mineUserEvenBean.getAuthTown());
 		return convertView;
 
 	}

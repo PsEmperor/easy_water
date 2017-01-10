@@ -2,10 +2,12 @@ package ps.emperor.easy_water.adapter;
 
 
 import android.content.Context;
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import ps.emperor.easy_water.R;
+import ps.emperor.easy_water.entity.AuthorizedBeen.infoList;
 import ps.emperor.easy_water.entity.MineUserStateBean;
 
 /**
@@ -14,7 +16,7 @@ import ps.emperor.easy_water.entity.MineUserStateBean;
  * @author 毛国江
  * @version 2016-5-18 上午11:12
  */
-public class MineUserStateAdapter extends MyBaseAdapter<MineUserStateBean> {
+public class MineUserStateAdapter extends MyBaseAdapter<infoList> {
 
 	private Context context;
 
@@ -29,19 +31,19 @@ public class MineUserStateAdapter extends MyBaseAdapter<MineUserStateBean> {
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.fragment_mine_user_units_list, null);
 			viewHolder = new ViewHolder();
-			viewHolder.state = (TextView) convertView.findViewById(R.id.text_mine_user_units);
+			viewHolder.city = (TextView) convertView.findViewById(R.id.text_mine_user_units);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		MineUserStateBean mineUserStateBean = list.get(position);
-		viewHolder.state.setText(mineUserStateBean.state);
+		infoList authNameListBean = list.get(position);
+		viewHolder.city.setText(authNameListBean.getAuthCity());
 		return convertView;
 
 	}
 
 	class ViewHolder {
-		TextView state;
+		TextView city;
 	}
 
 }

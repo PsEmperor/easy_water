@@ -9,7 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.entity.ApplyIrrigateControlBean;
-import ps.emperor.easy_water.entity.UserBean;
+import ps.emperor.easy_water.entity.RoleBean;
+import ps.emperor.easy_water.entity.RoleBean;
 
 /**
  * 角色申请
@@ -17,7 +18,7 @@ import ps.emperor.easy_water.entity.UserBean;
  * @author 毛国江
  * @version 2017-1-3 16:10
  */
-public class RoleAdapter extends MyBaseAdapter<UserBean> implements OnClickListener {
+public class RoleAdapter extends MyBaseAdapter<RoleBean> implements OnClickListener {
 
 	private Context context;
 
@@ -38,9 +39,9 @@ public class RoleAdapter extends MyBaseAdapter<UserBean> implements OnClickListe
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		UserBean userBean = list.get(position);
-		viewHolder.role.setText(userBean.role);
-		viewHolder.msg.setText(userBean.msg);
+		RoleBean roleBean = list.get(position);
+		viewHolder.role.setText(roleBean.role);
+		viewHolder.msg.setText(roleBean.msg);
 		return convertView;
 
 	}
