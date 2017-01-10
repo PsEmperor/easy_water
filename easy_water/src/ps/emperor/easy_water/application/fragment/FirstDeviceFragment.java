@@ -53,10 +53,10 @@ public class FirstDeviceFragment extends Fragment implements OnClickListener {
 	//水位
 	@ViewInject(R.id.tv_sw)
 	private TextView tv_sw;
-	@ViewInject(R.id.ll_sy)
-	private LinearLayout ll_sy;
-	@ViewInject(R.id.ll_lg)
-	private LinearLayout ll_lg;
+//	@ViewInject(R.id.ll_sy)
+//	private LinearLayout ll_sy;
+//	@ViewInject(R.id.ll_lg)
+//	private LinearLayout ll_lg;
 	@ViewInject(R.id.ll_sb)
 	private LinearLayout ll_sb;
 	@ViewInject(R.id.ll_cx)

@@ -10,6 +10,7 @@ import ps.emperor.easy_water.BaseActivity;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.utils.PsUtils;
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,12 +20,14 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 @ContentView(R.layout.activity_firstpart)
-public class FirstPartActivity extends BaseActivity {
+public class FirstPartActivity extends BaseActivity implements OnClickListener {
 	
 	private TextView tvt;
 	private Button bte;
@@ -35,6 +38,16 @@ public class FirstPartActivity extends BaseActivity {
 	private TextView tv_lo;
 //	@ViewInject(R.id.tv_change)
 //	private Button tvc;
+	//水源
+	@ViewInject(R.id.ll_sy)
+	private LinearLayout ll_sy;
+	@ViewInject(R.id.tv_qd)
+	private TextView tv_sy;
+	//轮灌
+	@ViewInject(R.id.tv_lg)
+	private TextView tv_lg;
+	@ViewInject(R.id.ll_lg)
+	private LinearLayout ll_lg;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +70,8 @@ public class FirstPartActivity extends BaseActivity {
 		tvt.setText("灌溉单元配置");
 		bte.setVisibility(View.VISIBLE);
 		bte.setText("保存");
+		ll_sy.setOnClickListener(this);
+		ll_lg.setOnClickListener(this);
 	}
 	
 	/**
@@ -118,6 +133,60 @@ public class FirstPartActivity extends BaseActivity {
 		});
 		b.show();
 	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.ll_sy:
+			final String[] arr = {"渠道之蓄水池取水","渠道之直接取水","机井取水","管道自压取水"};
+			eject(arr,tv_sy,null);
+			
+			break;
+		case R.id.ll_lg:
+			final String[] arr1 = {"支管轮灌","辅管轮灌"};
+			eject(arr1, tv_lg,null);
+			
+			break;
+			
+		default:
+			break;
+		}
+	
+	}
+	
+	
+
+	/**
+	 * 弹出框
+	 * @param arr
+	 * @param tv
+	 */
+	private void eject(final String[] arr,final TextView tv,final Fragment fragment) {
+		AlertDialog.Builder b = new AlertDialog.Builder(FirstPartActivity.this).setItems(arr, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				tv.setText(arr[which]);
+				switch (which) {
+				case 0:
+					if(fragment!=null){
+						getFragmentManager().beginTransaction().replace(R.id.ff_pump, fragment).addToBackStack(null).commit();
+					}
+					
+					break;
+				case 1:
+					break;
+
+				default:
+					break;
+				}
+				
+			}
+		});
+		b.show();
+	}
+	
+	
 	
 /*	@Event(R.id.bt_nextStep)
 	private void onClickbtG(View v){

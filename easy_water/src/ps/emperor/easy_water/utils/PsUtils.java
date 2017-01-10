@@ -4,15 +4,16 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
-import ps.emperor.easy_water.R;
+import org.xutils.x;
+import org.xutils.common.Callback.CancelledException;
+import org.xutils.common.Callback.CommonCallback;
+import org.xutils.http.HttpMethod;
+import org.xutils.http.RequestParams;
 
-import android.app.AlertDialog;
-import android.app.Fragment;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
@@ -22,6 +23,8 @@ import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Parcelable;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -206,6 +209,73 @@ public class PsUtils {
 		// c.setBearingRequired(true);
 		return c;
 
+	}
+	
+	
+	
+	
+	
+	/*private Handler handler  = new Handler(){
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case Utils.SEND_REGISTER:
+				//获取信息成功操作
+				System.out.println("结果是--------------："+msg.obj);
+				Gson g = new Gson();
+				Test t = g.fromJson((String) msg.obj, Test.class);
+				List<AuthNameListBean> list = t.getAuthNameList();
+				for (AuthNameListBean a : list) {
+					System.out.println("省---------------------------："+a.getAuthProvince());
+				}
+				break;
+			}
+		};
+	};*/
+	
+	public final static int SEND_REGISTER = 0x99;
+	public final static int SEND_REGISTER_FALSE = 0x98;
+	
+	/**
+	 * 发送请求方法
+	 * 
+	 * 需要在每个请求中加入handler，上面为Handler样例
+	 */
+	public static void send(RequestParams rp,HttpMethod httpMethod ,final Handler handler){
+		
+		x.http().request(httpMethod, rp, new CommonCallback<String>() {
+
+			@Override
+			public void onSuccess(String result) {
+				Message msg = new Message();
+				msg.obj = result;
+				msg.what = SEND_REGISTER;
+				handler.sendMessage(msg);
+				
+			}
+
+			@Override
+			public void onError(Throwable ex, boolean isOnCallback) {
+				Message msg = new Message();
+				msg.obj = ex.toString();
+				msg.what = SEND_REGISTER_FALSE;
+				handler.sendMessage(msg);
+				
+			}
+
+			@Override
+			public void onCancelled(CancelledException cex) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onFinished() {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		
 	}
 	
 	
