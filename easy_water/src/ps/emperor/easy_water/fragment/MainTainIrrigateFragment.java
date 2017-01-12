@@ -1,8 +1,20 @@
 package ps.emperor.easy_water.fragment;
 
+import java.io.UnsupportedEncodingException;
+
 import java.util.ArrayList;
 
 import java.util.List;
+
+import org.json.JSONObject;
+import org.xutils.x;
+import org.xutils.common.Callback.CancelledException;
+import org.xutils.common.Callback.CommonCallback;
+import org.xutils.ex.HttpException;
+import org.xutils.http.HttpMethod;
+import org.xutils.http.RequestParams;
+
+import com.google.gson.Gson;
 
 
 import android.annotation.SuppressLint;
@@ -14,20 +26,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.activity.MainTainPresentrrigateActivity;
 import ps.emperor.easy_water.adapter.MainTainIrrigationAdapter;
 import ps.emperor.easy_water.entity.ApplyIrrigationBean;
 import ps.emperor.easy_water.entity.MainTainIrrigationBean;
+import ps.emperor.easy_water.entity.UserReleDisInfoBean;
 import ps.emperor.easy_water.greendao.DBHelper;
 import ps.emperor.easy_water.greendao.Irrigation;
 import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
+import ps.emperor.easy_water.utils.URL;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 /**
- * 灌溉/配水（维护）
+ * 灌溉（维护）
  * 
  * @author 毛国江
  * @version 2016-6-2 下午14:09
@@ -50,21 +65,20 @@ public class MainTainIrrigateFragment extends Fragment implements OnClickListene
 
 		dbHelper = DBHelper.getInstance(getActivity()); // 得到DBHelper对象
 
-		listView = (ListView) view.findViewById(R.id.list_maintain_irrigate_add);
+		listView = (ListView) view.findViewById(R.id.list_maintain_water_add);
 		listView.setOnItemClickListener(this);
 		adapter = new MainTainIrrigationAdapter(getActivity());
 		beans = new ArrayList<MainTainIrrigationBean>();
-		List<Irrigation> listentity = dbHelper.loadAllSession(); 
-		MainTainIrrigationBean bean;
-		for (int i = 0; i < listentity.size(); i++) {
-			bean = new MainTainIrrigationBean();
-			bean.setMaintain(listentity.get(i).getIrrigation());
-			beans.add(bean);
-		}
-		adapter.addData(beans, false);
-		listView.setAdapter(adapter);
-		beans = adapter.getData();
-
+//		List<Irrigation> listentity = dbHelper.loadAllSession(); 
+//		MainTainIrrigationBean bean;
+//		for (int i = 0; i < listentity.size(); i++) {
+//			bean = new MainTainIrrigationBean();
+//			bean.setMaintain(listentity.get(i).getIrrigation());
+//			beans.add(bean);
+//		}
+//		adapter.addData(beans, false);
+//		listView.setAdapter(adapter);
+//		beans = adapter.getData();
 		return view;
 	}
 

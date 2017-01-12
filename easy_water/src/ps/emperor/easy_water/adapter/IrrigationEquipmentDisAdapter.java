@@ -1,8 +1,6 @@
 package ps.emperor.easy_water.adapter;
 
 
-import java.util.List;
-
 import org.json.JSONObject;
 import org.xutils.x;
 import org.xutils.common.Callback.CancelledException;
@@ -11,9 +9,8 @@ import org.xutils.ex.HttpException;
 import org.xutils.http.HttpMethod;
 import org.xutils.http.RequestParams;
 
-import com.google.gson.Gson;
-
 import android.content.Context;
+
 
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -24,9 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 import ps.emperor.easy_water.R;
-import ps.emperor.easy_water.entity.UserReleIrrInfoBean;
-import ps.emperor.easy_water.entity.UserReleIrrInfoBean.infoList;
-import ps.emperor.easy_water.utils.SharedUtils;
+import ps.emperor.easy_water.entity.UserReleDisInfoBean.infoList;
 import ps.emperor.easy_water.utils.URL;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 /**
@@ -35,14 +30,14 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
  * @version 2016-5-18 上午11:12
  */
 
-public class IrrigationEquipmentAdapter extends MyBaseAdapter<infoList> implements OnClickListener {
+public class IrrigationEquipmentDisAdapter extends MyBaseAdapter<infoList> implements OnClickListener {
 	private Context context;
-	private int statusCode,IrrCode,IrrCodes,a=0;
+	int identifier = 0,statusCode;
 	
-	public IrrigationEquipmentAdapter(Context context,int IrrCode) {
+	public IrrigationEquipmentDisAdapter(Context context) {
 		super(context);
 		this.context = context;
-		this.IrrCode = IrrCode;
+		
 	}
 
 	@Override
@@ -54,18 +49,18 @@ public class IrrigationEquipmentAdapter extends MyBaseAdapter<infoList> implemen
 			viewHolder.Irrigation = (TextView) convertView.findViewById(R.id.tv_rrigation_equipment);
 			viewHolder.button = (ToggleButton) convertView.findViewById(R.id.toggle_persona_menstruation_message_sets);
 			viewHolder.button.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-				
+
 				@Override
 				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 					int position = (Integer) viewHolder.button.getTag();
 					list.get(position).isCheck = isChecked;
-						RequestParams param3 = new RequestParams(URL.IrrstatusCode);  // 网址(请替换成实际的网址) 
+						RequestParams param3 = new RequestParams(URL.DisstatusCode);  // 网址(请替换成实际的网址) 
 //						 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
 						JSONObject js_request = new JSONObject();
 						try {
 							param3.setAsJsonContent(true);
 							js_request.put("userID", "3");
-							js_request.put("firstDerviceID", list.get(position).getFirstDerviceID());
+							js_request.put("disEquID", list.get(position).getDisEquID());
 							if(list.get(position).isCheck){
 								statusCode = 1;
 							}else{
@@ -124,7 +119,7 @@ public class IrrigationEquipmentAdapter extends MyBaseAdapter<infoList> implemen
 		}
 		infoList infoList = list.get(position);
 		viewHolder.button.setTag(position);
-		viewHolder.Irrigation.setText(infoList.getAuthName()+infoList.getIrriUnitName());
+		viewHolder.Irrigation.setText(infoList.getAuthName()+infoList.getDisEquName());
 		int status = infoList.getStatusCode();
 		if(1 == status){
 			viewHolder.button.setChecked(true);
@@ -143,8 +138,5 @@ public class IrrigationEquipmentAdapter extends MyBaseAdapter<infoList> implemen
 	public void onClick(DialogInterface dialog, int which) {
 		
 	}
-	
-	public interface CallBack {
-		public void OnCheckedChangeListener();
-	}
+
 }

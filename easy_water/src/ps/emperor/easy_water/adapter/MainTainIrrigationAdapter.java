@@ -2,6 +2,8 @@ package ps.emperor.easy_water.adapter;
 
 
 import android.content.Context;
+
+
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.view.View;
@@ -9,13 +11,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.entity.MainTainIrrigationBean;
+import ps.emperor.easy_water.entity.UserReleIrrInfoBean.infoList;
 
 /**
- * 维护灌溉/配水
+ * 维护灌溉
  * @author 毛国江
  * @version 2016-6-2 下午14:06
  */
-public class MainTainIrrigationAdapter extends MyBaseAdapter<MainTainIrrigationBean> implements OnClickListener {
+public class MainTainIrrigationAdapter extends MyBaseAdapter<infoList> implements OnClickListener {
 
 	private Context context;
 
@@ -35,8 +38,8 @@ public class MainTainIrrigationAdapter extends MyBaseAdapter<MainTainIrrigationB
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		MainTainIrrigationBean mainTainIrrigationBean = list.get(position);
-		viewHolder.maintain.setText(mainTainIrrigationBean.maintain);
+		infoList infoList = list.get(position);
+		viewHolder.maintain.setText(infoList.getAuthName()+infoList.getIrriUnitName());
 		return convertView;
 
 	}

@@ -2,6 +2,7 @@ package ps.emperor.easy_water.adapter;
 
 import java.util.HashMap;
 
+
 import cn.jpush.a.a.a;
 
 import android.app.Activity;
@@ -18,7 +19,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.entity.KeyWordBean;
-import ps.emperor.easy_water.entity.UserReleIrrInfoBeanAdd.infoList;
+import ps.emperor.easy_water.entity.UserReleDisInfoBeanAdd.infoList;
 import ps.emperor.easy_water.utils.SharedUtils;
 
 /**
@@ -27,12 +28,12 @@ import ps.emperor.easy_water.utils.SharedUtils;
  * @author 毛国江
  * @version 2016-5-18 上午11:12
  */
-public class IrrigationAddAdapter extends MyBaseAdapter<infoList> implements OnClickListener {
+public class IrrigationAddDisAdapter extends MyBaseAdapter<infoList> implements OnClickListener {
 
 	private Context context;
 	Activity activity;
 	  
-	public IrrigationAddAdapter(Context context) {
+	public IrrigationAddDisAdapter(Context context) {
 		super(context);
 		this.context = context;
 		this.activity = (Activity) context;
@@ -61,9 +62,9 @@ public class IrrigationAddAdapter extends MyBaseAdapter<infoList> implements OnC
 		}
 		infoList infoList = list.get(position);
 		viewHolder.checkBox.setTag(position);
-		viewHolder.irrigation.setText(infoList.getAuthName()+infoList.getIrriUnitName());
-		viewHolder.checkBox.setChecked(infoList.isCheck);
-		convertView.setTag(viewHolder);
+		viewHolder.irrigation.setText(infoList.getAuthName()+infoList.getDisEquName());
+//		viewHolder.checkBox.setChecked(IrrigationAddBean.isCheck);
+//			convertView.setTag(viewHolder);
 		return convertView;
 
 	}

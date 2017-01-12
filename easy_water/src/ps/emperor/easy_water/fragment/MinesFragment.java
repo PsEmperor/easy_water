@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import ps.emperor.easy_water.MainActivity;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.utils.PutToFile;
+import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.view.MainActionBar;
 
 /**

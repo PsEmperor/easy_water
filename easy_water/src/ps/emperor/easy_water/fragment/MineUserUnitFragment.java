@@ -1,6 +1,7 @@
 package ps.emperor.easy_water.fragment;
 
 import java.io.UnsupportedEncodingException;
+
 import java.util.ArrayList;
 
 import java.util.List;
@@ -44,16 +45,10 @@ import ps.emperor.easy_water.adapter.MineUserStateAdapter;
 import ps.emperor.easy_water.adapter.MineUserProvinceAdapter;
 import ps.emperor.easy_water.adapter.MineUserUnitAdapter;
 import ps.emperor.easy_water.entity.AuthorizedBeen.infoList;
-import ps.emperor.easy_water.entity.MineUserDistrictBean;
-import ps.emperor.easy_water.entity.MineUserEvenBean;
-import ps.emperor.easy_water.entity.MineUserProvinceBean;
-import ps.emperor.easy_water.entity.MineUserStateBean;
-import ps.emperor.easy_water.entity.MineUserUnitBean;
 import ps.emperor.easy_water.entity.AuthorizedBeen;
-import ps.emperor.easy_water.entity.MineUserProvinceBean.Bean;
 import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
-import ps.emperor.easy_water.utils.UrlUtil;
+import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.MainActionBar;
 import ps.emperor.easy_water.view.MainActionBars;
 
@@ -71,10 +66,6 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 	private MainActionBars actionBar;
 	private TextView hint,tvProvince, tvState, tvDistrict, tvUnits,tvEven;
 	private PopupWindow popupWindow;
-	private List<MineUserStateBean> stateBeans;
-	private List<MineUserDistrictBean> districtBeans;
-	private List<MineUserUnitBean> unitBeans;
-	private List<MineUserEvenBean> evenBeans;
 	private MineUserProvinceAdapter adapter;
 	private MineUserStateAdapter adapter1;
 	private MineUserDistrictAdapter adapter2;
@@ -175,7 +166,7 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			break;
 		case R.id.text_mine_user_info_province:
 			chose = 1;
-			RequestParams param1 = new RequestParams(UrlUtil.urluserAuthInfo); //  网址(请替换成实际的网址) 
+			RequestParams param1 = new RequestParams(URL.urluserAuthInfo); //  网址(请替换成实际的网址) 
 //			 params.addQueryStringParameter("key", "value");// 参数(请替换成实际的参数与值)   
 			JSONObject js_request = new JSONObject();
 			try {
@@ -257,7 +248,7 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 				e1.printStackTrace();
 			}
 			System.out.println(str);
-			RequestParams param2 = new RequestParams(UrlUtil.urluserAuthInfo+str);  // 网址(请替换成实际的网址) 
+			RequestParams param2 = new RequestParams(URL.urluserAuthInfo+str);  // 网址(请替换成实际的网址) 
 //			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
 			JSONObject js_request1 = new JSONObject();
 			try {
@@ -338,7 +329,7 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			RequestParams param3 = new RequestParams(UrlUtil.urluserAuthInfo+str1+"/"+str2);  // 网址(请替换成实际的网址) 
+			RequestParams param3 = new RequestParams(URL.urluserAuthInfo+str1+"/"+str2);  // 网址(请替换成实际的网址) 
 //			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
 			JSONObject js_request2 = new JSONObject();
 			try {
@@ -422,7 +413,7 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			RequestParams param4 = new RequestParams(UrlUtil.urluserAuthInfo+str3+"/"+str4+"/"+str5);  // 网址(请替换成实际的网址) 
+			RequestParams param4 = new RequestParams(URL.urluserAuthInfo+str3+"/"+str4+"/"+str5);  // 网址(请替换成实际的网址) 
 //			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
 			JSONObject js_request3 = new JSONObject();
 			try {
@@ -508,7 +499,7 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			RequestParams param5 = new RequestParams(UrlUtil.urluserAuthInfo+str6+"/"+str7+"/"+str8+"/"+str9);  // 网址(请替换成实际的网址) 
+			RequestParams param5 = new RequestParams(URL.urluserAuthInfo+str6+"/"+str7+"/"+str8+"/"+str9);  // 网址(请替换成实际的网址) 
 //			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
 			JSONObject js_request4 = new JSONObject();
 			try {

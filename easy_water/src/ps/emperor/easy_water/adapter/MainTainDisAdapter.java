@@ -9,19 +9,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import ps.emperor.easy_water.R;
-import ps.emperor.easy_water.entity.ApplyWaterDistrbutionBean;
+import ps.emperor.easy_water.entity.MainTainIrrigationBean;
 import ps.emperor.easy_water.entity.UserReleDisInfoBean.infoList;
 
 /**
- * 配水（应用）适配器
+ * 维护灌溉/配水
  * @author 毛国江
- * @version 2016-5-26 下午14:03
+ * @version 2016-6-2 下午14:06
  */
-public class ApplyWaterDistrbutionAdapter extends MyBaseAdapter<infoList> implements OnClickListener {
+public class MainTainDisAdapter extends MyBaseAdapter<infoList> implements OnClickListener {
 
 	private Context context;
 
-	public ApplyWaterDistrbutionAdapter(Context context) {
+	public MainTainDisAdapter(Context context) {
 		super(context);
 		this.context = context;
 	}
@@ -30,27 +30,21 @@ public class ApplyWaterDistrbutionAdapter extends MyBaseAdapter<infoList> implem
 	public View MyGetView(int position, View convertView, ViewGroup parent) {
 		final ViewHolder viewHolder;
 		if (convertView == null) {
-			convertView = inflater.inflate(R.layout.fragment_apply_water_distrbution_list, null);
+			convertView = inflater.inflate(R.layout.fragment_maintain_irrigate_list, null);
 			viewHolder = new ViewHolder();
-			viewHolder.units = (TextView) convertView.findViewById(R.id.text_apply_water_units);
-			viewHolder.gate = (TextView) convertView.findViewById(R.id.text_apply_water_gate);
-			viewHolder.whether = (TextView) convertView.findViewById(R.id.text_apply_water_whether);
+			viewHolder.maintain = (TextView) convertView.findViewById(R.id.text_maintain_units);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 		infoList infoList = list.get(position);
-		viewHolder.units.setText(infoList.getAuthName());
-		viewHolder.gate.setText(infoList.getDisEquName());
-		viewHolder.whether.setText(infoList.getDisEquID());
+		viewHolder.maintain.setText(infoList.getAuthName()+infoList.getDisEquName());
 		return convertView;
 
 	}
 
 	class ViewHolder {
-		TextView units;
-		TextView gate;
-		TextView whether;
+		TextView maintain;
 	}
 
 	@Override

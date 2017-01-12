@@ -3,12 +3,12 @@ package ps.emperor.easy_water.adapter;
 
 import android.content.Context;
 
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.entity.AuthorizedBeen.infoList;
-import ps.emperor.easy_water.entity.MineUserProvinceBean;
 import ps.emperor.easy_water.entity.AuthorizedBeen;
 
 /**

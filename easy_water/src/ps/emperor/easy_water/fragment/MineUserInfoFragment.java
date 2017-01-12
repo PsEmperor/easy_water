@@ -1,6 +1,9 @@
 package ps.emperor.easy_water.fragment;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
+
+import java.util.List;
 
 import org.json.JSONObject;
 import org.xutils.x;
@@ -43,10 +46,11 @@ import android.widget.Toast;
 import ps.emperor.easy_water.LoginActivity;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.entity.UserBean;
+import ps.emperor.easy_water.entity.UserBean.infoList;
 import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.PutToFile;
 import ps.emperor.easy_water.utils.SharedUtils;
-import ps.emperor.easy_water.utils.UrlUtil;
+import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.MainActionBar;
 import ps.emperor.easy_water.view.MainActionBars;
 
@@ -68,6 +72,7 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 	private String names,units,tel,role;
 	private EditText name;
 	private TextView name_show,tv_info_units,tv_info_user_tel,tv_info_role;
+	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -115,7 +120,14 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 	private void init() {
 		names = (String) SharedUtils.getParam(getActivity(),
 				"dialog_user_name", "	");
-		RequestParams params = new RequestParams(UrlUtil.userInfo+"/12345");    // 网址(请替换成实际的网址)  
+		String str = "";
+		try {
+			str = java.net.URLEncoder.encode("12345","UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		RequestParams params = new RequestParams(URL.userInfo+"/"+str);    // 网址(请替换成实际的网址)  
 //		 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)  
 		JSONObject js_request = new JSONObject();
 		try {
@@ -165,10 +177,11 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 	                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
 	                  Gson gson = new Gson();
 	                  UserBean fromJson = gson.fromJson(arg0, UserBean.class);
-	                  names = fromJson.getFullName();
-	                  units = fromJson.getAuthName();
-	                  tel = fromJson.getPhoneNum();
-	                  role = fromJson.getRoleName();
+	                  List<infoList> infoList = fromJson.getAuthNameList();
+	                  names = infoList.get(0).getFullName();
+	                  units = infoList.get(0).getAuthName();
+	                  tel = infoList.get(0).getPhoneNum();
+	                  role = infoList.get(0).getRoleName();
 	                  name_show.setText(names);
 	                  tv_info_units.setText(units);
 	                  tv_info_user_tel.setText(tel);
@@ -194,12 +207,15 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 			transaction.commit();
 			break;
 		case R.id.acitionbar_right:
-			RequestParams param1 = new RequestParams(UrlUtil.updateUserinfo);    // 网址(请替换成实际的网址)  
+			RequestParams param1 = new RequestParams(URL.updateUserinfo);    // 网址(请替换成实际的网址)  
 //			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)  
 			JSONObject js_request = new JSONObject();
 			try {
 				param1.setAsJsonContent(true);
-				param1.setBodyContent("{\"userName\":\"12345\",\"fullName\":\"梁老板\",\"authID\":\"1\"}");
+				js_request.put("userName", "12345");
+				js_request.put("fullName", "万老板");
+				js_request.put("authID", "1");
+				param1.setBodyContent(js_request.toString());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				param1.setBodyContent("Content-Type: application/json"+js_request.toString());
