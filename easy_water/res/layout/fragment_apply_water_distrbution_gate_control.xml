@@ -122,7 +122,7 @@
                     android:textColor="@color/white" />
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/tv_one_OpenHigh"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBaseline="@+id/textView1"
@@ -134,12 +134,12 @@
                     android:textColor="@color/white" />
 
                 <TextView
-                    android:id="@+id/textView4"
+                    android:id="@+id/tv_one_OpenProportion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBaseline="@+id/textView2"
                     android:layout_alignBottom="@+id/textView2"
-                    android:layout_alignLeft="@+id/textView3"
+                    android:layout_alignLeft="@+id/tv_one_OpenHigh"
                     android:gravity="center_vertical"
                     android:text="0.5m"
                     android:textColor="@color/white" />
@@ -154,7 +154,7 @@
                 android:background="@color/transparent" >
 
                 <TextView
-                    android:id="@+id/TextView01"
+                    android:id="@+id/tv_one_PoreID"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -232,7 +232,7 @@
                         android:textColor="@color/white" />
 
                     <TextView
-                        android:id="@+id/textView3"
+                        android:id="@+id/tv_two_OpenProportion_left"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignBaseline="@+id/textView1"
@@ -244,12 +244,12 @@
                         android:textColor="@color/white" />
 
                     <TextView
-                        android:id="@+id/textView4"
+                        android:id="@+id/tv_two_OpenHigh_left"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignBaseline="@+id/textView2"
                         android:layout_alignBottom="@+id/textView2"
-                        android:layout_alignLeft="@+id/textView3"
+                        android:layout_alignLeft="@+id/tv_two_OpenProportion_left"
                         android:gravity="center_vertical"
                         android:text="0.5m"
                         android:textColor="@color/white" />
@@ -263,7 +263,7 @@
                 android:background="@color/transparent" >
 
                 <TextView
-                    android:id="@+id/TextView01"
+                    android:id="@+id/tv_two_PoreID_left"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -334,7 +334,7 @@
                         android:textColor="@color/white" />
 
                     <TextView
-                        android:id="@+id/textView3"
+                        android:id="@+id/tv_two_OpenProportion_right"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignBaseline="@+id/textView1"
@@ -346,12 +346,12 @@
                         android:textColor="@color/white" />
 
                     <TextView
-                        android:id="@+id/textView4"
+                        android:id="@+id/tv_two_OpenHigh_right"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignBaseline="@+id/textView2"
                         android:layout_alignBottom="@+id/textView2"
-                        android:layout_alignLeft="@+id/textView3"
+                        android:layout_alignLeft="@+id/tv_two_OpenProportion_right"
                         android:gravity="center_vertical"
                         android:text="0.5m"
                         android:textColor="@color/white" />
@@ -368,7 +368,7 @@
                 android:background="@color/transparent" >
 
                 <TextView
-                    android:id="@+id/TextView01"
+                    android:id="@+id/tv_two_PoreID_right"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -450,7 +450,7 @@
                         android:textSize="13sp" />
 
                     <TextView
-                        android:id="@+id/textView3"
+                        android:id="@+id/tv_three_OpenProportion_left"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignBaseline="@+id/textView1"
@@ -463,12 +463,12 @@
                         android:textSize="13sp" />
 
                     <TextView
-                        android:id="@+id/textView4"
+                        android:id="@+id/tv_three_OpenHigh_left"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignBaseline="@+id/textView2"
                         android:layout_alignBottom="@+id/textView2"
-                        android:layout_alignLeft="@+id/textView3"
+                        android:layout_alignLeft="@+id/tv_three_OpenProportion_left"
                         android:gravity="center_vertical"
                         android:text="0.5m"
                         android:textColor="@color/white" 
@@ -483,7 +483,7 @@
                 android:background="@color/transparent" >
 
                 <TextView
-                    android:id="@+id/TextView01"
+                    android:id="@+id/tv_three_PoreID_left"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -556,7 +556,7 @@
                         android:textSize="13sp"/>
 
                     <TextView
-                        android:id="@+id/textView3"
+                        android:id="@+id/tv_three_OpenProportion"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignBaseline="@+id/textView1"
@@ -569,12 +569,12 @@
                         android:textSize="13sp"/>
 
                     <TextView
-                        android:id="@+id/textView4"
+                        android:id="@+id/tv_three_OpenHigh"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignBaseline="@+id/textView2"
                         android:layout_alignBottom="@+id/textView2"
-                        android:layout_alignLeft="@+id/textView3"
+                        android:layout_alignLeft="@+id/tv_three_OpenProportion"
                         android:gravity="center_vertical"
                         android:text="0.5m"
                         android:textColor="@color/white" 
@@ -589,7 +589,7 @@
                 android:background="@color/transparent" >
 
                 <TextView
-                    android:id="@+id/TextView01"
+                    android:id="@+id/tv_three_PoreID"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -662,7 +662,7 @@
                         android:textSize="13sp"/>
 
                     <TextView
-                        android:id="@+id/textView3"
+                        android:id="@+id/tv_three_OpenProportion_right"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignBaseline="@+id/textView1"
@@ -675,12 +675,12 @@
                         android:textSize="13sp"/>
 
                     <TextView
-                        android:id="@+id/textView4"
+                        android:id="@+id/tv_three_OpenHigh_right"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignBaseline="@+id/textView2"
                         android:layout_alignBottom="@+id/textView2"
-                        android:layout_alignLeft="@+id/textView3"
+                        android:layout_alignLeft="@+id/tv_three_OpenProportion_right"
                         android:gravity="center_vertical"
                         android:text="0.5m"
                         android:textColor="@color/white"
@@ -695,7 +695,7 @@
                 android:background="@color/transparent" >
 
                 <TextView
-                    android:id="@+id/TextView01"
+                    android:id="@+id/tv_three_PoreID_right"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"

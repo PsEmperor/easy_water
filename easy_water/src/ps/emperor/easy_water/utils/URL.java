@@ -38,4 +38,10 @@ public class URL {
 	public static final String findUserReleDisInfoApply = "http://192.168.2.101:8080/cms/app/DisWaterSys/findUserReleDisInfo/";
 	//应用 维护界面配水设备信息查询
 	public static final String findDisEquInfoOne = "http://192.168.2.101:8080/cms/app/DisWaterSys/findDisEquInfoOne/";
+	//应用 维护界面配水设备信息更改
+	public static final String updateDisEquInfo = "http://192.168.2.101:8080/cms/app/DisWaterSys/updateDisEquInfo";
+
+	//应用配水设备信息
+	public static final String findDisWaterInfoOne = "http://192.168.2.101:8080/cms/app/DisWaterSys/findDisWaterInfoOne/";
+
 }

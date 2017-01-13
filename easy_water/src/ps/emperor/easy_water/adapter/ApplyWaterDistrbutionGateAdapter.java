@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.entity.ApplyIrrigateControlBean;
-import ps.emperor.easy_water.entity.ApplyWaterDistrbutionGateBean;
+import ps.emperor.easy_water.entity.FindDisWaterInfoOneBean.SluiceGateInfoBean;
 import ps.emperor.easy_water.utils.DensityUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
 
@@ -22,7 +22,7 @@ import ps.emperor.easy_water.utils.SharedUtils;
  * @author 毛国江
  * @version 2016-9-13 下午14:25
  */
-public class ApplyWaterDistrbutionGateAdapter extends MyBaseAdapter<ApplyWaterDistrbutionGateBean> implements OnClickListener {
+public class ApplyWaterDistrbutionGateAdapter extends MyBaseAdapter<SluiceGateInfoBean> implements OnClickListener {
 
 	private Context context;
 
@@ -46,12 +46,12 @@ public class ApplyWaterDistrbutionGateAdapter extends MyBaseAdapter<ApplyWaterDi
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		ApplyWaterDistrbutionGateBean applyWaterDistrbutionGateBean = list.get(position);
-		viewHolder.aperture.setText(applyWaterDistrbutionGateBean.aperture);
-		viewHolder.high.setText(applyWaterDistrbutionGateBean.high);
-		viewHolder.num.setText(applyWaterDistrbutionGateBean.num);
+		SluiceGateInfoBean applyWaterDistrbutionGateBean = list.get(position);
+		viewHolder.aperture.setText(applyWaterDistrbutionGateBean.getOpenProportion());
+		viewHolder.high.setText(applyWaterDistrbutionGateBean.getOpenHigh());
+		viewHolder.num.setText(applyWaterDistrbutionGateBean.getPoreID());
 		RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)viewHolder.layout.getLayoutParams();
-		int height = DensityUtil.dip2px(context, (float)((100-Integer.valueOf(applyWaterDistrbutionGateBean.getPercentage()))*1.85));
+		int height = DensityUtil.dip2px(context, (float)((100-Integer.valueOf(applyWaterDistrbutionGateBean.getOpenProportion()))*1.85));
 		layoutParams.height = height;
 		viewHolder.layout.setLayoutParams(layoutParams);
 		viewHolder.layout.requestLayout();

@@ -52,7 +52,6 @@ public class MineWaterAddFragment extends Fragment implements OnClickListener {
 	private MainActionBar actionBar;
 	private ListView listView;
 	private IrrigationAddDisAdapter adapter;
-	private List<KeyWordBean> beans;
 	private TextView irrigation_add, irrigation_canel;
 	private ImageView image_irrigation_add;
 	private EditText ed_irrigation_add;
@@ -143,7 +142,7 @@ public class MineWaterAddFragment extends Fragment implements OnClickListener {
 	                  UserReleDisInfoBeanAdd fromJson = gson.fromJson(arg0, UserReleDisInfoBeanAdd.class);
 //	                  authorizedBeen = new AuthorizedBeen();
 //	                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
-	                  List<infoList> beens = fromJson.getAuthNameList();
+	                  beens = fromJson.getAuthNameList();
 	                  for (infoList authNameListBean : beens) {
 	                	authNameListBean.getAuthName();
 					}
@@ -173,11 +172,6 @@ public class MineWaterAddFragment extends Fragment implements OnClickListener {
 			transaction.commit();
 			break;
 		case R.id.text_irrigation_add:
-			try {
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 			RequestParams param2 = new RequestParams(URL.disEquID);  // 网址(请替换成实际的网址) 
 //			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
 			JSONObject js_request = new JSONObject();
@@ -251,8 +245,8 @@ public class MineWaterAddFragment extends Fragment implements OnClickListener {
 		        }); 
 			break;
 		case R.id.text_irrigation_canel:
-			for (int i = 0; i < beans.size(); i++) {
-				beans.get(i).isCheck = false;
+			for (int i = 0; i < beens.size(); i++) {
+				beens.get(i).isCheck = false;
 			}
 			adapter.notifyDataSetChanged();
 			break;
