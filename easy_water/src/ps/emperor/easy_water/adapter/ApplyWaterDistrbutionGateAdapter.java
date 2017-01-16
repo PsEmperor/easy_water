@@ -47,11 +47,11 @@ public class ApplyWaterDistrbutionGateAdapter extends MyBaseAdapter<SluiceGateIn
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 		SluiceGateInfoBean applyWaterDistrbutionGateBean = list.get(position);
-		viewHolder.aperture.setText(applyWaterDistrbutionGateBean.getOpenProportion());
-		viewHolder.high.setText(applyWaterDistrbutionGateBean.getOpenHigh());
+		viewHolder.aperture.setText((int)((Float.valueOf(applyWaterDistrbutionGateBean.getOpenProportion())*100))+"%");
+		viewHolder.high.setText(applyWaterDistrbutionGateBean.getOpenHigh()+"m³");
 		viewHolder.num.setText(applyWaterDistrbutionGateBean.getPoreID());
 		RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)viewHolder.layout.getLayoutParams();
-		int height = DensityUtil.dip2px(context, (float)((100-Integer.valueOf(applyWaterDistrbutionGateBean.getOpenProportion()))*1.85));
+		int height = DensityUtil.dip2px(context,(int)((100-Float.valueOf(applyWaterDistrbutionGateBean.getOpenProportion())*100)*1.85));
 		layoutParams.height = height;
 		viewHolder.layout.setLayoutParams(layoutParams);
 		viewHolder.layout.requestLayout();

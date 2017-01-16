@@ -1,5 +1,6 @@
 package ps.emperor.easy_water.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -27,7 +28,7 @@ public class FindDisWaterInfoOneBean {
 		this.disWaterInfo = disWaterInfo;
 	}
 
-	public static class SluiceGateInfoBean {
+	public static class SluiceGateInfoBean implements Serializable{
 		/**
 		 * FrontWatLev : null DisEquID : 配水设备5 PoreID : 1 PoreWidth : 50
 		 * DesignFlow : 1 Area : null OpenHigh : 1.1 BehindWatLev : null
@@ -127,7 +128,7 @@ public class FindDisWaterInfoOneBean {
 
 	}
 
-	public static class DisWaterInfoBean {
+	public static class DisWaterInfoBean implements Serializable{
 		/**
 		 * DisEquID : 配水设备5 OpenPoreTime : 1484118000000 BackWaterLevel : 100
 		 * DesignFlow : 4 Area : 100 ClosePoreTime : 1484982000000

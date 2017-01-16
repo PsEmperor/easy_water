@@ -38,22 +38,38 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/tv_apply_water_time_operations"
+            android:id="@+id/tv_apply_water_time_end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/tv_apply_water_time_operation"
+            android:layout_alignLeft="@+id/tv_apply_water_time_start"
             android:layout_below="@+id/textview_operation"
-            android:text="结束时间: 2016-11-17 19:03"
+            android:text="结束时间:"
             android:layout_marginBottom="5dp" />
 
         <TextView
-            android:id="@+id/tv_apply_water_time_operation"
+            android:id="@+id/tv_apply_water_time_starts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/textview_operation"
-            android:layout_centerHorizontal="true"
-            android:text="开始时间: 2016-11-17 18:16" 
-            android:layout_marginTop="5dp"/>
+            android:layout_toRightOf="@+id/tv_apply_water_time_start"
+            android:text="2016-11-17 18:16" />
+
+        <TextView
+            android:id="@+id/tv_apply_water_time_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/textview_operation"
+            android:layout_toRightOf="@+id/textview_operation"
+            android:layout_marginLeft="10dp"
+            android:text="开始时间: " />
+
+        <TextView
+            android:id="@+id/tv_apply_water_time_ends"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/tv_apply_water_time_starts"
+            android:layout_below="@+id/textview_operation"
+            android:text="2016-11-17 19:03" />
 
     </RelativeLayout>
 <TextView android:layout_width="match_parent"

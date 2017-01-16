@@ -1,5 +1,6 @@
 package ps.emperor.easy_water.fragment;
 
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 
 import java.text.DecimalFormat;
@@ -125,7 +126,6 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 	tv_three_OpenProportion_right,tv_three_OpenHigh_right,tv_three_PoreID_right;
 	private TextView text_apply_water_distrbution_gate_control,
 	tv_apply_water_before,tv_apply_water_after,tv_apply_water_flow;
-	
 	
 	@SuppressLint("CutPasteId")
 	@Override
@@ -372,7 +372,7 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 	        			layoutParams.height = height;
 	        			layout_relative_changes.setLayoutParams(layoutParams);
 	        			layout_relative_changes.requestLayout();
-	        			tv_one_OpenProportion.setText(Float.valueOf(beans.get(0).getOpenProportion())*100+"%");
+	        			tv_one_OpenProportion.setText((int)(Float.valueOf(beans.get(0).getOpenProportion())*100)+"%");
 	        			tv_one_OpenHigh.setText(beans.get(0).getOpenHigh()+"m³");
 	        			tv_one_PoreID.setText(beans.get(0).getPoreID()+"");
 	        		}
@@ -385,7 +385,7 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 	        			layoutParams.height = height;
 	        			layout_relative_changes_left.setLayoutParams(layoutParams);
 	        			layout_relative_changes_left.requestLayout();
-	        			tv_two_OpenProportion_left.setText(Float.valueOf(beans.get(0).getOpenProportion())*100+"%");
+	        			tv_two_OpenProportion_left.setText((int)(Float.valueOf(beans.get(0).getOpenProportion())*100)+"%");
 	        			tv_two_OpenHigh_left.setText(beans.get(0).getOpenHigh()+"m³");
 	        			tv_two_PoreID_left.setText(beans.get(0).getPoreID());
 	        			
@@ -394,7 +394,7 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 	        			layoutParam1.height = heights;
 	        			layout_relative_changes_right.setLayoutParams(layoutParam1);
 	        			layout_relative_changes_right.requestLayout();
-	        			tv_two_OpenProportion_right.setText(Float.valueOf(beans.get(1).getOpenProportion())*100+"%");
+	        			tv_two_OpenProportion_right.setText((int)(Float.valueOf(beans.get(1).getOpenProportion())*100)+"%");
 	        			tv_two_OpenHigh_right.setText(beans.get(1).getOpenHigh()+"m³");
 	        			tv_two_PoreID_right.setText(beans.get(1).getPoreID());
 	        			}
@@ -407,7 +407,7 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 	        			layoutParams.height = height;
 	        			layout_relative_changes_one.setLayoutParams(layoutParams);
 	        			layout_relative_changes_one.requestLayout();
-	        			tv_three_OpenProportion_left.setText(Float.valueOf(beans.get(0).getOpenProportion())*100+"%");
+	        			tv_three_OpenProportion_left.setText((int)(Float.valueOf(beans.get(0).getOpenProportion())*100)+"%");
 	        			tv_three_OpenHigh_left.setText(beans.get(0).getOpenHigh()+"m³");
 	        			tv_three_PoreID_left.setText(beans.get(0).getPoreID());
 	        			
@@ -416,7 +416,7 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 	        			layoutParam1.height = heights;
 	        			layout_relative_changes_two.setLayoutParams(layoutParam1);
 	        			layout_relative_changes_two.requestLayout();
-	        			tv_three_OpenProportion.setText(Float.valueOf(beans.get(1).getOpenProportion())*100+"%");
+	        			tv_three_OpenProportion.setText((int)(Float.valueOf(beans.get(1).getOpenProportion())*100)+"%");
 	        			tv_three_OpenHigh.setText(beans.get(1).getOpenHigh()+"m³");
 	        			tv_three_PoreID.setText(beans.get(1).getPoreID());
 	        			
@@ -425,17 +425,18 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 	        			layoutParam2.height = height2;
 	        			layout_relative_changes_three.setLayoutParams(layoutParam2);
 	        			layout_relative_changes_three.requestLayout();
-	        			tv_three_OpenProportion_right.setText(Float.valueOf(beans.get(2).getOpenProportion())*100+"%");
+	        			tv_three_OpenProportion_right.setText((int)(Float.valueOf(beans.get(2).getOpenProportion())*100)+"%");
 	        			tv_three_OpenHigh_right.setText(beans.get(2).getOpenHigh()+"m³");
 	        			tv_three_PoreID_right.setText(beans.get(2).getPoreID());
 	        		}
 	        		if(beans.size()> 3){
+	        			layout_show_left_and_right.setVisibility(View.VISIBLE);
 	        			layout.setVisibility(View.GONE);
 	        			layout_linear_change.setVisibility(View.GONE);
 	        			layout_linear_changes.setVisibility(View.GONE);
 	        			list_apply_water_distrbution_gate_control.setAdapter(adapter);
 	        		}
-	        		if(beens.size()<= 3){
+	        		if(beans.size()<= 3){
 	        			layout_show_left_and_right.setVisibility(View.GONE);
 	        		}
 	        		
@@ -475,6 +476,11 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 			AppayWaterGateHaploporeFragment fragment1 = new AppayWaterGateHaploporeFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
+			Bundle bundle2 = new Bundle();
+			bundle2.putInt("OpenProportion",(int)(Float.valueOf(beans.get(0).getOpenProportion())*100));
+			bundle2.putString("OpenHigh", beans.get(0).getOpenHigh());
+			bundle2.putString("PoreId", beans.get(0).getPoreID());
+			fragment1.setArguments(bundle2);
 			transaction
 					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 			transaction.replace(R.id.fl, fragment1, "main");
@@ -484,6 +490,9 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 			AppayWaterGateLinkageFragment fragment2 = new AppayWaterGateLinkageFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
+			Bundle bundle = new Bundle();
+			bundle.putSerializable("beans", (Serializable) beans);
+			fragment2.setArguments(bundle);
 			transaction
 					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 			transaction.replace(R.id.fl, fragment2, "main");
@@ -799,6 +808,11 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 		FragmentManager fgManager = getFragmentManager();
 		FragmentTransaction transaction = fgManager.beginTransaction();
 		AppayWaterGateHaploporeFragment fragment1 = new AppayWaterGateHaploporeFragment();
+		Bundle bundle = new Bundle();
+		bundle.putInt("OpenProportion",(int)(Float.valueOf(beans.get(position).getOpenProportion())*100));
+		bundle.putString("OpenHigh", beans.get(position).getOpenHigh());
+		bundle.putString("PoreId", beans.get(position).getPoreID());
+		fragment1.setArguments(bundle);
 		// transaction.setCustomAnimations(R.anim.right_in,
 		// R.anim.right_out);
 		transaction
