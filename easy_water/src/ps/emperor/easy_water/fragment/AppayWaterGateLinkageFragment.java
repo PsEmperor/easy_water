@@ -27,6 +27,7 @@ import ps.emperor.easy_water.entity.ApplyWaterGateLinkageBean;
 import ps.emperor.easy_water.entity.UserReleDisInfoBeanAdd;
 import ps.emperor.easy_water.entity.FindDisWaterInfoOneBean.SluiceGateInfoBean;
 import ps.emperor.easy_water.entity.UserReleDisInfoBeanAdd.infoList;
+import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.MainActionBar;
 import ps.emperor.easy_water.view.MainActionBars;
@@ -111,6 +112,7 @@ public class AppayWaterGateLinkageFragment extends Fragment implements
 			bean.setHaplopore(list.get(i).getPoreID()+"");
 			bean.setShow((Float.valueOf(list.get(i).getOpenProportion())*100)+"");
 			beans.add(bean);
+			System.out.println(beans.get(i).getPercentage());
 		}
 		 adapter = new ApplyWaterGateLinkageAdapter(getActivity());
 		 adapter.addData(beans, false);
@@ -138,21 +140,22 @@ public class AppayWaterGateLinkageFragment extends Fragment implements
 			JSONObject js_request = new JSONObject();
 			try {
 				param2.setAsJsonContent(true);
-				js_request.put("disEquID", "配水设备5");
+				js_request.put("disEquID","配水设备5");
 				list1 = new ArrayList<String>();
+				adapter.notifyDataSetChanged();
 				for (int i = 0; i < beans.size(); i++) {
 					list1.add(beans.get(i).getPercentage());
 				}
-				js_request.put("openProportion", list1);
-				js_request.put("openPoreTime", tv_apply_water_time_operation.getText().toString());
-				js_request.put("closePoreTime ", tv_apply_water_time_operations.getText().toString());
+				js_request.put("openProportion",list1);
+				js_request.put("openPoreTime",tv_apply_water_time_operation.getText().toString());
+				js_request.put("closePoreTime",tv_apply_water_time_operations.getText().toString());
 				param2.setBodyContent(js_request.toString());
 			} catch (Exception e) {
 				e.printStackTrace();
 				param2.setAsJsonContent(true);
 			}//根据实际需求添加相应键值对
 			
-		        x.http().request(HttpMethod.POST ,param2, new CommonCallback<String>() {  
+ 		        x.http().request(HttpMethod.PUT ,param2, new CommonCallback<String>() {  
 		            @Override  
 		            public void onCancelled(CancelledException arg0) {  
 		                  

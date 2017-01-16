@@ -49,5 +49,4 @@ public class URL {
 	public static final String openProportionOne = "http://192.168.2.120:8080/cms/app/DisWaterSys/updatePoreHighToOne/disEquID/poreID/openProportion";
 	//多孔闸门闸宽预约设置
 	public static final String openProportionAll = "http://192.168.2.120:8080/cms/app/DisWaterSys/bookingAdjust/updatePoreHighToAll/disEquID/openProportion";
-
 }

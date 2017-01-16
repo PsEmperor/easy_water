@@ -232,15 +232,7 @@ public class MineWaterAddFragment extends Fragment implements OnClickListener {
 		                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
 		                  Gson gson = new Gson();
 		                  System.out.println(arg0);
-//		                  UserReleDisInfoBeanAdd fromJson = gson.fromJson(arg0, UserReleDisInfoBeanAdd.class);
-////		                  authorizedBeen = new AuthorizedBeen();
-////		                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
-//		                  List<infoList> beens = fromJson.getAuthNameList();
-//		                  for (infoList authNameListBean : beens) {
-//		                	authNameListBean.getAuthName();
-//						}
-//		                  adapter.addData(beens, true);
-//		                  listView.setAdapter(adapter);
+		                  Toast.makeText(getActivity(), "关联成功", Toast.LENGTH_SHORT).show();
 		            }  
 		        }); 
 			break;
