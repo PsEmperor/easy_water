@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -35,6 +36,7 @@ import ps.emperor.easy_water.entity.MainTainIrrigationBean;
 import ps.emperor.easy_water.entity.MainTainIrrigationBean;
 import ps.emperor.easy_water.entity.UserReleDisInfoBean;
 import ps.emperor.easy_water.entity.UserReleDisInfoBean.infoList;
+import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.URL;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -57,6 +59,7 @@ public class MainTainWaterFragment extends Fragment implements OnClickListener,
 	private List<infoList> beens;
 	private ImageView image_maintain_water_add;
 	private EditText ed_maintain_water_add;
+	private ProgressDialog progressDialog;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -83,6 +86,8 @@ public class MainTainWaterFragment extends Fragment implements OnClickListener,
 		}
 		RequestParams param3 = new RequestParams(URL.findUserReleDisInfoApply+str1);  // 网址(请替换成实际的网址) 
 //		 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
+		progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+				"Please wait...", true, false);
 		JSONObject js_request2 = new JSONObject();
 		try {
 			param3.setAsJsonContent(true);
@@ -110,9 +115,11 @@ public class MainTainWaterFragment extends Fragment implements OnClickListener,
 	                    String errorResult = httpEx.getResult();  
 	                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
 	                    // ...  
+	                    progressDialog.dismiss();
 	                } else { // 其他错误    
 	                    // ...  
 	                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+	                	progressDialog.dismiss();
 	                }  
 	                  
 	            }  
@@ -138,6 +145,7 @@ public class MainTainWaterFragment extends Fragment implements OnClickListener,
 					}
 	                adapter.addData(beens, true);
 	          		listView.setAdapter(adapter);
+	          		progressDialog.dismiss();
 	            }  
 	        }); 
 //		MainTainIrrigationBean bean;
@@ -184,8 +192,13 @@ public class MainTainWaterFragment extends Fragment implements OnClickListener,
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			if(CheckUtil.IsEmpty(str2)){
+				Toast.makeText(getActivity(), "请输入需要查询的关键字！", Toast.LENGTH_SHORT).show();
+			}else{
 			RequestParams param3 = new RequestParams(URL.findUserReleDisInfoYet+str1+"/"+str2);  // 网址(请替换成实际的网址) 
 //			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
+			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+					"Please wait...", true, false);
 			JSONObject js_request2 = new JSONObject();
 			try {
 				param3.setAsJsonContent(true);
@@ -213,9 +226,11 @@ public class MainTainWaterFragment extends Fragment implements OnClickListener,
 		                    String errorResult = httpEx.getResult();  
 		                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
 		                    // ...  
+		                    progressDialog.dismiss();
 		                } else { // 其他错误    
 		                    // ...  
 		                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+		                	progressDialog.dismiss();
 		                }  
 		                  
 		            }  
@@ -240,8 +255,10 @@ public class MainTainWaterFragment extends Fragment implements OnClickListener,
 						}
 		                  adapter.addData(beens, true);
 		                  listView.setAdapter(adapter);
+		                  progressDialog.dismiss();
 		            }  
 		        }); 
+			}
 			break;
 
 		default:

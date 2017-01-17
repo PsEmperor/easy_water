@@ -22,8 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:orientation="vertical" >
-
-            <RelativeLayout
+<RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/gray_3" >
@@ -123,7 +122,6 @@
                     android:layout_alignRight="@+id/text_maintain_irrigat_info_address"
                     android:text="E : 118.476542" />
             </RelativeLayout>
-
             <RelativeLayout
                 android:id="@+id/layout_maintain_basic_info_max_irrigat_group_examine"
                 android:layout_width="match_parent"
@@ -217,16 +215,6 @@
                     android:text="夜间休息时间" />
 
                 <TextView
-                    android:id="@+id/textView_test_start"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_above="@+id/TextViewX"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_toLeftOf="@+id/text_maintain_basic_info_max_orroagte_restnight_start_examine"
-                    android:text="开始时间" />
-
-                <TextView
                     android:id="@+id/textView_test_end"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -255,6 +243,17 @@
                     android:layout_marginRight="55dp"
                     android:gravity="center_vertical"
                     android:text="00：00" />
+
+                <TextView
+                    android:id="@+id/textView_test_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/TextViewX"
+                    android:layout_toRightOf="@+id/TextViewX"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginLeft="30dp"
+                    android:text="开始时间" />
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -299,9 +298,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_above="@+id/textView_test_examine"
+                    android:layout_toRightOf="@+id/textView_test_examine"
                     android:layout_marginBottom="2dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_toLeftOf="@+id/text_maintain_basic_info_max_orroagte_season_start_examine"
+                    android:layout_marginLeft="50dp"
                     android:text="开始时间" />
 
                 <TextView
@@ -310,9 +309,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignBaseline="@+id/TextView02"
                     android:layout_alignBottom="@+id/TextView02"
-                    android:layout_toRightOf="@+id/TextView01"
+                    android:layout_alignLeft="@+id/text_maintain_basic_info_max_orroagte_season_start_examine"
                     android:gravity="center_vertical"
                     android:text="0000-00-00" />
+
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>

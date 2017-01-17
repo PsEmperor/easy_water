@@ -56,7 +56,7 @@
 
         <TextView
             android:id="@+id/text_apply_units"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/text_apply_units"
             android:layout_below="@+id/text_apply_whether"
-            android:text="6连7#灌溉单元"
+            android:text=""
             android:textColor="@color/gray_1" />
 
     </RelativeLayout>

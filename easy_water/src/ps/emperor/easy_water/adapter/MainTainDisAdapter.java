@@ -38,7 +38,7 @@ public class MainTainDisAdapter extends MyBaseAdapter<infoList> implements OnCli
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 		infoList infoList = list.get(position);
-		viewHolder.maintain.setText(infoList.getAuthName()+infoList.getDisEquName());
+		viewHolder.maintain.setText(infoList.getDisEquName());
 		return convertView;
 
 	}

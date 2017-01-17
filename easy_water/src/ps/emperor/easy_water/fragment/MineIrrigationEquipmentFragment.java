@@ -31,6 +31,7 @@ import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -60,6 +61,7 @@ public class MineIrrigationEquipmentFragment extends Fragment implements OnClick
 	private List<IrrigationEquipmentBean> beans;
 	private DBHelper dBManager;
 	private int IrrCode = 0;
+	private ProgressDialog progressDialog;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -82,6 +84,8 @@ public class MineIrrigationEquipmentFragment extends Fragment implements OnClick
 		}
 		RequestParams param3 = new RequestParams(URL.findUserReleIrrInfo+str1);  // 网址(请替换成实际的网址) 
 //		 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
+		progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+				"Please wait...", true, false);
 		JSONObject js_request2 = new JSONObject();
 		try {
 			param3.setAsJsonContent(true);
@@ -109,9 +113,11 @@ public class MineIrrigationEquipmentFragment extends Fragment implements OnClick
 	                    String errorResult = httpEx.getResult();  
 	                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
 	                    // ...  
+	                    progressDialog.dismiss();
 	                } else { // 其他错误    
 	                    // ...  
 	                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+	                	progressDialog.dismiss();
 	                }  
 	                  
 	            }  
@@ -132,7 +138,7 @@ public class MineIrrigationEquipmentFragment extends Fragment implements OnClick
 //	                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
 	                  List<infoList> beens = fromJson.getAuthNameList();
 	                  for (infoList authNameListBean : beens) {
-	                	authNameListBean.getAuthName();
+	                	authNameListBean.getIrriUnitName();
 	                	authNameListBean.getStatusCode();
 	                	if(authNameListBean.getStatusCode()==1){
 	                		IrrCode ++;
@@ -144,6 +150,7 @@ public class MineIrrigationEquipmentFragment extends Fragment implements OnClick
 	                adapter = new IrrigationEquipmentAdapter(getActivity(),IrrCode);
 	                adapter.addData(beens, true);
 	          		listView.setAdapter(adapter);
+	          		progressDialog.dismiss();
 	            }  
 	        }); 
 //	    	List<Irrigation> listentity = dBManager.loadAllSession();  

@@ -62,7 +62,7 @@ public class IrrigationAddDisAdapter extends MyBaseAdapter<infoList> implements 
 		}
 		infoList infoList = list.get(position);
 		viewHolder.checkBox.setTag(position);
-		viewHolder.irrigation.setText(infoList.getAuthName()+infoList.getDisEquName());
+		viewHolder.irrigation.setText(infoList.getDisEquName());
 		viewHolder.checkBox.setChecked(infoList.isCheck);
 		convertView.setTag(viewHolder);
 		return convertView;

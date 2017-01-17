@@ -38,6 +38,7 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -77,6 +78,7 @@ public class AppayWaterGateLinkageFragment extends Fragment implements
 	private String timestart,timeend;
 	private List<SluiceGateInfoBean> list;
 	private List<String> list1;
+	private ProgressDialog progressDialog;
 	
 	@SuppressLint("CutPasteId")
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -137,6 +139,8 @@ public class AppayWaterGateLinkageFragment extends Fragment implements
 		case R.id.acitionbar_right:
 			RequestParams param2 = new RequestParams(URL.openProportionAll);  // 网址(请替换成实际的网址) 
 //			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
+			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+					"Please wait...", true, false);
 			JSONObject js_request = new JSONObject();
 			try {
 				param2.setAsJsonContent(true);
@@ -174,9 +178,11 @@ public class AppayWaterGateLinkageFragment extends Fragment implements
 		                    String errorResult = httpEx.getResult();  
 		                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
 		                    // ...  
+		                    progressDialog.dismiss();
 		                } else { // 其他错误    
 		                    // ...  
 		                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+		                	progressDialog.dismiss();
 		                }  
 		                  
 		            }  
@@ -192,6 +198,7 @@ public class AppayWaterGateLinkageFragment extends Fragment implements
 		                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
 		                  Gson gson = new Gson();
 		                  System.out.println(arg0);
+		                  progressDialog.dismiss();
 //		                  UserReleDisInfoBeanAdd fromJson = gson.fromJson(arg0, UserReleDisInfoBeanAdd.class);
 ////		                  authorizedBeen = new AuthorizedBeen();
 ////		                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);

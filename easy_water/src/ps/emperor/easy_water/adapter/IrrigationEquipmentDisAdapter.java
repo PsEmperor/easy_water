@@ -119,7 +119,7 @@ public class IrrigationEquipmentDisAdapter extends MyBaseAdapter<infoList> imple
 		}
 		infoList infoList = list.get(position);
 		viewHolder.button.setTag(position);
-		viewHolder.Irrigation.setText(infoList.getAuthName()+infoList.getDisEquName());
+		viewHolder.Irrigation.setText(infoList.getDisEquName());
 		int status = infoList.getStatusCode();
 		if(1 == status){
 			viewHolder.button.setChecked(true);

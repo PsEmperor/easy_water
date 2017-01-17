@@ -39,7 +39,7 @@ public class MainTainIrrigationAdapter extends MyBaseAdapter<infoList> implement
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 		infoList infoList = list.get(position);
-		viewHolder.maintain.setText(infoList.getAuthName()+infoList.getIrriUnitName());
+		viewHolder.maintain.setText(infoList.getIrriUnitName());
 		return convertView;
 
 	}

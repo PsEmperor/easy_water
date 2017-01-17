@@ -28,6 +28,7 @@ import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -62,7 +63,7 @@ public class AppayWaterGateHaploporeFragment extends Fragment implements
 	private int OpenProportion,all;
 	private Button btn_apply_water_haplopore;
 	private String OpenHigh,PoreId;
-	
+	private ProgressDialog progressDialog;
 	
 	@SuppressLint("CutPasteId")
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -136,6 +137,8 @@ public class AppayWaterGateHaploporeFragment extends Fragment implements
 			if(all == 0){
 				RequestParams param2 = new RequestParams(URL.openProportionOne);  // 网址(请替换成实际的网址) 
 //				 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
+				progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+						"Please wait...", true, false);
 				JSONObject js_request = new JSONObject();
 				try {
 					param2.setAsJsonContent(true);
@@ -167,9 +170,11 @@ public class AppayWaterGateHaploporeFragment extends Fragment implements
 			                    String errorResult = httpEx.getResult();  
 			                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
 			                    // ...  
+			                    progressDialog.dismiss();
 			                } else { // 其他错误    
 			                    // ...  
 			                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+			                	progressDialog.dismiss();
 			                }  
 			                  
 			            }  
@@ -185,6 +190,7 @@ public class AppayWaterGateHaploporeFragment extends Fragment implements
 			                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
 			                  Gson gson = new Gson();
 			                  System.out.println(arg0);
+			                  progressDialog.dismiss();
 //			                  UserReleDisInfoBeanAdd fromJson = gson.fromJson(arg0, UserReleDisInfoBeanAdd.class);
 ////			                  authorizedBeen = new AuthorizedBeen();
 ////			                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
@@ -208,6 +214,8 @@ public class AppayWaterGateHaploporeFragment extends Fragment implements
 			}else{
 				RequestParams param2 = new RequestParams(URL.openProportion);  // 网址(请替换成实际的网址) 
 //				 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
+				progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+						"Please wait...", true, false);
 				JSONObject js_request = new JSONObject();
 				try {
 					param2.setAsJsonContent(true);
@@ -238,9 +246,11 @@ public class AppayWaterGateHaploporeFragment extends Fragment implements
 			                    String errorResult = httpEx.getResult();  
 			                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
 			                    // ...  
+			                    progressDialog.dismiss();
 			                } else { // 其他错误    
 			                    // ...  
 			                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+			                	progressDialog.dismiss();
 			                }  
 			                  
 			            }  
@@ -256,6 +266,7 @@ public class AppayWaterGateHaploporeFragment extends Fragment implements
 			                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
 			                  Gson gson = new Gson();
 			                  System.out.println(arg0);
+			                  progressDialog.dismiss();
 //			                  UserReleDisInfoBeanAdd fromJson = gson.fromJson(arg0, UserReleDisInfoBeanAdd.class);
 ////			                  authorizedBeen = new AuthorizedBeen();
 ////			                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);

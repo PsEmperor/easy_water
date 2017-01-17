@@ -40,8 +40,8 @@ public class ApplyWaterDistrbutionAdapter extends MyBaseAdapter<infoList> implem
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 		infoList infoList = list.get(position);
-		viewHolder.units.setText(infoList.getAuthName());
-		viewHolder.gate.setText(infoList.getDisEquName());
+		viewHolder.units.setText(infoList.getDisEquName());
+//		viewHolder.gate.setText(infoList.getDisEquName());
 		viewHolder.whether.setText(infoList.getDisEquID());
 		return convertView;
 
@@ -57,4 +57,5 @@ public class ApplyWaterDistrbutionAdapter extends MyBaseAdapter<infoList> implem
 	public void onClick(DialogInterface dialog, int which) {
 
 	}
+	
 }

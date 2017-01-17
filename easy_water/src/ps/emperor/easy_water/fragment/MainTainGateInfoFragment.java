@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +51,7 @@ public class MainTainGateInfoFragment extends Fragment implements
 	private TextView gate_info_category,gate_info_id,gate_info_e,gate_info_n,gate_info_units,gate_info_superiro,gate_info_hole;
 	private EditText gate_info_name,gate_info_area;
 	private List<infoList> beens;
+	private ProgressDialog progressDialog;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -82,6 +84,8 @@ public class MainTainGateInfoFragment extends Fragment implements
 		}
 		RequestParams param3 = new RequestParams(URL.findDisEquInfoOne+str1);  // 网址(请替换成实际的网址) 
 //		 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
+		progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+				"Please wait...", true, false);
 		JSONObject js_request2 = new JSONObject();
 		try {
 			param3.setAsJsonContent(true);
@@ -109,9 +113,11 @@ public class MainTainGateInfoFragment extends Fragment implements
 	                    String errorResult = httpEx.getResult();  
 	                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
 	                    // ...  
+	                    progressDialog.dismiss();
 	                } else { // 其他错误    
 	                    // ...  
 	                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+	                	progressDialog.dismiss();
 	                }  
 	                  
 	            }  
@@ -144,6 +150,7 @@ public class MainTainGateInfoFragment extends Fragment implements
 	                	gate_info_area.setText(beens.get(0).getArea());
 	                	gate_info_hole.setText(beens.get(0).getPoreNum());
 					}
+	                  progressDialog.dismiss();
 	            }  
 	        }); 
 		
@@ -159,6 +166,8 @@ public class MainTainGateInfoFragment extends Fragment implements
 		case R.id.acitionbar_right:
 			RequestParams param2 = new RequestParams(URL.updateDisEquInfo);  // 网址(请替换成实际的网址) 
 //			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
+			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+					"Please wait...", true, false);
 			JSONObject js_request = new JSONObject();
 			try {
 				param2.setAsJsonContent(true);
@@ -190,9 +199,11 @@ public class MainTainGateInfoFragment extends Fragment implements
 		                    String errorResult = httpEx.getResult();  
 		                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
 		                    // ...  
+		                    progressDialog.dismiss();
 		                } else { // 其他错误    
 		                    // ...  
 		                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+		                	progressDialog.dismiss();
 		                }  
 		                  
 		            }  
@@ -208,6 +219,7 @@ public class MainTainGateInfoFragment extends Fragment implements
 		                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
 		                  Gson gson = new Gson();
 		                  System.out.println(arg0);
+		                  progressDialog.dismiss();
 		            }  
 		        }); 
 			break;

@@ -22,6 +22,7 @@ import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,6 +39,7 @@ import ps.emperor.easy_water.adapter.IrrigationAddAdapter;
 import ps.emperor.easy_water.entity.ApplyIrrigationBean;
 import ps.emperor.easy_water.entity.AuthorizedBeen;
 import ps.emperor.easy_water.entity.KeyWordBean;
+import ps.emperor.easy_water.entity.UserReleDisInfoBean;
 import ps.emperor.easy_water.entity.UserReleDisInfoBeanAdd;
 import ps.emperor.easy_water.entity.UserReleIrrInfoBeanAdd;
 import ps.emperor.easy_water.entity.UserReleIrrInfoBeanAdd.infoList;
@@ -69,6 +71,7 @@ public class MineIrrigationAddFragment extends Fragment implements OnClickListen
 	private EditText ed_irrigation_add;
 	private List<infoList> beens;
 	private List<String> list;
+	private ProgressDialog progressDialog;
 	// private CheckBox checkBox;
 
 	@Override
@@ -104,6 +107,8 @@ public class MineIrrigationAddFragment extends Fragment implements OnClickListen
 		}
 		RequestParams param3 = new RequestParams(URL.findUserNoReleIrrInfo+str1);  // 网址(请替换成实际的网址) 
 //		 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
+		progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+				"Please wait...", true, false);
 		JSONObject js_request2 = new JSONObject();
 		try {
 			param3.setAsJsonContent(true);
@@ -131,9 +136,11 @@ public class MineIrrigationAddFragment extends Fragment implements OnClickListen
 	                    String errorResult = httpEx.getResult();  
 	                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
 	                    // ...  
+	                    progressDialog.dismiss();
 	                } else { // 其他错误    
 	                    // ...  
 	                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+	                	progressDialog.dismiss();
 	                }  
 	                  
 	            }  
@@ -158,6 +165,7 @@ public class MineIrrigationAddFragment extends Fragment implements OnClickListen
 					}
 	                  adapter.addData(beens, false);
 	                  listView.setAdapter(adapter);
+	                  progressDialog.dismiss();
 	            }  
 	        }); 
 		return view;
@@ -210,6 +218,8 @@ public class MineIrrigationAddFragment extends Fragment implements OnClickListen
 			}
 			RequestParams param2 = new RequestParams(URL.firstDerviceID);  // 网址(请替换成实际的网址) 
 //			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
+			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+					"Please wait...", true, false);
 			JSONObject js_request = new JSONObject();
 			try {
 				param2.setAsJsonContent(true);
@@ -250,9 +260,11 @@ public class MineIrrigationAddFragment extends Fragment implements OnClickListen
 		                    String errorResult = httpEx.getResult();  
 		                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
 		                    // ...  
+		                    progressDialog.dismiss();
 		                } else { // 其他错误    
 		                    // ...  
 		                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+		                	progressDialog.dismiss();
 		                }  
 		                  
 		            }  
@@ -268,15 +280,7 @@ public class MineIrrigationAddFragment extends Fragment implements OnClickListen
 		                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
 		                  Gson gson = new Gson();
 		                  System.out.println(arg0);
-		                  UserReleIrrInfoBeanAdd fromJson = gson.fromJson(arg0, UserReleIrrInfoBeanAdd.class);
-//		                  authorizedBeen = new AuthorizedBeen();
-//		                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
-		                  List<infoList> beens = fromJson.getAuthNameList();
-		                  for (infoList authNameListBean : beens) {
-		                	authNameListBean.getAuthName();
-						}
-		                  adapter.addData(beens, true);
-		                  listView.setAdapter(adapter);
+		                  progressDialog.dismiss();
 		            }  
 		        }); 
 			break;
@@ -296,8 +300,13 @@ public class MineIrrigationAddFragment extends Fragment implements OnClickListen
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			if(CheckUtil.IsEmpty(str2)){
+				Toast.makeText(getActivity(), "请输入需要查询的关键字！", Toast.LENGTH_SHORT).show();
+			}else{
 			RequestParams param3 = new RequestParams(URL.UserNoReleIrrInfo+str1+"/"+str2);  // 网址(请替换成实际的网址) 
 //			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
+			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+					"Please wait...", true, false);
 			JSONObject js_request2 = new JSONObject();
 			try {
 				param3.setAsJsonContent(true);
@@ -325,9 +334,11 @@ public class MineIrrigationAddFragment extends Fragment implements OnClickListen
 		                    String errorResult = httpEx.getResult();  
 		                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
 		                    // ...  
+		                    progressDialog.dismiss();
 		                } else { // 其他错误    
 		                    // ...  
 		                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+		                	progressDialog.dismiss();
 		                }  
 		                  
 		            }  
@@ -342,10 +353,17 @@ public class MineIrrigationAddFragment extends Fragment implements OnClickListen
 		            public void onSuccess(String arg0) {  
 		                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
 		                  Gson gson = new Gson();
-		                  System.out.println(arg0);
-		                  Toast.makeText(getActivity(), "关联成功", Toast.LENGTH_SHORT).show();
+		                  UserReleIrrInfoBeanAdd fromJson = gson.fromJson(arg0, UserReleIrrInfoBeanAdd.class);
+		                  List<infoList> beens = fromJson.getAuthNameList();
+		                  for (infoList authNameListBean : beens) {
+		                	authNameListBean.getAuthName();
+						}
+		                  adapter.addData(beens, true);
+		                  listView.setAdapter(adapter);
+		                  progressDialog.dismiss();
 		            }
 		        }); 
+			}
 		        break;
 		default:
 			break;

@@ -35,6 +35,7 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -126,6 +127,7 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 	tv_three_OpenProportion_right,tv_three_OpenHigh_right,tv_three_PoreID_right;
 	private TextView text_apply_water_distrbution_gate_control,
 	tv_apply_water_before,tv_apply_water_after,tv_apply_water_flow;
+	private ProgressDialog progressDialog;
 	
 	@SuppressLint("CutPasteId")
 	@Override
@@ -301,6 +303,8 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 		}
 		RequestParams param3 = new RequestParams(URL.findDisWaterInfoOne+str1);  // 网址(请替换成实际的网址) 
 //		 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
+		progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+				"Please wait...", true, false);
 		JSONObject js_request2 = new JSONObject();
 		try {
 			param3.setAsJsonContent(true);
@@ -328,9 +332,11 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 	                    String errorResult = httpEx.getResult();  
 	                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
 	                    // ...  
+	                    progressDialog.dismiss();
 	                } else { // 其他错误    
 	                    // ...  
 	                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+	                	progressDialog.dismiss();
 	                }  
 	                  
 	            }  
@@ -453,6 +459,7 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 	        		style.setSpan(what, 6, 9, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 	        		tv_superior.setText(style);
 	        		tv_superior.setMovementMethod(LinkMovementMethod.getInstance());
+	        		progressDialog.dismiss();
 	        	}
 	        }); 
 	}

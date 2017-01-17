@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -72,7 +73,7 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 	private String names,units,tel,role;
 	private EditText name;
 	private TextView name_show,tv_info_units,tv_info_user_tel,tv_info_role;
-	
+	private ProgressDialog progressDialog;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -129,6 +130,8 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 		}
 		RequestParams params = new RequestParams(URL.userInfo+"/"+str);    // 网址(请替换成实际的网址)  
 //		 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)  
+		progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+				"Please wait...", true, false);
 		JSONObject js_request = new JSONObject();
 		try {
 			params.setAsJsonContent(true);
@@ -159,9 +162,11 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 	                    String errorResult = httpEx.getResult();  
 	                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
 	                    // ...  
+	                    progressDialog.dismiss();
 	                } else { // 其他错误  
 	                    // ...  
 	                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+	                	progressDialog.dismiss();
 	                }  
 	                  
 	            }  
@@ -186,6 +191,7 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 	                  tv_info_units.setText(units);
 	                  tv_info_user_tel.setText(tel);
 	                  tv_info_role.setText(role);
+	                  progressDialog.dismiss();
 	            }  
 	        }); 
 		
@@ -209,6 +215,8 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 		case R.id.acitionbar_right:
 			RequestParams param1 = new RequestParams(URL.updateUserinfo);    // 网址(请替换成实际的网址)  
 //			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)  
+			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+					"Please wait...", true, false);
 			JSONObject js_request = new JSONObject();
 			try {
 				param1.setAsJsonContent(true);
@@ -242,9 +250,11 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 		                    String errorResult = httpEx.getResult();  
 		                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
 		                    // ...  
+		                    progressDialog.dismiss();
 		                } else { // 其他错误  
 		                    // ...  
 		                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+		                	progressDialog.dismiss();
 		                }  
 		                  
 		            }  
@@ -258,6 +268,7 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 		            @Override  
 		            public void onSuccess(String arg0) {  
 		                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
+		                  progressDialog.dismiss();
 		            }  
 		        }); 
 			break;

@@ -61,7 +61,7 @@ public class IrrigationAddAdapter extends MyBaseAdapter<infoList> implements OnC
 		}
 		infoList infoList = list.get(position);
 		viewHolder.checkBox.setTag(position);
-		viewHolder.irrigation.setText(infoList.getAuthName()+infoList.getIrriUnitName());
+		viewHolder.irrigation.setText(infoList.getIrriUnitName());
 		viewHolder.checkBox.setChecked(infoList.isCheck);
 		convertView.setTag(viewHolder);
 		return convertView;

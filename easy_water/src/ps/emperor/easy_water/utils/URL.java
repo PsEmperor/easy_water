@@ -32,15 +32,25 @@ public class URL {
 	//关联新配水设备
 	public static final String disEquID = "http://192.168.2.120:8080/cms/app/UserSys/userReleDisInfo/userID/disEquID";
 	
-	//模糊搜索已关联配水设备
+	//维护显示用户已关联灌溉设备信息
+	public static final String findUserReleIrrInfoIrri = "http://192.168.2.120:8080/cms/app/IrriUnitSys/findUserReleIrriInfo/";
+	//维护已关联灌溉设备信息模糊查询
+	public static final String userReleIrriInfo = "http://192.168.2.120:8080/cms/app/IrriUnitSys/fuzzyQuery/userReleIrriInfo/";
+	//维护显示灌溉详细信息
+	public static final String findIrriUnitInfoToOne = "http://192.168.2.120:8080/cms/app/IrriUnitSys/findIrriUnitInfoToOne/";
+	//维护灌溉单元基本信息维护
+	public static final String firstDerviceIDIrri = "http://192.168.2.120:8080/cms/app/IrriUnitSys/updateIrriUnitInfo/firstDerviceID";
+	
+	//维护模糊搜索已关联配水设备
 	public static final String findUserReleDisInfoYet = "http://192.168.2.120:8080/cms/app/DisWaterSys/fuzzyQuery/findUserReleDisInfo/";
-	//应用 维护界面配水设备列表查询
+	//维护界面配水设备列表查询
 	public static final String findUserReleDisInfoApply = "http://192.168.2.120:8080/cms/app/DisWaterSys/findUserReleDisInfo/";
-	//应用 维护界面配水设备信息查询
+	//维护界面配水设备信息查询
 	public static final String findDisEquInfoOne = "http://192.168.2.120:8080/cms/app/DisWaterSys/findDisEquInfoOne/";
-	//应用 维护界面配水设备信息更改
+	//维护界面配水设备信息更改
 	public static final String updateDisEquInfo = "http://192.168.2.120:8080/cms/app/DisWaterSys/updateDisEquInfo";
-
+	
+	
 	//应用配水设备信息
 	public static final String findDisWaterInfoOne = "http://192.168.2.120:8080/cms/app/DisWaterSys/findDisWaterInfoOne/";
 	//多孔闸门闸宽联动设置

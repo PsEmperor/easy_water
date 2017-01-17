@@ -1,5 +1,6 @@
 package ps.emperor.easy_water.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -19,12 +20,18 @@ public class UserReleIrrInfoBean {
         this.infoList = authNameList;
     }
 
-    public static class infoList {
+    public static class infoList implements Serializable{
 
     	private int StatusCode;
     	private String FirstDerviceID;
     	private String IrriUnitName;
-        private String AuthName;
+    	public String getAuthName() {
+			return AuthName;
+		}
+		public void setAuthName(String authName) {
+			AuthName = authName;
+		}
+		private String AuthName;
 		public boolean isCheck;
         
 		public int getStatusCode() {
@@ -50,12 +57,6 @@ public class UserReleIrrInfoBean {
 		}
 		public void setIrriUnitName(String irriUnitName) {
 			IrriUnitName = irriUnitName;
-		}
-		public String getAuthName() {
-			return AuthName;
-		}
-		public void setAuthName(String authName) {
-			AuthName = authName;
 		}
     }
 }

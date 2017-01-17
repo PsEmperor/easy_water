@@ -20,6 +20,7 @@ import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,7 @@ import ps.emperor.easy_water.entity.KeyWordBean;
 import ps.emperor.easy_water.entity.UserReleDisInfoBeanAdd;
 import ps.emperor.easy_water.entity.UserReleDisInfoBeanAdd.infoList;
 import ps.emperor.easy_water.entity.UserReleIrrInfoBeanAdd;
+import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.MainActionBar;
 
@@ -57,7 +59,7 @@ public class MineWaterAddFragment extends Fragment implements OnClickListener {
 	private EditText ed_irrigation_add;
 	private List<infoList> beens;
 	private List<String> list;
-
+	private ProgressDialog progressDialog;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,6 +96,8 @@ public class MineWaterAddFragment extends Fragment implements OnClickListener {
 		}
 		RequestParams param3 = new RequestParams(URL.findUserNoReleDisInfo+str1);  // 网址(请替换成实际的网址) 
 //		 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
+		progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+				"Please wait...", true, false);
 		JSONObject js_request2 = new JSONObject();
 		try {
 			param3.setAsJsonContent(true);
@@ -121,9 +125,11 @@ public class MineWaterAddFragment extends Fragment implements OnClickListener {
 	                    String errorResult = httpEx.getResult();  
 	                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
 	                    // ...  
+	                    progressDialog.dismiss();
 	                } else { // 其他错误    
 	                    // ...  
 	                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+	                	progressDialog.dismiss();
 	                }  
 	                  
 	            }  
@@ -148,6 +154,7 @@ public class MineWaterAddFragment extends Fragment implements OnClickListener {
 					}
 	                  adapter.addData(beens, true);
 	                  listView.setAdapter(adapter);
+	                  progressDialog.dismiss();
 	            }  
 	        }); 
 //		adapter.addData(beans, false);
@@ -174,6 +181,8 @@ public class MineWaterAddFragment extends Fragment implements OnClickListener {
 		case R.id.text_irrigation_add:
 			RequestParams param2 = new RequestParams(URL.disEquID);  // 网址(请替换成实际的网址) 
 //			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
+			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+					"Please wait...", true, false);
 			JSONObject js_request = new JSONObject();
 			try {
 				param2.setAsJsonContent(true);
@@ -214,9 +223,11 @@ public class MineWaterAddFragment extends Fragment implements OnClickListener {
 		                    String errorResult = httpEx.getResult();  
 		                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
 		                    // ...  
+		                    progressDialog.dismiss();
 		                } else { // 其他错误    
 		                    // ...  
 		                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+		                	progressDialog.dismiss();
 		                }  
 		                  
 		            }  
@@ -233,6 +244,7 @@ public class MineWaterAddFragment extends Fragment implements OnClickListener {
 		                  Gson gson = new Gson();
 		                  System.out.println(arg0);
 		                  Toast.makeText(getActivity(), "关联成功", Toast.LENGTH_SHORT).show();
+		                  progressDialog.dismiss();
 		            }  
 		        }); 
 			break;
@@ -252,8 +264,13 @@ public class MineWaterAddFragment extends Fragment implements OnClickListener {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			if(CheckUtil.IsEmpty(str2)){
+				Toast.makeText(getActivity(), "请输入需要查询的关键字！", Toast.LENGTH_SHORT).show();
+			}else{
 			RequestParams param3 = new RequestParams(URL.userNoReleDisInfo+str1+"/"+str2);  // 网址(请替换成实际的网址) 
 //			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
+			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+					"Please wait...", true, false);
 			JSONObject js_request2 = new JSONObject();
 			try {
 				param3.setAsJsonContent(true);
@@ -281,9 +298,11 @@ public class MineWaterAddFragment extends Fragment implements OnClickListener {
 		                    String errorResult = httpEx.getResult();  
 		                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
 		                    // ...  
+		                    progressDialog.dismiss();
 		                } else { // 其他错误    
 		                    // ...  
 		                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+		                	progressDialog.dismiss();
 		                }  
 		                  
 		            }  
@@ -308,8 +327,10 @@ public class MineWaterAddFragment extends Fragment implements OnClickListener {
 						}
 		                  adapter.addData(beens, true);
 		                  listView.setAdapter(adapter);
+		                  progressDialog.dismiss();
 		            }  
 		        }); 
+			}
 			break;
 		default:
 			break;

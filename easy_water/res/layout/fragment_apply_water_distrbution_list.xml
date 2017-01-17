@@ -13,11 +13,12 @@
 
         <TextView
             android:id="@+id/text_apply_water_units"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="15dp"
-            android:text="111团5连"
+            android:lineSpacingMultiplier="1.8"
+            android:text=""
             android:textColor="@color/gray_1" />
 
         <TextView
@@ -27,7 +28,7 @@
             android:layout_alignLeft="@+id/text_apply_water_units"
             android:layout_below="@+id/text_apply_water_units"
             android:layout_marginTop="15dp"
-            android:text="4#灌溉单元"
+            android:text=""
             android:textColor="@color/gray_1" />
 
         <TextView
@@ -36,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="90dp"
+            android:layout_marginRight="50dp"
             android:gravity="center_vertical"
             android:text="无计划"
             android:textColor="@color/gray_1" />

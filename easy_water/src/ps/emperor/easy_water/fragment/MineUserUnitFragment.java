@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 
 import android.annotation.SuppressLint;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -75,6 +76,7 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 	private String shareUnitID,province,state,district,units,event,shareProvince,shareState,shareDistrict,shareEven,shareUnit;//淇濆瓨鍦╯hard涓殑
 	private int chose;
 	AuthorizedBeen authorizedBeen;
+	private ProgressDialog progressDialog;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -167,6 +169,8 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 		case R.id.text_mine_user_info_province:
 			chose = 1;
 			RequestParams param1 = new RequestParams(URL.urluserAuthInfo); //  网址(请替换成实际的网址) 
+			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+					"Please wait...", true, false);
 //			 params.addQueryStringParameter("key", "value");// 参数(请替换成实际的参数与值)   
 			JSONObject js_request = new JSONObject();
 			try {
@@ -198,9 +202,11 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 		                    String errorResult = httpEx.getResult();  
 		                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
 		                    // ...  
+		                    progressDialog.dismiss();
 		                } else {  // 其他错误  
 		                    // ...  
 		                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+		                	progressDialog.dismiss();
 		                }  
 		                  
 		            }  
@@ -224,6 +230,7 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 		                	authNameListBean.getAuthProvince();
 						}
 		                  adapter.addData(beens, true);
+		                  progressDialog.dismiss();
 		            }  
 		        }); 
 			View view1 = mInflater.inflate(
@@ -250,6 +257,8 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			System.out.println(str);
 			RequestParams param2 = new RequestParams(URL.urluserAuthInfo+str);  // 网址(请替换成实际的网址) 
 //			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
+			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+					"Please wait...", true, false);
 			JSONObject js_request1 = new JSONObject();
 			try {
 				param2.setAsJsonContent(true);
@@ -278,9 +287,11 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 		                    String errorResult = httpEx.getResult();  
 		                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
 		                    // ...  
+		                    progressDialog.dismiss();
 		                } else { // 其他错误    
 		                    // ...  
 		                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+		                	progressDialog.dismiss();
 		                }  
 		                  
 		            }  
@@ -304,6 +315,7 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 		                	authNameListBean.getAuthCity();
 						}
 		                  adapter1.addData(beens, true);
+		                  progressDialog.dismiss();
 		            }  
 		        }); 
 				View view2 = mInflater.inflate(
@@ -331,6 +343,8 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			}
 			RequestParams param3 = new RequestParams(URL.urluserAuthInfo+str1+"/"+str2);  // 网址(请替换成实际的网址) 
 //			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
+			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+					"Please wait...", true, false);
 			JSONObject js_request2 = new JSONObject();
 			try {
 				param3.setAsJsonContent(true);
@@ -358,9 +372,11 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 		                    String errorResult = httpEx.getResult();  
 		                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
 		                    // ...  
+		                    progressDialog.dismiss();
 		                } else { // 其他错误    
 		                    // ...  
 		                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+		                	progressDialog.dismiss();
 		                }  
 		                  
 		            }  
@@ -384,6 +400,7 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 		                	authNameListBean.getAuthCounty();
 						}
 		                  adapter2.addData(beens, true);
+		                  progressDialog.dismiss();
 		            }  
 		        }); 
 				View view3 = mInflater.inflate(
@@ -415,6 +432,8 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			}
 			RequestParams param4 = new RequestParams(URL.urluserAuthInfo+str3+"/"+str4+"/"+str5);  // 网址(请替换成实际的网址) 
 //			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
+			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+					"Please wait...", true, false);
 			JSONObject js_request3 = new JSONObject();
 			try {
 				param4.setAsJsonContent(true);
@@ -442,9 +461,11 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 		                    String errorResult = httpEx.getResult();  
 		                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
 		                    // ...  
+		                    progressDialog.dismiss();
 		                } else { // 其他错误    
 		                    // ...  
 		                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+		                	progressDialog.dismiss();
 		                }  
 		                  
 		            }  
@@ -468,6 +489,7 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 		                	authNameListBean.getAuthTown();
 						}
 		                  adapter4.addData(beens, true);
+		                  progressDialog.dismiss();
 		            }  
 		        }); 
 			View view4 = mInflater.inflate(
@@ -501,6 +523,8 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			}
 			RequestParams param5 = new RequestParams(URL.urluserAuthInfo+str6+"/"+str7+"/"+str8+"/"+str9);  // 网址(请替换成实际的网址) 
 //			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
+			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+					"Please wait...", true, false);
 			JSONObject js_request4 = new JSONObject();
 			try {
 				param5.setAsJsonContent(true);
@@ -528,9 +552,11 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 		                    String errorResult = httpEx.getResult();  
 		                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
 		                    // ...  
+		                    progressDialog.dismiss();
 		                } else { // 其他错误    
 		                    // ...  
 		                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+		                	progressDialog.dismiss();
 		                }  
 		                  
 		            }  
@@ -554,6 +580,7 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 		                	authNameListBean.getAuthManage();
 						}
 		                  adapter3.addData(beens, true);
+		                  progressDialog.dismiss();
 		            }  
 		        }); 
 		        View view5 = mInflater.inflate(
