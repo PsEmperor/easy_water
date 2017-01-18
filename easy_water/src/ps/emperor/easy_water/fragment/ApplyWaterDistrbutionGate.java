@@ -373,7 +373,7 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 	        			layout_linear_change.setVisibility(View.GONE);
 	        			layout_linear_changes.setVisibility(View.GONE);
 	        			RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)layout_relative_changes.getLayoutParams();
-	        			int height = DensityUtil.dip2px(getActivity(),(100-Float.valueOf(beans.get(0).getOpenProportion())*100)*2);
+	        			int height = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(beans.get(0).getOpenProportion())*100)*2));
 	        			layoutParams.height = height;
 	        			layout_relative_changes.setLayoutParams(layoutParams);
 	        			layout_relative_changes.requestLayout();
@@ -386,7 +386,7 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 	        			layout.setVisibility(View.GONE);
 	        			layout_linear_changes.setVisibility(View.GONE);
 	        			RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)layout_relative_changes_left.getLayoutParams();
-	        			int height = DensityUtil.dip2px(getActivity(), (100-Float.valueOf(beans.get(0).getOpenProportion())*100)*2);
+	        			int height = DensityUtil.dip2px(getActivity(), (int)((100-Float.valueOf(beans.get(0).getOpenProportion())*100)*2));
 	        			layoutParams.height = height;
 	        			layout_relative_changes_left.setLayoutParams(layoutParams);
 	        			layout_relative_changes_left.requestLayout();
@@ -395,7 +395,7 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 	        			tv_two_PoreID_left.setText(beans.get(0).getPoreID());
 	        			
 	        			RelativeLayout.LayoutParams layoutParam1 = (RelativeLayout.LayoutParams)layout_relative_changes_right.getLayoutParams();
-	        			int heights = DensityUtil.dip2px(getActivity(), (100-Float.valueOf(beans.get(1).getOpenProportion())*100)*2);
+	        			int heights = DensityUtil.dip2px(getActivity(), (int)((100-Float.valueOf(beans.get(1).getOpenProportion())*100)*2));
 	        			layoutParam1.height = heights;
 	        			layout_relative_changes_right.setLayoutParams(layoutParam1);
 	        			layout_relative_changes_right.requestLayout();
@@ -408,7 +408,7 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 	        			layout.setVisibility(View.GONE);
 	        			layout_linear_change.setVisibility(View.GONE);
 	        			RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)layout_relative_changes_one.getLayoutParams();
-	        			int height = DensityUtil.dip2px(getActivity(),(100-Float.valueOf(beans.get(0).getOpenProportion())*100)*2);
+	        			int height = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(beans.get(0).getOpenProportion())*100)*2));
 	        			layoutParams.height = height;
 	        			layout_relative_changes_one.setLayoutParams(layoutParams);
 	        			layout_relative_changes_one.requestLayout();
@@ -417,7 +417,7 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 	        			tv_three_PoreID_left.setText(beans.get(0).getPoreID());
 	        			
 	        			RelativeLayout.LayoutParams layoutParam1 = (RelativeLayout.LayoutParams)layout_relative_changes_two.getLayoutParams();
-	        			int heights = DensityUtil.dip2px(getActivity(), (100-Float.valueOf(beans.get(1).getOpenProportion())*100)*2);
+	        			int heights = DensityUtil.dip2px(getActivity(), (int)((100-Float.valueOf(beans.get(1).getOpenProportion())*100)*2));
 	        			layoutParam1.height = heights;
 	        			layout_relative_changes_two.setLayoutParams(layoutParam1);
 	        			layout_relative_changes_two.requestLayout();
@@ -426,7 +426,7 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 	        			tv_three_PoreID.setText(beans.get(1).getPoreID());
 	        			
 	        			RelativeLayout.LayoutParams layoutParam2 = (RelativeLayout.LayoutParams)layout_relative_changes_three.getLayoutParams();
-	        			int height2 = DensityUtil.dip2px(getActivity(), (100-Float.valueOf(beans.get(2).getOpenProportion())*100)*2);
+	        			int height2 = DensityUtil.dip2px(getActivity(), (int)((100-Float.valueOf(beans.get(2).getOpenProportion())*100)*2));
 	        			layoutParam2.height = height2;
 	        			layout_relative_changes_three.setLayoutParams(layoutParam2);
 	        			layout_relative_changes_three.requestLayout();
@@ -452,10 +452,10 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 
 	        			@Override
 	        			public void onClick(View widget) {
-	        				Toast.makeText(getActivity(), "666666666666", Toast.LENGTH_LONG).show();
+	        				Fetch();
 	        			}
 	        		};
-	        		style.setSpan(what, 6, 9, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+	        		style.setSpan(what, 6, beens.get(0).getSuperEqu().length()+6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 	        		tv_superior.setText(style);
 	        		tv_superior.setMovementMethod(LinkMovementMethod.getInstance());
 	        		progressDialog.dismiss();
@@ -825,5 +825,172 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 		transaction.replace(R.id.fl, fragment1, "main");
 		transaction.commit();
+	}
+	private void Fetch(){
+		String str1 = "";
+		try {
+			str1 = java.net.URLEncoder.encode("配水设备6","UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+		}
+		RequestParams param3 = new RequestParams(URL.findDisWaterInfoOne+str1);  // 网址(请替换成实际的网址) 
+//		 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
+		progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+				"Please wait...", true, false);
+		JSONObject js_request2 = new JSONObject();
+		try {
+			param3.setAsJsonContent(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			param3.setAsJsonContent(true);
+		}//根据实际需求添加相应键值对
+		
+	        x.http().request(HttpMethod.GET ,param3, new CommonCallback<String>() {  
+	            @Override  
+	            public void onCancelled(CancelledException arg0) {  
+	                  
+	            }  
+	  
+	         // 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误  
+	            // 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看  
+	            @Override  
+	            public void onError(Throwable ex, boolean isOnCallback) {  
+	                  
+	                Toast.makeText(x.app(), ex.getMessage(), Toast.LENGTH_LONG).show();  
+	                if (ex instanceof HttpException) { // 网络错误    
+	                    HttpException httpEx = (HttpException) ex;  
+	                    int responseCode = httpEx.getCode();  
+	                    String responseMsg = httpEx.getMessage();  
+	                    String errorResult = httpEx.getResult();  
+	                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+	                    // ...  
+	                    progressDialog.dismiss();
+	                } else { // 其他错误    
+	                    // ...  
+	                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+	                	progressDialog.dismiss();
+	                }  
+	                  
+	            }  
+	  
+	         // 不管成功或者失败最后都会回调该接口  
+	            @Override  
+	            public void onFinished() {    
+	            }  
+	  
+	            @Override  
+	            public void onSuccess(String arg0) {  
+	                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
+	                  Gson gson = new Gson();
+	                  System.out.println(arg0);
+	                  FindDisWaterInfoOneBean fromJson = gson.fromJson(arg0, FindDisWaterInfoOneBean.class);
+//	                  authorizedBeen = new AuthorizedBeen();
+//	                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
+	                  beens = fromJson.getDisWaterInfo();
+	                  beans = fromJson.getSluiceGateInfo();
+	                  for (SluiceGateInfoBean authNameListBean : beans) {
+	                	authNameListBean.getOpenProportion();
+	                	authNameListBean.getOpenHigh();
+					}
+	                adapter.addData(beans, true);
+	                text_apply_water_distrbution_gate_control.setText(beens.get(0).getAuthName()+beens.get(0).getDisEquName());
+	        		tv_indicator.setText(beens.get(0).getPoreNum());
+	        		tv_apply_water_before.setText(beens.get(0).getFrontWaterLevel());
+	        		tv_apply_water_after.setText(beens.get(0).getBackWaterLevel());
+	        		tv_apply_water_flow.setText(beens.get(0).getDesignFlow());
+	        		tv_time_operation_start.setText("开始时间: "+beens.get(0).getOpenPoreTime());
+	        		tv_time_operation_end.setText("结束时间: "+beens.get(0).getClosePoreTime());
+	                if(beans.size() == 1){
+	        			list_apply_water_distrbution_gate_control.setVisibility(View.GONE);
+	        			layout_linear_change.setVisibility(View.GONE);
+	        			layout_linear_changes.setVisibility(View.GONE);
+	        			RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)layout_relative_changes.getLayoutParams();
+	        			int height = DensityUtil.dip2px(getActivity(),(int)(100-Float.valueOf(beans.get(0).getOpenProportion())*100)*2);
+	        			layoutParams.height = height;
+	        			layout_relative_changes.setLayoutParams(layoutParams);
+	        			layout_relative_changes.requestLayout();
+	        			tv_one_OpenProportion.setText((int)(Float.valueOf(beans.get(0).getOpenProportion())*100)+"%");
+	        			tv_one_OpenHigh.setText(beans.get(0).getOpenHigh()+"m³");
+	        			tv_one_PoreID.setText(beans.get(0).getPoreID()+"");
+	        		}
+	        		if(beans.size() == 2){
+	        			list_apply_water_distrbution_gate_control.setVisibility(View.GONE);
+	        			layout.setVisibility(View.GONE);
+	        			layout_linear_changes.setVisibility(View.GONE);
+	        			RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)layout_relative_changes_left.getLayoutParams();
+	        			int height = DensityUtil.dip2px(getActivity(), (int)((100-Float.valueOf(beans.get(0).getOpenProportion())*100)*2));
+	        			layoutParams.height = height;
+	        			layout_relative_changes_left.setLayoutParams(layoutParams);
+	        			layout_relative_changes_left.requestLayout();
+	        			tv_two_OpenProportion_left.setText((int)(Float.valueOf(beans.get(0).getOpenProportion())*100)+"%");
+	        			tv_two_OpenHigh_left.setText(beans.get(0).getOpenHigh()+"m³");
+	        			tv_two_PoreID_left.setText(beans.get(0).getPoreID());
+	        			
+	        			RelativeLayout.LayoutParams layoutParam1 = (RelativeLayout.LayoutParams)layout_relative_changes_right.getLayoutParams();
+	        			int heights = DensityUtil.dip2px(getActivity(), (int)((100-Float.valueOf(beans.get(1).getOpenProportion())*100)*2));
+	        			layoutParam1.height = heights;
+	        			layout_relative_changes_right.setLayoutParams(layoutParam1);
+	        			layout_relative_changes_right.requestLayout();
+	        			tv_two_OpenProportion_right.setText((int)(Float.valueOf(beans.get(1).getOpenProportion())*100)+"%");
+	        			tv_two_OpenHigh_right.setText(beans.get(1).getOpenHigh()+"m³");
+	        			tv_two_PoreID_right.setText(beans.get(1).getPoreID());
+	        			}
+	        		if(beans.size() == 3){
+	        			list_apply_water_distrbution_gate_control.setVisibility(View.GONE);
+	        			layout.setVisibility(View.GONE);
+	        			layout_linear_change.setVisibility(View.GONE);
+	        			RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)layout_relative_changes_one.getLayoutParams();
+	        			int height = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(beans.get(0).getOpenProportion())*100)*2));
+	        			layoutParams.height = height;
+	        			layout_relative_changes_one.setLayoutParams(layoutParams);
+	        			layout_relative_changes_one.requestLayout();
+	        			tv_three_OpenProportion_left.setText((int)(Float.valueOf(beans.get(0).getOpenProportion())*100)+"%");
+	        			tv_three_OpenHigh_left.setText(beans.get(0).getOpenHigh()+"m³");
+	        			tv_three_PoreID_left.setText(beans.get(0).getPoreID());
+	        			
+	        			RelativeLayout.LayoutParams layoutParam1 = (RelativeLayout.LayoutParams)layout_relative_changes_two.getLayoutParams();
+	        			int heights = DensityUtil.dip2px(getActivity(), (int)((100-Float.valueOf(beans.get(1).getOpenProportion())*100)*2));
+	        			layoutParam1.height = heights;
+	        			layout_relative_changes_two.setLayoutParams(layoutParam1);
+	        			layout_relative_changes_two.requestLayout();
+	        			tv_three_OpenProportion.setText((int)(Float.valueOf(beans.get(1).getOpenProportion())*100)+"%");
+	        			tv_three_OpenHigh.setText(beans.get(1).getOpenHigh()+"m³");
+	        			tv_three_PoreID.setText(beans.get(1).getPoreID());
+	        			
+	        			RelativeLayout.LayoutParams layoutParam2 = (RelativeLayout.LayoutParams)layout_relative_changes_three.getLayoutParams();
+	        			int height2 = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(beans.get(2).getOpenProportion())*100)*2));
+	        			layoutParam2.height = height2;
+	        			layout_relative_changes_three.setLayoutParams(layoutParam2);
+	        			layout_relative_changes_three.requestLayout();
+	        			tv_three_OpenProportion_right.setText((int)(Float.valueOf(beans.get(2).getOpenProportion())*100)+"%");
+	        			tv_three_OpenHigh_right.setText(beans.get(2).getOpenHigh()+"m³");
+	        			tv_three_PoreID_right.setText(beans.get(2).getPoreID());
+	        		}
+	        		if(beans.size()> 3){
+	        			layout_show_left_and_right.setVisibility(View.VISIBLE);
+	        			layout.setVisibility(View.GONE);
+	        			layout_linear_change.setVisibility(View.GONE);
+	        			layout_linear_changes.setVisibility(View.GONE);
+	        			list_apply_water_distrbution_gate_control.setAdapter(adapter);
+	        		}
+	        		if(beans.size()<= 3){
+	        			layout_show_left_and_right.setVisibility(View.GONE);
+	        		}
+	        		
+	        		String str = beens.get(0).getSuperEqu();
+	        		SpannableStringBuilder style = new SpannableStringBuilder("上级设备: "+str);
+	        		// str代表要显示的全部字符串
+	        		ClickableSpan what = new ClickableSpan() {
+
+	        			@Override
+	        			public void onClick(View widget) {
+	        			}
+	        		};
+	        		style.setSpan(what, 6, beens.get(0).getSuperEqu().length()+6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+	        		tv_superior.setText(style);
+	        		tv_superior.setMovementMethod(LinkMovementMethod.getInstance());
+	        		progressDialog.dismiss();
+	        	}
+	        }); 
 	}
 	}
