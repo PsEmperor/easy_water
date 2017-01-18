@@ -1,6 +1,7 @@
 package ps.emperor.easy_water.fragment;
 
 import java.io.Serializable;
+
 import java.io.UnsupportedEncodingException;
 
 
@@ -38,7 +39,6 @@ import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.activity.MainTainPresentrrigateActivity;
 import ps.emperor.easy_water.adapter.MainTainIrrigationAdapter;
 import ps.emperor.easy_water.entity.ApplyIrrigationBean;
-import ps.emperor.easy_water.entity.MainTainIrrigationBean;
 import ps.emperor.easy_water.entity.UserReleDisInfoBean;
 import ps.emperor.easy_water.entity.UserReleIrrInfoBean;
 import ps.emperor.easy_water.entity.UserReleIrrInfoBean.infoList;
@@ -63,7 +63,6 @@ public class MainTainIrrigateFragment extends Fragment implements OnClickListene
 	private LayoutInflater mInflater;
 	private ListView listView;
 	private MainTainIrrigationAdapter adapter;
-	private List<MainTainIrrigationBean> beans;
 	private DBHelper dbHelper;
 	private List<Irrigation> irrigation;
 	private ProgressDialog progressDialog;
@@ -81,7 +80,6 @@ public class MainTainIrrigateFragment extends Fragment implements OnClickListene
 		listView = (ListView) view.findViewById(R.id.list_maintain_water_add);
 		listView.setOnItemClickListener(this);
 		adapter = new MainTainIrrigationAdapter(getActivity());
-		beans = new ArrayList<MainTainIrrigationBean>();
 		image_maintain_water_add = (ImageView) view.findViewById(R.id.image_maintain_water_add);
 		image_maintain_water_add.setOnClickListener(this);
 		ed_maintain_water_add = (EditText) view.findViewById(R.id.ed_maintain_water_add);
@@ -134,7 +132,6 @@ public class MainTainIrrigateFragment extends Fragment implements OnClickListene
 	         // 不管成功或者失败最后都会回调该接口  
 	            @Override  
 	            public void onFinished() {    
-	            	Toast.makeText(getActivity(), "走了网络请求", Toast.LENGTH_SHORT);
 	            }  
 	  
 	            @Override  
@@ -179,30 +176,30 @@ public class MainTainIrrigateFragment extends Fragment implements OnClickListene
 //		transaction.replace(R.id.fragment_home_recommend, fragment, "main");
 //		transaction.commit();
 		//数据库存储
-//		SharedUtils.setParam(getActivity(), "units", beans.get(position).getMaintain());
+		SharedUtils.setParam(getActivity(), "units", beens.get(position).getIrriUnitName());
 		Intent intent = new Intent(getActivity(),MainTainPresentrrigateActivity.class);
 		intent.putExtra("units", beens.get(position).getIrriUnitName());
-//		irrigation = dbHelper.loadContinue(beans.get(position).getMaintain());
-//		if(CheckUtil.IsEmpty(irrigation)){
-//			Irrigation irrigation = new Irrigation();
-//			irrigation.setIrrigation(beans.get(position).getMaintain());
-//			irrigation.setNHour(0);
-//			irrigation.setNMinutes(0);
-//			irrigation.setNNumber(0);
-//			irrigation.setNRound(0);
-//			irrigation.setIsNightStartHour(0);
-//			irrigation.setIsNightStartMinute(0);
-//			irrigation.setIsNightContinueHour(0);
-//			irrigation.setIsNightContinueMinute(0);
-//			irrigation.setIsNightEndHour(0);
-//			irrigation.setIsNightEndMinute(0);
-//			irrigation.setIsTimeLong(0);
-//			irrigation.setGroupnumber(0);
-//			irrigation.setValuenumber(0);
-//			irrigation.setFilterHour(0);
-//			irrigation.setFilterMinute(0);
-//			dbHelper.saveSession(irrigation);
-//		}
+		irrigation = dbHelper.loadContinue(beens.get(position).getIrriUnitName());
+		if(CheckUtil.IsEmpty(irrigation)){
+			Irrigation irrigation = new Irrigation();
+			irrigation.setIrrigation(beens.get(position).getIrriUnitName());
+			irrigation.setNHour(0);
+			irrigation.setNMinutes(0);
+			irrigation.setNNumber(0);
+			irrigation.setNRound(0);
+			irrigation.setIsNightStartHour(0);
+			irrigation.setIsNightStartMinute(0);
+			irrigation.setIsNightContinueHour(0);
+			irrigation.setIsNightContinueMinute(0);
+			irrigation.setIsNightEndHour(0);
+			irrigation.setIsNightEndMinute(0);
+			irrigation.setIsTimeLong(0);
+			irrigation.setGroupnumber(0);
+			irrigation.setValuenumber(0);
+			irrigation.setFilterHour(0);
+			irrigation.setFilterMinute(0);
+			dbHelper.saveSession(irrigation);
+		}
 		startActivity(intent);
 	}
 
@@ -266,7 +263,6 @@ public class MainTainIrrigateFragment extends Fragment implements OnClickListene
 		         // 不管成功或者失败最后都会回调该接口  
 		            @Override  
 		            public void onFinished() {    
-		            	Toast.makeText(getActivity(), "走了网络请求", Toast.LENGTH_SHORT);
 		            }  
 		  
 		            @Override  

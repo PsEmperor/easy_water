@@ -1,6 +1,7 @@
 package ps.emperor.easy_water.fragment;
 
 import java.io.UnsupportedEncodingException;
+
 import java.util.ArrayList;
 
 import java.util.List;
@@ -32,8 +33,6 @@ import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.activity.MainTainGateInfoActivity;
 import ps.emperor.easy_water.adapter.MainTainDisAdapter;
 import ps.emperor.easy_water.adapter.MainTainIrrigationAdapter;
-import ps.emperor.easy_water.entity.MainTainIrrigationBean;
-import ps.emperor.easy_water.entity.MainTainIrrigationBean;
 import ps.emperor.easy_water.entity.UserReleDisInfoBean;
 import ps.emperor.easy_water.entity.UserReleDisInfoBean.infoList;
 import ps.emperor.easy_water.utils.CheckUtil;
@@ -55,7 +54,6 @@ public class MainTainWaterFragment extends Fragment implements OnClickListener,
 	private LayoutInflater mInflater;
 	private ListView listView;
 	private MainTainDisAdapter adapter;
-	private List<MainTainIrrigationBean> beans;
 	private List<infoList> beens;
 	private ImageView image_maintain_water_add;
 	private EditText ed_maintain_water_add;
@@ -72,7 +70,6 @@ public class MainTainWaterFragment extends Fragment implements OnClickListener,
 				.findViewById(R.id.list_maintain_water_add);
 		listView.setOnItemClickListener(this);
 		adapter = new MainTainDisAdapter(getActivity());
-		beans = new ArrayList<MainTainIrrigationBean>();
 		
 		image_maintain_water_add = (ImageView) view.findViewById(R.id.image_maintain_water_add);
 		image_maintain_water_add.setOnClickListener(this);
@@ -127,7 +124,6 @@ public class MainTainWaterFragment extends Fragment implements OnClickListener,
 	         // 不管成功或者失败最后都会回调该接口  
 	            @Override  
 	            public void onFinished() {    
-	            	Toast.makeText(getActivity(), "走了网络请求", Toast.LENGTH_SHORT);
 	            }  
 	  
 	            @Override  
@@ -238,7 +234,6 @@ public class MainTainWaterFragment extends Fragment implements OnClickListener,
 		         // 不管成功或者失败最后都会回调该接口  
 		            @Override  
 		            public void onFinished() {    
-		            	Toast.makeText(getActivity(), "走了网络请求", Toast.LENGTH_SHORT);
 		            }  
 		  
 		            @Override  

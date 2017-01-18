@@ -170,6 +170,7 @@ public class DBHelper {
           return irrigations;  
       }
       
+      
       public void updateContinue(String id,int nHour,int nMinute) {
       	Irrigation findUser = irrigationDao.queryBuilder().where(Properties.Irrigation.eq(id)).build().unique();
       	if(findUser != null) {
@@ -194,6 +195,26 @@ public class DBHelper {
       	    irrigationDao.update(findUser);
       	}
       }
+      
+      //更新基本信息
+      public void updateBasic(String id,int valuenumber,int groupnumber,int filterHour,int filterMinute,int isTimeLong,int isNightStartHour,int isNightStartMinute,int isNightContinueHour,int isNightContinueMinute,int isNightEndHour,int isNightEndMinute) {
+      	Irrigation findUser = irrigationDao.queryBuilder().where(Properties.Irrigation.eq(id)).build().unique();
+      	if(findUser != null) {
+      		findUser.setGroupnumber(groupnumber);
+      		findUser.setValuenumber(valuenumber);
+      		findUser.setIsTimeLong(isTimeLong);
+      		findUser.setFilterHour(filterHour);
+      	    findUser.setFilterMinute(filterMinute);
+      		findUser.setIsNightStartHour(isNightStartHour);
+      	    findUser.setIsNightStartMinute(isNightStartMinute);
+      	    findUser.setIsNightContinueHour(isNightContinueHour);
+      	    findUser.setIsNightContinueMinute(isNightContinueMinute);
+      	    findUser.setIsNightEndHour(isNightEndHour);
+      	    findUser.setIsNightEndMinute(isNightEndMinute);
+      	    irrigationDao.update(findUser);
+      	}
+      }
+      
       //更新夜间休息时间
       public void updateBasicTime(String id,int isNightStartHour,int isNightStartMinute,int isNightContinueHour,int isNightContinueMinute,int isNightEndHour,int isNightEndMinute) {
       	Irrigation findUser = irrigationDao.queryBuilder().where(Properties.Irrigation.eq(id)).build().unique();

@@ -1,6 +1,9 @@
 package ps.emperor.easy_water.fragment;
 
 
+import java.io.Serializable;
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -14,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.AdapterView.OnItemClickListener;
 import ps.emperor.easy_water.R;
+import ps.emperor.easy_water.entity.UserReleIrrInfoToOneBean.infoList;
 import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.view.MainActionBar;
@@ -49,7 +53,6 @@ public class MainTainBasicCompileFragment extends Fragment implements
 		actionBar.setTitle("编辑");
 		actionBar.setActionBarOnClickListener(this);
 
-		
 		button_basic_info = (Button) view
 				.findViewById(R.id.button_maintain_compile_basic_info);
 		button_user_name = (Button) view

@@ -1,6 +1,7 @@
 package ps.emperor.easy_water.fragment;
 
 
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 
 import java.text.DecimalFormat;
@@ -111,10 +112,6 @@ public class MainTainIrrigateInfoFragment extends Fragment implements
 		
 		Intent intent = getActivity().getIntent();
 		units = intent.getStringExtra("units");
-		Bundle bundle = new Bundle();
-        bundle = getActivity().getIntent().getExtras();
-        
-        
 		init();
 		
 		String parten = "00";
@@ -182,7 +179,6 @@ public class MainTainIrrigateInfoFragment extends Fragment implements
 	         // 不管成功或者失败最后都会回调该接口  
 	            @Override  
 	            public void onFinished() {    
-	            	Toast.makeText(getActivity(), "走了网络请求", Toast.LENGTH_SHORT);
 	            }  
 	  
 	            @Override  
@@ -196,8 +192,8 @@ public class MainTainIrrigateInfoFragment extends Fragment implements
 	                  beens = fromJson.getAuthNameList();
 	                  for (infoList authNameListBean : beens) {
 	                	tv_maintain_irrigat_info_id.setText(beens.get(0).getFirstDerviceID());
-	                	text_maintain_irrigat_info_addres.setText(beens.get(0).getLongitude());
-	                	text_maintain_irrigat_info_address.setText(beens.get(0).getLatitude());
+	                	text_maintain_irrigat_info_addres.setText("S:"+beens.get(0).getLongitude());
+	                	text_maintain_irrigat_info_address.setText("N:"+beens.get(0).getLatitude());
 	                	text_maintain_irrigat_info_area.setText(beens.get(0).getArea());
 	                	text_maintain_irrigat_info_equipment.setText(beens.get(0).getSuperEqu());
 	                	text_max_irrigat_group.setText(beens.get(0).getMaxGroup());
@@ -225,6 +221,7 @@ public class MainTainIrrigateInfoFragment extends Fragment implements
 			MainTainBasicCompileFragment fragment = new MainTainBasicCompileFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
+			SharedUtils.setParam(getActivity(), "isBasic", 1);
 			transaction
 					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 			transaction.replace(R.id.fragment_maintain_present_irrigate,

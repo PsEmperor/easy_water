@@ -1,6 +1,8 @@
 package ps.emperor.easy_water.fragment;
 
+import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
+
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,6 +14,7 @@ import java.util.List;
 
 import org.json.JSONObject;
 import org.xutils.x;
+import org.xutils.common.Callback.CancelledException;
 import org.xutils.common.Callback.CommonCallback;
 import org.xutils.ex.HttpException;
 import org.xutils.http.HttpMethod;
@@ -38,6 +41,8 @@ import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.Interface.OnWheelChangedListener;
 import ps.emperor.easy_water.adapter.NumbericWheelAdapter;
 import ps.emperor.easy_water.adapter.NumericWheelAdapter;
+import ps.emperor.easy_water.entity.UserReleIrrInfoToOneBean;
+import ps.emperor.easy_water.entity.UserReleIrrInfoToOneBean.infoList;
 import ps.emperor.easy_water.greendao.DBHelper;
 import ps.emperor.easy_water.greendao.Irrigation;
 import ps.emperor.easy_water.utils.CheckUtil;
@@ -66,10 +71,11 @@ public class MainTainBasicInfoFragment extends Fragment implements
 			text_season_end;
 	private Dialog dialog;
 	private int id, isFront;
-	private int first_setting, first_crop, minutes, hours, minute, hour,
-			filterHour, filterMinute;
+	private int first_setting, first_crop, minutes, hours, minute, hour;
+//			,filterHour, filterMinute,isTimeLong,isNightStartHour,isNightStartMinute
+//			,isNightContinueHour,isNightContinueMinute,isNightEndHour,isNightEndMinute;
 	private int group, value, long_hour, setLong, setNight, Skip, aNight;
-	private String timeend, units;
+	private String units;
 	private WheelView year;
 	private WheelView month;
 	private WheelView day;
@@ -83,6 +89,7 @@ public class MainTainBasicInfoFragment extends Fragment implements
 	private DBHelper dbHelper;
 	private List<Irrigation> irrigation;
 	private ProgressDialog progressDialog;
+	private List<infoList> beens;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -101,7 +108,6 @@ public class MainTainBasicInfoFragment extends Fragment implements
 		dbHelper = DBHelper.getInstance(getActivity()); // 得到DBHelper对象
 
 		units = getArguments().getString("units");
-		init();
 
 		tv_irriagte_group = (TextView) view
 				.findViewById(R.id.text_maintain_basic_info_max_irrigat_group);
@@ -125,6 +131,9 @@ public class MainTainBasicInfoFragment extends Fragment implements
 		layout__restnight = (RelativeLayout) view
 				.findViewById(R.id.layout_maintain_basic_info_max_orroagte_restnight);
 		layout__restnight.setOnClickListener(this);
+		layout_time_long = (RelativeLayout) view
+   				.findViewById(R.id.layout_apply_irriagte_project_single_time_long);
+   		layout_time_long.setOnClickListener(this);
 
 		layout_season = (RelativeLayout) view
 				.findViewById(R.id.layout_maintain_basic_info_season);
@@ -137,36 +146,8 @@ public class MainTainBasicInfoFragment extends Fragment implements
 		tv_time_long = (TextView) view
 				.findViewById(R.id.text_apply_irriagte_project_single_time_long);
 		tv_time_long.setText(long_hour + "");
-
-		layout_time_long = (RelativeLayout) view
-				.findViewById(R.id.layout_apply_irriagte_project_single_time_long);
-		layout_time_long.setOnClickListener(this);
-
-		if (!CheckUtil.IsEmpty(group)) {
-			tv_irriagte_group.setText(group + "");
-		} else {
-			tv_irriagte_group.setText("0");
-		}
-		if (!CheckUtil.IsEmpty(value)) {
-			tv_orroagte_valve.setText(value + "");
-		} else {
-			tv_orroagte_valve.setText("0");
-		}
-		String parten = "00";
-		DecimalFormat decimal = new DecimalFormat(parten);
-		tv_restnight_start.setText(decimal.format(hour) + ":"
-				+ decimal.format(minute) + "");
-		tv_restnight_end.setText(decimal.format(hours) + ":"
-				+ decimal.format(minutes) + "");
-		if (filterHour == 0 && filterMinute == 0) {
-			tv_filter.setText(0 + "");
-		} else if (filterHour == 0 && filterMinute != 0) {
-			tv_filter.setText(filterMinute + "分钟");
-		} else if (filterHour != 0 && filterMinute == 0) {
-			tv_filter.setText(filterHour + "小时");
-		} else {
-			tv_filter.setText(filterHour + "小时" + filterMinute + "分钟");
-		}
+		init();
+		
 		return view;
 
 	}
@@ -180,7 +161,115 @@ public class MainTainBasicInfoFragment extends Fragment implements
 	}
 
 	private void init() {
-		// irrigation = dbHelper.loadContinue(units);
+		String str1 = "";
+		try {
+			str1 = java.net.URLEncoder.encode("SB001005","UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+		}
+		RequestParams param3 = new RequestParams(URL.findIrriUnitInfoToOne+str1);  // 网址(请替换成实际的网址) 
+//		 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
+		progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+				"Please wait...", true, false);
+		JSONObject js_request2 = new JSONObject();
+		try {
+			param3.setAsJsonContent(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			param3.setAsJsonContent(true);
+		}//根据实际需求添加相应键值对
+		
+	        x.http().request(HttpMethod.GET ,param3, new CommonCallback<String>() {  
+	            @Override  
+	            public void onCancelled(CancelledException arg0) {  
+	                  
+	            }  
+	  
+	         // 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误  
+	            // 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看  
+	            @Override  
+	            public void onError(Throwable ex, boolean isOnCallback) {  
+	                  
+	                Toast.makeText(x.app(), ex.getMessage(), Toast.LENGTH_LONG).show();  
+	                if (ex instanceof HttpException) { // 网络错误    
+	                    HttpException httpEx = (HttpException) ex;  
+	                    int responseCode = httpEx.getCode();  
+	                    String responseMsg = httpEx.getMessage();  
+	                    String errorResult = httpEx.getResult();  
+	                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+	                    // ...  
+	                    progressDialog.dismiss();
+	                } else { // 其他错误    
+	                    // ...  
+	                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+	                	progressDialog.dismiss();
+	                }  
+	                  
+	            }  
+	  
+	         // 不管成功或者失败最后都会回调该接口  
+	            @Override  
+	            public void onFinished() {    
+	            }  
+	  
+	            @Override  
+	            public void onSuccess(String arg0) {  
+	                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
+	                  Gson gson = new Gson();
+	                  System.out.println(arg0);
+	                  UserReleIrrInfoToOneBean fromJson = gson.fromJson(arg0, UserReleIrrInfoToOneBean.class);
+//	                  authorizedBeen = new AuthorizedBeen();
+//	                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
+	                  beens = fromJson.getAuthNameList();
+	                  for (infoList authNameListBean : beens) {
+	              		if (!CheckUtil.IsEmpty(beens.get(0).getMaxGroup())) {
+	              			tv_irriagte_group.setText(beens.get(0).getMaxGroup() + "");
+	              		} else {
+	              			tv_irriagte_group.setText("0");
+	              		}
+	              		if (!CheckUtil.IsEmpty(beens.get(0).getValueNum())) {
+	              			tv_orroagte_valve.setText(beens.get(0).getValueNum() + "");
+	              		} else {
+	              			tv_orroagte_valve.setText("0");
+	              		}
+	              		String parten = "00";
+	              		DecimalFormat decimal = new DecimalFormat(parten);
+	              		if(!CheckUtil.IsEmpty(beens.get(0).getRestStart())){
+	              			tv_restnight_start.setText(beens.get(0).getRestStart());
+	              		}else{
+	              			tv_restnight_start.setText("00:00");
+	              		}
+	              		if(!CheckUtil.IsEmpty(beens.get(0).getRestEnd())){
+	              			tv_restnight_end.setText(beens.get(0).getRestEnd());
+	              		}else{
+	              			tv_restnight_end.setText("00:00");
+	              		}
+	              		if(!CheckUtil.IsEmpty(beens.get(0).getFlushTime())){
+	              			tv_filter.setText(beens.get(0).getFlushTime());
+	              		}else{
+	              			tv_filter.setText("0");
+	              		}
+	              		if(!CheckUtil.IsEmpty(beens.get(0).getIrriSeasonStart())){
+	              			text_season_start.setText(beens.get(0).getIrriSeasonStart());
+	              		}else{
+	              			text_season_start.setText("0000-00-00");
+	              		}
+	              		if(!CheckUtil.IsEmpty(beens.get(0).getIrriSeasonEnd())){
+	              			text_season_end.setText(beens.get(0).getIrriSeasonEnd());
+	              		}else{
+	              			text_season_end.setText("0000-00-00");
+	              		}
+	              		if(!CheckUtil.IsEmpty(beens.get(0).getLongestTime())){
+	              			tv_time_long.setText(beens.get(0).getLongestTime());
+	              		}else{
+	              			tv_time_long.setText("0");
+	              		}
+					}
+	                  progressDialog.dismiss();
+	            }  
+	        }); 
+		
+		 irrigation = dbHelper.loadContinue(beens.get(0).getIrriUnitName());
 		// hour = irrigation.get(0).getIsNightStartHour();
 		// minute = irrigation.get(0).getIsNightStartMinute();
 		// hours = irrigation.get(0).getIsNightEndHour();
@@ -361,7 +450,7 @@ public class MainTainBasicInfoFragment extends Fragment implements
 						.toString());
 				js_request.put("valueNum", tv_orroagte_valve.getText()
 						.toString());
-				js_request.put("flushTime", tv_time_long.getText().toString());
+				js_request.put("flushTime", tv_filter.getText().toString());
 				js_request
 						.put("longestTime", tv_time_long.getText().toString());
 				js_request.put("restStart", tv_restnight_start.getText()
@@ -413,8 +502,6 @@ public class MainTainBasicInfoFragment extends Fragment implements
 						// 不管成功或者失败最后都会回调该接口
 						@Override
 						public void onFinished() {
-							Toast.makeText(getActivity(), "走了网络请求",
-									Toast.LENGTH_SHORT);
 						}
 
 						@Override
@@ -470,7 +557,7 @@ public class MainTainBasicInfoFragment extends Fragment implements
 		wv_hours.setAdapter(new NumericWheelAdapter(0, 23));
 		wv_hours.setCyclic(true);
 		wv_hours.setCurrentItem(hour);
-		wv_hours.setLabel("小时");
+		wv_hours.setLabel("时");
 
 		Button btn_sure = (Button) view.findViewById(R.id.chose_time_sures);
 		Button btn_cancel = (Button) view.findViewById(R.id.chose_time_canles);
@@ -481,7 +568,7 @@ public class MainTainBasicInfoFragment extends Fragment implements
 			public void onClick(View v) {
 				if (id == 1) {
 				} else if (id == 2) {
-					tv_time_long.setText(wv_hours.getCurrentItem());
+					tv_time_long.setText(wv_hours.getCurrentItem()+"");
 					long_hour = wv_hours.getCurrentItem();
 					dbHelper.updateBasicTimeLong(units, long_hour);
 					// SharedUtils.setParam(getActivity(), "long_hour",
@@ -767,29 +854,29 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				String parten = "00";
 				DecimalFormat decimal = new DecimalFormat(parten);
 				if (id == 3) {
-					if (wv_hour.getCurrentItem() == 0
-							&& wv_minute.getCurrentItem() != 0) {
-						tv_filter.setText(wv_minute.getCurrentItem() + "分钟");
-						dbHelper.updateBasicFilter(units, 0,
-								wv_minute.getCurrentItem());
-					} else if (wv_hour.getCurrentItem() != 0
-							&& wv_minute.getCurrentItem() == 0) {
-						tv_filter.setText(wv_hour.getCurrentItem() + "小时");
-						dbHelper.updateBasicFilter(units,
-								wv_hour.getCurrentItem(), 0);
-					} else if (wv_hour.getCurrentItem() == 0
-							&& wv_minute.getCurrentItem() == 0) {
-						tv_filter.setText(0 + "");
-						dbHelper.updateBasicFilter(units,
-								wv_hour.getCurrentItem(),
-								wv_minute.getCurrentItem());
-					} else {
+//					if (wv_hour.getCurrentItem() == 0
+//							&& wv_minute.getCurrentItem() != 0) {
+//						tv_filter.setText(wv_minute.getCurrentItem() + "分钟");
+//						dbHelper.updateBasicFilter(units, 0,
+//								wv_minute.getCurrentItem());
+//					} else if (wv_hour.getCurrentItem() != 0
+//							&& wv_minute.getCurrentItem() == 0) {
+//						tv_filter.setText(wv_hour.getCurrentItem() + "小时");
+//						dbHelper.updateBasicFilter(units,
+//								wv_hour.getCurrentItem(), 0);
+//					} else if (wv_hour.getCurrentItem() == 0
+//							&& wv_minute.getCurrentItem() == 0) {
+//						tv_filter.setText(0 + "");
+//						dbHelper.updateBasicFilter(units,
+//								wv_hour.getCurrentItem(),
+//								wv_minute.getCurrentItem());
+//					} else {
 						tv_filter.setText(wv_hour.getCurrentItem() + "小时"
 								+ wv_minute.getCurrentItem() + "分钟");
 						dbHelper.updateBasicFilter(units,
 								wv_hour.getCurrentItem(),
 								wv_minute.getCurrentItem());
-					}
+//					}
 					dialog.dismiss();
 				}
 			}
@@ -1028,8 +1115,7 @@ public class MainTainBasicInfoFragment extends Fragment implements
 						+ Integer.valueOf(wv_hour_nights.getCurrentItem()));
 				date.setMinutes(date.getMinutes()
 						+ Integer.valueOf(wv_minute_nights.getCurrentItem()));
-				timeend = format.format(date);
-
+				
 				if (CheckUtil.IsEmpty(timestarts)) {
 					tv_restnight_start.setText("00:00");
 					tv_restnight_end.setText("00:00");
@@ -1048,6 +1134,11 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				} else {
 					SharedUtils.setParam(getActivity(), "isGreaters", 0);
 				}
+				dbHelper.updateBasicTime(units, wv_hour_night.getCurrentItem(),
+						wv_minute_night.getCurrentItem(),
+						wv_hour_nights.getCurrentItem(),
+						wv_minute_nights.getCurrentItem(), date.getHours(),
+						date.getMinutes());
 				// SharedUtils.setParam(getActivity(), "isNightStartHour",
 				// wv_hour_night
 				// .getCurrentItem());
@@ -1065,11 +1156,6 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				// );
 				// SharedUtils.setParam(getActivity(), "isNightEndMinute",
 				// date.getMinutes());
-				dbHelper.updateBasicTime(units, wv_hour_night.getCurrentItem(),
-						wv_minute_night.getCurrentItem(),
-						wv_hour_nights.getCurrentItem(),
-						wv_minute_nights.getCurrentItem(), date.getHours(),
-						date.getMinutes());
 				dialog.dismiss();
 			}
 		});

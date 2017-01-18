@@ -34,6 +34,15 @@ public class UserReleIrrInfoToOneBean {
     	private String RestEnd;
     	private String SuperEqu;
 		private String FlushTime;
+		private String LongestTime;
+
+		public String getLongestTime() {
+			return LongestTime;
+		}
+
+		public void setLongestTime(String longestTime) {
+			LongestTime = longestTime;
+		}
 
 		public String getIrriSeasonStart() {
 			return IrriSeasonStart;

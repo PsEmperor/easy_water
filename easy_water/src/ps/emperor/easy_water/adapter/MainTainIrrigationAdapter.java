@@ -4,13 +4,13 @@ package ps.emperor.easy_water.adapter;
 import android.content.Context;
 
 
+
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import ps.emperor.easy_water.R;
-import ps.emperor.easy_water.entity.MainTainIrrigationBean;
 import ps.emperor.easy_water.entity.UserReleIrrInfoBean.infoList;
 
 /**

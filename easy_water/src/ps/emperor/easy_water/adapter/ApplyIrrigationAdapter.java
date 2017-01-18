@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.entity.ApplyIrrigationBean;
+import ps.emperor.easy_water.entity.UserReleIrrInfoBean.infoList;
 import ps.emperor.easy_water.view.PieChatView;
 
 /**
@@ -16,7 +17,7 @@ import ps.emperor.easy_water.view.PieChatView;
  * @author 毛国江
  * @version 2016-5-18 上午11:12
  */
-public class ApplyIrrigationAdapter extends MyBaseAdapter<ApplyIrrigationBean> implements OnClickListener {
+public class ApplyIrrigationAdapter extends MyBaseAdapter<infoList> implements OnClickListener {
 
 	private Context context;
 
@@ -40,12 +41,12 @@ public class ApplyIrrigationAdapter extends MyBaseAdapter<ApplyIrrigationBean> i
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		ApplyIrrigationBean applyIrrigationBean = list.get(position);
-		viewHolder.units.setText(applyIrrigationBean.units);
-		viewHolder.element.setText(applyIrrigationBean.element);
-		viewHolder.whether.setText(applyIrrigationBean.whether);
-		viewHolder.current_state.setAngle(applyIrrigationBean.current_state);
-		viewHolder.whether_percent.setText(applyIrrigationBean.whether_percent);
+		infoList infoList = list.get(position);
+		viewHolder.units.setText(infoList.getIrriUnitName());
+//		viewHolder.element.setText(applyIrrigationBean.element);
+		viewHolder.whether.setText("正在灌溉");
+		viewHolder.current_state.setAngle(180);
+		viewHolder.whether_percent.setText("50%");
 		return convertView;
 
 	}

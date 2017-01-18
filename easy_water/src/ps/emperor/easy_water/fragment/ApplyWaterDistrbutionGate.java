@@ -344,7 +344,6 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 	         // 不管成功或者失败最后都会回调该接口  
 	            @Override  
 	            public void onFinished() {    
-	            	Toast.makeText(getActivity(), "走了网络请求", Toast.LENGTH_SHORT);
 	            }  
 	  
 	            @Override  
@@ -367,8 +366,8 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 	        		tv_apply_water_before.setText(beens.get(0).getFrontWaterLevel());
 	        		tv_apply_water_after.setText(beens.get(0).getBackWaterLevel());
 	        		tv_apply_water_flow.setText(beens.get(0).getDesignFlow());
-	        		tv_time_operation_start.setText(beens.get(0).getOpenPoreTime());
-	        		tv_time_operation_end.setText(beens.get(0).getClosePoreTime());
+	        		tv_time_operation_start.setText("开始时间: "+beens.get(0).getOpenPoreTime());
+	        		tv_time_operation_end.setText("结束时间: "+beens.get(0).getClosePoreTime());
 	                if(beans.size() == 1){
 	        			list_apply_water_distrbution_gate_control.setVisibility(View.GONE);
 	        			layout_linear_change.setVisibility(View.GONE);
@@ -753,7 +752,7 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 							+ decimal.format(month.getCurrentItem() + 1) + "-"
 							+ decimal.format(day.getCurrentItem() + 1)+" "+ decimal.format(wv_hour.getCurrentItem())
 							+":"+decimal.format(wv_minute.getCurrentItem());
-					tv_time_operation_start.setText("开始时间"+timestart);
+					tv_time_operation_start.setText("开始时间: "+timestart);
 					java.util.Date date = new java.util.Date();
 					SimpleDateFormat format = new SimpleDateFormat(
 							"yyyy-MM-dd HH:mm");
@@ -767,7 +766,7 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 					date.setMinutes(date.getMinutes()
 							+ Integer.valueOf(minute.getCurrentItem()));
 					timeend = format.format(date);
-					tv_time_operation_end.setText("结束时间"+timeend);
+					tv_time_operation_end.setText("结束时间: "+timeend);
 					dialog.dismiss();
 				}
 				 else {

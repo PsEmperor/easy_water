@@ -214,7 +214,6 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 		         // 不管成功或者失败最后都会回调该接口  
 		            @Override  
 		            public void onFinished() {    
-		            	Toast.makeText(getActivity(), "走了网络请求", Toast.LENGTH_SHORT);
 		            }  
 		  
 		            @Override  
@@ -299,7 +298,6 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 		         // 不管成功或者失败最后都会回调该接口  
 		            @Override  
 		            public void onFinished() {    
-		            	Toast.makeText(getActivity(), "走了网络请求", Toast.LENGTH_SHORT);
 		            }  
 		  
 		            @Override  
@@ -384,7 +382,6 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 		         // 不管成功或者失败最后都会回调该接口  
 		            @Override  
 		            public void onFinished() {    
-		            	Toast.makeText(getActivity(), "走了网络请求", Toast.LENGTH_SHORT);
 		            }  
 		  
 		            @Override  
@@ -473,7 +470,6 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 		         // 不管成功或者失败最后都会回调该接口  
 		            @Override  
 		            public void onFinished() {    
-		            	Toast.makeText(getActivity(), "走了网络请求", Toast.LENGTH_SHORT);
 		            }  
 		  
 		            @Override  
@@ -564,7 +560,6 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 		         // 不管成功或者失败最后都会回调该接口  
 		            @Override  
 		            public void onFinished() {    
-		            	Toast.makeText(getActivity(), "走了网络请求", Toast.LENGTH_SHORT);
 		            }  
 		  
 		            @Override  

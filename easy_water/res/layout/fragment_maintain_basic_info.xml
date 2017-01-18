@@ -75,7 +75,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="55dp"
-                android:text="6" />
+                android:text="0" />
 
             <ImageView
                 android:id="@+id/imageView3"
