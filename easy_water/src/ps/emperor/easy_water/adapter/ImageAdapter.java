@@ -1,11 +1,14 @@
 package ps.emperor.easy_water.adapter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 
 
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.entity.MainTainIrrigationInfoBean;
+import ps.emperor.easy_water.entity.MainTainIrrigationInfoBean.infoList;
 import ps.emperor.easy_water.utils.SharedUtils;
 
 import android.annotation.SuppressLint;
@@ -25,13 +28,14 @@ import android.widget.TextView;
 
 public class ImageAdapter extends BaseAdapter{    
     private Context mContext;			// 定义Context
-    private Vector<MainTainIrrigationInfoBean> mImageIds;	// 定义一个向量作为图片源
-    private Vector<Boolean> mImage_bs = new Vector<Boolean>();	// 定义一个向量作为选中与否容器
+    private List<infoList> mImageIds;	// 定义一个向量作为图片源
+    private List<Boolean> mImage_bs = new ArrayList<Boolean>();	// 定义一个向量作为选中与否容器
     private int lastPosition = -1;		//记录上一次选中的图片位置，-1表示未选中任何图片
     private boolean multiChoose;		//表示当前适配器是否允许多选
     private int screenWidth,screenHeigh;
+    int mImage = 0;
     
-    public ImageAdapter(Context c, boolean isMulti,Vector<MainTainIrrigationInfoBean>  mImageId){
+    public ImageAdapter(Context c, boolean isMulti,List<infoList>  mImageId){
     	mContext = c;
     	multiChoose = isMulti;
     	mImageIds = mImageId;
@@ -80,6 +84,13 @@ public class ImageAdapter extends BaseAdapter{
         	screenWidth = (int) SharedUtils.getParam(mContext, "screenWidth", 0);
         	screenHeigh = (int) SharedUtils.getParam(mContext, "screenHeigh", 0);
         	textView = new TextView(mContext);
+        	
+        	if(mImage < mImageIds.size()){
+        		if(mImageIds.get(position).getIsAllocationGrowers().equals("1")){
+        			mImage_bs.set(position, true);
+        		}  
+        		mImage ++;
+        	}
             if(screenWidth == 0){
             	textView.setLayoutParams(new GridView.LayoutParams(100, 100));
             }else{
@@ -97,15 +108,11 @@ public class ImageAdapter extends BaseAdapter{
         }
 //        imageView.setImageDrawable(makeBmp(mImageIds.elementAt(position).getGates(),
 //        		mImage_bs.elementAt(position)));
-        textView.setText(mImageIds.elementAt(position).getGate());
+        textView.setText(mImageIds.get(position).getChanNum());
         textView.setBackgroundResource(R.drawable.value_on);
         textView.setGravity(Gravity.BOTTOM|Gravity.CENTER);
         textView.setPadding(10, 10, 5, 10);
-        if(mImageIds.get(position).getState() == 1){
-        	textView.setClickable(false);
-        	textView.setBackgroundResource(R.color.gray_1);
-        }
-        else if(mImage_bs.get(position)==true){
+        if(mImage_bs.get(position)==true){
         	textView.setBackgroundResource(R.drawable.value_selected);
         }else{
         	textView.setBackgroundResource(R.drawable.value_on);
@@ -141,8 +148,8 @@ public class ImageAdapter extends BaseAdapter{
     public void changeState(int position){
     	// 多选
     	if(multiChoose == true){	
-    		mImage_bs.setElementAt(!mImage_bs.elementAt(position), position);	//直接取反即可	
-    		if((!mImage_bs.elementAt(position))== true){
+    		mImage_bs.set(position, !mImage_bs.get(position));	//直接取反即可	
+    		if((!mImage_bs.get(position))== true){
     			mImageIds.get(position).setIstrue(false);
     		}else{
     			mImageIds.get(position).setIstrue(true);
@@ -151,8 +158,8 @@ public class ImageAdapter extends BaseAdapter{
     	// 单选
     	else{						
 	    	if(lastPosition != -1)
-	    		mImage_bs.setElementAt(false, lastPosition);	//取消上一次的选中状态״̬
-	    	mImage_bs.setElementAt(!mImage_bs.elementAt(position), position);	//直接取反即可	
+	    		mImage_bs.set(lastPosition, false);	//取消上一次的选中状态״̬
+	    	mImage_bs.set(position, !mImage_bs.get(position));	//直接取反即可	
 	    	lastPosition = position;		//记录本次选中的位置
     	}
     	notifyDataSetChanged();		//通知适配器进行更新
@@ -162,13 +169,13 @@ public class ImageAdapter extends BaseAdapter{
     		//��ѡ 
     		if(all){
     			for(int i=0;i<mImage_bs.size();i++){
-    				mImage_bs.setElementAt(true, i);
+    				mImage_bs.set(i, true);
     				mImageIds.get(i).setIstrue(true);
     			}
     			
     		}else{
     			for(int i=0;i<mImage_bs.size();i++){
-    				mImage_bs.setElementAt(false, i);
+    				mImage_bs.set(i, false);
     				mImageIds.get(i).setIstrue(false);
     			}
     		}

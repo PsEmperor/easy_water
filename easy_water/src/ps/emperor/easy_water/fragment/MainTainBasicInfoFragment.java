@@ -269,7 +269,7 @@ public class MainTainBasicInfoFragment extends Fragment implements
 	            }  
 	        }); 
 		
-		 irrigation = dbHelper.loadContinue(beens.get(0).getIrriUnitName());
+		 irrigation = dbHelper.loadContinue(units);
 		// hour = irrigation.get(0).getIsNightStartHour();
 		// minute = irrigation.get(0).getIsNightStartMinute();
 		// hours = irrigation.get(0).getIsNightEndHour();

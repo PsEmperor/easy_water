@@ -42,6 +42,7 @@ import ps.emperor.easy_water.entity.UserReleIrrInfoBean;
 import ps.emperor.easy_water.entity.UserReleIrrInfoToOneBean;
 import ps.emperor.easy_water.greendao.DBHelper;
 import ps.emperor.easy_water.greendao.Irrigation;
+import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.MainActionBar;
@@ -191,18 +192,66 @@ public class MainTainIrrigateInfoFragment extends Fragment implements
 //	                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
 	                  beens = fromJson.getAuthNameList();
 	                  for (infoList authNameListBean : beens) {
-	                	tv_maintain_irrigat_info_id.setText(beens.get(0).getFirstDerviceID());
-	                	text_maintain_irrigat_info_addres.setText("S:"+beens.get(0).getLongitude());
-	                	text_maintain_irrigat_info_address.setText("N:"+beens.get(0).getLatitude());
-	                	text_maintain_irrigat_info_area.setText(beens.get(0).getArea());
-	                	text_maintain_irrigat_info_equipment.setText(beens.get(0).getSuperEqu());
-	                	text_max_irrigat_group.setText(beens.get(0).getMaxGroup());
-	                	text_max_orroagte_valve.setText(beens.get(0).getValueNum());
-	                	text_filter.setText(beens.get(0).getFlushTime());
-	                	text_max_orroagte_restnight_start.setText(beens.get(0).getRestStart());
-	                	text_max_orroagte_restnight_end.setText(beens.get(0).getRestEnd());
-	                	text_max_orroagte_season_start.setText(beens.get(0).getIrriSeasonStart());
-	                	text_max_orroagte_season_end.setText(beens.get(0).getIrriSeasonEnd());
+	                	if(!CheckUtil.IsEmpty(beens.get(0).getFirstDerviceID())){
+	                		tv_maintain_irrigat_info_id.setText(beens.get(0).getFirstDerviceID());
+	                	}else{
+	                		tv_maintain_irrigat_info_id.setText("");
+	                	}
+	                	if(!CheckUtil.IsEmpty(beens.get(0).getLongitude())){
+	                		text_maintain_irrigat_info_addres.setText("S:"+beens.get(0).getLongitude());
+	                	}else{
+	                		text_maintain_irrigat_info_addres.setText("S:0");
+	                	}
+	                	if(!CheckUtil.IsEmpty(beens.get(0).getLatitude())){
+	                		text_maintain_irrigat_info_address.setText("N:"+beens.get(0).getLatitude());
+	                	}else{
+	                		text_maintain_irrigat_info_address.setText("N:0");
+	                	}
+	                	if(!CheckUtil.IsEmpty(beens.get(0).getArea())){
+	                		text_maintain_irrigat_info_area.setText(beens.get(0).getArea());
+	                	}else{
+	                		text_maintain_irrigat_info_area.setText("0");
+	                	}
+	                	if(!CheckUtil.IsEmpty(beens.get(0).getSuperEqu())){
+	                		text_maintain_irrigat_info_equipment.setText(beens.get(0).getSuperEqu());
+	                	}else{
+	                		text_maintain_irrigat_info_equipment.setText("");
+	                	}
+	                	if(!CheckUtil.IsEmpty(beens.get(0).getMaxGroup())){
+	                		text_max_irrigat_group.setText(beens.get(0).getMaxGroup());
+	                	}else{
+	                		text_max_irrigat_group.setText("0");
+	                	}
+	                	if(!CheckUtil.IsEmpty(beens.get(0).getValueNum())){
+	                		text_max_orroagte_valve.setText(beens.get(0).getValueNum());
+	                	}else{
+	                		text_max_orroagte_valve.setText(0);
+	                	}
+	                	if(!CheckUtil.IsEmpty(beens.get(0).getFlushTime())){
+	                		text_filter.setText(beens.get(0).getFlushTime());
+	                	}else{
+	                		text_filter.setText("0");
+	                	}
+	                	if(!CheckUtil.IsEmpty(beens.get(0).getRestStart())){
+	                		text_max_orroagte_restnight_start.setText(beens.get(0).getRestStart());
+	                	}else{
+	                		text_max_orroagte_restnight_start.setText("00:00");
+	                	}
+	                	if(!CheckUtil.IsEmpty(beens.get(0).getRestEnd())){
+	                		text_max_orroagte_restnight_end.setText(beens.get(0).getRestEnd());
+	                	}else{
+	                		text_max_orroagte_restnight_end.setText("00:00");
+	                	}
+	                	if(!CheckUtil.IsEmpty(beens.get(0).getIrriSeasonStart())){
+	                		text_max_orroagte_season_start.setText(beens.get(0).getIrriSeasonStart());
+	                	}else{
+	                		text_max_orroagte_season_start.setText("0000-00-00");
+	                	}
+	                	if(!CheckUtil.IsEmpty(beens.get(0).getIrriSeasonEnd())){
+	                		text_max_orroagte_season_end.setText(beens.get(0).getIrriSeasonEnd());
+	                	}else{
+	                		text_max_orroagte_season_end.setText("0000-00-00");
+	                	}
 					}
 	                  progressDialog.dismiss();
 	            }  

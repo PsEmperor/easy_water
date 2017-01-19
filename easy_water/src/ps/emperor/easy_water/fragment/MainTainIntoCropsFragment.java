@@ -6,11 +6,22 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import org.json.JSONObject;
+import org.xutils.x;
+import org.xutils.common.Callback.CancelledException;
+import org.xutils.common.Callback.CommonCallback;
+import org.xutils.ex.HttpException;
+import org.xutils.http.HttpMethod;
+import org.xutils.http.RequestParams;
+
+import com.google.gson.Gson;
+
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.adapter.MainTainIntoCropsAdapter;
 import ps.emperor.easy_water.adapter.NumbericWheelAdapter;
 import ps.emperor.easy_water.adapter.NumericWheelAdapter;
 import ps.emperor.easy_water.utils.SharedUtils;
+import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.MainActionBar;
 import ps.emperor.easy_water.view.MainActionBars;
 import ps.emperor.easy_water.view.WheelView;
@@ -18,6 +29,7 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,9 +40,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
- * 录入种植信息
+ * 录入种植作物信息
  * 
  * @author 毛国江
  * @version 2016-6-16 下午14:33
@@ -41,11 +54,14 @@ public class MainTainIntoCropsFragment extends Fragment implements
 	private LayoutInflater mInflater;
 	private MainActionBars actionBar;
 	private ArrayList<String> integers = new ArrayList<String>();
+	private ArrayList<String> list = new ArrayList<String>();
 	private MainTainIntoCropsAdapter adapter;
 	private GridView gridView;
-	private EditText control_time;// 播种时间
+	private EditText control_crop,control_time;// 播种时间
 	private Dialog dialog;
+	private int area;
 	private String year, month, day;
+	private ProgressDialog progressDialog;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,6 +79,7 @@ public class MainTainIntoCropsFragment extends Fragment implements
 		integers = getArguments().getStringArrayList("info");
 		adapter = new MainTainIntoCropsAdapter(getActivity());
 		gridView = (GridView) view.findViewById(R.id.grid__maintain_into_crops);
+		control_crop = (EditText) view.findViewById(R.id.edit__apply_irrigatr_control_crop);
 		control_time = (EditText) view
 				.findViewById(R.id.text__apply_irrigatr_control_time);
 		control_time.setOnClickListener(this);
@@ -101,6 +118,71 @@ public class MainTainIntoCropsFragment extends Fragment implements
 			break;
 		case R.id.text__apply_irrigatr_control_time:
 			showDateTimePicker(mInflater);
+			break;
+		case R.id.acitionbar_right:
+			RequestParams param2 = new RequestParams(URL.addChanCropInfo);  // 网址(请替换成实际的网址) 
+//			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
+			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+					"Please wait...", true, false);
+			JSONObject js_request = new JSONObject();
+			try {
+				param2.setAsJsonContent(true);
+				js_request.put("firstDerviceID", "SB001001");
+//				String[] array = new String[list.size()];
+//				for (int i = 0; i < list.size(); i++) {
+//					array[i] = list.get(i);
+//				}
+				js_request.put("valueControlChanID", list);
+				js_request.put("cropName", control_crop.getText().toString());
+				js_request.put("sowingTime", control_crop.getText().toString());
+				js_request.put("area", area);
+				param2.setBodyContent(js_request.toString());
+			} catch (Exception e) {
+				e.printStackTrace();
+				param2.setAsJsonContent(true);
+			}//根据实际需求添加相应键值对
+			
+		        x.http().request(HttpMethod.POST ,param2, new CommonCallback<String>() {  
+		            @Override  
+		            public void onCancelled(CancelledException arg0) {  
+		                  
+		            }  
+		  
+		         // 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误  
+		            // 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看  
+		            @Override  
+		            public void onError(Throwable ex, boolean isOnCallback) {  
+		                  
+		                Toast.makeText(x.app(), ex.getMessage(), Toast.LENGTH_LONG).show();  
+		                if (ex instanceof HttpException) { // 网络错误    
+		                    HttpException httpEx = (HttpException) ex;  
+		                    int responseCode = httpEx.getCode();  
+		                    String responseMsg = httpEx.getMessage();  
+		                    String errorResult = httpEx.getResult();  
+		                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+		                    // ...  
+		                    progressDialog.dismiss();
+		                } else { // 其他错误    
+		                    // ...  
+		                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+		                	progressDialog.dismiss();
+		                }  
+		                  
+		            }  
+		  
+		         // 不管成功或者失败最后都会回调该接口  
+		            @Override  
+		            public void onFinished() {    
+		            }  
+		  
+		            @Override  
+		            public void onSuccess(String arg0) {  
+		                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
+		                  Gson gson = new Gson();
+		                  System.out.println(arg0);
+		                  progressDialog.dismiss();
+		            }  
+		        }); 
 			break;
 		default:
 			break;

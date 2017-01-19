@@ -41,6 +41,15 @@ public class URL {
 	//维护灌溉单元基本信息维护
 	public static final String firstDerviceIDIrri = "http://192.168.2.188:8080/cms/app/IrriUnitSys/updateIrriUnitInfo/firstDerviceID";
 	
+	//种植户、种植作物信息维护
+	public static final String findIrriUnitChan = "http://192.168.2.188:8080/cms/app/IrriUnitSys/findIrriUnitChan/";
+	//录入种植户
+	public static final String addGrowersInfo = "http://192.168.2.188:8080/cms/app/IrriUnitSys/addGrowersInfo/releChan";
+	//录入种植作物
+	public static final String addChanCropInfo = "http://192.168.2.188:8080/cms/app/IrriUnitSys/addChanCropInfo/releChan";
+	//轮灌组维护
+	public static final String addChanGroupInfo = "http://192.168.2.188:8080/cms/app/IrriUnitSys/addChanGroupInfo/releChan";
+	
 	//维护模糊搜索已关联配水设备
 	public static final String findUserReleDisInfoYet = "http://192.168.2.188:8080/cms/app/DisWaterSys/fuzzyQuery/findUserReleDisInfo/";
 	//维护界面配水设备列表查询

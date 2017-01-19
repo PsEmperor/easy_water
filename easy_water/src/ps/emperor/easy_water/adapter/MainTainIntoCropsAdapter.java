@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.entity.MainTainIrrigationInfoBean;
+import ps.emperor.easy_water.entity.MainTainIrrigationInfoBean.infoList;
 
 /**
  * 录入作物信息
@@ -16,7 +17,7 @@ import ps.emperor.easy_water.entity.MainTainIrrigationInfoBean;
  * @author 毛国江
  * @version 2016-5-18 上午11:12
  */
-public class MainTainIntoCropsAdapter extends MyBaseAdapter<MainTainIrrigationInfoBean> implements OnClickListener {
+public class MainTainIntoCropsAdapter extends MyBaseAdapter<infoList> implements OnClickListener {
 
 	private Context context;
 
@@ -36,8 +37,8 @@ public class MainTainIntoCropsAdapter extends MyBaseAdapter<MainTainIrrigationIn
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		MainTainIrrigationInfoBean mainTainIrrigationInfoBean = list.get(position);
-		viewHolder.valves.setText(mainTainIrrigationInfoBean.gate);
+		infoList infoList = list.get(position);
+		viewHolder.valves.setText(infoList.getChanNum());
 		return convertView;
 
 	}

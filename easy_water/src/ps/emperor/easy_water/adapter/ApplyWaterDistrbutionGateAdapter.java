@@ -13,6 +13,7 @@ import android.widget.TextView;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.entity.ApplyIrrigateControlBean;
 import ps.emperor.easy_water.entity.FindDisWaterInfoOneBean.SluiceGateInfoBean;
+import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.DensityUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
 
@@ -47,8 +48,16 @@ public class ApplyWaterDistrbutionGateAdapter extends MyBaseAdapter<SluiceGateIn
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 		SluiceGateInfoBean applyWaterDistrbutionGateBean = list.get(position);
-		viewHolder.aperture.setText((int)((Float.valueOf(applyWaterDistrbutionGateBean.getOpenProportion())*100))+"%");
-		viewHolder.high.setText(applyWaterDistrbutionGateBean.getOpenHigh()+"m³");
+		if(CheckUtil.IsEmpty(applyWaterDistrbutionGateBean.getOpenProportion())){
+			viewHolder.aperture.setText(0 +"%");
+		}else{
+			viewHolder.aperture.setText((int)((Float.valueOf(applyWaterDistrbutionGateBean.getOpenProportion())*100))+"%");
+		}
+		if(CheckUtil.IsEmpty(applyWaterDistrbutionGateBean.getOpenHigh())){
+			viewHolder.high.setText(0 +"m³");
+		}else{
+			viewHolder.high.setText(applyWaterDistrbutionGateBean.getOpenHigh()+"m³");
+		}
 		viewHolder.num.setText(applyWaterDistrbutionGateBean.getPoreID());
 		RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)viewHolder.layout.getLayoutParams();
 		int height = DensityUtil.dip2px(context,(int)((100-Float.valueOf(applyWaterDistrbutionGateBean.getOpenProportion())*100)*1.85));

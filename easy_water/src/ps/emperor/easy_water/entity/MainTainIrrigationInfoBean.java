@@ -1,5 +1,10 @@
 package ps.emperor.easy_water.entity;
 
+import java.io.Serializable;
+import java.util.List;
+
+import ps.emperor.easy_water.entity.UserReleIrrInfoToOneBean.infoList;
+
 
 public class MainTainIrrigationInfoBean {
 
@@ -8,38 +13,81 @@ public class MainTainIrrigationInfoBean {
 	 * @author 毛国江
 	 * @version 2016-6-7上午11:54
 	 */
+	private List<infoList> infoList;
+	private List<groupList> groupList;
 
+    public List<infoList> getAuthNameList() {
+        return infoList;
+    }
 
-	public Boolean istrue; // 是否选中
+    public void setAuthNameList(List<infoList> authNameList) {
+        this.infoList = authNameList;
+    }
 
-	public String gate;
-	
-	public int state;
-
-	public int getState() {
-		return state;
+    public List<groupList> getGroupList() {
+		return groupList;
 	}
 
-	public void setState(int state) {
-		this.state = state;
+	public void setGroupList(List<groupList> groupList) {
+		this.groupList = groupList;
 	}
 
-	public String getGate() {
-		return gate;
+	public static class infoList {
+    	private String FirstDerviceID;
+    	private String Area;
+    	private String ChanNum;
+    	private String ValueControlChanID;
+    	private String IsAllocationGrowers;
+    	public Boolean istrue; // 是否选中
+    	
+		public String getFirstDerviceID() {
+			return FirstDerviceID;
+		}
+		public void setFirstDerviceID(String firstDerviceID) {
+			FirstDerviceID = firstDerviceID;
+		}
+		public String getArea() {
+			return Area;
+		}
+		public void setArea(String area) {
+			Area = area;
+		}
+		public String getChanNum() {
+			return ChanNum;
+		}
+		public void setChanNum(String chanNum) {
+			ChanNum = chanNum;
+		}
+		public String getValueControlChanID() {
+			return ValueControlChanID;
+		}
+		public void setValueControlChanID(String valueControlChanID) {
+			ValueControlChanID = valueControlChanID;
+		}
+		public String getIsAllocationGrowers() {
+			return IsAllocationGrowers;
+		}
+		public void setIsAllocationGrowers(String isAllocationGrowers) {
+			IsAllocationGrowers = isAllocationGrowers;
+		}
+		public Boolean getIstrue() {
+			return istrue;
+		}
+		public void setIstrue(Boolean istrue) {
+			this.istrue = istrue;
+		}
+    	
+    }
+    public static class groupList{
+
+    	private String GroupNum;
+    	
+		public String getGroupNum() {
+			return GroupNum;
+		}
+
+		public void setGroupNum(String groupNum) {
+			GroupNum = groupNum;
+		}
 	}
-
-	public void setGate(String gate) {
-		this.gate = gate;
-	}
-
-	public Boolean getIstrue() {
-		return istrue;
-	}
-
-	public void setIstrue(Boolean istrue) {
-		this.istrue = istrue;
-	}
-
-
-
 }
