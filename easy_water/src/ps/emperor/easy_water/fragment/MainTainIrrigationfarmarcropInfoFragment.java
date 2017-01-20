@@ -125,7 +125,7 @@ public class MainTainIrrigationfarmarcropInfoFragment extends Fragment
 		} catch (UnsupportedEncodingException e1) {
 			e1.printStackTrace();
 		}
-		RequestParams param3 = new RequestParams(URL.findIrriUnitChan+str1+str2);  // 网址(请替换成实际的网址) 
+		RequestParams param3 = new RequestParams(URL.findIrriUnitChan+str1+"/"+str2);  // 网址(请替换成实际的网址) 
 //		 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
 		progressDialog = ProgressDialog.show(getActivity(), "Loading...",
 				"Please wait...", true, false);
@@ -270,10 +270,6 @@ public class MainTainIrrigationfarmarcropInfoFragment extends Fragment
 			break;
 		case R.id.btn_main_irrigate_info_all:
 			adapter.changeAllState(true);
-			// value.removeAll(value);
-			// for (int i = 0; i < beans.size(); i++) {
-			// list[i] = i;
-			// }
 			break;
 		case R.id.btn_main_irrigate_info_allcanel:
 			adapter.changeAllState(false);

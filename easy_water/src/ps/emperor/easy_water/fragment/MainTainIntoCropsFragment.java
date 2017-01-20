@@ -76,7 +76,9 @@ public class MainTainIntoCropsFragment extends Fragment implements
 		actionBar.setTitle("录入种植信息");
 		actionBar.setActionBarOnClickListener(this);
 		init();
+		list = getArguments().getStringArrayList("list");
 		integers = getArguments().getStringArrayList("info");
+		area = getArguments().getInt("area");
 		adapter = new MainTainIntoCropsAdapter(getActivity());
 		gridView = (GridView) view.findViewById(R.id.grid__maintain_into_crops);
 		control_crop = (EditText) view.findViewById(R.id.edit__apply_irrigatr_control_crop);
@@ -134,7 +136,7 @@ public class MainTainIntoCropsFragment extends Fragment implements
 //				}
 				js_request.put("valueControlChanID", list);
 				js_request.put("cropName", control_crop.getText().toString());
-				js_request.put("sowingTime", control_crop.getText().toString());
+				js_request.put("plantTime", control_time.getText().toString());
 				js_request.put("area", area);
 				param2.setBodyContent(js_request.toString());
 			} catch (Exception e) {

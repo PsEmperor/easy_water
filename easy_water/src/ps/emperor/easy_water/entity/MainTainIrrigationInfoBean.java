@@ -38,7 +38,10 @@ public class MainTainIrrigationInfoBean {
     	private String ChanNum;
     	private String ValueControlChanID;
     	private String IsAllocationGrowers;
-    	public Boolean istrue; // 是否选中
+    	private String IsAllocationCrop;
+    	private String IsAllocationGroup;
+    	
+		public Boolean istrue; // 是否选中
     	
 		public String getFirstDerviceID() {
 			return FirstDerviceID;
@@ -64,17 +67,29 @@ public class MainTainIrrigationInfoBean {
 		public void setValueControlChanID(String valueControlChanID) {
 			ValueControlChanID = valueControlChanID;
 		}
+		public Boolean getIstrue() {
+			return istrue;
+		}
+		public void setIstrue(Boolean istrue) {
+			this.istrue = istrue;
+		}
 		public String getIsAllocationGrowers() {
 			return IsAllocationGrowers;
 		}
 		public void setIsAllocationGrowers(String isAllocationGrowers) {
 			IsAllocationGrowers = isAllocationGrowers;
 		}
-		public Boolean getIstrue() {
-			return istrue;
+		public String getIsAllocationCrop() {
+			return IsAllocationCrop;
 		}
-		public void setIstrue(Boolean istrue) {
-			this.istrue = istrue;
+		public void setIsAllocationCrop(String isAllocationCrop) {
+			IsAllocationCrop = isAllocationCrop;
+		}
+		public String getIsAllocationGroup() {
+			return IsAllocationGroup;
+		}
+		public void setIsAllocationGroup(String isAllocationGroup) {
+			IsAllocationGroup = isAllocationGroup;
 		}
     	
     }

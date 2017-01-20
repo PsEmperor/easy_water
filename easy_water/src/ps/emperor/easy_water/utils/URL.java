@@ -49,6 +49,10 @@ public class URL {
 	public static final String addChanCropInfo = "http://192.168.2.188:8080/cms/app/IrriUnitSys/addChanCropInfo/releChan";
 	//轮灌组维护
 	public static final String addChanGroupInfo = "http://192.168.2.188:8080/cms/app/IrriUnitSys/addChanGroupInfo/releChan";
+	//轮灌组计划查询
+	public static final String queryIrriPlan = "http://192.168.2.188:8080/cms/app/IrriUnitSys/resetIrriGroupInfo/queryIrriPlan/";
+	//轮灌组重置
+	public static final String resetIrriGroupInfo = "http://192.168.2.188:8080/cms/app/IrriUnitSys/resetIrriGroupInfo/releChan";
 	
 	//维护模糊搜索已关联配水设备
 	public static final String findUserReleDisInfoYet = "http://192.168.2.188:8080/cms/app/DisWaterSys/fuzzyQuery/findUserReleDisInfo/";

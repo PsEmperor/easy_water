@@ -42,6 +42,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.adapter.ImageAdapter;
+import ps.emperor.easy_water.adapter.ImageGroupAdapter;
 import ps.emperor.easy_water.entity.MainTainIrrigationInfoBean;
 import ps.emperor.easy_water.entity.MainTainIrrigationInfoBean.groupList;
 import ps.emperor.easy_water.entity.MainTainIrrigationInfoBean.infoList;
@@ -73,7 +74,7 @@ public class MainTainIrrigationInfoFragment extends Fragment implements
 	private GridView gridView;
 //	private PopupWindow popupWindow;
 	private DBHelper dbHelper;
-	ImageAdapter adapter;
+	ImageGroupAdapter adapter;
 	private List<String> infoBeans;
 	private RelativeLayout layout_irriagte_group;
 	private Button btn_main_irrigate_info_group;
@@ -84,6 +85,7 @@ public class MainTainIrrigationInfoFragment extends Fragment implements
 	private ProgressDialog progressDialog;
 	private List<infoList> beens;
 	private List<groupList> beans;
+	private TextView text_maintain_irrigat_round;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -101,6 +103,7 @@ public class MainTainIrrigationInfoFragment extends Fragment implements
 		units = (String) SharedUtils.getParam(getActivity(), "units", 1+"");
 		btn_main_irrigate_info_group = (Button) view.findViewById(R.id.btn_main_irrigate_info_group);
 		btn_main_irrigate_info_group.setOnClickListener(this);
+		text_maintain_irrigat_round = (TextView) view.findViewById(R.id.text_maintain_irrigat_round);
 		irrigationGroups = dbHelper.loadGroupByUnits(units);
 		if(CheckUtil.IsEmpty(irrigationGroups)){
 			for (int i = 1; i <= 5; i++) {
@@ -150,7 +153,7 @@ public class MainTainIrrigationInfoFragment extends Fragment implements
 		} catch (UnsupportedEncodingException e1) {
 			e1.printStackTrace();
 		}
-		RequestParams param3 = new RequestParams(URL.findIrriUnitChan+str1);  // 网址(请替换成实际的网址) 
+		RequestParams param3 = new RequestParams(URL.findIrriUnitChan+str1+"/"+str2);  // 网址(请替换成实际的网址) 
 //		 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
 		progressDialog = ProgressDialog.show(getActivity(), "Loading...",
 				"Please wait...", true, false);
@@ -208,8 +211,9 @@ public class MainTainIrrigationInfoFragment extends Fragment implements
 	                  for (infoList authNameListBean : beens) {
 	                	authNameListBean.getChanNum();
 					}
-	                adapter = new ImageAdapter(getActivity(), true, beens);
+	                adapter = new ImageGroupAdapter(getActivity(), true, beens);
 	          		gridView.setAdapter(adapter);
+	          		text_maintain_irrigat_round.setText(beans.get(0).getGroupNum());
 	          		progressDialog.dismiss();
 	            }  
 	        }); 		
@@ -236,7 +240,7 @@ public class MainTainIrrigationInfoFragment extends Fragment implements
 			infoBeans = new ArrayList<String>();
 			for (int i = 0; i < beens.size(); i++) {
 				if (!CheckUtil.IsEmpty(beens.get(i).getIstrue())) {
-					if (beens.get(i).getIstrue() == true && !beens.get(i).getIsAllocationGrowers().equals("1")) {
+					if (beens.get(i).getIstrue() == true && !beens.get(i).getIsAllocationGroup().equals("1")) {
 						area += Float.valueOf(beens.get(i).getArea());
 						infoBeans.add(beens.get(i).getValueControlChanID());
 					}
@@ -305,7 +309,6 @@ public class MainTainIrrigationInfoFragment extends Fragment implements
 		            }  
 		        }); 
 			}
-			Toast.makeText(getActivity(), "保存", Toast.LENGTH_SHORT).show();
 			break;
 		case R.id.text_maintain_irrigat_info_round_of_irrigation_group:
 		MainTainPresentIrrigateFragment fragment1 = new MainTainPresentIrrigateFragment();
@@ -318,41 +321,165 @@ public class MainTainIrrigationInfoFragment extends Fragment implements
 		transaction.commit();
 		break;
 		case R.id.btn_main_irrigate_info_group:// 重置编组信息
-			new AlertDialog.Builder(getActivity())
-					.setTitle("系统提示")
-					// 设置对话框标题
+			String str1 = "";
+			try {
+				str1 = java.net.URLEncoder.encode("SB001001","UTF-8");
+			} catch (UnsupportedEncodingException e1) {
+				e1.printStackTrace();
+			}
+			RequestParams param2 = new RequestParams(URL.queryIrriPlan+str1); // 网址(请替换成实际的网址)
+			// params.addQueryStringParameter("key", "value"); //
+			// 参数(请替换成实际的参数与值)
+			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+					"Please wait...", true, false);
+			JSONObject js_request = new JSONObject();
+			try {
+				param2.setAsJsonContent(true);
+				param2.setBodyContent(js_request.toString());
+			} catch (Exception e) {
+				e.printStackTrace();
+				param2.setAsJsonContent(true);
+			}// 根据实际需求添加相应键值对
 
-					.setMessage("重置轮灌组信息将删除当前所有已编组的阀门信息！您确认要重置轮灌组吗？")
-					// 设置显示的内容
+			x.http().request(HttpMethod.GET, param2,
+					new CommonCallback<String>() {
+						@Override
+						public void onCancelled(CancelledException arg0) {
 
-					.setPositiveButton("确定",
-							new DialogInterface.OnClickListener() {// 添加确定按钮
+						}
 
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {// 确定按钮的响应事件
+						// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+						// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+						@Override
+						public void onError(Throwable ex, boolean isOnCallback) {
 
-									// TODO Auto-generated method stub
-									Toast.makeText(getActivity(), "重置成功",
-											Toast.LENGTH_SHORT).show();
-									dialog.dismiss();
+							Toast.makeText(x.app(), ex.getMessage(),
+									Toast.LENGTH_LONG).show();
+							if (ex instanceof HttpException) { // 网络错误 
+								HttpException httpEx = (HttpException) ex;
+								int responseCode = httpEx.getCode();
+								String responseMsg = httpEx.getMessage();
+								String errorResult = httpEx.getResult();
+								Toast.makeText(getActivity(), "请求失败",
+										Toast.LENGTH_SHORT);
+								// ...
+								progressDialog.dismiss();
+							} else { // 其他错误 
+								// ...
+								Toast.makeText(getActivity(), "请求失败",
+										Toast.LENGTH_SHORT);
+								progressDialog.dismiss();
+							}
 
-								}
+						}
 
-							})
-					.setNegativeButton("返回",
-							new DialogInterface.OnClickListener() {// 添加返回按钮
+						// 不管成功或者失败最后都会回调该接口
+						@Override
+						public void onFinished() {
+						}
 
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {// 响应事件
+						@Override
+						public void onSuccess(String arg0) {
+							Toast.makeText(getActivity(), "请求成功",
+									Toast.LENGTH_SHORT);
+							Gson gson = new Gson();
+							System.out.println(arg0);
+							progressDialog.dismiss();
+							new AlertDialog.Builder(getActivity())
+							.setTitle("系统提示")
+							// 设置对话框标题
 
-									// TODO Auto-generated method stub
+							.setMessage("重置轮灌组信息将删除当前所有已编组的阀门信息！您确认要重置轮灌组吗？")
+							// 设置显示的内容
 
-									dialog.dismiss();
-								}
+							.setPositiveButton("确定",
+									new DialogInterface.OnClickListener() {// 添加确定按钮
 
-							}).show();// 在按键响应事件中显示此对话框
+										@Override
+										public void onClick(DialogInterface dialog,
+												int which) {// 确定按钮的响应事件
+
+											RequestParams param2 = new RequestParams(URL.resetIrriGroupInfo); // 网址(请替换成实际的网址)
+											// params.addQueryStringParameter("key", "value"); //
+											// 参数(请替换成实际的参数与值)
+											progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+													"Please wait...", true, false);
+											JSONObject js_request = new JSONObject();
+											try {
+												param2.setAsJsonContent(true);
+												js_request.put("firstDerviceID", "SB001001");
+												param2.setBodyContent(js_request.toString());
+											} catch (Exception e) {
+												e.printStackTrace();
+												param2.setAsJsonContent(true);
+											}// 根据实际需求添加相应键值对
+
+											x.http().request(HttpMethod.PUT, param2,
+													new CommonCallback<String>() {
+														@Override
+														public void onCancelled(CancelledException arg0) {
+
+														}
+
+														// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+														// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+														@Override
+														public void onError(Throwable ex, boolean isOnCallback) {
+
+															Toast.makeText(x.app(), ex.getMessage(),
+																	Toast.LENGTH_LONG).show();
+															if (ex instanceof HttpException) { // 网络错误 
+																HttpException httpEx = (HttpException) ex;
+																int responseCode = httpEx.getCode();
+																String responseMsg = httpEx.getMessage();
+																String errorResult = httpEx.getResult();
+																Toast.makeText(getActivity(), "请求失败",
+																		Toast.LENGTH_SHORT);
+																// ...
+																progressDialog.dismiss();
+															} else { // 其他错误 
+																// ...
+																Toast.makeText(getActivity(), "请求失败",
+																		Toast.LENGTH_SHORT);
+																progressDialog.dismiss();
+															}
+
+														}
+
+														// 不管成功或者失败最后都会回调该接口
+														@Override
+														public void onFinished() {
+														}
+
+														@Override
+														public void onSuccess(String arg0) {
+															Toast.makeText(getActivity(), "请求成功",
+																	Toast.LENGTH_SHORT);
+															Gson gson = new Gson();
+															System.out.println(arg0);
+															progressDialog.dismiss();
+															adapter.notifyDataSetChanged();
+														}
+													});
+										}
+
+									})
+							.setNegativeButton("返回",
+									new DialogInterface.OnClickListener() {// 添加返回按钮
+
+										@Override
+										public void onClick(DialogInterface dialog,
+												int which) {// 响应事件
+
+											// TODO Auto-generated method stub
+
+											dialog.dismiss();
+										}
+
+									}).show();// 在按键响应事件中显示此对话框
+						}
+					});
+			
 		break;
 		}
 	}

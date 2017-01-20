@@ -27,7 +27,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
 
-public class ImageAdapter extends BaseAdapter{    
+public class ImageGroupAdapter extends BaseAdapter{    
     private Context mContext;			// 定义Context
     private List<infoList> mImageIds;	// 定义一个向量作为图片源
     private List<Integer> mImage_bs = new ArrayList<Integer>();	// 定义一个向量作为选中与否容器
@@ -36,7 +36,7 @@ public class ImageAdapter extends BaseAdapter{
     private int screenWidth,screenHeigh;
     int mImage = 0;
     
-    public ImageAdapter(Context c, boolean isMulti,List<infoList>  mImageId){
+    public ImageGroupAdapter(Context c, boolean isMulti,List<infoList>  mImageId){
     	mContext = c;
     	multiChoose = isMulti;
     	mImageIds = mImageId;
@@ -87,12 +87,8 @@ public class ImageAdapter extends BaseAdapter{
         	textView = new TextView(mContext);
         	
         	if(mImage < mImageIds.size()){
-        		if(!CheckUtil.IsEmpty(mImageIds.get(position).getIsAllocationGrowers())){
-        			if(mImageIds.get(position).getIsAllocationGrowers().equals("1")){
-        				mImage_bs.set(position, 2);
-        			}  
-        		}else if(!CheckUtil.IsEmpty(mImageIds.get(position).getIsAllocationCrop())){
-        			if(mImageIds.get(position).getIsAllocationCrop().equals("1")){
+        		if(!CheckUtil.IsEmpty(mImageIds.get(position).getIsAllocationGroup())){
+        			if(mImageIds.get(position).getIsAllocationGroup().equals("1")){
         				mImage_bs.set(position, 2);
         			}  
         		}
@@ -157,9 +153,7 @@ public class ImageAdapter extends BaseAdapter{
     public void changeState(int position){
     	// 多选
     	if(multiChoose == true){
-    		if(mImage_bs.get(position) == 2){
-	    		mImage_bs.set(position, 1);	//直接取反即可	
-	    	}else if(mImage_bs.get(position) == 1){
+    		 if(mImage_bs.get(position) == 1){
     			mImage_bs.set(position, 0);	//直接取反即可	
     		}else if(mImage_bs.get(position) == 0){
     			mImage_bs.set(position, 1);	//直接取反即可	
@@ -174,9 +168,7 @@ public class ImageAdapter extends BaseAdapter{
     	else{						
 	    	if(lastPosition != -1)
 	    		mImage_bs.set(lastPosition, 0);	//取消上一次的选中状态
-	    	if(mImage_bs.get(position) == 2){
-	    		mImage_bs.set(position, 1);	//直接取反即可	
-	    	}else if(mImage_bs.get(position) == 1){
+	    	if(mImage_bs.get(position) == 1){
     			mImage_bs.set(position, 0);	//直接取反即可	
     		}else if(mImage_bs.get(position) == 0){
     			mImage_bs.set(position, 1);	//直接取反即可	
