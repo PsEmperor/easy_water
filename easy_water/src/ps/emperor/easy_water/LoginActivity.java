@@ -19,9 +19,13 @@ import ps.emperor.easy_water.application.entity.AppBeen;
 import ps.emperor.easy_water.entity.Person;
 import ps.emperor.easy_water.register.ForgotActivity;
 import ps.emperor.easy_water.register.RegisterActivity;
+import ps.emperor.easy_water.utils.PsUtils;
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Xml;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -43,6 +47,42 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	private CheckBox cbSave;
 	private Button btLogin;
 	private TextView tvForgot, tvRegister;
+	private Context context = LoginActivity.this;
+	
+	private Handler mHandler = new Handler(){
+		
+		@Override
+		public void handleMessage(android.os.Message msg) {
+			switch (msg.what) {
+			case PsUtils.SEND_REGISTER:
+				String result = (String) msg.obj;
+				if(result.equals("1")){
+					Toast.makeText(context, "登录成功", 0).show();
+					Intent mintent = new Intent(LoginActivity.this,MainActivity.class);
+					startActivity(mintent);
+					finish();
+				}else if(result.equals("0")){
+					Toast.makeText(context, "登录失败,请重新登录！", 0).show();
+				}
+				
+				
+				break;
+			case PsUtils.SEND_REGISTER_ERROR:
+				
+				Toast.makeText(context, "登录异常", 0).show();
+				
+				break;
+
+			default:
+				break;
+			}
+			
+		};
+		
+	};
+	private ProgressDialog pd;
+	
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -99,71 +139,37 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			break;
 		case R.id.bt_go:
 			Toast.makeText(this, "登录按钮", 0).show();
-			Intent mintent = new Intent(LoginActivity.this,MainActivity.class);
-			startActivity(mintent);
-			finish();
-			break;
-		case R.id.tv_forgot:
-			RequestParams params = new RequestParams("http://192.168.1.20:8080/RESTfulWS/app/IrriSys/test/FullName");    // 网址(请替换成实际的网址)  
-//			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)  
-			JSONObject js_request = new JSONObject();
+			
+			String user = etUser.getText().toString().trim();
+			String password =  etPa.getText().toString().trim();
+			
+			RequestParams rp = new RequestParams(PsUtils.urlLogin);
+			rp.setAsJsonContent(true);
+			JSONObject jo = new JSONObject();
 			try {
-//				js_request.put("groupID", "4");
-//				js_request.put("irriUnitID", "2");
-//				js_request.put("deviceID", "4");
-//				js_request.put("area", "28.0");
-//				js_request.put("irriModel", "5");
-//				js_request.put("memo", "c++");
-				params.setAsJsonContent(true);
-				params.setBodyContent("{\"userId\":\"\",\"userName\":\"\",\"userPhone\":\"\",\"fullName\":\"二狗子\",\"authID\":\"\",\"pathtoPhoto\":\"\"}");
-			} catch (Exception e) {
+				jo.put("userName", user);
+				jo.put("password", password);
+				rp.setBodyContent(jo.toString());
+				
+			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-//				params.setAsJsonContent(true);
-//				params.setBodyContent("Content-Type: application/json"+js_request.toString());
-			}//根据实际需求添加相应键值对
+			}
 			
-		        x.http().request(HttpMethod.PUT ,params, new CommonCallback<String>() {  
-		            @Override  
-		            public void onCancelled(CancelledException arg0) {  
-		                  
-		            }  
-		  
-		            // 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误  
-		            // 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看  
-		            @Override  
-		            public void onError(Throwable ex, boolean isOnCallback) {  
-		                  
-		                Toast.makeText(x.app(), ex.getMessage(), Toast.LENGTH_LONG).show();  
-		                if (ex instanceof HttpException) { // 网络错误  
-		                    HttpException httpEx = (HttpException) ex;  
-		                    int responseCode = httpEx.getCode();  
-		                    String responseMsg = httpEx.getMessage();  
-		                    String errorResult = httpEx.getResult();  
-		                    Toast.makeText(LoginActivity.this, "请求失败", Toast.LENGTH_SHORT);
-		                    // ...  
-		                } else { // 其他错误  
-		                    // ...  
-		                	Toast.makeText(LoginActivity.this, "请求失败", Toast.LENGTH_SHORT);
-		                }  
-		                  
-		            }  
-		  
-		            // 不管成功或者失败最后都会回调该接口  
-		            @Override  
-		            public void onFinished() {    
-		            	Toast.makeText(LoginActivity.this, "走了网络请求", Toast.LENGTH_SHORT);
-		            }  
-		  
-		            @Override  
-		            public void onSuccess(String arg0) {  
-		                  Toast.makeText(LoginActivity.this, "请求成功", Toast.LENGTH_SHORT);
-		                  btLogin.setText(arg0);
-		            }  
-		        }); 
-//			Toast.makeText(this, "忘记密码", 0).show();
-//			Intent intent1 = new Intent(LoginActivity.this,ForgotActivity.class);
-//			startActivity(intent1);
+			PsUtils.send(rp, HttpMethod.POST, mHandler,context);
+			
+	
+			
+			
+			
+			
+
+			break;
+		case R.id.tv_forgot:
+
+			Toast.makeText(this, "忘记密码", 0).show();
+			Intent intent1 = new Intent(LoginActivity.this,ForgotActivity.class);
+			startActivity(intent1);
 			break;
 		case R.id.tv_register:
 			Toast.makeText(this, "新用户注册", 0).show();
@@ -173,4 +179,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
 		}
 	}
+
+
+
 }

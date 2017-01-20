@@ -10,6 +10,7 @@ import org.xutils.common.Callback.CommonCallback;
 import org.xutils.http.HttpMethod;
 import org.xutils.http.RequestParams;
 
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -233,14 +234,38 @@ public class PsUtils {
 	};*/
 	
 	public final static int SEND_REGISTER = 0x99;
-	public final static int SEND_REGISTER_FALSE = 0x98;
+	public final static int SEND_REGISTER_ERROR = 0x98;
+	public static final String urlRegister = "http://192.168.2.188:8080/cms/app/UserSys/addAccount/phoneNum/password";
+	public static final String urlPassword = "http://192.168.2.188:8080/cms/app/UserSys/resetUserPass/phoneNum/password";
+	public static final String urlLogin = "http://192.168.2.188:8080/cms/app/UserSys/login/userName/password";
+	
+	
+	
+	
+	
+
+	/**
+	 * 加载布局
+	 * @param msg
+	 */
+	public static ProgressDialog proDiag(String msg,Context context) {
+		ProgressDialog pd = new ProgressDialog(context);
+		pd.setCancelable(false);
+		pd.setMessage(msg);
+		pd.show();
+		
+		return pd;
+	}
+	
+	
 	
 	/**
 	 * 发送请求方法
 	 * 
 	 * 需要在每个请求中加入handler，上面为Handler样例
 	 */
-	public static void send(RequestParams rp,HttpMethod httpMethod ,final Handler handler){
+	public static void send(RequestParams rp,HttpMethod httpMethod ,final Handler handler,Context context){
+		final ProgressDialog pd = proDiag("登录中。。。", context);
 		
 		x.http().request(httpMethod, rp, new CommonCallback<String>() {
 
@@ -255,9 +280,10 @@ public class PsUtils {
 
 			@Override
 			public void onError(Throwable ex, boolean isOnCallback) {
+				System.out.println("异常信息："+ex.toString());
 				Message msg = new Message();
 				msg.obj = ex.toString();
-				msg.what = SEND_REGISTER_FALSE;
+				msg.what = SEND_REGISTER_ERROR;
 				handler.sendMessage(msg);
 				
 			}
@@ -270,7 +296,7 @@ public class PsUtils {
 
 			@Override
 			public void onFinished() {
-				// TODO Auto-generated method stub
+				pd.dismiss();
 				
 			}
 		});

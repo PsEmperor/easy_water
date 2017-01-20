@@ -1,7 +1,16 @@
 package ps.emperor.easy_water.register;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xutils.http.HttpMethod;
+import org.xutils.http.RequestParams;
+
+import com.google.gson.JsonObject;
+
 import ps.emperor.easy_water.BaseActivity;
 import ps.emperor.easy_water.R;
+import ps.emperor.easy_water.utils.PsUtils;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +20,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class RegisterActivity extends BaseActivity implements OnClickListener {
 	
@@ -20,11 +30,24 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
 	private TextView tvPro;
 	private CheckBox cbPro;
 	private int s  = 60;
+	private Context context = RegisterActivity.this;
 	private Handler mHandler = new Handler(){
 		@Override
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
-			case 1:
+			case PsUtils.SEND_REGISTER:
+				String result = (String) msg.obj;
+				if(result.equals("1")){
+					Toast.makeText(context, "注册成功", 0).show();
+				}else if(result.equals("0")){
+					Toast.makeText(context, "注册失败", 0).show();
+				}
+				
+				
+				break;
+			case PsUtils.SEND_REGISTER_ERROR:
+				
+				Toast.makeText(context, "注册异常", 0).show();
 				
 				break;
 
@@ -118,7 +141,32 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
 			
 			break;
 		case R.id.bt_register:
+			String user = etP.getText().toString();
+			String password =  etPa.getText().toString();
+			String code = etAu.getText().toString();
+			
+			RequestParams rp = new RequestParams(PsUtils.urlRegister);
+			rp.setAsJsonContent(true);
+//			rp.addHeader("Content-Type", "application/json");
+			JSONObject jo = new JSONObject();
+			try {
+				jo.put("phoneNum", user);
+				jo.put("password", password);
+				jo.put("verificationCode",code );
+				rp.setBodyContent(jo.toString());
+				
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+
+
+			
 			//注册
+			PsUtils.send(rp, HttpMethod.POST, mHandler,context);
+			
+			
 			break;
 		case R.id.tv_protocol:
 			//跳转协议界面

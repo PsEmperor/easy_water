@@ -1,37 +1,21 @@
 package ps.emperor.easy_water.application.fragment;
 
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.XMLConstants;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import org.xmlpull.v1.XmlPullParser;
-import org.xutils.BuildConfig;
-import org.xutils.x;
-import org.xutils.common.Callback.CommonCallback;
-import org.xutils.ex.HttpException;
-import org.xutils.http.RequestParams;
 
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.activity.IrriagteOrWaterActivity;
 import ps.emperor.easy_water.application.activity.ConfigureActivity;
-import ps.emperor.easy_water.application.activity.TestingActivity;
 import ps.emperor.easy_water.application.adapter.AppGvAdapter;
 import ps.emperor.easy_water.application.entity.AppBeen;
-import ps.emperor.easy_water.entity.Person;
 import ps.emperor.easy_water.fragment.ApplyIrrigateFragment;
 import ps.emperor.easy_water.fragment.ApplyWaterDistrbutionFragment;
-import ps.emperor.easy_water.fragment.InformationFragment;
 import ps.emperor.easy_water.utils.SharedUtils;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Xml;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +26,8 @@ import android.widget.GridView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.customlaylout.BlueToothActivity;
 
 public class ApplicationFragment extends Fragment implements
 		OnItemClickListener {
@@ -172,7 +158,7 @@ public class ApplicationFragment extends Fragment implements
 			// 测试
 			// Toast.makeText(getActivity(),
 			// position+""+((TextView)view).getText()+"被点击", 0).show();
-			Intent i5 = new Intent(getActivity(), TestingActivity.class);
+			Intent i5 = new Intent(getActivity(), BlueToothActivity.class);
 			startActivity(i5);
 			break;
 
