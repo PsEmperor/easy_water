@@ -236,7 +236,7 @@ public class MainTainIrrigationInfoFragment extends Fragment implements
 			infoBeans = new ArrayList<String>();
 			for (int i = 0; i < beens.size(); i++) {
 				if (!CheckUtil.IsEmpty(beens.get(i).getIstrue())) {
-					if (beens.get(i).getIstrue() == true) {
+					if (beens.get(i).getIstrue() == true && !beens.get(i).getIsAllocationGrowers().equals("1")) {
 						area += Float.valueOf(beens.get(i).getArea());
 						infoBeans.add(beens.get(i).getValueControlChanID());
 					}
