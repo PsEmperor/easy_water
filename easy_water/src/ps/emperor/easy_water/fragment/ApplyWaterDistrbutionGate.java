@@ -261,6 +261,10 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 				 }
 			}
 		});
+		layout_show_left_and_right.setVisibility(View.GONE);
+		layout.setVisibility(View.GONE);
+		layout_linear_change.setVisibility(View.GONE);
+		layout_linear_changes.setVisibility(View.GONE);
 		init();
 		
 		return view;
@@ -296,9 +300,9 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 //	};
 	
 	private void init() {
-		String str1 = "";
+		String str1 = (String) SharedUtils.getParam(getActivity(), "DisEquID", "");
 		try {
-			str1 = java.net.URLEncoder.encode("配水设备5","UTF-8");
+			str1 = java.net.URLEncoder.encode(str1,"UTF-8");
 		} catch (UnsupportedEncodingException e1) {
 			e1.printStackTrace();
 		}
@@ -353,205 +357,214 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 	                  Gson gson = new Gson();
 	                  System.out.println(arg0);
 	                  FindDisWaterInfoOneBean fromJson = gson.fromJson(arg0, FindDisWaterInfoOneBean.class);
-//	                  authorizedBeen = new AuthorizedBeen();
-//	                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
 	                  beens = fromJson.getDisWaterInfo();
 	                  beans = fromJson.getSluiceGateInfo();
-	                  for (SluiceGateInfoBean authNameListBean : beans) {
-	                	authNameListBean.getOpenProportion();
-	                	authNameListBean.getOpenHigh();
-					}
-	                adapter.addData(beans, true);
-	                if(CheckUtil.IsEmpty(beens.get(0).getDisEquName())){
-	                	text_apply_water_distrbution_gate_control.setText("");
-	                }else{
-	                	text_apply_water_distrbution_gate_control.setText(beens.get(0).getDisEquName());
-	                }
-	                if(CheckUtil.IsEmpty(beens.get(0).getPoreNum())){
-	                	tv_indicator.setText("");
-	                }else{
-	                	tv_indicator.setText(beens.get(0).getPoreNum());
-	                }
-	                if(CheckUtil.IsEmpty(beens.get(0).getFrontWaterLevel())){
-	                	tv_apply_water_before.setText("0");
-	                }else{
-	                	tv_apply_water_before.setText(beens.get(0).getFrontWaterLevel());
-	                }
-	                if(CheckUtil.IsEmpty(beens.get(0).getBackWaterLevel())){
-	                	tv_apply_water_after.setText("0");
-	                }else{
-	                	tv_apply_water_after.setText(beens.get(0).getBackWaterLevel());
-	                }
-	                if(CheckUtil.IsEmpty(beens.get(0).getDesignFlow())){
-	                	tv_apply_water_flow.setText("0");
-	                }else{
-	                	tv_apply_water_flow.setText(beens.get(0).getDesignFlow());
-	                }
-	                if(CheckUtil.IsEmpty(beens.get(0).getOpenPoreTime())){
-	                	tv_time_operation_start.setText("开始时间: "+ "0000-00-00 00:00");
-	                }else{
-	                	tv_time_operation_start.setText("开始时间: "+beens.get(0).getOpenPoreTime());
-	                }
-	                if(CheckUtil.IsEmpty(beens.get(0).getClosePoreTime())){
-	                	tv_time_operation_end.setText("结束时间: "+ "0000-00-00 00:00");
-	                }else{
-	                	tv_time_operation_end.setText("结束时间: "+beens.get(0).getClosePoreTime());
-	                }
-	                if(beans.size() == 1){
-	        			list_apply_water_distrbution_gate_control.setVisibility(View.GONE);
-	        			layout_linear_change.setVisibility(View.GONE);
-	        			layout_linear_changes.setVisibility(View.GONE);
-	        			RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)layout_relative_changes.getLayoutParams();
-	        			int height;
-	        			if(CheckUtil.IsEmpty(beans.get(0).getOpenProportion())){
-	        				height = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(0)*100)*2));
-	        			}else{
-	        				height = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(beans.get(0).getOpenProportion())*100)*2));
-	        			}
-	        			layoutParams.height = height;
-	        			layout_relative_changes.setLayoutParams(layoutParams);
-	        			layout_relative_changes.requestLayout();
-	        			if(CheckUtil.IsEmpty(beans.get(0).getOpenProportion())){
-	        				tv_one_OpenProportion.setText(0+"%");
-	        			}else{
-	        				tv_one_OpenProportion.setText((int)(Float.valueOf(beans.get(0).getOpenProportion())*100)+"%");
-	        			}
-	        			if(CheckUtil.IsEmpty(beans.get(0).getOpenHigh())){
-	        				tv_one_OpenHigh.setText(0+"m³");
-	        			}else{
-	        				tv_one_OpenHigh.setText(beans.get(0).getOpenHigh()+"m³");
-	        			}
-	        			tv_one_PoreID.setText(beans.get(0).getPoreID()+"");
-	        		}
-	        		if(beans.size() == 2){
-	        			list_apply_water_distrbution_gate_control.setVisibility(View.GONE);
-	        			layout.setVisibility(View.GONE);
-	        			layout_linear_changes.setVisibility(View.GONE);
-	        			RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)layout_relative_changes_left.getLayoutParams();
-	        			int height;
-	        			if(CheckUtil.IsEmpty(beans.get(0).getOpenProportion())){
-	        				height = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(0)*100)*2));
-	        			}else{
-	        				height = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(beans.get(0).getOpenProportion())*100)*2));
-	        			}
-	        			layoutParams.height = height;
-	        			layout_relative_changes_left.setLayoutParams(layoutParams);
-	        			layout_relative_changes_left.requestLayout();
-	        			if(CheckUtil.IsEmpty(beans.get(0).getOpenProportion())){
-	        				tv_two_OpenProportion_left.setText(0+"%");
-	        			}else{
-	        				tv_two_OpenProportion_left.setText((int)(Float.valueOf(beans.get(0).getOpenProportion())*100)+"%");
-	        			}
-	        			if(CheckUtil.IsEmpty(beans.get(0).getOpenHigh())){
-	        				tv_two_OpenHigh_left.setText(0+"m³");
-	        			}else{
-	        				tv_two_OpenHigh_left.setText(beans.get(0).getOpenHigh()+"m³");
-	        			}
-	        			
-	        			tv_two_PoreID_left.setText(beans.get(0).getPoreID());
-	        			
-	        			RelativeLayout.LayoutParams layoutParam1 = (RelativeLayout.LayoutParams)layout_relative_changes_right.getLayoutParams();
-	        			int heights;
-	        			if(CheckUtil.IsEmpty(beans.get(1).getOpenProportion())){
-	        				heights = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(0)*100)*2));
-	        			}else{
-	        				heights = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(beans.get(1).getOpenProportion())*100)*2));
-	        			}
-	        			layoutParam1.height = heights;
-	        			layout_relative_changes_right.setLayoutParams(layoutParam1);
-	        			layout_relative_changes_right.requestLayout();
-	        			if(CheckUtil.IsEmpty(beans.get(1).getOpenProportion())){
-	        				tv_two_OpenProportion_right.setText(0+"%");
-	        			}else{
-	        				tv_two_OpenProportion_right.setText((int)(Float.valueOf(beans.get(1).getOpenProportion())*100)+"%");
-	        			}
-	        			if(CheckUtil.IsEmpty(beans.get(1).getOpenHigh())){
-	        				tv_two_OpenHigh_right.setText(0+"m³");
-	        			}else{
-	        				tv_two_OpenHigh_right.setText(beans.get(1).getOpenHigh()+"m³");
-	        			}
-	        			tv_two_PoreID_right.setText(beans.get(1).getPoreID());
-	        			}
-	        		if(beans.size() == 3){
-	        			list_apply_water_distrbution_gate_control.setVisibility(View.GONE);
-	        			layout.setVisibility(View.GONE);
-	        			layout_linear_change.setVisibility(View.GONE);
-	        			RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)layout_relative_changes_one.getLayoutParams();
-	        			int height;
-	        			if(CheckUtil.IsEmpty(beans.get(0).getOpenProportion())){
-	        				height = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(0)*100)*2));
-	        			}else{
-	        				height = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(beans.get(0).getOpenProportion())*100)*2));
-	        			}
-	        			layoutParams.height = height;
-	        			layout_relative_changes_one.setLayoutParams(layoutParams);
-	        			layout_relative_changes_one.requestLayout();
-	        			if(CheckUtil.IsEmpty(beans.get(0).getOpenProportion())){
-	        				tv_three_OpenProportion_left.setText(0+"%");
-	        			}else{
-	        				tv_three_OpenProportion_left.setText((int)(Float.valueOf(beans.get(0).getOpenProportion())*100)+"%");
-	        			}
-	        			if(CheckUtil.IsEmpty(beans.get(0).getOpenHigh())){
-	        				tv_three_OpenHigh_left.setText(0+"m³");
-	        			}else{
-	        				tv_three_OpenHigh_left.setText(beans.get(0).getOpenHigh()+"m³");
-	        			}
-	        			tv_three_PoreID_left.setText(beans.get(0).getPoreID());
-	        			
-	        			RelativeLayout.LayoutParams layoutParam1 = (RelativeLayout.LayoutParams)layout_relative_changes_two.getLayoutParams();
-	        			int heights;
-	        			if(CheckUtil.IsEmpty(beans.get(1).getOpenProportion())){
-	        				heights = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(0)*100)*2));
-	        			}else{
-	        				heights = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(beans.get(1).getOpenProportion())*100)*2));
-	        			}
-	        			layoutParam1.height = heights;
-	        			layout_relative_changes_two.setLayoutParams(layoutParam1);
-	        			layout_relative_changes_two.requestLayout();
-	        			if(CheckUtil.IsEmpty(beans.get(1).getOpenProportion())){
-	        				tv_three_OpenProportion.setText(0+"%");
-	        			}else{
-	        				tv_three_OpenProportion.setText((int)(Float.valueOf(beans.get(1).getOpenProportion())*100)+"%");
-	        			}
-	        			if(CheckUtil.IsEmpty(beans.get(1).getOpenHigh())){
-	        				tv_three_OpenHigh.setText(0+"m³");
-	        			}else{
-	        				tv_three_OpenHigh.setText(beans.get(1).getOpenHigh()+"m³");
-	        			}
-	        			tv_three_PoreID.setText(beans.get(1).getPoreID());
-	        			
-	        			RelativeLayout.LayoutParams layoutParam2 = (RelativeLayout.LayoutParams)layout_relative_changes_three.getLayoutParams();
-	        			int height2;
-	        			if(CheckUtil.IsEmpty(beans.get(2).getOpenProportion())){
-	        				height2 = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(0)*100)*2));
-	        			}else{
-	        				height2 = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(beans.get(2).getOpenProportion())*100)*2));
-	        			}
-	        			layoutParam2.height = height2;
-	        			layout_relative_changes_three.setLayoutParams(layoutParam2);
-	        			layout_relative_changes_three.requestLayout();
-	        			if(CheckUtil.IsEmpty(beans.get(2).getOpenProportion())){
-	        				tv_three_OpenProportion_right.setText(0+"%");
-	        			}else{
-	        				tv_three_OpenProportion_right.setText((int)(Float.valueOf(beans.get(2).getOpenProportion())*100)+"%");
-	        			}
-	        			if(CheckUtil.IsEmpty(beans.get(2).getOpenHigh())){
-	        				tv_three_OpenHigh_right.setText(0+"m³");
-	        			}else{
-	        				tv_three_OpenHigh_right.setText(beans.get(2).getOpenHigh()+"m³");
-	        			}
-	        			tv_three_PoreID_right.setText(beans.get(2).getPoreID());
-	        		}
-	        		if(beans.size()> 3){
-	        			layout_show_left_and_right.setVisibility(View.VISIBLE);
-	        			layout.setVisibility(View.GONE);
-	        			layout_linear_change.setVisibility(View.GONE);
-	        			layout_linear_changes.setVisibility(View.GONE);
-	        			list_apply_water_distrbution_gate_control.setAdapter(adapter);
-	        		}
-	        		if(beans.size()<= 3){
-	        			layout_show_left_and_right.setVisibility(View.GONE);
-	        		}
+	                  if(!CheckUtil.IsEmpty(beans)){
+	                	  adapter.addData(beans, true);
+	                	  
+	                	  if(beans.size() == 1){
+	  	                	layout.setVisibility(View.VISIBLE);
+	  	        			layout_linear_change.setVisibility(View.GONE);
+	  	        			layout_linear_changes.setVisibility(View.GONE);
+	  	        			list_apply_water_distrbution_gate_control.setVisibility(View.GONE);
+	  	        			RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)layout_relative_changes.getLayoutParams();
+	  	        			int height;
+	  	        			if(CheckUtil.IsEmpty(beans.get(0).getOpenProportion())){
+	  	        				height = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(0)*100)*2));
+	  	        			}else{
+	  	        				height = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(beans.get(0).getOpenProportion())*100)*2));
+	  	        			}
+	  	        			layoutParams.height = height;
+	  	        			layout_relative_changes.setLayoutParams(layoutParams);
+	  	        			layout_relative_changes.requestLayout();
+	  	        			if(CheckUtil.IsEmpty(beans.get(0).getOpenProportion())){
+	  	        				tv_one_OpenProportion.setText(0+"%");
+	  	        			}else{
+	  	        				tv_one_OpenProportion.setText((int)(Float.valueOf(beans.get(0).getOpenProportion())*100)+"%");
+	  	        			}
+	  	        			if(CheckUtil.IsEmpty(beans.get(0).getOpenHigh())){
+	  	        				tv_one_OpenHigh.setText(0+"m³");
+	  	        			}else{
+	  	        				tv_one_OpenHigh.setText(beans.get(0).getOpenHigh()+"m³");
+	  	        			}
+	  	        			tv_one_PoreID.setText(beans.get(0).getPoreID()+"");
+	  	        		}
+	  	                else if(beans.size() == 2){
+	  	        			layout.setVisibility(View.GONE);
+	  	        			layout_linear_change.setVisibility(View.VISIBLE);
+	  	        			layout_linear_changes.setVisibility(View.GONE);
+	  	        			list_apply_water_distrbution_gate_control.setVisibility(View.GONE);
+	  	        			RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)layout_relative_changes_left.getLayoutParams();
+	  	        			int height;
+	  	        			if(CheckUtil.IsEmpty(beans.get(0).getOpenProportion())){
+	  	        				height = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(0)*100)*2));
+	  	        			}else{
+	  	        				height = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(beans.get(0).getOpenProportion())*100)*2));
+	  	        			}
+	  	        			layoutParams.height = height;
+	  	        			layout_relative_changes_left.setLayoutParams(layoutParams);
+	  	        			layout_relative_changes_left.requestLayout();
+	  	        			if(CheckUtil.IsEmpty(beans.get(0).getOpenProportion())){
+	  	        				tv_two_OpenProportion_left.setText(0+"%");
+	  	        			}else{
+	  	        				tv_two_OpenProportion_left.setText((int)(Float.valueOf(beans.get(0).getOpenProportion())*100)+"%");
+	  	        			}
+	  	        			if(CheckUtil.IsEmpty(beans.get(0).getOpenHigh())){
+	  	        				tv_two_OpenHigh_left.setText(0+"m³");
+	  	        			}else{
+	  	        				tv_two_OpenHigh_left.setText(beans.get(0).getOpenHigh()+"m³");
+	  	        			}
+	  	        			
+	  	        			tv_two_PoreID_left.setText(beans.get(0).getPoreID());
+	  	        			
+	  	        			RelativeLayout.LayoutParams layoutParam1 = (RelativeLayout.LayoutParams)layout_relative_changes_right.getLayoutParams();
+	  	        			int heights;
+	  	        			if(CheckUtil.IsEmpty(beans.get(1).getOpenProportion())){
+	  	        				heights = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(0)*100)*2));
+	  	        			}else{
+	  	        				heights = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(beans.get(1).getOpenProportion())*100)*2));
+	  	        			}
+	  	        			layoutParam1.height = heights;
+	  	        			layout_relative_changes_right.setLayoutParams(layoutParam1);
+	  	        			layout_relative_changes_right.requestLayout();
+	  	        			if(CheckUtil.IsEmpty(beans.get(1).getOpenProportion())){
+	  	        				tv_two_OpenProportion_right.setText(0+"%");
+	  	        			}else{
+	  	        				tv_two_OpenProportion_right.setText((int)(Float.valueOf(beans.get(1).getOpenProportion())*100)+"%");
+	  	        			}
+	  	        			if(CheckUtil.IsEmpty(beans.get(1).getOpenHigh())){
+	  	        				tv_two_OpenHigh_right.setText(0+"m³");
+	  	        			}else{
+	  	        				tv_two_OpenHigh_right.setText(beans.get(1).getOpenHigh()+"m³");
+	  	        			}
+	  	        			tv_two_PoreID_right.setText(beans.get(1).getPoreID());
+	  	        			}
+	  	        		else if(beans.size() == 3){
+	  	        			layout.setVisibility(View.GONE);
+	  	        			layout_linear_change.setVisibility(View.GONE);
+	  	        			layout_linear_changes.setVisibility(View.VISIBLE);
+	  	        			list_apply_water_distrbution_gate_control.setVisibility(View.GONE);
+	  	        			RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)layout_relative_changes_one.getLayoutParams();
+	  	        			int height;
+	  	        			if(CheckUtil.IsEmpty(beans.get(0).getOpenProportion())){
+	  	        				height = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(0)*100)*2));
+	  	        			}else{
+	  	        				height = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(beans.get(0).getOpenProportion())*100)*2));
+	  	        			}
+	  	        			layoutParams.height = height;
+	  	        			layout_relative_changes_one.setLayoutParams(layoutParams);
+	  	        			layout_relative_changes_one.requestLayout();
+	  	        			if(CheckUtil.IsEmpty(beans.get(0).getOpenProportion())){
+	  	        				tv_three_OpenProportion_left.setText(0+"%");
+	  	        			}else{
+	  	        				tv_three_OpenProportion_left.setText((int)(Float.valueOf(beans.get(0).getOpenProportion())*100)+"%");
+	  	        			}
+	  	        			if(CheckUtil.IsEmpty(beans.get(0).getOpenHigh())){
+	  	        				tv_three_OpenHigh_left.setText(0+"m³");
+	  	        			}else{
+	  	        				tv_three_OpenHigh_left.setText(beans.get(0).getOpenHigh()+"m³");
+	  	        			}
+	  	        			tv_three_PoreID_left.setText(beans.get(0).getPoreID());
+	  	        			
+	  	        			RelativeLayout.LayoutParams layoutParam1 = (RelativeLayout.LayoutParams)layout_relative_changes_two.getLayoutParams();
+	  	        			int heights;
+	  	        			if(CheckUtil.IsEmpty(beans.get(1).getOpenProportion())){
+	  	        				heights = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(0)*100)*2));
+	  	        			}else{
+	  	        				heights = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(beans.get(1).getOpenProportion())*100)*2));
+	  	        			}
+	  	        			layoutParam1.height = heights;
+	  	        			layout_relative_changes_two.setLayoutParams(layoutParam1);
+	  	        			layout_relative_changes_two.requestLayout();
+	  	        			if(CheckUtil.IsEmpty(beans.get(1).getOpenProportion())){
+	  	        				tv_three_OpenProportion.setText(0+"%");
+	  	        			}else{
+	  	        				tv_three_OpenProportion.setText((int)(Float.valueOf(beans.get(1).getOpenProportion())*100)+"%");
+	  	        			}
+	  	        			if(CheckUtil.IsEmpty(beans.get(1).getOpenHigh())){
+	  	        				tv_three_OpenHigh.setText(0+"m³");
+	  	        			}else{
+	  	        				tv_three_OpenHigh.setText(beans.get(1).getOpenHigh()+"m³");
+	  	        			}
+	  	        			tv_three_PoreID.setText(beans.get(1).getPoreID());
+	  	        			
+	  	        			RelativeLayout.LayoutParams layoutParam2 = (RelativeLayout.LayoutParams)layout_relative_changes_three.getLayoutParams();
+	  	        			int height2;
+	  	        			if(CheckUtil.IsEmpty(beans.get(2).getOpenProportion())){
+	  	        				height2 = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(0)*100)*2));
+	  	        			}else{
+	  	        				height2 = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(beans.get(2).getOpenProportion())*100)*2));
+	  	        			}
+	  	        			layoutParam2.height = height2;
+	  	        			layout_relative_changes_three.setLayoutParams(layoutParam2);
+	  	        			layout_relative_changes_three.requestLayout();
+	  	        			if(CheckUtil.IsEmpty(beans.get(2).getOpenProportion())){
+	  	        				tv_three_OpenProportion_right.setText(0+"%");
+	  	        			}else{
+	  	        				tv_three_OpenProportion_right.setText((int)(Float.valueOf(beans.get(2).getOpenProportion())*100)+"%");
+	  	        			}
+	  	        			if(CheckUtil.IsEmpty(beans.get(2).getOpenHigh())){
+	  	        				tv_three_OpenHigh_right.setText(0+"m³");
+	  	        			}else{
+	  	        				tv_three_OpenHigh_right.setText(beans.get(2).getOpenHigh()+"m³");
+	  	        			}
+	  	        			tv_three_PoreID_right.setText(beans.get(2).getPoreID());
+	  	        		}
+	  	        		else if(beans.size()> 3){
+	  	        			layout_show_left_and_right.setVisibility(View.VISIBLE);
+	  	        			layout.setVisibility(View.GONE);
+	  	        			layout_linear_change.setVisibility(View.GONE);
+	  	        			layout_linear_changes.setVisibility(View.GONE);
+	  	        			list_apply_water_distrbution_gate_control.setAdapter(adapter);
+	  	        		}
+	  	        		if(beans.size()<= 3){
+	  	        			layout_show_left_and_right.setVisibility(View.GONE);
+	  	        		}else{
+	  	        			layout_show_left_and_right.setVisibility(View.VISIBLE);
+	  	        		}
+	                  }else{
+	  	        			layout_show_left_and_right.setVisibility(View.GONE);
+	  	        			layout.setVisibility(View.GONE);
+	  	        			layout_linear_change.setVisibility(View.GONE);
+	  	        			layout_linear_changes.setVisibility(View.GONE);
+	  	        		}
+	                  if(!CheckUtil.IsEmpty(beens)){
+	                	  if(CheckUtil.IsEmpty(beens.get(0).getDisEquName())){
+	  	                	text_apply_water_distrbution_gate_control.setText("");
+	  	                }else{
+	  	                	text_apply_water_distrbution_gate_control.setText(beens.get(0).getDisEquName());
+	  	                }
+	  	                if(CheckUtil.IsEmpty(beens.get(0).getPoreNum())){
+	  	                	tv_indicator.setText("");
+	  	                }else{
+	  	                	tv_indicator.setText(beens.get(0).getPoreNum());
+	  	                }
+	  	                if(CheckUtil.IsEmpty(beens.get(0).getFrontWaterLevel())){
+	  	                	tv_apply_water_before.setText("0");
+	  	                }else{
+	  	                	tv_apply_water_before.setText(beens.get(0).getFrontWaterLevel());
+	  	                }
+	  	                if(CheckUtil.IsEmpty(beens.get(0).getBackWaterLevel())){
+	  	                	tv_apply_water_after.setText("0");
+	  	                }else{
+	  	                	tv_apply_water_after.setText(beens.get(0).getBackWaterLevel());
+	  	                }
+	  	                if(CheckUtil.IsEmpty(beens.get(0).getDesignFlow())){
+	  	                	tv_apply_water_flow.setText("0");
+	  	                }else{
+	  	                	tv_apply_water_flow.setText(beens.get(0).getDesignFlow());
+	  	                }
+	  	                if(CheckUtil.IsEmpty(beens.get(0).getOpenPoreTime())){
+	  	                	tv_time_operation_start.setText("开始时间: "+ "0000-00-00 00:00");
+	  	                }else{
+	  	                	tv_time_operation_start.setText("开始时间: "+beens.get(0).getOpenPoreTime());
+	  	                }
+	  	                if(CheckUtil.IsEmpty(beens.get(0).getClosePoreTime())){
+	  	                	tv_time_operation_end.setText("结束时间: "+ "0000-00-00 00:00");
+	  	                }else{
+	  	                	tv_time_operation_end.setText("结束时间: "+beens.get(0).getClosePoreTime());
+	  	                }
+	                  }
 	        		
 	        		String str;
 	        		if(CheckUtil.IsEmpty(beens.get(0).getSuperEqu())){
@@ -596,22 +609,26 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
 			Bundle bundle2 = new Bundle();
-			if(CheckUtil.IsEmpty(beans.get(0).getOpenProportion())){
-				bundle2.putInt("OpenProportion",0);
+			if(CheckUtil.IsEmpty(beans)){
+				
 			}else{
-				bundle2.putInt("OpenProportion",(int)(Float.valueOf(beans.get(0).getOpenProportion())*100));
+				if(CheckUtil.IsEmpty(beans.get(0).getOpenProportion())){
+					bundle2.putInt("OpenProportion",0);
+				}else{
+					bundle2.putInt("OpenProportion",(int)(Float.valueOf(beans.get(0).getOpenProportion())*100));
+				}
+				if(CheckUtil.IsEmpty(beans.get(0).getOpenHigh())){
+					bundle2.putString("OpenHigh", 0+"");
+				}else{
+					bundle2.putString("OpenHigh", beans.get(0).getOpenHigh());
+				}
+				bundle2.putString("PoreId", beans.get(0).getPoreID());
+				fragment1.setArguments(bundle2);
+				transaction
+				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+				transaction.replace(R.id.fl, fragment1, "main");
+				transaction.commit();
 			}
-			if(CheckUtil.IsEmpty(beans.get(0).getOpenHigh())){
-				bundle2.putString("OpenHigh", 0+"");
-			}else{
-				bundle2.putString("OpenHigh", beans.get(0).getOpenHigh());
-			}
-			bundle2.putString("PoreId", beans.get(0).getPoreID());
-			fragment1.setArguments(bundle2);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-			transaction.replace(R.id.fl, fragment1, "main");
-			transaction.commit();
 			break;
 		case R.id.btn_time_operation:
 			AppayWaterGateLinkageFragment fragment2 = new AppayWaterGateLinkageFragment();
@@ -634,6 +651,23 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 			AppayWaterGateHaploporeFragment fragment8 = new AppayWaterGateHaploporeFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
+			Bundle bundle3 = new Bundle();
+			if(CheckUtil.IsEmpty(beans)){
+				
+			}else{
+				if(CheckUtil.IsEmpty(beans.get(0).getOpenProportion())){
+					bundle3.putInt("OpenProportion",0);
+				}else{
+					bundle3.putInt("OpenProportion",(int)(Float.valueOf(beans.get(0).getOpenProportion())*100));
+				}
+				if(CheckUtil.IsEmpty(beans.get(0).getOpenHigh())){
+					bundle3.putString("OpenHigh", 0+"");
+				}else{
+					bundle3.putString("OpenHigh", beans.get(0).getOpenHigh());
+				}
+				bundle3.putString("PoreId", beans.get(0).getPoreID());
+				fragment8.setArguments(bundle3);
+			}
 			transaction
 			.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 			transaction.replace(R.id.fl, fragment8, "main");
@@ -645,6 +679,23 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 			AppayWaterGateHaploporeFragment fragment3 = new AppayWaterGateHaploporeFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
+			Bundle bundle4 = new Bundle();
+			if(CheckUtil.IsEmpty(beans)){
+				
+			}else{
+				if(CheckUtil.IsEmpty(beans.get(0).getOpenProportion())){
+					bundle4.putInt("OpenProportion",0);
+				}else{
+					bundle4.putInt("OpenProportion",(int)(Float.valueOf(beans.get(0).getOpenProportion())*100));
+				}
+				if(CheckUtil.IsEmpty(beans.get(0).getOpenHigh())){
+					bundle4.putString("OpenHigh", 0+"");
+				}else{
+					bundle4.putString("OpenHigh", beans.get(0).getOpenHigh());
+				}
+				bundle4.putString("PoreId", beans.get(0).getPoreID());
+				fragment3.setArguments(bundle4);
+			}
 			transaction
 					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 			transaction.replace(R.id.fl, fragment3, "main");
@@ -656,6 +707,23 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 			AppayWaterGateHaploporeFragment fragment4 = new AppayWaterGateHaploporeFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
+			Bundle bundle5 = new Bundle();
+			if(CheckUtil.IsEmpty(beans)){
+				
+			}else{
+				if(CheckUtil.IsEmpty(beans.get(0).getOpenProportion())){
+					bundle5.putInt("OpenProportion",0);
+				}else{
+					bundle5.putInt("OpenProportion",(int)(Float.valueOf(beans.get(0).getOpenProportion())*100));
+				}
+				if(CheckUtil.IsEmpty(beans.get(0).getOpenHigh())){
+					bundle5.putString("OpenHigh", 0+"");
+				}else{
+					bundle5.putString("OpenHigh", beans.get(0).getOpenHigh());
+				}
+				bundle5.putString("PoreId", beans.get(0).getPoreID());
+				fragment4.setArguments(bundle5);
+			}
 			transaction
 					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 			transaction.replace(R.id.fl, fragment4, "main");
@@ -667,6 +735,23 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 			AppayWaterGateHaploporeFragment fragment5 = new AppayWaterGateHaploporeFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
+			Bundle bundle6 = new Bundle();
+			if(CheckUtil.IsEmpty(beans)){
+				
+			}else{
+				if(CheckUtil.IsEmpty(beans.get(0).getOpenProportion())){
+					bundle6.putInt("OpenProportion",0);
+				}else{
+					bundle6.putInt("OpenProportion",(int)(Float.valueOf(beans.get(0).getOpenProportion())*100));
+				}
+				if(CheckUtil.IsEmpty(beans.get(0).getOpenHigh())){
+					bundle6.putString("OpenHigh", 0+"");
+				}else{
+					bundle6.putString("OpenHigh", beans.get(0).getOpenHigh());
+				}
+				bundle6.putString("PoreId", beans.get(0).getPoreID());
+				fragment5.setArguments(bundle6);
+			}
 			transaction
 					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 			transaction.replace(R.id.fl, fragment5, "main");
@@ -678,6 +763,23 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 			AppayWaterGateHaploporeFragment fragment6 = new AppayWaterGateHaploporeFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
+			Bundle bundle7 = new Bundle();
+			if(CheckUtil.IsEmpty(beans)){
+				
+			}else{
+				if(CheckUtil.IsEmpty(beans.get(0).getOpenProportion())){
+					bundle7.putInt("OpenProportion",0);
+				}else{
+					bundle7.putInt("OpenProportion",(int)(Float.valueOf(beans.get(0).getOpenProportion())*100));
+				}
+				if(CheckUtil.IsEmpty(beans.get(0).getOpenHigh())){
+					bundle7.putString("OpenHigh", 0+"");
+				}else{
+					bundle7.putString("OpenHigh", beans.get(0).getOpenHigh());
+				}
+				bundle7.putString("PoreId", beans.get(0).getPoreID());
+				fragment6.setArguments(bundle7);
+			}
 			transaction
 					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 			transaction.replace(R.id.fl, fragment6, "main");
@@ -689,6 +791,23 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 			AppayWaterGateHaploporeFragment fragment7 = new AppayWaterGateHaploporeFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
+			Bundle bundle8 = new Bundle();
+			if(CheckUtil.IsEmpty(beans)){
+				
+			}else{
+				if(CheckUtil.IsEmpty(beans.get(0).getOpenProportion())){
+					bundle8.putInt("OpenProportion",0);
+				}else{
+					bundle8.putInt("OpenProportion",(int)(Float.valueOf(beans.get(0).getOpenProportion())*100));
+				}
+				if(CheckUtil.IsEmpty(beans.get(0).getOpenHigh())){
+					bundle8.putString("OpenHigh", 0+"");
+				}else{
+					bundle8.putString("OpenHigh", beans.get(0).getOpenHigh());
+				}
+				bundle8.putString("PoreId", beans.get(0).getPoreID());
+				fragment7.setArguments(bundle8);
+			}
 			transaction
 					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 			transaction.replace(R.id.fl, fragment7, "main");
@@ -956,285 +1075,297 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 		transaction.commit();
 	}
 	private void Fetch(){
-		String str1 = "";
-		try {
-			str1 = java.net.URLEncoder.encode("配水设备6","UTF-8");
-		} catch (UnsupportedEncodingException e1) {
-			e1.printStackTrace();
-		}
-		RequestParams param3 = new RequestParams(URL.findDisWaterInfoOne+str1);  // 网址(请替换成实际的网址) 
+		if(!CheckUtil.IsEmpty(beens.get(0).getSuperEqu())){
+			String str1 = beens.get(0).getSuperEqu();
+			SharedUtils.setParam(getActivity(), "DisEquID", beens.get(0).getSuperEqu());
+			try {
+				str1 = java.net.URLEncoder.encode(str1,"UTF-8");
+			} catch (UnsupportedEncodingException e1) {
+				e1.printStackTrace();
+			}
+			RequestParams param3 = new RequestParams(URL.findDisWaterInfoOne+str1);  // 网址(请替换成实际的网址) 
 //		 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
-		progressDialog = ProgressDialog.show(getActivity(), "Loading...",
-				"Please wait...", true, false);
-		JSONObject js_request2 = new JSONObject();
-		try {
-			param3.setAsJsonContent(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-			param3.setAsJsonContent(true);
-		}//根据实际需求添加相应键值对
-		
-	        x.http().request(HttpMethod.GET ,param3, new CommonCallback<String>() {  
-	            @Override  
-	            public void onCancelled(CancelledException arg0) {  
-	                  
-	            }  
-	  
-	         // 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误  
-	            // 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看  
-	            @Override  
-	            public void onError(Throwable ex, boolean isOnCallback) {  
-	                  
-	                Toast.makeText(x.app(), ex.getMessage(), Toast.LENGTH_LONG).show();  
-	                if (ex instanceof HttpException) { // 网络错误    
-	                    HttpException httpEx = (HttpException) ex;  
-	                    int responseCode = httpEx.getCode();  
-	                    String responseMsg = httpEx.getMessage();  
-	                    String errorResult = httpEx.getResult();  
-	                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
-	                    // ...  
-	                    progressDialog.dismiss();
-	                } else { // 其他错误    
-	                    // ...  
-	                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
-	                	progressDialog.dismiss();
-	                }  
-	                  
-	            }  
-	  
-	         // 不管成功或者失败最后都会回调该接口  
-	            @Override  
-	            public void onFinished() {    
-	            }  
-	  
-	            @Override  
-	            public void onSuccess(String arg0) {  
-	                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
-	                  Gson gson = new Gson();
-	                  System.out.println(arg0);
-	                  FindDisWaterInfoOneBean fromJson = gson.fromJson(arg0, FindDisWaterInfoOneBean.class);
+			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+					"Please wait...", true, false);
+			JSONObject js_request2 = new JSONObject();
+			try {
+				param3.setAsJsonContent(true);
+			} catch (Exception e) {
+				e.printStackTrace();
+				param3.setAsJsonContent(true);
+			}//根据实际需求添加相应键值对
+			
+			x.http().request(HttpMethod.GET ,param3, new CommonCallback<String>() {  
+				@Override  
+				public void onCancelled(CancelledException arg0) {  
+					
+				}  
+				
+				// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误  
+				// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看  
+				@Override  
+				public void onError(Throwable ex, boolean isOnCallback) {  
+					
+					Toast.makeText(x.app(), ex.getMessage(), Toast.LENGTH_LONG).show();  
+					if (ex instanceof HttpException) { // 网络错误    
+						HttpException httpEx = (HttpException) ex;  
+						int responseCode = httpEx.getCode();  
+						String responseMsg = httpEx.getMessage();  
+						String errorResult = httpEx.getResult();  
+						Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+						// ...  
+						progressDialog.dismiss();
+					} else { // 其他错误    
+						// ...  
+						Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+						progressDialog.dismiss();
+					}  
+					
+				}  
+				
+				// 不管成功或者失败最后都会回调该接口  
+				@Override  
+				public void onFinished() {    
+				}  
+				
+				@Override  
+				public void onSuccess(String arg0) {  
+					Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
+					Gson gson = new Gson();
+					System.out.println(arg0);
+					FindDisWaterInfoOneBean fromJson = gson.fromJson(arg0, FindDisWaterInfoOneBean.class);
 //	                  authorizedBeen = new AuthorizedBeen();
 //	                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
-	                  beens = fromJson.getDisWaterInfo();
-	                  beans = fromJson.getSluiceGateInfo();
-	                  for (SluiceGateInfoBean authNameListBean : beans) {
-	                	authNameListBean.getOpenProportion();
-	                	authNameListBean.getOpenHigh();
+					beens = fromJson.getDisWaterInfo();
+					beans = fromJson.getSluiceGateInfo();
+					if(!CheckUtil.IsEmpty(beans)){
+						adapter.addData(beans, true);
+						
+						if(beans.size() == 1){
+							layout.setVisibility(View.VISIBLE);
+							layout_linear_change.setVisibility(View.GONE);
+							layout_linear_changes.setVisibility(View.GONE);
+							list_apply_water_distrbution_gate_control.setVisibility(View.GONE);
+							RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)layout_relative_changes.getLayoutParams();
+							int height;
+							if(CheckUtil.IsEmpty(beans.get(0).getOpenProportion())){
+								height = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(0)*100)*2));
+							}else{
+								height = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(beans.get(0).getOpenProportion())*100)*2));
+							}
+							layoutParams.height = height;
+							layout_relative_changes.setLayoutParams(layoutParams);
+							layout_relative_changes.requestLayout();
+							if(CheckUtil.IsEmpty(beans.get(0).getOpenProportion())){
+								tv_one_OpenProportion.setText(0+"%");
+							}else{
+								tv_one_OpenProportion.setText((int)(Float.valueOf(beans.get(0).getOpenProportion())*100)+"%");
+							}
+							if(CheckUtil.IsEmpty(beans.get(0).getOpenHigh())){
+								tv_one_OpenHigh.setText(0+"m³");
+							}else{
+								tv_one_OpenHigh.setText(beans.get(0).getOpenHigh()+"m³");
+							}
+							tv_one_PoreID.setText(beans.get(0).getPoreID()+"");
+						}
+						else if(beans.size() == 2){
+							layout.setVisibility(View.GONE);
+							layout_linear_change.setVisibility(View.VISIBLE);
+							layout_linear_changes.setVisibility(View.GONE);
+							list_apply_water_distrbution_gate_control.setVisibility(View.GONE);
+							RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)layout_relative_changes_left.getLayoutParams();
+							int height;
+							if(CheckUtil.IsEmpty(beans.get(0).getOpenProportion())){
+								height = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(0)*100)*2));
+							}else{
+								height = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(beans.get(0).getOpenProportion())*100)*2));
+							}
+							layoutParams.height = height;
+							layout_relative_changes_left.setLayoutParams(layoutParams);
+							layout_relative_changes_left.requestLayout();
+							if(CheckUtil.IsEmpty(beans.get(0).getOpenProportion())){
+								tv_two_OpenProportion_left.setText(0+"%");
+							}else{
+								tv_two_OpenProportion_left.setText((int)(Float.valueOf(beans.get(0).getOpenProportion())*100)+"%");
+							}
+							if(CheckUtil.IsEmpty(beans.get(0).getOpenHigh())){
+								tv_two_OpenHigh_left.setText(0+"m³");
+							}else{
+								tv_two_OpenHigh_left.setText(beans.get(0).getOpenHigh()+"m³");
+							}
+							
+							tv_two_PoreID_left.setText(beans.get(0).getPoreID());
+							
+							RelativeLayout.LayoutParams layoutParam1 = (RelativeLayout.LayoutParams)layout_relative_changes_right.getLayoutParams();
+							int heights;
+							if(CheckUtil.IsEmpty(beans.get(1).getOpenProportion())){
+								heights = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(0)*100)*2));
+							}else{
+								heights = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(beans.get(1).getOpenProportion())*100)*2));
+							}
+							layoutParam1.height = heights;
+							layout_relative_changes_right.setLayoutParams(layoutParam1);
+							layout_relative_changes_right.requestLayout();
+							if(CheckUtil.IsEmpty(beans.get(1).getOpenProportion())){
+								tv_two_OpenProportion_right.setText(0+"%");
+							}else{
+								tv_two_OpenProportion_right.setText((int)(Float.valueOf(beans.get(1).getOpenProportion())*100)+"%");
+							}
+							if(CheckUtil.IsEmpty(beans.get(1).getOpenHigh())){
+								tv_two_OpenHigh_right.setText(0+"m³");
+							}else{
+								tv_two_OpenHigh_right.setText(beans.get(1).getOpenHigh()+"m³");
+							}
+							tv_two_PoreID_right.setText(beans.get(1).getPoreID());
+						}
+						else if(beans.size() == 3){
+							layout.setVisibility(View.GONE);
+							layout_linear_change.setVisibility(View.GONE);
+							layout_linear_changes.setVisibility(View.VISIBLE);
+							list_apply_water_distrbution_gate_control.setVisibility(View.GONE);
+							RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)layout_relative_changes_one.getLayoutParams();
+							int height;
+							if(CheckUtil.IsEmpty(beans.get(0).getOpenProportion())){
+								height = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(0)*100)*2));
+							}else{
+								height = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(beans.get(0).getOpenProportion())*100)*2));
+							}
+							layoutParams.height = height;
+							layout_relative_changes_one.setLayoutParams(layoutParams);
+							layout_relative_changes_one.requestLayout();
+							if(CheckUtil.IsEmpty(beans.get(0).getOpenProportion())){
+								tv_three_OpenProportion_left.setText(0+"%");
+							}else{
+								tv_three_OpenProportion_left.setText((int)(Float.valueOf(beans.get(0).getOpenProportion())*100)+"%");
+							}
+							if(CheckUtil.IsEmpty(beans.get(0).getOpenHigh())){
+								tv_three_OpenHigh_left.setText(0+"m³");
+							}else{
+								tv_three_OpenHigh_left.setText(beans.get(0).getOpenHigh()+"m³");
+							}
+							tv_three_PoreID_left.setText(beans.get(0).getPoreID());
+							
+							RelativeLayout.LayoutParams layoutParam1 = (RelativeLayout.LayoutParams)layout_relative_changes_two.getLayoutParams();
+							int heights;
+							if(CheckUtil.IsEmpty(beans.get(1).getOpenProportion())){
+								heights = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(0)*100)*2));
+							}else{
+								heights = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(beans.get(1).getOpenProportion())*100)*2));
+							}
+							layoutParam1.height = heights;
+							layout_relative_changes_two.setLayoutParams(layoutParam1);
+							layout_relative_changes_two.requestLayout();
+							if(CheckUtil.IsEmpty(beans.get(1).getOpenProportion())){
+								tv_three_OpenProportion.setText(0+"%");
+							}else{
+								tv_three_OpenProportion.setText((int)(Float.valueOf(beans.get(1).getOpenProportion())*100)+"%");
+							}
+							if(CheckUtil.IsEmpty(beans.get(1).getOpenHigh())){
+								tv_three_OpenHigh.setText(0+"m³");
+							}else{
+								tv_three_OpenHigh.setText(beans.get(1).getOpenHigh()+"m³");
+							}
+							tv_three_PoreID.setText(beans.get(1).getPoreID());
+							
+							RelativeLayout.LayoutParams layoutParam2 = (RelativeLayout.LayoutParams)layout_relative_changes_three.getLayoutParams();
+							int height2;
+							if(CheckUtil.IsEmpty(beans.get(2).getOpenProportion())){
+								height2 = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(0)*100)*2));
+							}else{
+								height2 = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(beans.get(2).getOpenProportion())*100)*2));
+							}
+							layoutParam2.height = height2;
+							layout_relative_changes_three.setLayoutParams(layoutParam2);
+							layout_relative_changes_three.requestLayout();
+							if(CheckUtil.IsEmpty(beans.get(2).getOpenProportion())){
+								tv_three_OpenProportion_right.setText(0+"%");
+							}else{
+								tv_three_OpenProportion_right.setText((int)(Float.valueOf(beans.get(2).getOpenProportion())*100)+"%");
+							}
+							if(CheckUtil.IsEmpty(beans.get(2).getOpenHigh())){
+								tv_three_OpenHigh_right.setText(0+"m³");
+							}else{
+								tv_three_OpenHigh_right.setText(beans.get(2).getOpenHigh()+"m³");
+							}
+							tv_three_PoreID_right.setText(beans.get(2).getPoreID());
+						}
+						else if(beans.size()> 3){
+							layout_show_left_and_right.setVisibility(View.VISIBLE);
+							layout.setVisibility(View.GONE);
+							layout_linear_change.setVisibility(View.GONE);
+							layout_linear_changes.setVisibility(View.GONE);
+							list_apply_water_distrbution_gate_control.setAdapter(adapter);
+						}
+						if(beans.size()<= 3){
+							layout_show_left_and_right.setVisibility(View.GONE);
+						}else{
+							layout_show_left_and_right.setVisibility(View.VISIBLE);
+						}
+					}else{
+						layout_show_left_and_right.setVisibility(View.GONE);
+						layout.setVisibility(View.GONE);
+						layout_linear_change.setVisibility(View.GONE);
+						layout_linear_changes.setVisibility(View.GONE);
 					}
-	                adapter.addData(beans, true);
-	                if(CheckUtil.IsEmpty(beens.get(0).getDisEquName())){
-	                	text_apply_water_distrbution_gate_control.setText("");
-	                }else{
-	                	text_apply_water_distrbution_gate_control.setText(beens.get(0).getDisEquName());
-	                }
-	                if(CheckUtil.IsEmpty(beens.get(0).getPoreNum())){
-	                	tv_indicator.setText("");
-	                }else{
-	                	tv_indicator.setText(beens.get(0).getPoreNum());
-	                }
-	                if(CheckUtil.IsEmpty(beens.get(0).getFrontWaterLevel())){
-	                	tv_apply_water_before.setText("0");
-	                }else{
-	                	tv_apply_water_before.setText(beens.get(0).getFrontWaterLevel());
-	                }
-	                if(CheckUtil.IsEmpty(beens.get(0).getBackWaterLevel())){
-	                	tv_apply_water_after.setText("0");
-	                }else{
-	                	tv_apply_water_after.setText(beens.get(0).getBackWaterLevel());
-	                }
-	                if(CheckUtil.IsEmpty(beens.get(0).getDesignFlow())){
-	                	tv_apply_water_flow.setText("0");
-	                }else{
-	                	tv_apply_water_flow.setText(beens.get(0).getDesignFlow());
-	                }
-	                if(CheckUtil.IsEmpty(beens.get(0).getOpenPoreTime())){
-	                	tv_time_operation_start.setText("开始时间: "+ "0000-00-00 00:00");
-	                }else{
-	                	tv_time_operation_start.setText("开始时间: "+beens.get(0).getOpenPoreTime());
-	                }
-	                if(CheckUtil.IsEmpty(beens.get(0).getClosePoreTime())){
-	                	tv_time_operation_end.setText("结束时间: "+ "0000-00-00 00:00");
-	                }else{
-	                	tv_time_operation_end.setText("结束时间: "+beens.get(0).getClosePoreTime());
-	                }
-	                if(beans.size() == 1){
-	        			list_apply_water_distrbution_gate_control.setVisibility(View.GONE);
-	        			layout_linear_change.setVisibility(View.GONE);
-	        			layout_linear_changes.setVisibility(View.GONE);
-	        			layout.setVisibility(View.VISIBLE);
-	        			RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)layout_relative_changes.getLayoutParams();
-	        			int height;
-	        			if(CheckUtil.IsEmpty(beans.get(0).getOpenProportion())){
-	        				height = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(0)*100)*2));
-	        			}else{
-	        				height = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(beans.get(0).getOpenProportion())*100)*2));
-	        			}
-	        			layoutParams.height = height;
-	        			layout_relative_changes.setLayoutParams(layoutParams);
-	        			layout_relative_changes.requestLayout();
-	        			if(CheckUtil.IsEmpty(beans.get(0).getOpenProportion())){
-	        				tv_one_OpenProportion.setText(0+"%");
-	        			}else{
-	        				tv_one_OpenProportion.setText((int)(Float.valueOf(beans.get(0).getOpenProportion())*100)+"%");
-	        			}
-	        			if(CheckUtil.IsEmpty(beans.get(0).getOpenHigh())){
-	        				tv_one_OpenHigh.setText(0+"m³");
-	        			}else{
-	        				tv_one_OpenHigh.setText(beans.get(0).getOpenHigh()+"m³");
-	        			}
-	        			tv_one_PoreID.setText(beans.get(0).getPoreID()+"");
-	        		}
-	        		if(beans.size() == 2){
-	        			list_apply_water_distrbution_gate_control.setVisibility(View.GONE);
-	        			layout.setVisibility(View.GONE);
-	        			layout_linear_changes.setVisibility(View.GONE);
-	        			layout_linear_change.setVisibility(View.VISIBLE);
-	        			RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)layout_relative_changes_left.getLayoutParams();
-	        			int height;
-	        			if(CheckUtil.IsEmpty(beans.get(0).getOpenProportion())){
-	        				height = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(0)*100)*2));
-	        			}else{
-	        				height = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(beans.get(0).getOpenProportion())*100)*2));
-	        			}
-	        			layoutParams.height = height;
-	        			layout_relative_changes_left.setLayoutParams(layoutParams);
-	        			layout_relative_changes_left.requestLayout();
-	        			if(CheckUtil.IsEmpty(beans.get(0).getOpenProportion())){
-	        				tv_two_OpenProportion_left.setText(0+"%");
-	        			}else{
-	        				tv_two_OpenProportion_left.setText((int)(Float.valueOf(beans.get(0).getOpenProportion())*100)+"%");
-	        			}
-	        			if(CheckUtil.IsEmpty(beans.get(0).getOpenHigh())){
-	        				tv_two_OpenHigh_left.setText(0+"m³");
-	        			}else{
-	        				tv_two_OpenHigh_left.setText(beans.get(0).getOpenHigh()+"m³");
-	        			}
-	        			tv_two_PoreID_left.setText(beans.get(0).getPoreID());
-	        			
-	        			RelativeLayout.LayoutParams layoutParam1 = (RelativeLayout.LayoutParams)layout_relative_changes_right.getLayoutParams();
-	        			int heights;
-	        			if(CheckUtil.IsEmpty(beans.get(1).getOpenProportion())){
-	        				heights = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(0)*100)*2));
-	        			}else{
-	        				heights = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(beans.get(1).getOpenProportion())*100)*2));
-	        			}
-	        			layoutParam1.height = heights;
-	        			layout_relative_changes_right.setLayoutParams(layoutParam1);
-	        			layout_relative_changes_right.requestLayout();
-	        			if(CheckUtil.IsEmpty(beans.get(1).getOpenProportion())){
-	        				tv_two_OpenProportion_right.setText(0+"%");
-	        			}else{
-	        				tv_two_OpenProportion_right.setText((int)(Float.valueOf(beans.get(1).getOpenProportion())*100)+"%");
-	        			}
-	        			if(CheckUtil.IsEmpty(beans.get(1).getOpenHigh())){
-	        				tv_two_OpenHigh_right.setText(0+"m³");
-	        			}else{
-	        				tv_two_OpenHigh_right.setText(beans.get(1).getOpenHigh()+"m³");
-	        			}
-	        			tv_two_PoreID_right.setText(beans.get(1).getPoreID());
-	        			}
-	        		if(beans.size() == 3){
-	        			list_apply_water_distrbution_gate_control.setVisibility(View.GONE);
-	        			layout.setVisibility(View.GONE);
-	        			layout_linear_change.setVisibility(View.GONE);
-	        			layout_linear_changes.setVisibility(View.VISIBLE);
-	        			RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)layout_relative_changes_one.getLayoutParams();
-	        			int height;
-	        			if(CheckUtil.IsEmpty(beans.get(0).getOpenProportion())){
-	        				height = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(0)*100)*2));
-	        			}else{
-	        				height = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(beans.get(0).getOpenProportion())*100)*2));
-	        			}
-	        			layoutParams.height = height;
-	        			layout_relative_changes_one.setLayoutParams(layoutParams);
-	        			layout_relative_changes_one.requestLayout();
-	        			if(CheckUtil.IsEmpty(beans.get(0).getOpenProportion())){
-	        				tv_three_OpenProportion_left.setText(0+"%");
-	        			}else{
-	        				tv_three_OpenProportion_left.setText((int)(Float.valueOf(beans.get(0).getOpenProportion())*100)+"%");
-	        			}
-	        			if(CheckUtil.IsEmpty(beans.get(0).getOpenHigh())){
-	        				tv_three_OpenHigh_left.setText(0+"m³");
-	        			}else{
-	        				tv_three_OpenHigh_left.setText(beans.get(0).getOpenHigh()+"m³");
-	        			}
-	        			tv_three_PoreID_left.setText(beans.get(0).getPoreID());
-	        			
-	        			RelativeLayout.LayoutParams layoutParam1 = (RelativeLayout.LayoutParams)layout_relative_changes_two.getLayoutParams();
-	        			int heights;
-	        			if(CheckUtil.IsEmpty(beans.get(1).getOpenProportion())){
-	        				heights = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(0)*100)*2));
-	        			}else{
-	        				heights = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(beans.get(1).getOpenProportion())*100)*2));
-	        			}
-	        			layoutParam1.height = heights;
-	        			layout_relative_changes_two.setLayoutParams(layoutParam1);
-	        			layout_relative_changes_two.requestLayout();
-	        			if(CheckUtil.IsEmpty(beans.get(1).getOpenProportion())){
-	        				tv_three_OpenProportion.setText(0+"%");
-	        			}else{
-	        				tv_three_OpenProportion.setText((int)(Float.valueOf(beans.get(1).getOpenProportion())*100)+"%");
-	        			}
-	        			if(CheckUtil.IsEmpty(beans.get(1).getOpenHigh())){
-	        				tv_three_OpenHigh.setText(0+"m³");
-	        			}else{
-	        				tv_three_OpenHigh.setText(beans.get(1).getOpenHigh()+"m³");
-	        			}
-	        			tv_three_PoreID.setText(beans.get(1).getPoreID());
-	        			
-	        			RelativeLayout.LayoutParams layoutParam2 = (RelativeLayout.LayoutParams)layout_relative_changes_three.getLayoutParams();
-	        			int height2;
-	        			if(CheckUtil.IsEmpty(beans.get(2).getOpenProportion())){
-	        				height2 = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(0)*100)*2));
-	        			}else{
-	        				height2 = DensityUtil.dip2px(getActivity(),(int)((100-Float.valueOf(beans.get(2).getOpenProportion())*100)*2));
-	        			}
-	        			layoutParam2.height = height2;
-	        			layout_relative_changes_three.setLayoutParams(layoutParam2);
-	        			layout_relative_changes_three.requestLayout();
-	        			if(CheckUtil.IsEmpty(beans.get(2).getOpenProportion())){
-	        				tv_three_OpenProportion_right.setText(0+"%");
-	        			}else{
-	        				tv_three_OpenProportion_right.setText((int)(Float.valueOf(beans.get(2).getOpenProportion())*100)+"%");
-	        			}
-	        			if(CheckUtil.IsEmpty(beans.get(2).getOpenHigh())){
-	        				tv_three_OpenHigh_right.setText(0+"m³");
-	        			}else{
-	        				tv_three_OpenHigh_right.setText(beans.get(2).getOpenHigh()+"m³");
-	        			}
-	        			tv_three_PoreID_right.setText(beans.get(2).getPoreID());
-	        		}
-	        		if(beans.size()> 3){
-	        			layout_show_left_and_right.setVisibility(View.VISIBLE);
-	        			layout.setVisibility(View.GONE);
-	        			layout_linear_change.setVisibility(View.GONE);
-	        			layout_linear_changes.setVisibility(View.GONE);
-	        			list_apply_water_distrbution_gate_control.setVisibility(View.VISIBLE);
-	        			list_apply_water_distrbution_gate_control.setAdapter(adapter);
-	        		}
-	        		if(beans.size()<= 3){
-	        			layout_show_left_and_right.setVisibility(View.GONE);
-	        		}
-	        		String str;
-	        		if(CheckUtil.IsEmpty(beens.get(0).getSuperEqu())){
-	        			 str = "";
-	        		}else{
-	        			 str = beens.get(0).getSuperEqu();
-	        		}
-	        		SpannableStringBuilder style = new SpannableStringBuilder("上级设备: "+str);
-	        		// str代表要显示的全部字符串
-	        		ClickableSpan what = new ClickableSpan() {
-
-	        			@Override
-	        			public void onClick(View widget) {
-	        				Fetch();
-	        			}
-	        		};
-	        		style.setSpan(what, 6, beens.get(0).getSuperEqu().length()+6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-	        		tv_superior.setText(style);
-	        		tv_superior.setMovementMethod(LinkMovementMethod.getInstance());
-	        		progressDialog.dismiss();
-	        	}
-	        }); 
+					if(!CheckUtil.IsEmpty(beens)){
+						if(CheckUtil.IsEmpty(beens.get(0).getDisEquName())){
+							text_apply_water_distrbution_gate_control.setText("");
+						}else{
+							text_apply_water_distrbution_gate_control.setText(beens.get(0).getDisEquName());
+						}
+						if(CheckUtil.IsEmpty(beens.get(0).getPoreNum())){
+							tv_indicator.setText("");
+						}else{
+							tv_indicator.setText(beens.get(0).getPoreNum());
+						}
+						if(CheckUtil.IsEmpty(beens.get(0).getFrontWaterLevel())){
+							tv_apply_water_before.setText("0");
+						}else{
+							tv_apply_water_before.setText(beens.get(0).getFrontWaterLevel());
+						}
+						if(CheckUtil.IsEmpty(beens.get(0).getBackWaterLevel())){
+							tv_apply_water_after.setText("0");
+						}else{
+							tv_apply_water_after.setText(beens.get(0).getBackWaterLevel());
+						}
+						if(CheckUtil.IsEmpty(beens.get(0).getDesignFlow())){
+							tv_apply_water_flow.setText("0");
+						}else{
+							tv_apply_water_flow.setText(beens.get(0).getDesignFlow());
+						}
+						if(CheckUtil.IsEmpty(beens.get(0).getOpenPoreTime())){
+							tv_time_operation_start.setText("开始时间: "+ "0000-00-00 00:00");
+						}else{
+							tv_time_operation_start.setText("开始时间: "+beens.get(0).getOpenPoreTime());
+						}
+						if(CheckUtil.IsEmpty(beens.get(0).getClosePoreTime())){
+							tv_time_operation_end.setText("结束时间: "+ "0000-00-00 00:00");
+						}else{
+							tv_time_operation_end.setText("结束时间: "+beens.get(0).getClosePoreTime());
+						}
+					}
+					
+					String str;
+					if(CheckUtil.IsEmpty(beens.get(0).getSuperEqu())){
+						str = "";
+					}else{
+						str = beens.get(0).getSuperEqu();
+					}
+					SpannableStringBuilder style = new SpannableStringBuilder("上级设备: "+str);
+					// str代表要显示的全部字符串
+					ClickableSpan what = new ClickableSpan() {
+						
+						@Override
+						public void onClick(View widget) {
+							Fetch();
+						}
+					};
+					style.setSpan(what, 6, beens.get(0).getSuperEqu().length()+6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+					tv_superior.setText(style);
+					tv_superior.setMovementMethod(LinkMovementMethod.getInstance());
+					progressDialog.dismiss();
+				}
+			}); 
+		}
 	}
 	}

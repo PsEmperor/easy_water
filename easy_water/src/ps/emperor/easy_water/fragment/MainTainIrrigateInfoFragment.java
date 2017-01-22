@@ -131,10 +131,11 @@ public class MainTainIrrigateInfoFragment extends Fragment implements
 
 	private void init() {
 //		irrigation = dbHelper.loadContinue(units);
-		String str1 = "";
+		String str1 = (String) SharedUtils.getParam(getActivity(), "FirstDerviceID", "");;
 		try {
-			str1 = java.net.URLEncoder.encode("SB001005","UTF-8");
+			str1 = java.net.URLEncoder.encode(str1,"UTF-8");
 		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		RequestParams param3 = new RequestParams(URL.findIrriUnitInfoToOne+str1);  // 网址(请替换成实际的网址) 

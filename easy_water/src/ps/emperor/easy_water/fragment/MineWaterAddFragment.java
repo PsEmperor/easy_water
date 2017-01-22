@@ -145,14 +145,11 @@ public class MineWaterAddFragment extends Fragment implements OnClickListener {
 	                  Gson gson = new Gson();
 	                  System.out.println(arg0);
 	                  UserReleDisInfoBeanAdd fromJson = gson.fromJson(arg0, UserReleDisInfoBeanAdd.class);
-//	                  authorizedBeen = new AuthorizedBeen();
-//	                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
 	                  beens = fromJson.getAuthNameList();
-	                  for (infoList authNameListBean : beens) {
-	                	authNameListBean.getAuthName();
-					}
-	                  adapter.addData(beens, true);
-	                  listView.setAdapter(adapter);
+	                if(!CheckUtil.IsEmpty(beens)){
+	                	adapter.addData(beens, true);
+	                	listView.setAdapter(adapter);
+	                }
 	                  progressDialog.dismiss();
 	            }  
 	        }); 
@@ -310,22 +307,23 @@ public class MineWaterAddFragment extends Fragment implements OnClickListener {
 		            public void onFinished() {    
 		            }  
 		  
-		            @Override  
-		            public void onSuccess(String arg0) {  
-		                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
-		                  Gson gson = new Gson();
-		                  System.out.println(arg0);
-		                  UserReleDisInfoBeanAdd fromJson = gson.fromJson(arg0, UserReleDisInfoBeanAdd.class);
-//		                  authorizedBeen = new AuthorizedBeen();
-//		                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
-		                  List<infoList> beens = fromJson.getAuthNameList();
-		                  for (infoList authNameListBean : beens) {
-		                	authNameListBean.getAuthName();
-						}
-		                  adapter.addData(beens, true);
-		                  listView.setAdapter(adapter);
-		                  progressDialog.dismiss();
-		            }  
+							@Override
+							public void onSuccess(String arg0) {
+								Toast.makeText(getActivity(), "请求成功",
+										Toast.LENGTH_SHORT);
+								Gson gson = new Gson();
+								System.out.println(arg0);
+								UserReleDisInfoBeanAdd fromJson = gson
+										.fromJson(arg0,
+												UserReleDisInfoBeanAdd.class);
+								List<infoList> beens = fromJson
+										.getAuthNameList();
+								if (!CheckUtil.IsEmpty(beens)) {
+									adapter.addData(beens, true);
+									listView.setAdapter(adapter);
+								}
+								progressDialog.dismiss();
+							}  
 		        }); 
 			}
 			break;

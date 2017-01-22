@@ -161,10 +161,11 @@ public class MainTainBasicInfoFragment extends Fragment implements
 	}
 
 	private void init() {
-		String str1 = "";
+		String str1 = (String) SharedUtils.getParam(getActivity(), "FirstDerviceID", "");;
 		try {
-			str1 = java.net.URLEncoder.encode("SB001005","UTF-8");
+			str1 = java.net.URLEncoder.encode(str1,"UTF-8");
 		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		RequestParams param3 = new RequestParams(URL.findIrriUnitInfoToOne+str1);  // 网址(请替换成实际的网址) 
@@ -216,10 +217,7 @@ public class MainTainBasicInfoFragment extends Fragment implements
 	            public void onSuccess(String arg0) {  
 	                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
 	                  Gson gson = new Gson();
-	                  System.out.println(arg0);
 	                  UserReleIrrInfoToOneBean fromJson = gson.fromJson(arg0, UserReleIrrInfoToOneBean.class);
-//	                  authorizedBeen = new AuthorizedBeen();
-//	                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
 	                  beens = fromJson.getAuthNameList();
 	                  for (infoList authNameListBean : beens) {
 	              		if (!CheckUtil.IsEmpty(beens.get(0).getMaxGroup())) {
@@ -509,7 +507,6 @@ public class MainTainBasicInfoFragment extends Fragment implements
 							Toast.makeText(getActivity(), "请求成功",
 									Toast.LENGTH_SHORT);
 							Gson gson = new Gson();
-							System.out.println(arg0);
 							progressDialog.dismiss();
 						}
 					});

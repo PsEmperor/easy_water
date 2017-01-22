@@ -31,6 +31,8 @@ public class AuthorizedBeen {
         private String AuthCity;
         private String AuthTown;
         private String AuthCounty;
+        
+        
 		public String getAuthID() {
 			return AuthID;
 		}

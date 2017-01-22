@@ -117,10 +117,16 @@ public class MainTainIrrigationfarmarcropInfoFragment extends Fragment
 	}
 
 	private void init() {
-		String str1 = "";
+		String str1 = (String) SharedUtils.getParam(getActivity(), "FirstDerviceID", "");;
+		try {
+			str1 = java.net.URLEncoder.encode(str1,"UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		String str2 = "";
 		try {
-			str1 = java.net.URLEncoder.encode("SB001001","UTF-8");
+			str1 = java.net.URLEncoder.encode(str1,"UTF-8");
 			str2 = java.net.URLEncoder.encode("2","UTF-8");
 		} catch (UnsupportedEncodingException e1) {
 			e1.printStackTrace();
@@ -170,22 +176,18 @@ public class MainTainIrrigationfarmarcropInfoFragment extends Fragment
 	            public void onFinished() {    
 	            }  
 	  
-	            @Override  
-	            public void onSuccess(String arg0) {  
-	                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
-	                  Gson gson = new Gson();
-	                  System.out.println(arg0);
-	                  MainTainIrrigationInfoBean fromJson = gson.fromJson(arg0, MainTainIrrigationInfoBean.class);
-//	                  authorizedBeen = new AuthorizedBeen();
-//	                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
-	                  beens = fromJson.getAuthNameList();
-	                  for (infoList authNameListBean : beens) {
-	                	authNameListBean.getChanNum();
-					}
-	                adapter = new ImageAdapter(getActivity(), true, beens);
-	          		gridView.setAdapter(adapter);
-	          		progressDialog.dismiss();
-	            }  
+			@Override
+			public void onSuccess(String arg0) {
+				Gson gson = new Gson();
+				MainTainIrrigationInfoBean fromJson = gson.fromJson(arg0,
+						MainTainIrrigationInfoBean.class);
+				beens = fromJson.getAuthNameList();
+				if (!CheckUtil.IsEmpty(beens)) {
+					adapter = new ImageAdapter(getActivity(), true, beens);
+					gridView.setAdapter(adapter);
+				}
+				progressDialog.dismiss();
+			}  
 	        }); 		
 	}
 

@@ -36,6 +36,7 @@ import ps.emperor.easy_water.adapter.MainTainIrrigationAdapter;
 import ps.emperor.easy_water.entity.UserReleDisInfoBean;
 import ps.emperor.easy_water.entity.UserReleDisInfoBean.infoList;
 import ps.emperor.easy_water.utils.CheckUtil;
+import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.utils.URL;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -126,23 +127,18 @@ public class MainTainWaterFragment extends Fragment implements OnClickListener,
 	            public void onFinished() {    
 	            }  
 	  
-	            @Override  
-	            public void onSuccess(String arg0) {  
-	                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
-	                  Gson gson = new Gson();
-	                  System.out.println(arg0);
-	                  UserReleDisInfoBean fromJson = gson.fromJson(arg0, UserReleDisInfoBean.class);
-//	                  authorizedBeen = new AuthorizedBeen();
-//	                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
-	                  beens = fromJson.getAuthNameList();
-	                  for (infoList authNameListBean : beens) {
-	                	authNameListBean.getAuthName();
-	                	authNameListBean.getStatusCode();
-					}
-	                adapter.addData(beens, true);
-	          		listView.setAdapter(adapter);
-	          		progressDialog.dismiss();
-	            }  
+			@Override
+			public void onSuccess(String arg0) {
+				Gson gson = new Gson();
+				UserReleDisInfoBean fromJson = gson.fromJson(arg0,
+						UserReleDisInfoBean.class);
+				beens = fromJson.getAuthNameList();
+				if (!CheckUtil.IsEmpty(beens)) {
+					adapter.addData(beens, true);
+					listView.setAdapter(adapter);
+				}
+				progressDialog.dismiss();
+			}  
 	        }); 
 //		MainTainIrrigationBean bean;
 //		bean = new MainTainIrrigationBean();
@@ -170,6 +166,7 @@ public class MainTainWaterFragment extends Fragment implements OnClickListener,
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view,
 			final int position, long id) {
+		SharedUtils.setParam(getActivity(), "DisEquID", beens.get(position).getDisEquID());
 		Intent intent = new Intent(getActivity(),
 				MainTainGateInfoActivity.class);
 		startActivity(intent);
@@ -236,22 +233,19 @@ public class MainTainWaterFragment extends Fragment implements OnClickListener,
 		            public void onFinished() {    
 		            }  
 		  
-		            @Override  
-		            public void onSuccess(String arg0) {  
-		                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
-		                  Gson gson = new Gson();
-		                  System.out.println(arg0);
-		                  UserReleDisInfoBean fromJson = gson.fromJson(arg0, UserReleDisInfoBean.class);
-//		                  authorizedBeen = new AuthorizedBeen();
-//		                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
-		                  List<infoList> beens = fromJson.getAuthNameList();
-		                  for (infoList authNameListBean : beens) {
-		                	authNameListBean.getAuthName();
-						}
-		                  adapter.addData(beens, true);
-		                  listView.setAdapter(adapter);
-		                  progressDialog.dismiss();
-		            }  
+							@Override
+							public void onSuccess(String arg0) {
+								Gson gson = new Gson();
+								UserReleDisInfoBean fromJson = gson.fromJson(
+										arg0, UserReleDisInfoBean.class);
+								List<infoList> beens = fromJson
+										.getAuthNameList();
+								if (!CheckUtil.IsEmpty(beens)) {
+									adapter.addData(beens, true);
+									listView.setAdapter(adapter);
+								}
+								progressDialog.dismiss();
+							}  
 		        }); 
 			}
 			break;

@@ -225,10 +225,9 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 		                  authorizedBeen = new AuthorizedBeen();
 		                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
 		                  List<infoList> beens = fromJson.getAuthNameList();
-		                  for (infoList authNameListBean : beens) {
-		                	authNameListBean.getAuthProvince();
-						}
-		                  adapter.addData(beens, true);
+		                 if(!CheckUtil.IsEmpty(beens)){
+		                	 adapter.addData(beens, true);
+		                 }
 		                  progressDialog.dismiss();
 		            }  
 		        }); 
@@ -245,10 +244,11 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 		popupWindow.showAsDropDown(tvProvince);
 		break;
 		case R.id.text_mine_user_info_state:
+			shareProvince = (String) SharedUtils.getParam(getActivity(), "shareProvince", "无数据");
 			chose = 2;
 			String str = "";
 			try {
-				str = java.net.URLEncoder.encode("授","UTF-8");
+				str = java.net.URLEncoder.encode(shareProvince,"UTF-8");
 			} catch (UnsupportedEncodingException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -309,10 +309,9 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 		                  authorizedBeen = new AuthorizedBeen();
 		                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
 		                  List<infoList> beens = fromJson.getAuthNameList();
-		                  for (infoList authNameListBean : beens) {
-		                	authNameListBean.getAuthCity();
-						}
-		                  adapter1.addData(beens, true);
+		                  if(!CheckUtil.IsEmpty(beens)){
+		                	  adapter1.addData(beens, true);
+		                  }
 		                  progressDialog.dismiss();
 		            }  
 		        }); 
@@ -329,12 +328,14 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			popupWindow.showAsDropDown(tvState);
 			break;
 		case R.id.text_mine_user_info_district:
+			shareProvince = (String) SharedUtils.getParam(getActivity(), "shareProvince", "无数据");
+			shareState = (String) SharedUtils.getParam(getActivity(), "shareState", "无数据");
 			chose = 3;
 			String str1 = "";
 			String str2 = "";
 			try {
-				str1 = java.net.URLEncoder.encode("授","UTF-8");
-				str2 = java.net.URLEncoder.encode("权","UTF-8");
+				str1 = java.net.URLEncoder.encode(shareProvince,"UTF-8");
+				str2 = java.net.URLEncoder.encode(shareState,"UTF-8");
 			} catch (UnsupportedEncodingException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -390,13 +391,12 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 		                  Gson gson = new Gson();
 		                  System.out.println(arg0);
 		                  AuthorizedBeen fromJson = gson.fromJson(arg0, AuthorizedBeen.class);
-//		                  authorizedBeen = new AuthorizedBeen();
-//		                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
+		                  authorizedBeen = new AuthorizedBeen();
+		                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
 		                  List<infoList> beens = fromJson.getAuthNameList();
-		                  for (infoList authNameListBean : beens) {
-		                	authNameListBean.getAuthCounty();
-						}
-		                  adapter2.addData(beens, true);
+		                  if(!CheckUtil.IsEmpty(beens)){
+		                	  adapter2.addData(beens, true);
+		                  }
 		                  progressDialog.dismiss();
 		            }  
 		        }); 
@@ -415,14 +415,17 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			popupWindow.showAsDropDown(tvDistrict);
 			break;
 		case R.id.text_mine_user_info_even:
+			shareProvince = (String) SharedUtils.getParam(getActivity(), "shareProvince", "无数据");
+			shareState = (String) SharedUtils.getParam(getActivity(), "shareState", "无数据");
+			shareDistrict = (String) SharedUtils.getParam(getActivity(), "shareDistrict", "无数据");
 			chose = 4;
 			String str3 = "";
 			String str4 = "";
 			String str5 = "";
 			try {
-				str3 = java.net.URLEncoder.encode("授","UTF-8");
-				str4 = java.net.URLEncoder.encode("权","UTF-8");
-				str5 = java.net.URLEncoder.encode("单","UTF-8");
+				str3 = java.net.URLEncoder.encode(shareProvince,"UTF-8");
+				str4 = java.net.URLEncoder.encode(shareState,"UTF-8");
+				str5 = java.net.URLEncoder.encode(shareDistrict,"UTF-8");
 			} catch (UnsupportedEncodingException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -481,10 +484,9 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 		                  authorizedBeen = new AuthorizedBeen();
 		                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
 		                  List<infoList> beens = fromJson.getAuthNameList();
-		                  for (infoList authNameListBean : beens) {
-		                	authNameListBean.getAuthTown();
-						}
-		                  adapter4.addData(beens, true);
+		                  if(!CheckUtil.IsEmpty(beens)){
+		                	  adapter4.addData(beens, true);
+		                  }
 		                  progressDialog.dismiss();
 		            }  
 		        }); 
@@ -503,16 +505,20 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			popupWindow.showAsDropDown(tvEven);
 			break;
 		case R.id.text_mine_user_info_units:
+			shareProvince = (String) SharedUtils.getParam(getActivity(), "shareProvince", "无数据");
+			shareState = (String) SharedUtils.getParam(getActivity(), "shareState", "无数据");
+			shareDistrict = (String) SharedUtils.getParam(getActivity(), "shareDistrict", "无数据");
+			shareEven = (String) SharedUtils.getParam(getActivity(), "shareEven", "无数据");
 			chose = 5;
 			String str6 = "";
 			String str7 = "";
 			String str8 = "";
 			String str9 = "";
 			try {
-				str6 = java.net.URLEncoder.encode("授","UTF-8");
-				str7 = java.net.URLEncoder.encode("权","UTF-8");
-				str8 = java.net.URLEncoder.encode("单","UTF-8");
-				str9 = java.net.URLEncoder.encode("位","UTF-8");
+				str6 = java.net.URLEncoder.encode(shareProvince,"UTF-8");
+				str7 = java.net.URLEncoder.encode(shareState,"UTF-8");
+				str8 = java.net.URLEncoder.encode(shareDistrict,"UTF-8");
+				str9 = java.net.URLEncoder.encode(shareEven,"UTF-8");
 			} catch (UnsupportedEncodingException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -571,10 +577,9 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 		                  authorizedBeen = new AuthorizedBeen();
 		                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
 		                  List<infoList> beens = fromJson.getAuthNameList();
-		                  for (infoList authNameListBean : beens) {
-		                	authNameListBean.getAuthManage();
-						}
-		                  adapter3.addData(beens, true);
+		                  if(!CheckUtil.IsEmpty(beens)){
+		                	  adapter3.addData(beens, true);
+		                  }
 		                  progressDialog.dismiss();
 		            }  
 		        }); 

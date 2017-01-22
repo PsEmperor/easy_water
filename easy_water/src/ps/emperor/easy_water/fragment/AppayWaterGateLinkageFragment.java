@@ -27,6 +27,7 @@ import ps.emperor.easy_water.entity.ApplyWaterGateLinkageBean;
 import ps.emperor.easy_water.entity.UserReleDisInfoBeanAdd;
 import ps.emperor.easy_water.entity.FindDisWaterInfoOneBean.SluiceGateInfoBean;
 import ps.emperor.easy_water.entity.UserReleDisInfoBeanAdd.infoList;
+import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.MainActionBar;
@@ -108,14 +109,27 @@ public class AppayWaterGateLinkageFragment extends Fragment implements
 		 list = (List<SluiceGateInfoBean>) getArguments().getSerializable("beans");
 		 beans = new ArrayList<ApplyWaterGateLinkageBean>();
 		 ApplyWaterGateLinkageBean bean;
-		 for (int i = 0; i < list.size(); i++) {
-			bean = new ApplyWaterGateLinkageBean();
-			bean.setPercentage((int)(Float.valueOf(list.get(i).getOpenProportion())*100)+"");
-			bean.setHaplopore(list.get(i).getPoreID()+"");
-			bean.setShow((Float.valueOf(list.get(i).getOpenProportion())*100)+"");
-			beans.add(bean);
-			System.out.println(beans.get(i).getPercentage());
-		}
+		 if(CheckUtil.IsEmpty(list)){
+			 
+		 }else{
+			 for (int i = 0; i < list.size(); i++) {
+				 bean = new ApplyWaterGateLinkageBean();
+				 if(!CheckUtil.IsEmpty(list.get(i).getOpenProportion())){
+					 bean.setPercentage((int)(Float.valueOf(list.get(i).getOpenProportion())*100)+"");
+					 bean.setShow((Float.valueOf(list.get(i).getOpenProportion())*100)+"");
+				 }else{
+					 bean.setPercentage((int)(Float.valueOf(0)*100)+"");
+					 bean.setShow((Float.valueOf(0))+"");
+				 }
+				 if(!CheckUtil.IsEmpty(list.get(i).getPoreID())){
+					 bean.setHaplopore(list.get(i).getPoreID()+"");
+				 }else{
+					 bean.setHaplopore(0+"");
+				 }
+				 beans.add(bean);
+				 System.out.println(beans.get(i).getPercentage());
+			 }
+		 }
 		 adapter = new ApplyWaterGateLinkageAdapter(getActivity());
 		 adapter.addData(beans, false);
 		 listView.setAdapter(adapter);
@@ -144,7 +158,7 @@ public class AppayWaterGateLinkageFragment extends Fragment implements
 			JSONObject js_request = new JSONObject();
 			try {
 				param2.setAsJsonContent(true);
-				js_request.put("disEquID","配水设备5");
+				js_request.put("disEquID",SharedUtils.getParam(getActivity(), "DisEquID", ""));
 				list1 = new ArrayList<String>();
 				adapter.notifyDataSetChanged();
 				for (int i = 0; i < beans.size(); i++) {

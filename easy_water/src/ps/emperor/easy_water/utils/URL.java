@@ -53,6 +53,8 @@ public class URL {
 	public static final String queryIrriPlan = "http://192.168.2.188:8080/cms/app/IrriUnitSys/resetIrriGroupInfo/queryIrriPlan/";
 	//轮灌组重置
 	public static final String resetIrriGroupInfo = "http://192.168.2.188:8080/cms/app/IrriUnitSys/resetIrriGroupInfo/releChan";
+	//已编组阀门查询
+	public static final String findIrriGroupInfo = "http://192.168.2.188:8080/cms/app/IrriUnitSys/findIrriGroupInfo/";
 	
 	//维护模糊搜索已关联配水设备
 	public static final String findUserReleDisInfoYet = "http://192.168.2.188:8080/cms/app/DisWaterSys/fuzzyQuery/findUserReleDisInfo/";

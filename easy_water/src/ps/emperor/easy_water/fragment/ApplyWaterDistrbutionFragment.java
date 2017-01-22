@@ -24,6 +24,7 @@ import ps.emperor.easy_water.entity.UserReleDisInfoBeanAdd;
 import ps.emperor.easy_water.entity.UserReleDisInfoBean.infoList;
 import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.NetStatusUtil;
+import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.MainActionBar;
 import android.annotation.SuppressLint;
@@ -137,23 +138,21 @@ public class ApplyWaterDistrbutionFragment extends Fragment implements
 		            public void onFinished() {    
 		            }  
 		  
-		            @Override  
-		            public void onSuccess(String arg0) {  
-		                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
-		                  Gson gson = new Gson();
-		                  System.out.println(arg0);
-		                  UserReleDisInfoBean fromJson = gson.fromJson(arg0, UserReleDisInfoBean.class);
-//		                  authorizedBeen = new AuthorizedBeen();
-//		                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
-		                  beens = fromJson.getAuthNameList();
-		                  for (infoList authNameListBean : beens) {
-		                	authNameListBean.getAuthName();
-		                	authNameListBean.getStatusCode();
-						}
-		                adapter.addData(beens, true);
-		          		listView.setAdapter(adapter);
-		          		progressDialog.dismiss();
-		            }  
+						@Override
+						public void onSuccess(String arg0) {
+							Toast.makeText(getActivity(), "请求成功",
+									Toast.LENGTH_SHORT);
+							Gson gson = new Gson();
+							System.out.println(arg0);
+							UserReleDisInfoBean fromJson = gson.fromJson(arg0,
+									UserReleDisInfoBean.class);
+							beens = fromJson.getAuthNameList();
+							if (!CheckUtil.IsEmpty(beens)) {
+								adapter.addData(beens, true);
+								listView.setAdapter(adapter);
+							}
+							progressDialog.dismiss();
+						}  
 		        }); 	
 		}else{
 			Toast.makeText(getActivity(), "当前网络不可用！请检查您的网络状态！", Toast.LENGTH_LONG).show();
@@ -240,14 +239,11 @@ public class ApplyWaterDistrbutionFragment extends Fragment implements
 		                  Gson gson = new Gson();
 		                  System.out.println(arg0);
 		                  UserReleDisInfoBean fromJson = gson.fromJson(arg0, UserReleDisInfoBean.class);
-//		                  authorizedBeen = new AuthorizedBeen();
-//		                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
 		                  List<infoList> beens = fromJson.getAuthNameList();
-		                  for (infoList authNameListBean : beens) {
-		                	authNameListBean.getAuthName();
-						}
-		                  adapter.addData(beens, true);
-		                  listView.setAdapter(adapter);
+		                  if(!CheckUtil.IsEmpty(beens)){
+		                	  adapter.addData(beens, true);
+		                	  listView.setAdapter(adapter);
+		                  }
 		                  progressDialog.dismiss();
 		            }  
 		        }); 
@@ -261,6 +257,7 @@ public class ApplyWaterDistrbutionFragment extends Fragment implements
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view,
 			final int position, long id) {
+		SharedUtils.setParam(getActivity(), "DisEquID", beens.get(position).getDisEquID());
 		FragmentManager fgManager = getFragmentManager();
 		FragmentTransaction transaction = fgManager.beginTransaction();
 		ApplyWaterDistrbutionGate fragment = new ApplyWaterDistrbutionGate();

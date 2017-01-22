@@ -1,5 +1,6 @@
 package ps.emperor.easy_water.fragment;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import org.json.JSONObject;
@@ -14,6 +15,7 @@ import com.google.gson.Gson;
 
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.adapter.MainTainIntoCropsAdapter;
+import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.MainActionBar;
 import ps.emperor.easy_water.view.MainActionBars;
@@ -102,7 +104,14 @@ public class MainTainIntoUserFragment extends Fragment implements
 			JSONObject js_request = new JSONObject();
 			try {
 				param2.setAsJsonContent(true);
-				js_request.put("firstDerviceID", "SB001001");
+				String str1 = (String) SharedUtils.getParam(getActivity(), "FirstDerviceID", "");;
+				try {
+					str1 = java.net.URLEncoder.encode(str1,"UTF-8");
+				} catch (UnsupportedEncodingException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				js_request.put("firstDerviceID", str1);
 //				String[] array = new String[list.size()];
 //				for (int i = 0; i < list.size(); i++) {
 //					array[i] = list.get(i);
@@ -152,9 +161,6 @@ public class MainTainIntoUserFragment extends Fragment implements
 		  
 		            @Override  
 		            public void onSuccess(String arg0) {  
-		                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
-		                  Gson gson = new Gson();
-		                  System.out.println(arg0);
 		                  progressDialog.dismiss();
 		            }  
 		        }); 

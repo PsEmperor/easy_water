@@ -24,6 +24,7 @@ import ps.emperor.easy_water.entity.UserReleIrrInfoBean;
 import ps.emperor.easy_water.entity.UserReleIrrInfoBean.infoList;
 import ps.emperor.easy_water.greendao.DBHelper;
 import ps.emperor.easy_water.greendao.Irrigation;
+import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.MainActionBar;
@@ -136,19 +137,21 @@ public class MineIrrigationEquipmentFragment extends Fragment implements OnClick
 //	                  authorizedBeen = new AuthorizedBeen();
 //	                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
 	                  List<infoList> beens = fromJson.getAuthNameList();
-	                  for (infoList authNameListBean : beens) {
-	                	authNameListBean.getIrriUnitName();
-	                	authNameListBean.getStatusCode();
-	                	if(authNameListBean.getStatusCode()==1){
-	                		IrrCode ++;
-	                	}
-					}
-	                  if(IrrCode == 0){
-	                	  IrrCode = beens.size();
+	                  if(!CheckUtil.IsEmpty(beens)){
+	                	  for (infoList authNameListBean : beens) {
+	                		  authNameListBean.getIrriUnitName();
+	                		  authNameListBean.getStatusCode();
+	                		  if(authNameListBean.getStatusCode()==1){
+	                			  IrrCode ++;
+	                		  }
+	                	  }
+	                	  if(IrrCode == 0){
+	                		  IrrCode = beens.size();
+	                	  }
+	                	  adapter = new IrrigationEquipmentAdapter(getActivity(),IrrCode);
+	                	  adapter.addData(beens, true);
+	                	  listView.setAdapter(adapter);
 	                  }
-	                adapter = new IrrigationEquipmentAdapter(getActivity(),IrrCode);
-	                adapter.addData(beens, true);
-	          		listView.setAdapter(adapter);
 	          		progressDialog.dismiss();
 	            }  
 	        }); 

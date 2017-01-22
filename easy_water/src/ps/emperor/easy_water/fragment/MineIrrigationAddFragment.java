@@ -156,14 +156,11 @@ public class MineIrrigationAddFragment extends Fragment implements OnClickListen
 	                  Gson gson = new Gson();
 	                  System.out.println(arg0);
 	                  UserReleIrrInfoBeanAdd fromJson = gson.fromJson(arg0, UserReleIrrInfoBeanAdd.class);
-//	                  authorizedBeen = new AuthorizedBeen();
-//	                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
 	                  beens = fromJson.getAuthNameList();
-	                  for (infoList authNameListBean : beens) {
-	                	authNameListBean.getAuthName();
-					}
-	                  adapter.addData(beens, false);
-	                  listView.setAdapter(adapter);
+	                  if(!CheckUtil.IsEmpty(beens)){
+	                	  adapter.addData(beens, false);
+	                	  listView.setAdapter(adapter);
+	                  }
 	                  progressDialog.dismiss();
 	            }  
 	        }); 
@@ -352,11 +349,10 @@ public class MineIrrigationAddFragment extends Fragment implements OnClickListen
 		                  Gson gson = new Gson();
 		                  UserReleIrrInfoBeanAdd fromJson = gson.fromJson(arg0, UserReleIrrInfoBeanAdd.class);
 		                  List<infoList> beens = fromJson.getAuthNameList();
-		                  for (infoList authNameListBean : beens) {
-		                	authNameListBean.getAuthName();
-						}
-		                  adapter.addData(beens, true);
-		                  listView.setAdapter(adapter);
+		                  if(!CheckUtil.IsEmpty(beens)){
+		                	  adapter.addData(beens, true);
+		                	  listView.setAdapter(adapter);
+		                  }
 		                  progressDialog.dismiss();
 		            }
 		        }); 

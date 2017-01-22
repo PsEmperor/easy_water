@@ -147,15 +147,11 @@ public class ApplyIrrigateFragment extends Fragment implements OnClickListener,
 	                  Gson gson = new Gson();
 	                  System.out.println(arg0);
 	                  UserReleIrrInfoBean fromJson = gson.fromJson(arg0, UserReleIrrInfoBean.class);
-//	                  authorizedBeen = new AuthorizedBeen();
-//	                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
 	                  beens = fromJson.getAuthNameList();
-	                  for (infoList authNameListBean : beens) {
-	                	authNameListBean.getAuthName();
-	                	authNameListBean.getStatusCode();
-					}
-	                adapter.addData(beens, true);
-	          		listView.setAdapter(adapter);
+	                  if(!CheckUtil.IsEmpty(beens)){
+	                	  adapter.addData(beens, true);
+	                	  listView.setAdapter(adapter);
+	                  }
 	          		progressDialog.dismiss();
 	            }  
 	        }); 
@@ -246,10 +242,10 @@ public class ApplyIrrigateFragment extends Fragment implements OnClickListener,
 		                  
 		            }  
 		  
-		         // 不管成功或者失败最后都会回调该接口  
-		            @Override  
-		            public void onFinished() {    
-		            }  
+							// 不管成功或者失败最后都会回调该接口
+							@Override
+							public void onFinished() {
+							}  
 		  
 		            @Override  
 		            public void onSuccess(String arg0) {  
@@ -257,14 +253,11 @@ public class ApplyIrrigateFragment extends Fragment implements OnClickListener,
 		                  Gson gson = new Gson();
 		                  System.out.println(arg0);
 		                  UserReleIrrInfoBean fromJson = gson.fromJson(arg0, UserReleIrrInfoBean.class);
-//		                  authorizedBeen = new AuthorizedBeen();
-//		                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
 		                  List<infoList> beens = fromJson.getAuthNameList();
-		                  for (infoList authNameListBean : beens) {
-		                	authNameListBean.getAuthName();
-						}
-		                  adapter.addData(beens, true);
-		                  listView.setAdapter(adapter);
+		                  if(!CheckUtil.IsEmpty(beens)){
+		                	  adapter.addData(beens, true);
+		                	  listView.setAdapter(adapter);
+		                  }
 		                  progressDialog.dismiss();
 		            }  
 		        }); 

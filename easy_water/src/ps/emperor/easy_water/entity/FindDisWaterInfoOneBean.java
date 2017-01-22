@@ -35,20 +35,11 @@ public class FindDisWaterInfoOneBean {
 		 * OpenProportion : 0.22 PoreHigh : 5
 		 */
 
-		private String FrontWatLev;
 		private String DisEquID;
 		private String PoreID;
-		private String PoreWidth;
 		private String DesignFlow;
-		private String Area;
 		private String OpenHigh;
-		private String BehindWatLev;
 		private String OpenProportion;
-		private String PoreHigh;
-
-		public Object getFrontWatLev() {
-			return FrontWatLev;
-		}
 
 		public String getDisEquID() {
 			return DisEquID;
@@ -62,14 +53,6 @@ public class FindDisWaterInfoOneBean {
 			PoreID = poreID;
 		}
 
-		public String getPoreWidth() {
-			return PoreWidth;
-		}
-
-		public void setPoreWidth(String poreWidth) {
-			PoreWidth = poreWidth;
-		}
-
 		public String getDesignFlow() {
 			return DesignFlow;
 		}
@@ -78,32 +61,9 @@ public class FindDisWaterInfoOneBean {
 			DesignFlow = designFlow;
 		}
 
-		public String getPoreHigh() {
-			return PoreHigh;
-		}
-
-		public void setPoreHigh(String poreHigh) {
-			PoreHigh = poreHigh;
-		}
-
-		public void setFrontWatLev(String frontWatLev) {
-			FrontWatLev = frontWatLev;
-		}
-
-		public void setArea(String area) {
-			Area = area;
-		}
-
-		public void setBehindWatLev(String behindWatLev) {
-			BehindWatLev = behindWatLev;
-		}
 
 		public void setDisEquID(String DisEquID) {
 			this.DisEquID = DisEquID;
-		}
-
-		public Object getArea() {
-			return Area;
 		}
 
 		public String getOpenHigh() {
@@ -112,10 +72,6 @@ public class FindDisWaterInfoOneBean {
 
 		public void setOpenHigh(String openHigh) {
 			OpenHigh = openHigh;
-		}
-
-		public Object getBehindWatLev() {
-			return BehindWatLev;
 		}
 
 		public String getOpenProportion() {

@@ -1,5 +1,8 @@
 package ps.emperor.easy_water.entity;
 
+import java.util.List;
+
+
 /**
  * 当前灌溉组
  * @author 毛国江
@@ -8,16 +11,34 @@ package ps.emperor.easy_water.entity;
 public class MainTainPresentIrrigateGridBean {
 
 
-	public String group; //组
+    private List<infoList> infoList;
 
-	public String getGroup() {
-		return group;
-	}
+    public List<infoList> getAuthNameList() {
+        return infoList;
+    }
 
-	public void setGroup(String group) {
-		this.group = group;
-	}
+    public void setAuthNameList(List<infoList> authNameList) {
+        this.infoList = authNameList;
+    }
 
+    public static class infoList {
 
-
+    	private String GroupName;
+    	private String ChanNum;
+    	
+		public String getGroupName() {
+			return GroupName;
+		}
+		public void setGroupName(String groupName) {
+			GroupName = groupName;
+		}
+		public String getChanNum() {
+			return ChanNum;
+		}
+		public void setChanNum(String chanNum) {
+			ChanNum = chanNum;
+		}
+    	
+    	
+    }
 }

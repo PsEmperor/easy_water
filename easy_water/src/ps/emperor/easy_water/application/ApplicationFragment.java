@@ -116,41 +116,40 @@ public class ApplicationFragment extends Fragment implements
 		// position+"----view.getId:"+view.getId(), 0).show();
 		switch (position) {
 		case 0:
-			//ApplyIrrigateFragment  灌溉
-//			Toast.makeText(getActivity(),
-//					position + "" + ((TextView) view).getText() + "被点击", 0)
-//					.show();
-			
-			
+			// ApplyIrrigateFragment 灌溉
+			// Toast.makeText(getActivity(),
+			// position + "" + ((TextView) view).getText() + "被点击", 0)
+			// .show();
+
 			ApplyIrrigateFragment af = new ApplyIrrigateFragment();
 			getActivity().getFragmentManager().beginTransaction()
 					.replace(R.id.fl, af).addToBackStack(null).commit();
-			
-			
+
 			break;
 		case 1:
-			//ApplyWaterDistrbutionFragment  配水
-//			Toast.makeText(getActivity(),
-//					position + "" + ((TextView) view).getText() + "被点击", 0)
-//					.show();
-			
+			// ApplyWaterDistrbutionFragment 配水
+			// Toast.makeText(getActivity(),
+			// position + "" + ((TextView) view).getText() + "被点击", 0)
+			// .show();
+
 			ApplyWaterDistrbutionFragment ps = new ApplyWaterDistrbutionFragment();
 			getActivity().getFragmentManager().beginTransaction()
 					.replace(R.id.fl, ps).addToBackStack(null).commit();
 			break;
 		case 2:
-			//IrriagteOrWaterActivity  维护
-//			Toast.makeText(getActivity(),
-//					position + "" + ((TextView) view).getText() + "被点击", 0)
-//					.show();
-			Intent intent = new Intent(getActivity(),IrriagteOrWaterActivity.class);
+			// IrriagteOrWaterActivity 维护
+			// Toast.makeText(getActivity(),
+			// position + "" + ((TextView) view).getText() + "被点击", 0)
+			// .show();
+			Intent intent = new Intent(getActivity(),
+					IrriagteOrWaterActivity.class);
 			startActivity(intent);
 			break;
 		case 3:
-			//数据
-//			InformationFragment sj = new InformationFragment();
-//			getActivity().getFragmentManager().beginTransaction()
-//					.replace(R.id.fl, sj).addToBackStack(null).commit();
+			// 数据
+			// InformationFragment sj = new InformationFragment();
+			// getActivity().getFragmentManager().beginTransaction()
+			// .replace(R.id.fl, sj).addToBackStack(null).commit();
 			Toast.makeText(getActivity(),
 					position + "" + ((TextView) view).getText() + "被点击", 0)
 					.show();
@@ -173,7 +172,6 @@ public class ApplicationFragment extends Fragment implements
 			break;
 
 		}
-
 
 	}
 	

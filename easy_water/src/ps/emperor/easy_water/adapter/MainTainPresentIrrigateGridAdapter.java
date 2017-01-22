@@ -9,13 +9,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.entity.MainTainPresentIrrigateGridBean;
+import ps.emperor.easy_water.entity.MainTainPresentIrrigateGridBean.infoList;
 
 /**
  * 当前灌溉组内层gridview
  * @author 毛国江
  * @version 2016-6-6 上午11:12
  */
-public class MainTainPresentIrrigateGridAdapter extends MyBaseAdapter<MainTainPresentIrrigateGridBean> implements OnClickListener {
+public class MainTainPresentIrrigateGridAdapter extends MyBaseAdapter<infoList> implements OnClickListener {
 
 	private Context context;
 
@@ -30,19 +31,22 @@ public class MainTainPresentIrrigateGridAdapter extends MyBaseAdapter<MainTainPr
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.fragment_maintain_irrigate_grid_list, null);
 			viewHolder = new ViewHolder();
-			viewHolder.group = (TextView) convertView.findViewById(R.id.text_maintain_present_grid_list);
+			viewHolder.group = (TextView) convertView.findViewById(R.id.text_fragment_maintain_present_groups);
+			viewHolder.value = (TextView) convertView.findViewById(R.id.text_maintain_present_grid_list);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		MainTainPresentIrrigateGridBean mainTainPresentIrrigateBean = list.get(position);
-		viewHolder.group.setText(mainTainPresentIrrigateBean.group);
+		infoList infoList = list.get(position);
+		viewHolder.group.setText(infoList.getGroupName());
+		viewHolder.value.setText(infoList.getChanNum());
 		return convertView;
 
 	}
 
 	class ViewHolder {
 		TextView group;
+		TextView value;
 		
 	}
 

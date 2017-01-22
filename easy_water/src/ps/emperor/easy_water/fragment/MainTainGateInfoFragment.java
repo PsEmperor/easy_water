@@ -31,6 +31,7 @@ import ps.emperor.easy_water.entity.FindDisEquInfoOneBean;
 import ps.emperor.easy_water.entity.UserReleDisInfoBeanAdd;
 import ps.emperor.easy_water.entity.FindDisEquInfoOneBean.infoList;
 import ps.emperor.easy_water.entity.UserReleDisInfoBean;
+import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.MainActionBar;
 import ps.emperor.easy_water.view.MainActionBars;
@@ -76,9 +77,9 @@ public class MainTainGateInfoFragment extends Fragment implements
 		gate_info_area = (EditText) view.findViewById(R.id.text_maintain_gate_info_area);
 		gate_info_hole = (TextView) view.findViewById(R.id.text_maintain_gate_info_hole);
 		
-		String str1 = "";
+		String str1 = (String) SharedUtils.getParam(getActivity(), "DisEquID", "");
 		try {
-			str1 = java.net.URLEncoder.encode("配水设备1","UTF-8");
+			str1 = java.net.URLEncoder.encode(str1,"UTF-8");
 		} catch (UnsupportedEncodingException e1) {
 			e1.printStackTrace();
 		}
@@ -170,7 +171,7 @@ public class MainTainGateInfoFragment extends Fragment implements
 			JSONObject js_request = new JSONObject();
 			try {
 				param2.setAsJsonContent(true);
-				js_request.put("disEquID", "配水设备1");
+				js_request.put("disEquID", SharedUtils.getParam(getActivity(), "DisEquID", ""));
 				js_request.put("disEquName", gate_info_name.getText().toString());
 				js_request.put("area", gate_info_area.getText().toString());
 				param2.setBodyContent(js_request.toString());

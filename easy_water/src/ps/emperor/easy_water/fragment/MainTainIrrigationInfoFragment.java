@@ -33,30 +33,23 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.GridView;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import ps.emperor.easy_water.R;
-import ps.emperor.easy_water.adapter.ImageAdapter;
 import ps.emperor.easy_water.adapter.ImageGroupAdapter;
 import ps.emperor.easy_water.entity.MainTainIrrigationInfoBean;
 import ps.emperor.easy_water.entity.MainTainIrrigationInfoBean.groupList;
 import ps.emperor.easy_water.entity.MainTainIrrigationInfoBean.infoList;
 import ps.emperor.easy_water.greendao.DBHelper;
 import ps.emperor.easy_water.greendao.IrrigationGroup;
-import ps.emperor.easy_water.greendao.IrrigationProject;
 import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.utils.URL;
-import ps.emperor.easy_water.view.MainActionBar;
 import ps.emperor.easy_water.view.MainActionBars;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.PopupWindow.OnDismissListener;
 
 /**
  * 轮灌组维护（应用）
@@ -145,10 +138,16 @@ public class MainTainIrrigationInfoFragment extends Fragment implements
 	}
 
 	private void init() {
-		String str1 = "";
+		String str1 = (String) SharedUtils.getParam(getActivity(), "FirstDerviceID", "");;
+		try {
+			str1 = java.net.URLEncoder.encode(str1,"UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		String str2 = "";
 		try {
-			str1 = java.net.URLEncoder.encode("SB001001","UTF-8");
+			str1 = java.net.URLEncoder.encode(str1,"UTF-8");
 			str2 = java.net.URLEncoder.encode("3","UTF-8");
 		} catch (UnsupportedEncodingException e1) {
 			e1.printStackTrace();
@@ -198,24 +197,20 @@ public class MainTainIrrigationInfoFragment extends Fragment implements
 	            public void onFinished() {    
 	            }  
 	  
-	            @Override  
-	            public void onSuccess(String arg0) {  
-	                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
-	                  Gson gson = new Gson();
-	                  System.out.println(arg0);
-	                  MainTainIrrigationInfoBean fromJson = gson.fromJson(arg0, MainTainIrrigationInfoBean.class);
-//	                  authorizedBeen = new AuthorizedBeen();
-//	                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
-	                  beens = fromJson.getAuthNameList();
-	                  beans = fromJson.getGroupList();
-	                  for (infoList authNameListBean : beens) {
-	                	authNameListBean.getChanNum();
-					}
-	                adapter = new ImageGroupAdapter(getActivity(), true, beens);
-	          		gridView.setAdapter(adapter);
-	          		text_maintain_irrigat_round.setText(beans.get(0).getGroupNum());
-	          		progressDialog.dismiss();
-	            }  
+			@Override
+			public void onSuccess(String arg0) {
+				Gson gson = new Gson();
+				MainTainIrrigationInfoBean fromJson = gson.fromJson(arg0,
+						MainTainIrrigationInfoBean.class);
+				beens = fromJson.getAuthNameList();
+				beans = fromJson.getGroupList();
+				if (!CheckUtil.IsEmpty(beens)) {
+					adapter = new ImageGroupAdapter(getActivity(), true, beens);
+					gridView.setAdapter(adapter);
+					text_maintain_irrigat_round.setText(beans.get(0).getGroupNum());
+				}
+				progressDialog.dismiss();
+			}  
 	        }); 		
 	}
 
@@ -257,7 +252,14 @@ public class MainTainIrrigationInfoFragment extends Fragment implements
 			JSONObject js_request = new JSONObject();
 			try {
 				param2.setAsJsonContent(true);
-				js_request.put("firstDerviceID", "SB001001");
+				String str1 = (String) SharedUtils.getParam(getActivity(), "FirstDerviceID", "");;
+				try {
+					str1 = java.net.URLEncoder.encode(str1,"UTF-8");
+				} catch (UnsupportedEncodingException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				js_request.put("firstDerviceID", str1);
 				js_request.put("valueControlChanID", infoBeans);
 				js_request.put("groupNum",beans.get(0).getGroupNum());
 				js_request.put("area", area);
@@ -302,9 +304,6 @@ public class MainTainIrrigationInfoFragment extends Fragment implements
 		  
 		            @Override  
 		            public void onSuccess(String arg0) {  
-		                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
-		                  Gson gson = new Gson();
-		                  System.out.println(arg0);
 		                  progressDialog.dismiss();
 		            }  
 		        }); 
@@ -321,164 +320,164 @@ public class MainTainIrrigationInfoFragment extends Fragment implements
 		transaction.commit();
 		break;
 		case R.id.btn_main_irrigate_info_group:// 重置编组信息
-			String str1 = "";
-			try {
-				str1 = java.net.URLEncoder.encode("SB001001","UTF-8");
-			} catch (UnsupportedEncodingException e1) {
-				e1.printStackTrace();
-			}
-			RequestParams param2 = new RequestParams(URL.queryIrriPlan+str1); // 网址(请替换成实际的网址)
-			// params.addQueryStringParameter("key", "value"); //
-			// 参数(请替换成实际的参数与值)
-			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
-					"Please wait...", true, false);
-			JSONObject js_request = new JSONObject();
-			try {
-				param2.setAsJsonContent(true);
-				param2.setBodyContent(js_request.toString());
-			} catch (Exception e) {
-				e.printStackTrace();
-				param2.setAsJsonContent(true);
-			}// 根据实际需求添加相应键值对
-
-			x.http().request(HttpMethod.GET, param2,
-					new CommonCallback<String>() {
-						@Override
-						public void onCancelled(CancelledException arg0) {
-
-						}
-
-						// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
-						// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
-						@Override
-						public void onError(Throwable ex, boolean isOnCallback) {
-
-							Toast.makeText(x.app(), ex.getMessage(),
-									Toast.LENGTH_LONG).show();
-							if (ex instanceof HttpException) { // 网络错误 
-								HttpException httpEx = (HttpException) ex;
-								int responseCode = httpEx.getCode();
-								String responseMsg = httpEx.getMessage();
-								String errorResult = httpEx.getResult();
-								Toast.makeText(getActivity(), "请求失败",
-										Toast.LENGTH_SHORT);
-								// ...
-								progressDialog.dismiss();
-							} else { // 其他错误 
-								// ...
-								Toast.makeText(getActivity(), "请求失败",
-										Toast.LENGTH_SHORT);
-								progressDialog.dismiss();
-							}
-
-						}
-
-						// 不管成功或者失败最后都会回调该接口
-						@Override
-						public void onFinished() {
-						}
-
-						@Override
-						public void onSuccess(String arg0) {
-							Toast.makeText(getActivity(), "请求成功",
+			if(!CheckUtil.IsEmpty(beens)){
+				String str1 = (String) SharedUtils.getParam(getActivity(), "FirstDerviceID", "");;
+				try {
+					str1 = java.net.URLEncoder.encode(str1,"UTF-8");
+				} catch (UnsupportedEncodingException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				RequestParams param2 = new RequestParams(URL.queryIrriPlan+str1); // 网址(请替换成实际的网址)
+				// params.addQueryStringParameter("key", "value"); //
+				// 参数(请替换成实际的参数与值)
+				progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+						"Please wait...", true, false);
+				JSONObject js_request = new JSONObject();
+				try {
+					param2.setAsJsonContent(true);
+					param2.setBodyContent(js_request.toString());
+				} catch (Exception e) {
+					e.printStackTrace();
+					param2.setAsJsonContent(true);
+				}// 根据实际需求添加相应键值对
+				
+				x.http().request(HttpMethod.GET, param2,
+						new CommonCallback<String>() {
+					@Override
+					public void onCancelled(CancelledException arg0) {
+						
+					}
+					
+					// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+					// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+					@Override
+					public void onError(Throwable ex, boolean isOnCallback) {
+						
+						Toast.makeText(x.app(), ex.getMessage(),
+								Toast.LENGTH_LONG).show();
+						if (ex instanceof HttpException) { // 网络错误 
+							HttpException httpEx = (HttpException) ex;
+							int responseCode = httpEx.getCode();
+							String responseMsg = httpEx.getMessage();
+							String errorResult = httpEx.getResult();
+							Toast.makeText(getActivity(), "请求失败",
 									Toast.LENGTH_SHORT);
-							Gson gson = new Gson();
-							System.out.println(arg0);
+							// ...
 							progressDialog.dismiss();
-							new AlertDialog.Builder(getActivity())
-							.setTitle("系统提示")
-							// 设置对话框标题
-
-							.setMessage("重置轮灌组信息将删除当前所有已编组的阀门信息！您确认要重置轮灌组吗？")
-							// 设置显示的内容
-
-							.setPositiveButton("确定",
-									new DialogInterface.OnClickListener() {// 添加确定按钮
-
-										@Override
-										public void onClick(DialogInterface dialog,
-												int which) {// 确定按钮的响应事件
-
-											RequestParams param2 = new RequestParams(URL.resetIrriGroupInfo); // 网址(请替换成实际的网址)
-											// params.addQueryStringParameter("key", "value"); //
-											// 参数(请替换成实际的参数与值)
-											progressDialog = ProgressDialog.show(getActivity(), "Loading...",
-													"Please wait...", true, false);
-											JSONObject js_request = new JSONObject();
-											try {
-												param2.setAsJsonContent(true);
-												js_request.put("firstDerviceID", "SB001001");
-												param2.setBodyContent(js_request.toString());
-											} catch (Exception e) {
-												e.printStackTrace();
-												param2.setAsJsonContent(true);
-											}// 根据实际需求添加相应键值对
-
-											x.http().request(HttpMethod.PUT, param2,
-													new CommonCallback<String>() {
-														@Override
-														public void onCancelled(CancelledException arg0) {
-
-														}
-
-														// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
-														// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
-														@Override
-														public void onError(Throwable ex, boolean isOnCallback) {
-
-															Toast.makeText(x.app(), ex.getMessage(),
-																	Toast.LENGTH_LONG).show();
-															if (ex instanceof HttpException) { // 网络错误 
-																HttpException httpEx = (HttpException) ex;
-																int responseCode = httpEx.getCode();
-																String responseMsg = httpEx.getMessage();
-																String errorResult = httpEx.getResult();
-																Toast.makeText(getActivity(), "请求失败",
-																		Toast.LENGTH_SHORT);
-																// ...
-																progressDialog.dismiss();
-															} else { // 其他错误 
-																// ...
-																Toast.makeText(getActivity(), "请求失败",
-																		Toast.LENGTH_SHORT);
-																progressDialog.dismiss();
-															}
-
-														}
-
-														// 不管成功或者失败最后都会回调该接口
-														@Override
-														public void onFinished() {
-														}
-
-														@Override
-														public void onSuccess(String arg0) {
-															Toast.makeText(getActivity(), "请求成功",
-																	Toast.LENGTH_SHORT);
-															Gson gson = new Gson();
-															System.out.println(arg0);
-															progressDialog.dismiss();
-															adapter.notifyDataSetChanged();
-														}
-													});
-										}
-
-									})
-							.setNegativeButton("返回",
-									new DialogInterface.OnClickListener() {// 添加返回按钮
-
-										@Override
-										public void onClick(DialogInterface dialog,
-												int which) {// 响应事件
-
-											// TODO Auto-generated method stub
-
-											dialog.dismiss();
-										}
-
-									}).show();// 在按键响应事件中显示此对话框
+						} else { // 其他错误 
+							// ...
+							Toast.makeText(getActivity(), "请求失败",
+									Toast.LENGTH_SHORT);
+							progressDialog.dismiss();
 						}
-					});
+						
+					}
+					
+					// 不管成功或者失败最后都会回调该接口
+					@Override
+					public void onFinished() {
+					}
+					
+					@Override
+					public void onSuccess(String arg0) {
+						Gson gson = new Gson();
+						progressDialog.dismiss();
+						new AlertDialog.Builder(getActivity())
+						.setTitle("系统提示")
+						// 设置对话框标题
+						
+						.setMessage("重置轮灌组信息将删除当前所有已编组的阀门信息！您确认要重置轮灌组吗？")
+						// 设置显示的内容
+						
+						.setPositiveButton("确定",
+								new DialogInterface.OnClickListener() {// 添加确定按钮
+							
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {// 确定按钮的响应事件
+								
+								RequestParams param2 = new RequestParams(URL.resetIrriGroupInfo); // 网址(请替换成实际的网址)
+								// params.addQueryStringParameter("key", "value"); //
+								// 参数(请替换成实际的参数与值)
+								progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+										"Please wait...", true, false);
+								JSONObject js_request = new JSONObject();
+								try {
+									param2.setAsJsonContent(true);
+									String str1 = (String) SharedUtils.getParam(getActivity(), "FirstDerviceID", "");;
+									try {
+										str1 = java.net.URLEncoder.encode(str1,"UTF-8");
+									} catch (UnsupportedEncodingException e1) {
+										// TODO Auto-generated catch block
+										e1.printStackTrace();
+									}
+									js_request.put("firstDerviceID", str1);
+									param2.setBodyContent(js_request.toString());
+								} catch (Exception e) {
+									e.printStackTrace();
+									param2.setAsJsonContent(true);
+								}// 根据实际需求添加相应键值对
+								
+								x.http().request(HttpMethod.PUT, param2,
+										new CommonCallback<String>() {
+									@Override
+									public void onCancelled(CancelledException arg0) {
+										
+									}
+									
+									// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+									// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+									@Override
+									public void onError(Throwable ex, boolean isOnCallback) {
+										
+										Toast.makeText(x.app(), ex.getMessage(),
+												Toast.LENGTH_LONG).show();
+										if (ex instanceof HttpException) { // 网络错误 
+											HttpException httpEx = (HttpException) ex;
+											int responseCode = httpEx.getCode();
+											String responseMsg = httpEx.getMessage();
+											String errorResult = httpEx.getResult();
+											// ...
+											progressDialog.dismiss();
+										} else { // 其他错误 
+											// ...
+											progressDialog.dismiss();
+										}
+										
+									}
+									
+									// 不管成功或者失败最后都会回调该接口
+									@Override
+									public void onFinished() {
+									}
+									
+									@Override
+									public void onSuccess(String arg0) {
+										progressDialog.dismiss();
+										adapter = new ImageGroupAdapter(getActivity(), true, beens);
+										gridView.setAdapter(adapter);
+									}
+								});
+							}
+							
+						})
+						.setNegativeButton("返回",
+								new DialogInterface.OnClickListener() {// 添加返回按钮
+							
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {// 响应事件
+								
+								// TODO Auto-generated method stub
+								
+								dialog.dismiss();
+							}
+							
+						}).show();// 在按键响应事件中显示此对话框
+					}
+				});
+			}
 			
 		break;
 		}

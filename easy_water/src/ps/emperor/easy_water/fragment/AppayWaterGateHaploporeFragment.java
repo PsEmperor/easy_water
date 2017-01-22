@@ -142,7 +142,7 @@ public class AppayWaterGateHaploporeFragment extends Fragment implements
 				JSONObject js_request = new JSONObject();
 				try {
 					param2.setAsJsonContent(true);
-					js_request.put("disEquID", "配水设备5");
+					js_request.put("disEquID",SharedUtils.getParam(getActivity(), "DisEquID", ""));
 					js_request.put("poreID", PoreId);
 					js_request.put("openProportion", OpenProportion);
 					param2.setBodyContent(js_request.toString());
@@ -218,7 +218,7 @@ public class AppayWaterGateHaploporeFragment extends Fragment implements
 				JSONObject js_request = new JSONObject();
 				try {
 					param2.setAsJsonContent(true);
-					js_request.put("disEquID", "配水设备5");
+					js_request.put("disEquID", SharedUtils.getParam(getActivity(), "DisEquID", ""));
 					js_request.put("openProportion",OpenProportion);
 					param2.setBodyContent(js_request.toString());
 				} catch (Exception e) {
