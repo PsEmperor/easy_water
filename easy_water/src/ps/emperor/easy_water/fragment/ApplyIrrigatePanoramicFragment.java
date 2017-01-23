@@ -1,25 +1,43 @@
 package ps.emperor.easy_water.fragment;
 
+import java.io.UnsupportedEncodingException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+
+import org.json.JSONObject;
+import org.xutils.x;
+import org.xutils.common.Callback.CancelledException;
+import org.xutils.common.Callback.CommonCallback;
+import org.xutils.ex.HttpException;
+import org.xutils.http.HttpMethod;
+import org.xutils.http.RequestParams;
+
+import com.google.gson.Gson;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.adapter.ApplyIrrigateSingleValveAdapter;
-import ps.emperor.easy_water.adapter.ImageAdapters;
 import ps.emperor.easy_water.entity.ApplyIrrigateSingleValveBean;
+import ps.emperor.easy_water.entity.ApplyIrrigateSingleValveBean.infoList;
 import ps.emperor.easy_water.entity.MainTainIrrigationInfoBean;
+import ps.emperor.easy_water.entity.UserReleIrrInfoToOneBean;
+import ps.emperor.easy_water.utils.CheckUtil;
+import ps.emperor.easy_water.utils.SharedUtils;
+import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.MainActionBar;
 import ps.emperor.easy_water.view.MyGridView;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.view.View.OnClickListener;
@@ -37,9 +55,9 @@ public class ApplyIrrigatePanoramicFragment extends Fragment implements
 	private LayoutInflater mInflater;
 	private MainActionBar actionBar;
 	private MyGridView gridView;
-	private ImageAdapters adapter;
-	private Vector<ApplyIrrigateSingleValveBean> beans;
+	private List<infoList> beans;
 	private ApplyIrrigateSingleValveAdapter adapter2;
+	private ProgressDialog progressDialog;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,41 +75,111 @@ public class ApplyIrrigatePanoramicFragment extends Fragment implements
 
 		gridView = (MyGridView) view
 				.findViewById(R.id.grid_maintain_panoramic);
-		beans = new Vector<ApplyIrrigateSingleValveBean>();
-		ApplyIrrigateSingleValveBean bean;
-		bean = new ApplyIrrigateSingleValveBean();
-		bean.setValve("1-1");
-		bean.setNames("张三");
-		bean.setCrops("玉米");
-		beans.add(bean);
-		bean = new ApplyIrrigateSingleValveBean();
-		bean.setValve("1-2");
-		bean.setNames("张三");
-		bean.setCrops("玉米");
-		beans.add(bean);
-		bean = new ApplyIrrigateSingleValveBean();
-		bean.setValve("1-3");
-		bean.setNames("张三");
-		bean.setCrops("玉米");
-		beans.add(bean);
-		bean = new ApplyIrrigateSingleValveBean();
-		bean.setValve("1-4");
-		bean.setNames("张三");
-		bean.setCrops("玉米");
-		beans.add(bean);
-		bean = new ApplyIrrigateSingleValveBean();
-		bean.setValve("1-5");
-		bean.setNames("张三");
-		bean.setCrops("玉米");
-		beans.add(bean);
-		adapter = new ImageAdapters(getActivity(), beans);
 		adapter2 = new ApplyIrrigateSingleValveAdapter(getActivity());
-		adapter2.addData(beans, true);
-		gridView.setAdapter(adapter2);
-		gridView.setVerticalSpacing(5);
-		gridView.setPadding(10, 10, 5, 10);
+//		beans = new Vector<ApplyIrrigateSingleValveBean>();
+//		ApplyIrrigateSingleValveBean bean;
+//		bean = new ApplyIrrigateSingleValveBean();
+//		bean.setValve("1-1");
+//		bean.setNames("张三");
+//		bean.setCrops("玉米");
+//		beans.add(bean);
+//		bean = new ApplyIrrigateSingleValveBean();
+//		bean.setValve("1-2");
+//		bean.setNames("张三");
+//		bean.setCrops("玉米");
+//		beans.add(bean);
+//		bean = new ApplyIrrigateSingleValveBean();
+//		bean.setValve("1-3");
+//		bean.setNames("张三");
+//		bean.setCrops("玉米");
+//		beans.add(bean);
+//		bean = new ApplyIrrigateSingleValveBean();
+//		bean.setValve("1-4");
+//		bean.setNames("张三");
+//		bean.setCrops("玉米");
+//		beans.add(bean);
+//		bean = new ApplyIrrigateSingleValveBean();
+//		bean.setValve("1-5");
+//		bean.setNames("张三");
+//		bean.setCrops("玉米");
+//		beans.add(bean);
+//		adapter = new ImageAdapters(getActivity(), beans);
+		init();
 		return view;
 
+	}
+
+	private void init() {
+		String str1 = (String) SharedUtils.getParam(getActivity(), "FirstDerviceID", "");;
+		try {
+			str1 = java.net.URLEncoder.encode(str1,"UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		RequestParams param3 = new RequestParams(URL.findIrriGrowersAndCropInfo+str1);  // 网址(请替换成实际的网址) 
+//		 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
+		progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+				"Please wait...", true, false);
+		JSONObject js_request2 = new JSONObject();
+		try {
+			param3.setAsJsonContent(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			param3.setAsJsonContent(true);
+		}//根据实际需求添加相应键值对
+		
+	        x.http().request(HttpMethod.GET ,param3, new CommonCallback<String>() {  
+	            @Override  
+	            public void onCancelled(CancelledException arg0) {  
+	                  
+	            }  
+	  
+	         // 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误  
+	            // 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看  
+	            @Override  
+	            public void onError(Throwable ex, boolean isOnCallback) {  
+	                  
+	                Toast.makeText(x.app(), ex.getMessage(), Toast.LENGTH_LONG).show();  
+	                if (ex instanceof HttpException) { // 网络错误    
+	                    HttpException httpEx = (HttpException) ex;  
+	                    int responseCode = httpEx.getCode();  
+	                    String responseMsg = httpEx.getMessage();  
+	                    String errorResult = httpEx.getResult();  
+	                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+	                    // ...  
+	                    progressDialog.dismiss();
+	                } else { // 其他错误    
+	                    // ...  
+	                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+	                	progressDialog.dismiss();
+	                }  
+	                  
+	            }  
+	  
+	         // 不管成功或者失败最后都会回调该接口  
+	            @Override  
+	            public void onFinished() {    
+	            }  
+	  
+	            @Override  
+	            public void onSuccess(String arg0) {  
+	                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
+	                  Gson gson = new Gson();
+	                  System.out.println(arg0);
+	                  ApplyIrrigateSingleValveBean fromJson = gson.fromJson(arg0, ApplyIrrigateSingleValveBean.class);
+//	                  authorizedBeen = new AuthorizedBeen();
+//	                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
+	                  beans = fromJson.getAuthNameList();
+	                  if(!CheckUtil.IsEmpty(beans)){
+	                	  adapter2.addData(beans, true);
+	                	  gridView.setAdapter(adapter2);
+	                	  gridView.setVerticalSpacing(5);
+	                	  gridView.setPadding(10, 10, 5, 10);
+	                  }
+	                  progressDialog.dismiss();
+	            }  
+	        }); 
 	}
 
 	@Override

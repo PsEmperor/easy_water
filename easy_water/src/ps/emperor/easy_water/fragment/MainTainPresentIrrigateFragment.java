@@ -171,8 +171,4 @@ public class MainTainPresentIrrigateFragment extends Fragment implements OnClick
 			break;
 		}
 	}
-
-
-
-
 }

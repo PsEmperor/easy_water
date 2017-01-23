@@ -3,11 +3,13 @@ package ps.emperor.easy_water.adapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.entity.ApplyIrrigateSingleValveBean;
+import ps.emperor.easy_water.entity.ApplyIrrigateSingleValveBean.infoList;
 
 /**
  * 单阀显示
@@ -15,7 +17,7 @@ import ps.emperor.easy_water.entity.ApplyIrrigateSingleValveBean;
  * @author 毛国江
  * @version 2016-5-26 上午11:12
  */
-public class ApplyIrrigateSingleValveAdapter extends MyBaseAdapter<ApplyIrrigateSingleValveBean> implements OnClickListener {
+public class ApplyIrrigateSingleValveAdapter extends MyBaseAdapter<infoList> implements OnClickListener {
 
 	private Context context;
 
@@ -37,10 +39,14 @@ public class ApplyIrrigateSingleValveAdapter extends MyBaseAdapter<ApplyIrrigate
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		ApplyIrrigateSingleValveBean applyIrrigateSingleValveBean = list.get(position);
-		viewHolder.valves.setText(applyIrrigateSingleValveBean.single_valve);
-		viewHolder.names.setText(applyIrrigateSingleValveBean.names);
-		viewHolder.crops.setText(applyIrrigateSingleValveBean.crops);
+		infoList infoList = list.get(position);
+		viewHolder.valves.setText(infoList.getChanNum());
+		viewHolder.names.setText(infoList.getGrowersName());
+//		if(infoList.getGrowersName().length()>=3){
+//		}else{
+			viewHolder.names.setGravity(Gravity.CENTER_HORIZONTAL);
+//		}
+		viewHolder.crops.setText(infoList.getCropName());
 		return convertView;
 
 	}

@@ -8,7 +8,6 @@ import java.util.List;
 
 public class AuthorizedBeen {
 
-
     private List<infoList> infoList;
 
     public List<infoList> getAuthNameList() {

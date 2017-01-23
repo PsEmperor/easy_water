@@ -6,6 +6,7 @@ import java.util.Vector;
 
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.entity.ApplyIrrigateSingleValveBean;
+import ps.emperor.easy_water.entity.ApplyIrrigateSingleValveBean.infoList;
 import ps.emperor.easy_water.entity.MainTainIrrigationInfoBean;
 
 import android.annotation.SuppressLint;
@@ -25,10 +26,10 @@ import android.widget.TextView;
 @SuppressLint("ResourceAsColor")
 public class ImageAdapters extends BaseAdapter{    
     private Context mContext;			// 定义Context
-    private Vector<ApplyIrrigateSingleValveBean> mImageIds;	// 定义一个向量作为图片源
+    private Vector<infoList> mImageIds;	// 定义一个向量作为图片源
     
     
-    public ImageAdapters(Context c, Vector<ApplyIrrigateSingleValveBean>  mImageId){
+    public ImageAdapters(Context c, Vector<infoList>  mImageId){
     	mContext = c;
     	mImageIds = mImageId;
     }
@@ -83,7 +84,7 @@ public class ImageAdapters extends BaseAdapter{
         }
 //        imageView.setImageDrawable(makeBmp(mImageIds.elementAt(position).getGates(),
 //        		mImage_bs.elementAt(position)));
-        textView.setText(mImageIds.elementAt(position).getValve());
+        textView.setText(mImageIds.elementAt(position).getChanNum());
         textView.setBackgroundResource(R.color.red);
         textView.setGravity(Gravity.CENTER);
         textView.setPadding(5, 5, 5, 5);

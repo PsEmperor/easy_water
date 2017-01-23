@@ -225,11 +225,13 @@ public class MainTainBasicInfoFragment extends Fragment implements
 	              		} else {
 	              			tv_irriagte_group.setText("0");
 	              		}
+	              		SharedUtils.setParam(getActivity(), "irriagte_group", beens.get(0).getMaxGroup());
 	              		if (!CheckUtil.IsEmpty(beens.get(0).getValueNum())) {
 	              			tv_orroagte_valve.setText(beens.get(0).getValueNum() + "");
 	              		} else {
 	              			tv_orroagte_valve.setText("0");
 	              		}
+	              		SharedUtils.setParam(getActivity(), "irriagte_value", beens.get(0).getValueNum());
 	              		String parten = "00";
 	              		DecimalFormat decimal = new DecimalFormat(parten);
 	              		if(!CheckUtil.IsEmpty(beens.get(0).getRestStart())){
@@ -507,6 +509,10 @@ public class MainTainBasicInfoFragment extends Fragment implements
 							Toast.makeText(getActivity(), "请求成功",
 									Toast.LENGTH_SHORT);
 							Gson gson = new Gson();
+							SharedUtils.setParam(getActivity(), "irriagte_group", tv_irriagte_group.getText()
+									.toString());
+							SharedUtils.setParam(getActivity(), "irriagte_value", tv_orroagte_valve.getText()
+									.toString());
 							progressDialog.dismiss();
 						}
 					});
