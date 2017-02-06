@@ -41,6 +41,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.adapter.ImageAdapter;
+import ps.emperor.easy_water.adapter.ImageAdapters;
 import ps.emperor.easy_water.entity.MainTainIrrigationInfoBean;
 import ps.emperor.easy_water.entity.MainTainIrrigationInfoBean.infoList;
 import ps.emperor.easy_water.entity.UserReleIrrInfoToOneBean;
@@ -70,7 +71,7 @@ public class MainTainIrrigationUserInfoFragment extends Fragment implements
 	private MyGridView gridView;
 	// private PopupWindow popupWindow;
 	Button btn_image_cancel, btn_image_choose;
-	ImageAdapter adapter;
+	ImageAdapters adapter;
 	private List<String> infoBeans, list;
 	private RelativeLayout layout_irriagte_group;// 当前轮灌组复用隐藏
 	private Button btn_main_irrigate_info_group;// 重设轮灌组隐藏
@@ -186,7 +187,7 @@ public class MainTainIrrigationUserInfoFragment extends Fragment implements
 						MainTainIrrigationInfoBean.class);
 				beens = fromJson.getAuthNameList();
 				if(!CheckUtil.IsEmpty(beens)){
-					adapter = new ImageAdapter(getActivity(), true, beens);
+					adapter = new ImageAdapters(getActivity(), true, beens);
 					gridView.setAdapter(adapter);
 				}
 				progressDialog.dismiss();

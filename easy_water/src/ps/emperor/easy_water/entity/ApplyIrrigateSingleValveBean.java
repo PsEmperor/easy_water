@@ -30,6 +30,15 @@ public class ApplyIrrigateSingleValveBean {
 	    	private String ChanNum;
 	    	private String CropName;
 	    	private String GrowersName;
+	    	
+	    	public Boolean istrue; // 是否选中
+	    	
+			public Boolean getIstrue() {
+				return istrue;
+			}
+			public void setIstrue(Boolean istrue) {
+				this.istrue = istrue;
+			}
 			public String getChanNum() {
 				return ChanNum;
 			}

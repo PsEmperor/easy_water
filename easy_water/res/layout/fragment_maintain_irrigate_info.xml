@@ -41,10 +41,10 @@
                     android:id="@+id/textView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignRight="@+id/textView1"
                     android:layout_below="@+id/textView1"
                     android:layout_marginTop="10dp"
                     android:text="位置"
+                    android:layout_marginLeft="30dp"
                     android:textColor="@color/black" />
 
                 <TextView
@@ -84,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:layout_above="@+id/textView3"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="55dp"
+                    android:layout_marginRight="45dp"
                     android:text="SB2016956495" />
 
                 <TextView
@@ -134,7 +134,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignTop="@+id/textView8"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="55dp"
+                    android:layout_marginRight="45dp"
                     android:text="0" />
 
                 <TextView
@@ -168,7 +168,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="55dp"
+                    android:layout_marginRight="45dp"
                     android:text="6" />
             </RelativeLayout>
 
@@ -194,7 +194,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="55dp"
+                    android:layout_marginRight="45dp"
                     android:text="0" />
             </RelativeLayout>
 
@@ -240,7 +240,7 @@
                     android:layout_alignBaseline="@+id/textView_test_start"
                     android:layout_alignBottom="@+id/textView_test_start"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="55dp"
+                    android:layout_marginRight="45dp"
                     android:gravity="center_vertical"
                     android:text="00：00" />
 
@@ -289,7 +289,7 @@
                     android:layout_alignBaseline="@+id/TextView01"
                     android:layout_alignBottom="@+id/TextView01"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="55dp"
+                    android:layout_marginRight="45dp"
                     android:gravity="center_vertical"
                     android:text="0000-00-00" />
 

@@ -53,7 +53,8 @@ import ps.emperor.easy_water.view.WheelView;
 
 /**
  * 基本信息界面
- * 
+ * 520行 Click事件
+ * 1140行 更新基本信息数据库
  * @author 毛国江
  * @version 2016-5-24 下午15:00
  */
@@ -1137,6 +1138,7 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				} else {
 					SharedUtils.setParam(getActivity(), "isGreaters", 0);
 				}
+				//更新数据库
 				dbHelper.updateBasicTime(units, wv_hour_night.getCurrentItem(),
 						wv_minute_night.getCurrentItem(),
 						wv_hour_nights.getCurrentItem(),

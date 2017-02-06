@@ -85,7 +85,6 @@ public class ImageAdapter extends BaseAdapter{
         	screenWidth = (int) SharedUtils.getParam(mContext, "screenWidth", 0);
         	screenHeigh = (int) SharedUtils.getParam(mContext, "screenHeigh", 0);
         	textView = new TextView(mContext);
-        	
         	if(mImage < mImageIds.size()){
         		if(!CheckUtil.IsEmpty(mImageIds.get(position).getIsAllocationGrowers())){
         			if(mImageIds.get(position).getIsAllocationGrowers().equals("1")){
@@ -128,31 +127,7 @@ public class ImageAdapter extends BaseAdapter{
         }
         return textView;
 	}
-	private LayerDrawable makeBmp(int id, boolean isChosen){
-		Bitmap mainBmp = ((BitmapDrawable)mContext.getResources().getDrawable(id)).getBitmap();
-		
-		// 根据isChosen来选取对勾的图片
-    	Bitmap seletedBmp;
-    	if(isChosen == true){
-    		seletedBmp = BitmapFactory.decodeResource(mContext.getResources(),
-    				R.drawable.btncheck_yes);
-    	}else{
-    		seletedBmp = BitmapFactory.decodeResource(mContext.getResources(),
-    				R.drawable.btncheck_no);
-    	}
-    	// 产生叠加图
-    	Drawable[] array = new Drawable[2];
-    	array[0] = new BitmapDrawable(mainBmp);
-    	array[1] = new BitmapDrawable(seletedBmp);
-    	LayerDrawable la = new LayerDrawable(array);
-    	//setLayerInset(int index, int l, int t, int r, int b)
-    	la.setLayerInset(0, 0, 0, 0, 0);
-    	la.setLayerInset(1, 100, -5, 0, 80 );//右上角
-//    	la.setLayerInset(0, 10, 10, 10, 10 ); 
-    	 
-    	return la;	//返回叠加后的图
-    }
-
+	
 	// 修改选中的״̬
     public void changeState(int position){
     	// 多选

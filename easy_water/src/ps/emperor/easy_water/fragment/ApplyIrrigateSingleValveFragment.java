@@ -1,6 +1,7 @@
 package ps.emperor.easy_water.fragment;
 
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Vector;
 
@@ -14,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.adapter.ApplyIrrigateSingleValveAdapter;
-import ps.emperor.easy_water.adapter.ImageAdapters;
 import ps.emperor.easy_water.entity.ApplyIrrigateSingleValveBean;
 import ps.emperor.easy_water.entity.ApplyIrrigateSingleValveBean.infoList;
 import ps.emperor.easy_water.entity.MainTainIrrigationInfoBean;
