@@ -191,9 +191,9 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 						crop.setText("");
 					}
 					if(!CheckUtil.IsEmpty(beens.get(0).getArea())){
-						area.setText(beens.get(0).getArea());
+						area.setText(beens.get(0).getArea()+"亩");
 					}else{
-						area.setText("");
+						area.setText("0亩");
 					}
 					if(!CheckUtil.IsEmpty(beens.get(0).getValueControlID())){
 						valueControlID.setText(beens.get(0).getValueControlID());
@@ -201,24 +201,24 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 						valueControlID.setText("");
 					}
 					if(!CheckUtil.IsEmpty(beens.get(0).getIrriCount())){
-						count.setText(beens.get(0).getIrriCount());
+						count.setText(beens.get(0).getIrriCount()+"次");
 					}else{
-						count.setText("");
+						count.setText("0次");
 					}
 					if(!CheckUtil.IsEmpty(beens.get(0).getTotalIrriTime())){
 						totalIrriTime.setText(beens.get(0).getTotalIrriTime());
 					}else{
-						totalIrriTime.setText("");
+						totalIrriTime.setText("00:00:00");
 					}
 					if(!CheckUtil.IsEmpty(beens.get(0).getIrriWater())){
-						irriWater.setText(beens.get(0).getIrriWater());
+						irriWater.setText(beens.get(0).getIrriWater()+"m³");
 					}else{
-						irriWater.setText("");
+						irriWater.setText("0m³");
 					}
 					if(!CheckUtil.IsEmpty(beens.get(0).getIrriDuration())){
 						irriDuration.setText(beens.get(0).getIrriDuration());
 					}else{
-						irriDuration.setText("");
+						irriDuration.setText("00：00");
 					}
 					if(beens.get(0).getValueControlSwitch().equals("0")){
 						isOpens = 0;

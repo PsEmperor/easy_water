@@ -215,14 +215,14 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements
 				}
 				mHlvSimpleList.setText(text);
 				if(!CheckUtil.IsEmpty(beens.get(0).getArea())){
-					area.setText(beens.get(0).getArea());
+					area.setText(beens.get(0).getArea()+"亩");
 				}else{
-					area.setText("");
+					area.setText("0亩");
 				}
 				if(!CheckUtil.IsEmpty(beans.get(0).getGroupNum())){
 					group.setText(beans.get(0).getGroupNum());
 				}else{
-					group.setText("");
+					group.setText("0");
 				}
 				if(!CheckUtil.IsEmpty(beens.get(0).getIrriUnitName())){
 					irriunit.setText(beens.get(0).getIrriUnitName());
