@@ -2,6 +2,7 @@ package ps.emperor.easy_water.adapter;
 
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.entity.ApplyIrrigationProject;
+import ps.emperor.easy_water.entity.ApplyIrrigationUnitControlBean.infoList;
 import ps.emperor.easy_water.entity.CustomData;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 /** An array adapter that knows how to render views when given CustomData classes */
-public class CustomArrayAdapters extends MyBaseAdapter<ApplyIrrigationProject> {
+public class CustomArrayAdapters extends MyBaseAdapter<infoList> {
 	private Context context;
   
 	public CustomArrayAdapters(Context context) {
@@ -37,8 +38,8 @@ public class CustomArrayAdapters extends MyBaseAdapter<ApplyIrrigationProject> {
         }
 
         // Populate the text
-        ApplyIrrigationProject customData = list.get(position);
-        holder.textView.setText(customData.getName());
+        infoList infoList = list.get(position);
+        holder.textView.setText(infoList.getGrowersName());
 
         // Set the color
 

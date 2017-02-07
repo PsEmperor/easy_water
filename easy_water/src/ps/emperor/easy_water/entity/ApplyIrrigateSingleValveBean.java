@@ -30,8 +30,15 @@ public class ApplyIrrigateSingleValveBean {
 	    	private String ChanNum;
 	    	private String CropName;
 	    	private String GrowersName;
+	    	private String ValueControlChanID;
 	    	
-	    	public Boolean istrue; // 是否选中
+	    	public String getValueControlChanID() {
+				return ValueControlChanID;
+			}
+			public void setValueControlChanID(String valueControlChanID) {
+				ValueControlChanID = valueControlChanID;
+			}
+			public Boolean istrue; // 是否选中
 	    	
 			public Boolean getIstrue() {
 				return istrue;

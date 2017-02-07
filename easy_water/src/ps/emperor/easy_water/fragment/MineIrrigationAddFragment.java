@@ -3,6 +3,7 @@ package ps.emperor.easy_water.fragment;
 
 import java.io.UnsupportedEncodingException;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +37,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.adapter.IrrigationAddAdapter;
-import ps.emperor.easy_water.entity.ApplyIrrigationBean;
 import ps.emperor.easy_water.entity.AuthorizedBeen;
 import ps.emperor.easy_water.entity.KeyWordBean;
 import ps.emperor.easy_water.entity.UserReleDisInfoBean;

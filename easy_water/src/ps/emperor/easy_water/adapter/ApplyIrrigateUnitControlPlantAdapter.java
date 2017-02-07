@@ -10,13 +10,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.entity.ApplyIrrigationUnitControlBean;
+import ps.emperor.easy_water.entity.ApplyIrrigationUnitControlBean.infoList;
 
 /**
  * 灌溉单元控制
  * @author 毛国江
  * @version 2016-7-14 上午10:46
  */
-public class ApplyIrrigateUnitControlPlantAdapter extends MyBaseAdapter<ApplyIrrigationUnitControlBean> implements OnClickListener {
+public class ApplyIrrigateUnitControlPlantAdapter extends MyBaseAdapter<infoList> implements OnClickListener {
 
 	private Context context;
 
@@ -37,9 +38,9 @@ public class ApplyIrrigateUnitControlPlantAdapter extends MyBaseAdapter<ApplyIrr
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		ApplyIrrigationUnitControlBean applyIrrigationUnitControlBean = list.get(position);
-		viewHolder.plant.setText(applyIrrigationUnitControlBean.plant);
-		viewHolder.time.setText(applyIrrigationUnitControlBean.time);
+		infoList infoList = list.get(position);
+		viewHolder.plant.setText(infoList.getCropName());
+		viewHolder.time.setText(infoList.getPlantTime());
 		return convertView;
 
 	}

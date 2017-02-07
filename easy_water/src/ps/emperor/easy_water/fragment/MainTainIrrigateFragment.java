@@ -2,6 +2,7 @@ package ps.emperor.easy_water.fragment;
 
 import java.io.Serializable;
 
+
 import java.io.UnsupportedEncodingException;
 
 
@@ -38,7 +39,6 @@ import android.widget.Toast;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.activity.MainTainPresentrrigateActivity;
 import ps.emperor.easy_water.adapter.MainTainIrrigationAdapter;
-import ps.emperor.easy_water.entity.ApplyIrrigationBean;
 import ps.emperor.easy_water.entity.UserReleDisInfoBean;
 import ps.emperor.easy_water.entity.UserReleIrrInfoBean;
 import ps.emperor.easy_water.entity.UserReleIrrInfoBean.infoList;

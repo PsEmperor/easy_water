@@ -1,13 +1,27 @@
 package ps.emperor.easy_water.fragment;
 
+import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
+
 import java.util.Calendar;
+import java.util.List;
+
+import org.json.JSONObject;
+import org.xutils.x;
+import org.xutils.common.Callback.CancelledException;
+import org.xutils.common.Callback.CommonCallback;
+import org.xutils.ex.HttpException;
+import org.xutils.http.HttpMethod;
+import org.xutils.http.RequestParams;
+
+import com.google.gson.Gson;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +34,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.adapter.NumericWheelAdapter;
+import ps.emperor.easy_water.entity.ApplyIrrigateControlValueBean;
+import ps.emperor.easy_water.entity.ApplyIrrigateControlValueBean.infoList;
+import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
-import ps.emperor.easy_water.view.MainActionBar;
+import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.MainActionBars;
 import ps.emperor.easy_water.view.WheelView;
 
@@ -42,9 +59,12 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 	private Dialog dialog;
 	private String hour, minute;
 	private RelativeLayout valve_control;
-	private TextView text_apply_irriagte_valve_control;
-	private String units;
+	private TextView text_apply_irriagte_valve_control,irriUnit,tv_ChanNum,userName,crop,area,
+	valueControlID,count,totalIrriTime,irriWater,irriDuration;
+	private String units,ChanNum,ValueControlChanID;
 	private int isOpens;
+	private ProgressDialog progressDialog;
+	private List<infoList> beens;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,7 +85,20 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 		valve_control = (RelativeLayout) view
 				.findViewById(R.id.layout_apply_irriagte_valve_control);
 		valve_control.setOnClickListener(this);
-
+		ValueControlChanID = (String) SharedUtils.getParam(getActivity(), "ValueControlChanID", "1");
+		ChanNum = (String) SharedUtils.getParam(getActivity(), "ChanNum", "1");
+		
+		irriUnit = (TextView) view.findViewById(R.id.text_apply_irriagte_valve_control_unit);
+		tv_ChanNum = (TextView) view.findViewById(R.id.tv_ChanNum);
+		userName = (TextView) view.findViewById(R.id.text_apply_irriagte_valve_control_name);
+		crop = (TextView) view.findViewById(R.id.text_apply_irriagte_valve_control_crop);
+		area = (TextView) view.findViewById(R.id.text_apply_irriagte_valve_control_area);
+		valueControlID = (TextView) view.findViewById(R.id.text_apply_irriagte_valve_control_valve);
+		count = (TextView) view.findViewById(R.id.text_apply_irriagte_valve_control_number);
+		totalIrriTime = (TextView) view.findViewById(R.id.text_apply_irriagte_valve_control_time);
+		irriWater = (TextView) view.findViewById(R.id.text_apply_irriagte_valve_control_water);
+		irriDuration = (TextView) view.findViewById(R.id.text_apply_irriagte_valve_control);
+		
 		init();
 		// 灌水延续时间显示
 		text_apply_irriagte_valve_control = (TextView) view
@@ -84,6 +117,126 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 				"00");
 		minute = (String) SharedUtils.getParam(getActivity(), "minute_control",
 				"00");
+
+		String str2 = "";
+		try {
+			str2 = java.net.URLEncoder.encode(ValueControlChanID, "UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+		}
+		RequestParams param3 = new RequestParams(URL.findValueControlInfo + str2); // 网址(请替换成实际的网址)
+		// params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)
+		progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+				"Please wait...", true, false);
+		JSONObject js_request2 = new JSONObject();
+		try {
+			param3.setAsJsonContent(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			param3.setAsJsonContent(true);
+		}// 根据实际需求添加相应键值对
+
+		x.http().request(HttpMethod.GET, param3, new CommonCallback<String>() {
+			@Override
+			public void onCancelled(CancelledException arg0) {
+
+			}
+
+			// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+			// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+			@Override
+			public void onError(Throwable ex, boolean isOnCallback) {
+
+				Toast.makeText(x.app(), ex.getMessage(), Toast.LENGTH_LONG)
+						.show();
+				if (ex instanceof HttpException) { // 网络错误 
+					HttpException httpEx = (HttpException) ex;
+					int responseCode = httpEx.getCode();
+					String responseMsg = httpEx.getMessage();
+					String errorResult = httpEx.getResult();
+					// ...
+					progressDialog.dismiss();
+				} else { // 其他错误 
+					// ...
+					progressDialog.dismiss();
+				}
+
+			}
+
+			// 不管成功或者失败最后都会回调该接口
+			@Override
+			public void onFinished() {
+			}
+
+			@Override
+			public void onSuccess(String arg0) {
+				Gson gson = new Gson();
+				ApplyIrrigateControlValueBean fromJson = gson.fromJson(arg0,
+						ApplyIrrigateControlValueBean.class);
+				beens = fromJson.getAuthNameList();
+				if(!CheckUtil.IsEmpty(ChanNum)){
+					tv_ChanNum.setText(ChanNum);
+				}else{
+					tv_ChanNum.setText("");
+				}
+				if(!CheckUtil.IsEmpty(beens)){
+					if(!CheckUtil.IsEmpty(beens.get(0).getGrowersName())){
+						userName.setText(beens.get(0).getGrowersName());
+					}else{
+						userName.setText("");
+					}
+					if(!CheckUtil.IsEmpty(beens.get(0).getCropName())){
+						crop.setText(beens.get(0).getCropName());
+					}else{
+						crop.setText("");
+					}
+					if(!CheckUtil.IsEmpty(beens.get(0).getArea())){
+						area.setText(beens.get(0).getArea());
+					}else{
+						area.setText("");
+					}
+					if(!CheckUtil.IsEmpty(beens.get(0).getValueControlID())){
+						valueControlID.setText(beens.get(0).getValueControlID());
+					}else{
+						valueControlID.setText("");
+					}
+					if(!CheckUtil.IsEmpty(beens.get(0).getIrriCount())){
+						count.setText(beens.get(0).getIrriCount());
+					}else{
+						count.setText("");
+					}
+					if(!CheckUtil.IsEmpty(beens.get(0).getTotalIrriTime())){
+						totalIrriTime.setText(beens.get(0).getTotalIrriTime());
+					}else{
+						totalIrriTime.setText("");
+					}
+					if(!CheckUtil.IsEmpty(beens.get(0).getIrriWater())){
+						irriWater.setText(beens.get(0).getIrriWater());
+					}else{
+						irriWater.setText("");
+					}
+					if(!CheckUtil.IsEmpty(beens.get(0).getIrriDuration())){
+						irriDuration.setText(beens.get(0).getIrriDuration());
+					}else{
+						irriDuration.setText("");
+					}
+					if(beens.get(0).getValueControlSwitch().equals("0")){
+						isOpens = 0;
+						isOpen.setImageResource(R.drawable.off);
+					}else{
+						isOpens = 1;
+						isOpen.setImageResource(R.drawable.on);
+					}
+				}
+				if(!CheckUtil.IsEmpty(units)){
+					irriUnit.setText(units);
+				}else{
+					irriUnit.setText("");
+				}
+				progressDialog.dismiss();
+			}
+		});
+
 	}
 
 	@Override
@@ -107,16 +260,79 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 			Toast.makeText(getActivity(), "保存", Toast.LENGTH_SHORT).show();
 			break;
 		case R.id.image_irriagte_valve_control_isopen:
-			if (isOpens == 0) {
-				isOpens = 1;
-			} else {
-				isOpens = 0;
-			}
-			if(isOpens == 0){
-				isOpen.setImageResource(R.drawable.off);
-			}else{
-				isOpen.setImageResource(R.drawable.on);
-			}
+			RequestParams param2 = new RequestParams(URL.updateValueControlSwitch); // 网址(请替换成实际的网址)
+			// params.addQueryStringParameter("key", "value"); //
+			// 参数(请替换成实际的参数与值)
+			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+					"Please wait...", true, false);
+			JSONObject js_request = new JSONObject();
+			try {
+				param2.setAsJsonContent(true);
+				js_request.put("valueControlChanID", ValueControlChanID);
+				if(isOpens == 0){
+					isOpens = 1;
+					js_request.put("valueControlSwitch", 1);
+				}else{
+					isOpens = 0;
+					js_request.put("valueControlSwitch", 0);
+				}
+				param2.setBodyContent(js_request.toString());
+			} catch (Exception e) {
+				e.printStackTrace();
+				param2.setAsJsonContent(true);
+			}// 根据实际需求添加相应键值对
+
+			x.http().request(HttpMethod.PUT, param2,
+					new CommonCallback<String>() {
+						@Override
+						public void onCancelled(CancelledException arg0) {
+
+						}
+
+						// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+						// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+						@Override
+						public void onError(Throwable ex, boolean isOnCallback) {
+
+							Toast.makeText(x.app(), ex.getMessage(),
+									Toast.LENGTH_LONG).show();
+							if (ex instanceof HttpException) { // 网络错误 
+								HttpException httpEx = (HttpException) ex;
+								int responseCode = httpEx.getCode();
+								String responseMsg = httpEx.getMessage();
+								String errorResult = httpEx.getResult();
+								Toast.makeText(getActivity(), "请求失败",
+										Toast.LENGTH_SHORT);
+								// ...
+								progressDialog.dismiss();
+							} else { // 其他错误 
+								// ...
+								Toast.makeText(getActivity(), "请求失败",
+										Toast.LENGTH_SHORT);
+								progressDialog.dismiss();
+							}
+
+						}
+
+						// 不管成功或者失败最后都会回调该接口
+						@Override
+						public void onFinished() {
+						}
+
+						@Override
+						public void onSuccess(String arg0) {
+							Toast.makeText(getActivity(), "请求成功",
+									Toast.LENGTH_SHORT);
+							Gson gson = new Gson();
+							if(isOpens == 0){
+								isOpen.setImageResource(R.drawable.off);
+							}
+							if(isOpens == 1){
+								isOpen.setImageResource(R.drawable.on);
+							}
+							progressDialog.dismiss();
+						}
+					});
 			break;
 		case R.id.layout_apply_irriagte_valve_control:
 			showDateTimePicker(mInflater);

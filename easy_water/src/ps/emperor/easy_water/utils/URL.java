@@ -76,4 +76,12 @@ public class URL {
 	public static final String openProportionOne = "http://192.168.2.188:8080/cms/app/DisWaterSys/updatePoreHighToOne/disEquID/poreID/openProportion";
 	//多孔闸门闸宽预约设置
 	public static final String openProportionAll = "http://192.168.2.188:8080/cms/app/DisWaterSys/bookingAdjust/updatePoreHighToAll/disEquID/openProportion";
+
+	//应用-灌溉-灌溉计划-灌溉单元管理
+	public static final String findIrriUnitManage = "http://192.168.2.188:8080/cms/app/IrriUnitSys/findIrriUnitManage/";
+	//应用-灌溉-灌溉计划-立即控制-灌溉阀门控制-显示详细信息
+	public static final String findValueControlInfo = "http://192.168.2.188:8080/cms/app/IrriUnitSys/findValueControlInfo/";
+	//应用-灌溉-灌溉计划-立即控制-灌溉阀门控制开关
+	public static final String updateValueControlSwitch = "http://192.168.2.188:8080/cms/app/IrriUnitSys/updateValueControlSwitch";
+	
 }

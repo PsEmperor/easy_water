@@ -1,6 +1,7 @@
 package ps.emperor.easy_water.fragment;
 
 import java.io.UnsupportedEncodingException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,6 @@ import com.google.gson.Gson;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.adapter.ApplyIrrigationAdapter;
 import ps.emperor.easy_water.application.ApplicationFragment;
-import ps.emperor.easy_water.entity.ApplyIrrigationBean;
 import ps.emperor.easy_water.entity.IrrigationEquipmentBean;
 import ps.emperor.easy_water.entity.UserReleIrrInfoBean;
 import ps.emperor.easy_water.entity.UserReleIrrInfoBean.infoList;

@@ -20,28 +20,18 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="40dp"
                     android:background="@color/white" >
 
                     <TextView
                         android:id="@+id/text_apply_unit_control_units"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="3dp"
+                        android:layout_centerVertical="true"
                         android:text="141团6连1#地块"
                         android:textColor="@color/black" />
 
-                    <TextView
-                        android:id="@+id/text_apply_unit_control_element"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="3dp"
-                        android:text="2#灌溉单元"
-                        android:textColor="@color/black" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -78,7 +68,7 @@
                         android:gravity="center_vertical|left"
                         android:singleLine="true"
                         android:layout_marginLeft="30dp"
-                        android:text="768 亩"
+                        android:text="张三"
                         android:textColor="@color/gray_1" />
 
                 </RelativeLayout>
