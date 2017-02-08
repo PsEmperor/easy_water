@@ -83,5 +83,7 @@ public class URL {
 	public static final String findValueControlInfo = "http://192.168.2.188:8080/cms/app/IrriUnitSys/findValueControlInfo/";
 	//应用-灌溉-灌溉计划-立即控制-灌溉阀门控制开关
 	public static final String updateValueControlSwitch = "http://192.168.2.188:8080/cms/app/IrriUnitSys/updateValueControlSwitch";
+	//应用-灌溉-灌溉计划-立即控制-灌水延续时间修改
+	public static final String updateValueControlIrriDuration = "http://192.168.2.188:8080/cms/app/IrriUnitSys/updateValueControlIrriDuration";
 	
 }

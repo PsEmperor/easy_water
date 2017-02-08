@@ -202,7 +202,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="30dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="7dp"
             android:text="当前状态"
             android:textColor="@color/black" />
 
@@ -223,7 +223,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="7dp"
             android:src="@drawable/project" />
 
         <TextView
@@ -244,6 +244,6 @@
     android:layout_marginLeft="20dp"
     android:layout_marginRight="20dp"
     android:layout_weight="0"
-    android:layout_marginTop="5dp"
+    android:layout_marginTop="8dp"
     android:text="立刻控制" />
 </LinearLayout>

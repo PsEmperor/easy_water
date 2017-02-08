@@ -276,7 +276,7 @@
             android:textSize="15sp"
             android:drawableRight="@drawable/icon_arrow_red"
             android:gravity="center_vertical" 
-            android:drawablePadding="25dp"/>
+            android:drawablePadding="15dp"/>
 
         <TextView
             android:id="@+id/textView10"

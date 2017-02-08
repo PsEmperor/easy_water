@@ -294,7 +294,7 @@ public class ApplyIrrigateFragment extends Fragment implements OnClickListener,
 		}
 		irrigationGroups = dbHelper.loadGroupByUnits(beens.get(position).getIrriUnitName());
 		if(CheckUtil.IsEmpty(irrigationGroups)){
-			for (int i = 1; i <= 5; i++) {
+			for (int i = 1; i <= irrigationGroups.size(); i++) {
 				irrigationGroup = new IrrigationGroup();
 				irrigationGroup	
 				.setIrrigation(beens.get(position).getIrriUnitName());

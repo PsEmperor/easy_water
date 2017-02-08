@@ -57,7 +57,7 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 	private MainActionBars actionBar;
 	private ImageView isOpen;
 	private Dialog dialog;
-	private String hour, minute;
+	int hour,minute;
 	private RelativeLayout valve_control;
 	private TextView text_apply_irriagte_valve_control,irriUnit,tv_ChanNum,userName,crop,area,
 	valueControlID,count,totalIrriTime,irriWater,irriDuration;
@@ -103,7 +103,7 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 		// 灌水延续时间显示
 		text_apply_irriagte_valve_control = (TextView) view
 				.findViewById(R.id.text_apply_irriagte_valve_control);
-		text_apply_irriagte_valve_control.setText(hour + "时" + minute + "分");
+		text_apply_irriagte_valve_control.setText(hour + ":" + minute);
 
 		isOpen = (ImageView) view
 				.findViewById(R.id.image_irriagte_valve_control_isopen);
@@ -113,11 +113,6 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 
 
 	private void init() {
-		hour = (String) SharedUtils.getParam(getActivity(), "hour_control",
-				"00");
-		minute = (String) SharedUtils.getParam(getActivity(), "minute_control",
-				"00");
-
 		String str2 = "";
 		try {
 			str2 = java.net.URLEncoder.encode(ValueControlChanID, "UTF-8");
@@ -257,10 +252,7 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 			transaction.commit();
 			break;
 		case R.id.acitionbar_right:
-			Toast.makeText(getActivity(), "保存", Toast.LENGTH_SHORT).show();
-			break;
-		case R.id.image_irriagte_valve_control_isopen:
-			RequestParams param2 = new RequestParams(URL.updateValueControlSwitch); // 网址(请替换成实际的网址)
+			RequestParams param2 = new RequestParams(URL.updateValueControlIrriDuration); // 网址(请替换成实际的网址)
 			// params.addQueryStringParameter("key", "value"); //
 			// 参数(请替换成实际的参数与值)
 			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
@@ -269,13 +261,7 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 			try {
 				param2.setAsJsonContent(true);
 				js_request.put("valueControlChanID", ValueControlChanID);
-				if(isOpens == 0){
-					isOpens = 1;
-					js_request.put("valueControlSwitch", 1);
-				}else{
-					isOpens = 0;
-					js_request.put("valueControlSwitch", 0);
-				}
+				js_request.put("irriDuration", hour+":"+minute);
 				param2.setBodyContent(js_request.toString());
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -283,6 +269,75 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 			}// 根据实际需求添加相应键值对
 
 			x.http().request(HttpMethod.PUT, param2,
+					new CommonCallback<String>() {
+						@Override
+						public void onCancelled(CancelledException arg0) {
+
+						}
+
+						// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+						// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+						@Override
+						public void onError(Throwable ex, boolean isOnCallback) {
+
+							Toast.makeText(x.app(), ex.getMessage(),
+									Toast.LENGTH_LONG).show();
+							if (ex instanceof HttpException) { // 网络错误 
+								HttpException httpEx = (HttpException) ex;
+								int responseCode = httpEx.getCode();
+								String responseMsg = httpEx.getMessage();
+								String errorResult = httpEx.getResult();
+								Toast.makeText(getActivity(), "请求失败",
+										Toast.LENGTH_SHORT);
+								// ...
+								progressDialog.dismiss();
+							} else { // 其他错误 
+								// ...
+								Toast.makeText(getActivity(), "请求失败",
+										Toast.LENGTH_SHORT);
+								progressDialog.dismiss();
+							}
+
+						}
+
+						// 不管成功或者失败最后都会回调该接口
+						@Override
+						public void onFinished() {
+						}
+
+						@Override
+						public void onSuccess(String arg0) {
+							Toast.makeText(getActivity(), "请求成功",
+									Toast.LENGTH_SHORT);
+							Gson gson = new Gson();
+							progressDialog.dismiss();
+						}
+					});
+			break;
+		case R.id.image_irriagte_valve_control_isopen:
+			RequestParams param3 = new RequestParams(URL.updateValueControlSwitch); // 网址(请替换成实际的网址)
+			// params.addQueryStringParameter("key", "value"); //
+			// 参数(请替换成实际的参数与值)
+			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+					"Please wait...", true, false);
+			JSONObject js_request1 = new JSONObject();
+			try {
+				param3.setAsJsonContent(true);
+				js_request1.put("valueControlChanID", ValueControlChanID);
+				if(isOpens == 0){
+					isOpens = 1;
+					js_request1.put("valueControlSwitch", 1);
+				}else{
+					isOpens = 0;
+					js_request1.put("valueControlSwitch", 0);
+				}
+				param3.setBodyContent(js_request1.toString());
+			} catch (Exception e) {
+				e.printStackTrace();
+				param3.setAsJsonContent(true);
+			}// 根据实际需求添加相应键值对
+
+			x.http().request(HttpMethod.PUT, param3,
 					new CommonCallback<String>() {
 						@Override
 						public void onCancelled(CancelledException arg0) {
@@ -349,7 +404,7 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 		int minute = calendar.get(Calendar.MINUTE);
 
 		dialog = new Dialog(getActivity());
-		dialog.setTitle("请选择时间");
+		dialog.setTitle("请选择灌水持续时间");
 		// 找到dialog的布局文件
 		mInflater = inflater;
 		View view = inflater.inflate(R.layout.time_filter, null);
@@ -397,12 +452,10 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 				DecimalFormat decimal = new DecimalFormat(parten);
 				text_apply_irriagte_valve_control.setText(decimal
 						.format(wv_hours.getCurrentItem())
-						+ "时"
-						+ decimal.format(wv_minute.getCurrentItem()) + "分");
-				SharedUtils.setParam(getActivity(), "hour_control",
-						decimal.format(wv_hours.getCurrentItem()));
-				SharedUtils.setParam(getActivity(), "minute_control",
-						decimal.format(wv_minute.getCurrentItem()));
+						+ ":"
+						+ decimal.format(wv_minute.getCurrentItem()));
+				ApplyIrrigateControlValveFragment.this.hour = wv_hours.getCurrentItem();
+				ApplyIrrigateControlValveFragment.this.minute = wv_minute.getCurrentItem();
 				// 设置日期的显示
 				// tv_time.setText((wv_year.getCurrentItem() + START_YEAR) + "-"
 				// + decimal.format((wv_month.getCurrentItem() + 1)) + "-"

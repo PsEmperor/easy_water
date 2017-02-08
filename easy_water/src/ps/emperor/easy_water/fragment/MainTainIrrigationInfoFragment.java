@@ -101,7 +101,7 @@ public class MainTainIrrigationInfoFragment extends Fragment implements
 				.findViewById(R.id.text_maintain_irrigat_round);
 		irrigationGroups = dbHelper.loadGroupByUnits(units);
 		if (CheckUtil.IsEmpty(irrigationGroups)) {
-			for (int i = 1; i <= 5; i++) {
+			for (int i = 1; i <= irrigationGroups.size(); i++) {
 				irrigationGroup = new IrrigationGroup();
 				irrigationGroup.setIrrigation(units);
 				irrigationGroup.setMatchedNum(i);
