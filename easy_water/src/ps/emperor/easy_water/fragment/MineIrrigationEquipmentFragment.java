@@ -151,6 +151,7 @@ public class MineIrrigationEquipmentFragment extends Fragment implements OnClick
 	                	  adapter = new IrrigationEquipmentAdapter(getActivity(),IrrCode);
 	                	  adapter.addData(beens, true);
 	                	  listView.setAdapter(adapter);
+	                	  SharedUtils.setParam(getActivity(), "EquipmentMark", 1);
 	                  }
 	          		progressDialog.dismiss();
 	            }  
@@ -175,6 +176,7 @@ public class MineIrrigationEquipmentFragment extends Fragment implements OnClick
 		FragmentTransaction transaction = fgManager.beginTransaction();
 		switch (v.getId()) {
 		case R.id.acitionbar_left:
+			SharedUtils.setParam(getActivity(), "EquipmentMark", 0);
 			MinesFragment fragment = new MinesFragment();
 //			transaction.setCustomAnimations(R.anim.right_in, R.anim.right_out);
 			transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
@@ -182,6 +184,7 @@ public class MineIrrigationEquipmentFragment extends Fragment implements OnClick
 			transaction.commit();
 			break;
 		case R.id.acitionbar_right:
+			SharedUtils.setParam(getActivity(), "EquipmentMark", 0);
 			MineIrrigationAddFragment fragment1 = new MineIrrigationAddFragment();
 //			transaction.setCustomAnimations(R.anim.right_in, R.anim.right_out);
 			transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);

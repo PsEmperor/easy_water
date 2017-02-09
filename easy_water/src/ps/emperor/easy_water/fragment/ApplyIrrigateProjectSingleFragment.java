@@ -1,6 +1,7 @@
 package ps.emperor.easy_water.fragment;
 
 import java.text.DecimalFormat;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -19,7 +20,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.printservice.PrintDocument;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

@@ -5,8 +5,8 @@
     android:orientation="vertical" >
 
     <RelativeLayout
-        android:layout_width="45dp"
-        android:layout_height="50dp" >
+        android:layout_width="52dp"
+        android:layout_height="55dp" >
 
 
         <TextView
@@ -17,9 +17,8 @@
             android:layout_centerVertical="true"
             android:gravity="center_horizontal"
             android:text="1-1"
-            android:textColor="@color/black"
             android:layout_marginBottom="5dp"
-            android:textSize="16sp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/text_adapter_list1"
@@ -27,8 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/text_apply_irrigate_single_valve_list_text"
             android:text="土"
-            android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:layout_marginLeft="5dp"
              />
 
