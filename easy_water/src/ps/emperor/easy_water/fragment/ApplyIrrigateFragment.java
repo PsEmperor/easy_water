@@ -25,6 +25,7 @@ import ps.emperor.easy_water.greendao.DBHelper;
 import ps.emperor.easy_water.greendao.Irrigation;
 import ps.emperor.easy_water.greendao.IrrigationGroup;
 import ps.emperor.easy_water.utils.CheckUtil;
+import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.MainActionBar;
 import android.annotation.SuppressLint;
@@ -61,8 +62,6 @@ public class ApplyIrrigateFragment extends Fragment implements OnClickListener,
 	private ApplyIrrigationAdapter adapter;
 	private DBHelper dbHelper;
 	private List<Irrigation> irrigation;
-	private List<IrrigationGroup> irrigationGroups; 
-	private IrrigationGroup irrigationGroup;
 	private ProgressDialog progressDialog;
 	private List<infoList> beens;
 	private ImageView image_apply_irrigation_add;
@@ -292,24 +291,15 @@ public class ApplyIrrigateFragment extends Fragment implements OnClickListener,
 			irrigation.setFilterMinute(0);
 			dbHelper.saveSession(irrigation);
 		}
-		irrigationGroups = dbHelper.loadGroupByUnits(beens.get(position).getIrriUnitName());
-		if(CheckUtil.IsEmpty(irrigationGroups)){
-			for (int i = 1; i <= irrigationGroups.size(); i++) {
-				irrigationGroup = new IrrigationGroup();
-				irrigationGroup	
-				.setIrrigation(beens.get(position).getIrriUnitName());
-				irrigationGroup
-				.setMatchedNum(i);
-				dbHelper.saveGroup(irrigationGroup);
-			}	
-		}
+		
 		FragmentManager fgManager = getFragmentManager();
 		FragmentTransaction transaction = fgManager.beginTransaction();
 		ApplyIrrigateUnitControlFragment fragment = new ApplyIrrigateUnitControlFragment();
 		Bundle bundle = new Bundle();
 		bundle.putString("units", beens.get(position).getIrriUnitName());
+		SharedUtils.setParam(getActivity(), "FirstDerviceID", beens.get(0).getFirstDerviceID());
 		fragment.setArguments(bundle);
-		transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+		transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 		transaction.replace(R.id.fl, fragment, "main");
 		transaction.commit();
 	}

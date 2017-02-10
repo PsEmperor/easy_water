@@ -170,8 +170,7 @@ public class ApplyWaterDistrbutionFragment extends Fragment implements
 			ApplicationFragment fragment = new ApplicationFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
 			transaction.replace(R.id.fl, fragment, "main");
 			transaction.commit();
 			break;
@@ -265,7 +264,7 @@ public class ApplyWaterDistrbutionFragment extends Fragment implements
 		bundle.putString("units", beens.get(position).getDisEquName());
 		fragment.setArguments(bundle);
 		// transaction.setCustomAnimations(R.anim.right_in, R.anim.right_out);
-		transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+		transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 		transaction.replace(R.id.fl, fragment, "main");
 		transaction.commit();
 	}

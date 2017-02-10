@@ -128,8 +128,7 @@ public class AppayWaterGateHaploporeFragment extends Fragment implements
 			ApplyWaterDistrbutionGate fragment = new ApplyWaterDistrbutionGate();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
 			transaction.replace(R.id.fl, fragment, "main");
 			transaction.commit();
 			break;
@@ -204,8 +203,7 @@ public class AppayWaterGateHaploporeFragment extends Fragment implements
 			                ApplyWaterDistrbutionGate fragment1 = new ApplyWaterDistrbutionGate();
 			      			// transaction.setCustomAnimations(R.anim.right_in,
 			      			// R.anim.right_out);
-			      			transaction
-			      					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			                transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
 			      			transaction.replace(R.id.fl, fragment1, "main");
 			      			transaction.commit();
 			            }  
@@ -279,8 +277,7 @@ public class AppayWaterGateHaploporeFragment extends Fragment implements
 			                ApplyWaterDistrbutionGate fragment1 = new ApplyWaterDistrbutionGate();
 			      			// transaction.setCustomAnimations(R.anim.right_in,
 			      			// R.anim.right_out);
-			      			transaction
-			      					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			                transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
 			      			transaction.replace(R.id.fl, fragment1, "main");
 			      			transaction.commit();
 			            }  

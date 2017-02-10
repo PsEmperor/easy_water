@@ -180,8 +180,7 @@ public class ApplyIrrigateSingleValveFragment extends Fragment implements
 			Bundle bundle = new Bundle();
 			bundle.putString("units", units);
 			fragment.setArguments(bundle);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
 			transaction.replace(R.id.fl, fragment, "main");
 			transaction.commit();
 			break;
@@ -190,8 +189,7 @@ public class ApplyIrrigateSingleValveFragment extends Fragment implements
 			Bundle bundle1 = new Bundle();
 			bundle1.putString("units", units);
 			fragment1.setArguments(bundle1);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 			transaction.replace(R.id.fl, fragment1, "main");
 			transaction.commit();
 			break;
@@ -210,7 +208,7 @@ public class ApplyIrrigateSingleValveFragment extends Fragment implements
 		SharedUtils.setParam(getActivity(), "ValueControlChanID", beens.get(arg2).getValueControlChanID()+"");
 		SharedUtils.setParam(getActivity(), "ChanNum", beens.get(arg2).getChanNum());
 		fragment2.setArguments(bundle);
-		transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+		transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 		transaction.replace(R.id.fl, fragment2, "main");
 		transaction.commit();
 	}

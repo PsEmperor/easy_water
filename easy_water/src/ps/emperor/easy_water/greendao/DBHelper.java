@@ -439,5 +439,8 @@ public class DBHelper {
     public void deleteNote(long id){    
         irrigationprojectDao.deleteByKey(id);
     }    
+    public void deleteGroupId(long id){    
+        irrigationGroupDao.deleteByKey(id);
+    }    
   
 }

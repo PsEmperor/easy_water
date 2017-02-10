@@ -332,8 +332,7 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				isFront = 1;
 				bundle.putInt("isFront", isFront);
 				fragment.setArguments(bundle);
-				transaction
-						.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+				transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
 				transaction.replace(R.id.fl, fragment, "main");
 				transaction.commit();
 				break;
@@ -353,8 +352,7 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				isFront = 1;
 				bundle.putInt("isFront", isFront);
 				fragment.setArguments(bundle);
-				transaction
-						.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+				transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
 				transaction.replace(R.id.fl, fragment, "main");
 				transaction.commit();
 				break;
@@ -390,8 +388,7 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				isFront = 1;
 				bundle.putInt("isFront", isFront);
 				fragment.setArguments(bundle);
-				transaction
-						.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+				transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
 				transaction.replace(R.id.fl, fragment, "main");
 				transaction.commit();
 				break;
@@ -426,8 +423,7 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				isFront = 1;
 				bundle.putInt("isFront", isFront);
 				fragment.setArguments(bundle);
-				transaction
-						.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+				transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
 				transaction.replace(R.id.fl, fragment, "main");
 				transaction.commit();
 				break;
@@ -535,9 +531,14 @@ public class MainTainBasicInfoFragment extends Fragment implements
 							if (!(decimal.format(irrigation.get(0)
 									.getIsNightStartHour()) + ":" + decimal
 									.format(irrigation.get(0)
-											.getIsNightContinueMinute()))
+											.getIsNightStartMinute()))
 									.equals(tv_restnight_start.getText()
-											.toString())) {
+											.toString())||!(decimal.format(irrigation.get(0)
+													.getIsNightEndHour()) + ":" + decimal
+													.format(irrigation.get(0)
+															.getIsNightEndMinute()))
+													.equals(tv_restnight_end.getText()
+															.toString())) {
 								dbHelper.updateBasicTime(units,
 										night_start_hour, night_start_minute,
 										night_cont_hour, night_cont_minute,
@@ -674,8 +675,8 @@ public class MainTainBasicInfoFragment extends Fragment implements
 					// SharedUtils.setParam(getActivity(), "groups",
 					// Integer.valueOf(tv_irriagte_group.getText()
 					// .toString()));
-					dbHelper.updateBasicGroup(units,
-							(wv_hours.getCurrentItem() + 1));
+//					dbHelper.updateBasicGroup(units,
+//							(wv_hours.getCurrentItem() + 1));
 					first_setting = 1;
 					SharedUtils.setParam(getActivity(), "first_setting",
 							first_setting);

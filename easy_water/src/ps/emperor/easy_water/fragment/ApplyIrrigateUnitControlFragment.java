@@ -2,6 +2,7 @@ package ps.emperor.easy_water.fragment;
 
 import java.io.UnsupportedEncodingException;
 
+
 import java.util.ArrayList;
 
 import java.util.List;
@@ -34,9 +35,10 @@ import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.adapter.ApplyIrrigateUnitControlPlantAdapter;
 import ps.emperor.easy_water.adapter.CustomArrayAdapters;
 import ps.emperor.easy_water.entity.ApplyIrrigationUnitControlBean;
-import ps.emperor.easy_water.entity.ApplyIrrigationUnitControlBean.GroupNum;
+import ps.emperor.easy_water.entity.ApplyIrrigationUnitControlBean.groupList;
 import ps.emperor.easy_water.entity.ApplyIrrigationUnitControlBean.infoList;
 import ps.emperor.easy_water.greendao.DBHelper;
+import ps.emperor.easy_water.greendao.IrrigationGroup;
 import ps.emperor.easy_water.greendao.IrrigationProject;
 import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
@@ -69,11 +71,13 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements
 	private List<IrrigationProject> listentity;
 	private String units;
 	private int isNot;
+	Long deleteId;
 	private List<infoList> beens;
-	private List<GroupNum> beans;
+	private List<groupList> beans;
 	private ProgressDialog progressDialog;
 	private TextView area,group,irriunit;
-	
+	private List<IrrigationGroup> irrigationGroups; 
+	private IrrigationGroup irrigationGroup;
 	
 	private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
@@ -202,7 +206,7 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements
 				ApplyIrrigationUnitControlBean fromJson = gson.fromJson(arg0,
 						ApplyIrrigationUnitControlBean.class);
 				beens = fromJson.getAuthNameList();
-				beans = fromJson.getGroupNum();
+				beans = fromJson.getGroupList();
 				adapter1.addData(beens, false);
 				adapter.addData(beens, false);
 				listView.setAdapter(adapter);
@@ -229,6 +233,20 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements
 				}else{
 					irriunit.setText("");
 				}
+				irrigationGroups = dbHelper.loadGroupByUnits(units);
+				deleteId = irrigationGroups.get(0).getId();
+				if (CheckUtil.IsEmpty(irrigationGroups)||irrigationGroups.size()!=Integer.valueOf(beans.get(0).getGroupNum())) {
+					for (int i = 0; i < irrigationGroups.size(); i++) {
+						dbHelper.deleteGroupId(deleteId);
+						deleteId++;
+					}
+					for (int i = 1 ; i <= Integer.valueOf(beans.get(0).getGroupNum()); i++) {
+						irrigationGroup = new IrrigationGroup();
+						irrigationGroup.setIrrigation(units);
+						irrigationGroup.setMatchedNum(i);
+						dbHelper.saveGroup(irrigationGroup);
+					}
+				}
 				progressDialog.dismiss();
 			}
 		});
@@ -243,8 +261,7 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements
 			ApplyIrrigateFragment fragment = new ApplyIrrigateFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
 			transaction.replace(R.id.fl, fragment, "main");
 			transaction.commit();
 			break;
@@ -255,8 +272,7 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements
 			fragment3.setArguments(bundle2);
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 			transaction.replace(R.id.fl, fragment3, "main");
 			transaction.commit();
 			break;
@@ -265,13 +281,12 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements
 			ApplyIrrigateProjectFragment fragment1 = new ApplyIrrigateProjectFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 			isNot = 1;
 			SharedUtils.setParam(getActivity(), "isNot", isNot);
 			Bundle bundle = new Bundle();
 			bundle.putString("units", units);
 			fragment1.setArguments(bundle);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 			transaction.replace(R.id.fl, fragment1, "main");
 			transaction.commit();
 			break;
@@ -282,8 +297,7 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements
 			Bundle bundle1 = new Bundle();
 			bundle1.putString("units", units);
 			fragment2.setArguments(bundle1);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 			transaction.replace(R.id.fl, fragment2, "main");
 			transaction.commit();
 			break;

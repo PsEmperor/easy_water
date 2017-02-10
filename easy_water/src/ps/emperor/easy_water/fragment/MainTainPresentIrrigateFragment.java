@@ -4,6 +4,9 @@ package ps.emperor.easy_water.fragment;
 import java.io.UnsupportedEncodingException;
 
 
+
+
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +31,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.adapter.MainTainPresentIrrigateGridAdapter;
+import ps.emperor.easy_water.entity.MainTainPresentIrrigateGridBean.groupList;
 import ps.emperor.easy_water.entity.MainTainPresentIrrigateGridBean.infoList;
 import ps.emperor.easy_water.entity.MainTainPresentIrrigateGridBean;
 import ps.emperor.easy_water.utils.CheckUtil;
@@ -36,6 +40,7 @@ import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.MainActionBar;
 import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View.OnClickListener;
 
@@ -53,7 +58,10 @@ public class MainTainPresentIrrigateFragment extends Fragment implements OnClick
 	
 	private MainTainPresentIrrigateGridAdapter adapter;
 	private List<infoList> beens;
+	private List<groupList> beans;
 	private ProgressDialog progressDialog;
+	
+	private TextView group;
 	
 	@SuppressLint("CutPasteId")
 	@Override
@@ -68,6 +76,7 @@ public class MainTainPresentIrrigateFragment extends Fragment implements OnClick
 		actionBar.setActionBarOnClickListener(this);
 		
 		listView = (GridView) view.findViewById(R.id.list_maintain_irrigat_info_group);
+		group = (TextView) view.findViewById(R.id.text_maintain_irrigat_info_group);
 //		MainTainPresentIrrigateListBean bean;
 //		for (int i = 0; i < 10; i++) {
 //			bean = new MainTainPresentIrrigateListBean();
@@ -142,12 +151,18 @@ public class MainTainPresentIrrigateFragment extends Fragment implements OnClick
 				MainTainPresentIrrigateGridBean fromJson = gson.fromJson(arg0,
 						MainTainPresentIrrigateGridBean.class);
 				beens = fromJson.getAuthNameList();
+				beans = fromJson.getGroupList();
 				System.out.println(arg0);
 				if (!CheckUtil.IsEmpty(beens)) {
 					adapter = new MainTainPresentIrrigateGridAdapter(
 							getActivity());
 					adapter.addData(beens, false);
 					listView.setAdapter(adapter);
+				}
+				if(CheckUtil.IsEmpty(beans)){
+					group.setText("0");
+				}else{
+					group.setText(beans.get(0).getGroupNum()+"");
 				}
 				progressDialog.dismiss();
 			}  

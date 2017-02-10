@@ -246,8 +246,7 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 			Bundle bundle = new Bundle();
 			bundle.putString("units", units);
 			fragment.setArguments(bundle);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
 			transaction.replace(R.id.fl, fragment, "main");
 			transaction.commit();
 			break;

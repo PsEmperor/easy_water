@@ -597,8 +597,7 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 			ApplyWaterDistrbutionFragment fragment = new ApplyWaterDistrbutionFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
 			transaction.replace(R.id.fl, fragment, "main");
 			transaction.commit();
 			break;
@@ -624,8 +623,7 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 				}
 				bundle2.putString("PoreId", beans.get(0).getPoreID());
 				fragment1.setArguments(bundle2);
-				transaction
-				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+				transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 				transaction.replace(R.id.fl, fragment1, "main");
 				transaction.commit();
 			}
@@ -647,8 +645,7 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 				bundle.putString("ClosePoreTime",beens.get(0).getClosePoreTime());
 			}
 			fragment2.setArguments(bundle);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 			transaction.replace(R.id.fl, fragment2, "main");
 			transaction.commit();
 			break;
@@ -678,8 +675,7 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 				bundle3.putString("PoreId", beans.get(0).getPoreID());
 				fragment8.setArguments(bundle3);
 			}
-			transaction
-			.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 			transaction.replace(R.id.fl, fragment8, "main");
 			transaction.commit();
 			break;
@@ -706,8 +702,7 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 				bundle4.putString("PoreId", beans.get(0).getPoreID());
 				fragment3.setArguments(bundle4);
 			}
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 			transaction.replace(R.id.fl, fragment3, "main");
 			transaction.commit();
 			break;
@@ -734,8 +729,7 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 				bundle5.putString("PoreId", beans.get(0).getPoreID());
 				fragment4.setArguments(bundle5);
 			}
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 			transaction.replace(R.id.fl, fragment4, "main");
 			transaction.commit();
 			break;
@@ -762,8 +756,7 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 				bundle6.putString("PoreId", beans.get(0).getPoreID());
 				fragment5.setArguments(bundle6);
 			}
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 			transaction.replace(R.id.fl, fragment5, "main");
 			transaction.commit();
 			break;
@@ -790,8 +783,7 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 				bundle7.putString("PoreId", beans.get(0).getPoreID());
 				fragment6.setArguments(bundle7);
 			}
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 			transaction.replace(R.id.fl, fragment6, "main");
 			transaction.commit();
 			break;
@@ -818,8 +810,7 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 				bundle8.putString("PoreId", beans.get(0).getPoreID());
 				fragment7.setArguments(bundle8);
 			}
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 			transaction.replace(R.id.fl, fragment7, "main");
 			transaction.commit();
 			break;

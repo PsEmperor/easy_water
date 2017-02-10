@@ -79,7 +79,8 @@ public class MainTainIrrigationInfoFragment extends Fragment implements
 	private List<infoList> beens;
 	private List<groupList> beans;
 	private TextView text_maintain_irrigat_round;
-
+	Long deleteId;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -100,14 +101,6 @@ public class MainTainIrrigationInfoFragment extends Fragment implements
 		text_maintain_irrigat_round = (TextView) view
 				.findViewById(R.id.text_maintain_irrigat_round);
 		irrigationGroups = dbHelper.loadGroupByUnits(units);
-		if (CheckUtil.IsEmpty(irrigationGroups)) {
-			for (int i = 1; i <= irrigationGroups.size(); i++) {
-				irrigationGroup = new IrrigationGroup();
-				irrigationGroup.setIrrigation(units);
-				irrigationGroup.setMatchedNum(i);
-				dbHelper.saveGroup(irrigationGroup);
-			}
-		}
 
 		// for (int i = 0; i < 6; i++) {
 		// MainTainIrrigationInfoBean bean = new MainTainIrrigationInfoBean();
@@ -214,6 +207,21 @@ public class MainTainIrrigationInfoFragment extends Fragment implements
 					text_maintain_irrigat_round.setText(beans.get(0)
 							.getGroupNum());
 				}
+				deleteId = irrigationGroups.get(0).getId();
+				if (irrigationGroups.size()!=Integer.valueOf(beans.get(0).getGroupNum())) {
+					for (int i = 0; i < irrigationGroups.size(); i++) {
+						dbHelper.deleteGroupId(deleteId);
+						deleteId++;
+					}
+				}
+				if (CheckUtil.IsEmpty(irrigationGroups)||irrigationGroups.size()!=Integer.valueOf(beans.get(0).getGroupNum())) {
+					for (int i = 1; i <= Integer.valueOf(beans.get(0).getGroupNum()); i++) {
+						irrigationGroup = new IrrigationGroup();
+						irrigationGroup.setIrrigation(units);
+						irrigationGroup.setMatchedNum(i);
+						dbHelper.saveGroup(irrigationGroup);
+					}
+				}
 				progressDialog.dismiss();
 			}
 		});
@@ -247,9 +255,9 @@ public class MainTainIrrigationInfoFragment extends Fragment implements
 				}
 			}
 			String irriagte_group = (String) SharedUtils.getParam(
-					getActivity(), "irriagte_group", "");
+					getActivity(), "irriagte_group", "0");
 			String irriagte_value = (String) SharedUtils.getParam(
-					getActivity(), "irriagte_value", "");
+					getActivity(), "irriagte_value", "0");
 			if (CheckUtil.IsEmpty(infoBeans)) {
 				Toast.makeText(getActivity(), "并未选中任何阀门！", Toast.LENGTH_SHORT)
 						.show();

@@ -376,6 +376,7 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 					// 需要花时间计算的方法
 					irrigationGroups = dbHelper.loadGroupByUnits(units);
 					MatchedNum = irrigationGroups.size();
+//					MatchedNum = 5;
 //					listentity = dbHelper.loadLastMsgBySessionidTen(units, MatchedNum);
 					listentity = dbHelper.loadLastMsgBySessionids(units);
 					for (int i = 0; i < listentity.size(); i++) {
@@ -588,8 +589,7 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 			Bundle bundle = new Bundle();
 			bundle.putString("units", units);
 			fragment.setArguments(bundle);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
 			transaction.replace(R.id.fl, fragment, "main");
 			transaction.commit();
 			break;
@@ -797,8 +797,7 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 											Bundle bundle = new Bundle();
 											bundle.putString("units", units);
 											fragment.setArguments(bundle);
-											transaction
-													.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+											transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 											transaction.replace(R.id.fl,
 													fragment, "main");
 											transaction.commit();
@@ -812,8 +811,7 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 											Bundle bundle = new Bundle();
 											bundle.putString("units", units);
 											fragment1.setArguments(bundle);
-											transaction
-													.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+											transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 											transaction.replace(R.id.fl,
 													fragment1, "main");
 											transaction.commit();

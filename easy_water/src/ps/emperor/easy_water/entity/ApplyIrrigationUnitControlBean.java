@@ -8,7 +8,7 @@ import ps.emperor.easy_water.entity.FindDisWaterInfoOneBean.DisWaterInfoBean;
 public class ApplyIrrigationUnitControlBean {
 
 	private List<infoList> infoList;
-	private List<GroupNum> GroupNum;
+	private List<groupList> groupList;
 
 	public List<infoList> getInfoList() {
 		return infoList;
@@ -19,12 +19,12 @@ public class ApplyIrrigationUnitControlBean {
 	}
 
 
-	public List<GroupNum> getGroupNum() {
-		return GroupNum;
+	public List<groupList> getGroupList() {
+		return groupList;
 	}
 
-	public void setGroupNum(List<GroupNum> groupNum) {
-		GroupNum = groupNum;
+	public void setGroupList(List<groupList> groupList) {
+		this.groupList = groupList;
 	}
 
 	public List<infoList> getAuthNameList() {
@@ -103,7 +103,7 @@ public class ApplyIrrigationUnitControlBean {
 
 	}
 
-	public static class GroupNum{
+	public static class groupList{
 		private String GroupNum;
 
 		public String getGroupNum() {
