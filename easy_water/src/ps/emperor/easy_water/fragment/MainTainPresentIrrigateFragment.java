@@ -163,7 +163,7 @@ public class MainTainPresentIrrigateFragment extends Fragment implements OnClick
 		case R.id.acitionbar_left:
 			MainTainIrrigationInfoFragment fragment = new MainTainIrrigationInfoFragment();
 //			transaction.setCustomAnimations(R.anim.right_in, R.anim.right_out);
-			transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
 			transaction.replace(R.id.fragment_maintain_present_irrigate, fragment, "main");
 			transaction.commit();
 			break;

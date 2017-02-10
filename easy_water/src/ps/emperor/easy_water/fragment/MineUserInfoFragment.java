@@ -206,8 +206,9 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 			MinesFragment fragment = new MinesFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+//			transaction
+//					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
 			transaction.replace(R.id.fl, fragment, "main");
 			transaction.commit();
 			break;
@@ -220,7 +221,7 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 			try {
 				param1.setAsJsonContent(true);
 				js_request.put("userName", "12345");
-				js_request.put("fullName", "万老板");
+				js_request.put("fullName", name_show.getText().toString());
 				js_request.put("authID", "1");
 				param1.setBodyContent(js_request.toString());
 			} catch (Exception e) {
@@ -275,7 +276,7 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 				View view = mInflater
 						.inflate(R.layout.layout_accout_popu, null);
 				popupWindow = new PopupWindow(view,
-						ViewGroup.LayoutParams.WRAP_CONTENT,
+						ViewGroup.LayoutParams.MATCH_PARENT,
 						ViewGroup.LayoutParams.WRAP_CONTENT);
 				popupWindow.setAnimationStyle(R.style.mypopwindow_anim_style);
 				popupWindow.setFocusable(true);
@@ -340,8 +341,7 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 			MineUserTelFragment fragment1 = new MineUserTelFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 			transaction.replace(R.id.fl, fragment1, "main");
 			transaction.commit();
 			break;
@@ -349,8 +349,7 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 			MineUserUnitFragment fragment2 = new MineUserUnitFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 			transaction.replace(R.id.fl, fragment2, "main");
 			transaction.commit();
 			break;
@@ -361,8 +360,7 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 				MineUserRoleFragment fragment3 = new MineUserRoleFragment();
 				// transaction.setCustomAnimations(R.anim.right_in,
 				// R.anim.right_out);
-				transaction
-				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+				transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 				transaction.replace(R.id.fl, fragment3, "main");
 				transaction.commit();
 			}

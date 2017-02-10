@@ -79,28 +79,29 @@ public class MinesFragment extends Fragment implements OnClickListener {
 		case R.id.layout_main_user_info://个人信息
 			MineUserInfoFragment fragment = new MineUserInfoFragment();
 //			transaction.setCustomAnimations(R.anim.right_in, R.anim.left_out);
-			transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+//			transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 			transaction.replace(R.id.fl, fragment, "main");
 			transaction.commit();
 			break;
 		case R.id.layout_main_pour://灌溉设备
 			MineIrrigationEquipmentFragment fragment1 = new MineIrrigationEquipmentFragment();
 //			transaction.setCustomAnimations(R.anim.right_in, R.anim.left_out);
-			transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 			transaction.replace(R.id.fl, fragment1, "main");
 			transaction.commit();
 			break;
 		case R.id.layout_main_water://配水
 			MineWaterDistributionFragment fragment2 = new MineWaterDistributionFragment();
 //			transaction.setCustomAnimations(R.anim.right_in, R.anim.left_out);
-			transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 			transaction.replace(R.id.fl, fragment2, "main");
 			transaction.commit();
 			break;
 		case R.id.layout_main_setting://设置
 			MineSettingFragment fragment3 = new MineSettingFragment();
 //			transaction.setCustomAnimations(R.anim.right_in, R.anim.left_out);
-			transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 			transaction.replace(R.id.fl, fragment3, "main");
 			transaction.commit();
 //		    BluetoothAdapter BA;
@@ -113,7 +114,7 @@ public class MinesFragment extends Fragment implements OnClickListener {
 		case R.id.layout_main_help://帮助
 			MineHelpFragment fragment4 = new MineHelpFragment();
 //			transaction.setCustomAnimations(R.anim.right_in, R.anim.left_out);
-			transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 			transaction.replace(R.id.fl, fragment4, "main");
 			transaction.commit();
 			break;
@@ -121,13 +122,14 @@ public class MinesFragment extends Fragment implements OnClickListener {
 			MineCommentsFragmt fragment5 = new MineCommentsFragmt();
 //			transaction.setCustomAnimations(R.anim.right_in, R.anim.left_out);
 //			ApplyIrrigateFragment fragment5 = new ApplyIrrigateFragment(); //灌溉（应用）测试
-			transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 			transaction.replace(R.id.fl, fragment5, "main");
 			transaction.commit();
 			break;
 		case R.id.layout_main_about://关于
 			MineAboutFragment fragment6 = new MineAboutFragment();
 //			ApplyWaterDistrbutionFragment fragment6 = new ApplyWaterDistrbutionFragment();//配水(应用)测试
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 			transaction.replace(R.id.fl, fragment6, "main");
 			transaction.commit();
 //			Intent intent = new Intent(getActivity(),IrriagteOrWaterActivity.class);

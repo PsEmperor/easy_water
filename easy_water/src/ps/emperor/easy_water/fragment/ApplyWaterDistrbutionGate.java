@@ -636,6 +636,16 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 			// R.anim.right_out);
 			Bundle bundle = new Bundle();
 			bundle.putSerializable("beans", (Serializable) beans);
+			if(CheckUtil.IsEmpty(beens.get(0).getOpenPoreTime())){
+				bundle.putString("OpenPoreTime","0000-00-00 00:00");
+			}else{
+				bundle.putString("OpenPoreTime",beens.get(0).getOpenPoreTime());
+			}
+			if(CheckUtil.IsEmpty(beens.get(0).getClosePoreTime())){
+				bundle.putString("ClosePoreTime","0000-00-00 00:00");
+			}else{
+				bundle.putString("ClosePoreTime",beens.get(0).getClosePoreTime());
+			}
 			fragment2.setArguments(bundle);
 			transaction
 					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);

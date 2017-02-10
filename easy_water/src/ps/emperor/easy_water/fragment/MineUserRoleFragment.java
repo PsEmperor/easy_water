@@ -160,8 +160,7 @@ public class MineUserRoleFragment extends Fragment implements OnClickListener,On
 			MineUserInfoFragment fragment = new MineUserInfoFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
 			transaction.replace(R.id.fl, fragment, "main");
 			transaction.commit();
 			break;

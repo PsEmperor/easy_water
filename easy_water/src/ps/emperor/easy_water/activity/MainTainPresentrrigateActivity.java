@@ -28,7 +28,7 @@ public class MainTainPresentrrigateActivity extends BaseActivity{
 		FragmentTransaction transaction = fgManager.beginTransaction();
 		MainTainIrrigateInfoFragment fragment = new MainTainIrrigateInfoFragment();
 		transaction
-				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+		.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 		transaction.replace(R.id.fragment_maintain_present_irrigate, fragment, "main");
 		transaction.commit();
 	}

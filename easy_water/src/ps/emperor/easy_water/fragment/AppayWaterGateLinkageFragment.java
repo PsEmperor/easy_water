@@ -107,6 +107,8 @@ public class AppayWaterGateLinkageFragment extends Fragment implements
 		 layout_apply_water_time_operation = (RelativeLayout) view.findViewById(R.id.layout_apply_water_time_operation);
 		 layout_apply_water_time_operation.setOnClickListener(this);
 		 list = (List<SluiceGateInfoBean>) getArguments().getSerializable("beans");
+		 timestart = getArguments().getString("OpenPoreTime");
+		 timeend = getArguments().getString("ClosePoreTime");
 		 beans = new ArrayList<ApplyWaterGateLinkageBean>();
 		 ApplyWaterGateLinkageBean bean;
 		 if(CheckUtil.IsEmpty(list)){
@@ -133,6 +135,8 @@ public class AppayWaterGateLinkageFragment extends Fragment implements
 		 adapter = new ApplyWaterGateLinkageAdapter(getActivity());
 		 adapter.addData(beans, false);
 		 listView.setAdapter(adapter);
+		 tv_apply_water_time_operation.setText(timestart);
+		 tv_apply_water_time_operations.setText(timeend);
 		return view;
 	}
 

@@ -23,7 +23,7 @@
     <TextView
         android:id="@+id/text_mine_user_info_province"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="35dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="50dp"
         android:layout_marginTop="5dp"
@@ -46,7 +46,7 @@
     <TextView
         android:id="@+id/text_mine_user_info_state"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="35dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="50dp"
         android:layout_marginTop="5dp"
@@ -69,7 +69,7 @@
     <TextView
         android:id="@+id/text_mine_user_info_district"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="35dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="50dp"
         android:layout_marginTop="5dp"
@@ -92,7 +92,7 @@
     <TextView
         android:id="@+id/text_mine_user_info_even"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="35dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="50dp"
         android:layout_marginTop="5dp"
@@ -115,7 +115,7 @@
     <TextView
         android:id="@+id/text_mine_user_info_units"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="35dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="50dp"
         android:layout_marginTop="5dp"

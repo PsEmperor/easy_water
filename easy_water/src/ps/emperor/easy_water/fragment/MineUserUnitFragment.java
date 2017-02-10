@@ -161,8 +161,7 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			MineUserInfoFragment fragment = new MineUserInfoFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
 			transaction.replace(R.id.fl, fragment, "main");
 			transaction.commit();
 			break;
@@ -244,7 +243,7 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 		popupWindow.showAsDropDown(tvProvince);
 		break;
 		case R.id.text_mine_user_info_state:
-			shareProvince = (String) SharedUtils.getParam(getActivity(), "shareProvince", "无数据");
+			shareProvince = (String) SharedUtils.getParam(getActivity(), "shareProvince", "");
 			chose = 2;
 			String str = "";
 			try {
@@ -254,6 +253,9 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 				e1.printStackTrace();
 			}
 			System.out.println(str);
+			if(CheckUtil.IsEmpty(shareProvince)){
+				Toast.makeText(getActivity(), "请选择省份后进行此操作！", Toast.LENGTH_SHORT).show();
+			}else{
 			RequestParams param2 = new RequestParams(URL.urluserAuthInfo+str);  // 网址(请替换成实际的网址) 
 //			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
 			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
@@ -326,10 +328,11 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 				listView.setAdapter(adapter1);
 				listView.setOnItemClickListener(this);
 			popupWindow.showAsDropDown(tvState);
+			}
 			break;
 		case R.id.text_mine_user_info_district:
-			shareProvince = (String) SharedUtils.getParam(getActivity(), "shareProvince", "无数据");
-			shareState = (String) SharedUtils.getParam(getActivity(), "shareState", "无数据");
+			shareProvince = (String) SharedUtils.getParam(getActivity(), "shareProvince", "");
+			shareState = (String) SharedUtils.getParam(getActivity(), "shareState", "");
 			chose = 3;
 			String str1 = "";
 			String str2 = "";
@@ -340,6 +343,11 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			if(CheckUtil.IsEmpty(shareProvince)){
+				Toast.makeText(getActivity(), "请选择省份后进行此操作！", Toast.LENGTH_SHORT).show();
+			}else if(CheckUtil.IsEmpty(shareState)){
+				Toast.makeText(getActivity(), "请选择市后进行此操作！", Toast.LENGTH_SHORT).show();
+			}else{
 			RequestParams param3 = new RequestParams(URL.urluserAuthInfo+str1+"/"+str2);  // 网址(请替换成实际的网址) 
 //			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
 			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
@@ -413,11 +421,12 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			// popupWindow.showAtLocation(getActivity().findViewById(R.id.setting),
 			// Gravity.TOP, 0, 0);
 			popupWindow.showAsDropDown(tvDistrict);
+			}
 			break;
 		case R.id.text_mine_user_info_even:
-			shareProvince = (String) SharedUtils.getParam(getActivity(), "shareProvince", "无数据");
-			shareState = (String) SharedUtils.getParam(getActivity(), "shareState", "无数据");
-			shareDistrict = (String) SharedUtils.getParam(getActivity(), "shareDistrict", "无数据");
+			shareProvince = (String) SharedUtils.getParam(getActivity(), "shareProvince", "");
+			shareState = (String) SharedUtils.getParam(getActivity(), "shareState", "");
+			shareDistrict = (String) SharedUtils.getParam(getActivity(), "shareDistrict", "");
 			chose = 4;
 			String str3 = "";
 			String str4 = "";
@@ -430,6 +439,13 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			if(CheckUtil.IsEmpty(shareProvince)){
+				Toast.makeText(getActivity(), "请选择省份后进行此操作！", Toast.LENGTH_SHORT).show();
+			}else if(CheckUtil.IsEmpty(shareState)){
+				Toast.makeText(getActivity(), "请选择市后进行此操作！", Toast.LENGTH_SHORT).show();
+			}else if(CheckUtil.IsEmpty(shareDistrict)){
+				Toast.makeText(getActivity(), "请选择区后进行此操作！", Toast.LENGTH_SHORT).show();
+			}else{
 			RequestParams param4 = new RequestParams(URL.urluserAuthInfo+str3+"/"+str4+"/"+str5);  // 网址(请替换成实际的网址) 
 //			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
 			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
@@ -503,12 +519,13 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			// popupWindow.showAtLocation(getActivity().findViewById(R.id.setting),
 			// Gravity.TOP, 0, 0);
 			popupWindow.showAsDropDown(tvEven);
+		}
 			break;
 		case R.id.text_mine_user_info_units:
-			shareProvince = (String) SharedUtils.getParam(getActivity(), "shareProvince", "无数据");
-			shareState = (String) SharedUtils.getParam(getActivity(), "shareState", "无数据");
-			shareDistrict = (String) SharedUtils.getParam(getActivity(), "shareDistrict", "无数据");
-			shareEven = (String) SharedUtils.getParam(getActivity(), "shareEven", "无数据");
+			shareProvince = (String) SharedUtils.getParam(getActivity(), "shareProvince", "");
+			shareState = (String) SharedUtils.getParam(getActivity(), "shareState", "");
+			shareDistrict = (String) SharedUtils.getParam(getActivity(), "shareDistrict", "");
+			shareEven = (String) SharedUtils.getParam(getActivity(), "shareEven", "");
 			chose = 5;
 			String str6 = "";
 			String str7 = "";
@@ -523,6 +540,15 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			if(CheckUtil.IsEmpty(shareProvince)){
+				Toast.makeText(getActivity(), "请选择省份后进行此操作！", Toast.LENGTH_SHORT).show();
+			}else if(CheckUtil.IsEmpty(shareState)){
+				Toast.makeText(getActivity(), "请选择市后进行此操作！", Toast.LENGTH_SHORT).show();
+			}else if(CheckUtil.IsEmpty(shareDistrict)){
+				Toast.makeText(getActivity(), "请选择区后进行此操作！", Toast.LENGTH_SHORT).show();
+			}else if(CheckUtil.IsEmpty(shareEven)){
+				Toast.makeText(getActivity(), "请选择连后进行此操作！", Toast.LENGTH_SHORT).show();
+			}else{
 			RequestParams param5 = new RequestParams(URL.urluserAuthInfo+str6+"/"+str7+"/"+str8+"/"+str9);  // 网址(请替换成实际的网址) 
 //			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
 			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
@@ -596,6 +622,7 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			// popupWindow.showAtLocation(getActivity().findViewById(R.id.setting),
 			// Gravity.TOP, 0, 0);
 			popupWindow.showAsDropDown(tvUnits);
+			}
 			break;
 		
 		default:

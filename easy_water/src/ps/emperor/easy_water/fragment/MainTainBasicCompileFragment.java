@@ -9,6 +9,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.util.Printer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,8 +81,7 @@ public class MainTainBasicCompileFragment extends Fragment implements
 			MainTainIrrigateInfoFragment fragment = new MainTainIrrigateInfoFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
 			transaction.replace(R.id.fragment_maintain_present_irrigate, fragment, "main");
 			transaction.commit();
 			break;
@@ -96,8 +96,7 @@ public class MainTainBasicCompileFragment extends Fragment implements
 			Bundle bundle = new Bundle();
 			bundle.putString("units", units);
 			fragment1.setArguments(bundle);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 			transaction.replace(R.id.fragment_maintain_present_irrigate,
 					fragment1, "main");
 			transaction.commit();
@@ -106,8 +105,7 @@ public class MainTainBasicCompileFragment extends Fragment implements
 			MainTainIrrigationUserInfoFragment fragment2 = new MainTainIrrigationUserInfoFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 			transaction.replace(R.id.fragment_maintain_present_irrigate,
 					fragment2, "main");
 			transaction.commit();
@@ -116,8 +114,7 @@ public class MainTainBasicCompileFragment extends Fragment implements
 			MainTainIrrigationfarmarcropInfoFragment fragment3 = new MainTainIrrigationfarmarcropInfoFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 			transaction.replace(R.id.fragment_maintain_present_irrigate,
 					fragment3, "main");
 			transaction.commit();
@@ -126,8 +123,7 @@ public class MainTainBasicCompileFragment extends Fragment implements
 			MainTainIrrigationInfoFragment fragment4 = new MainTainIrrigationInfoFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 			transaction.replace(R.id.fragment_maintain_present_irrigate,
 					fragment4, "main");
 			transaction.commit();

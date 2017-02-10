@@ -170,8 +170,7 @@ public class MineWaterDistributionFragment extends Fragment implements
 			MinesFragment fragment = new MinesFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
 			transaction.replace(R.id.fl, fragment, "main");
 			transaction.commit();
 			break;
@@ -179,8 +178,7 @@ public class MineWaterDistributionFragment extends Fragment implements
 			MineWaterAddFragment fragment1 = new MineWaterAddFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 			transaction.replace(R.id.fl, fragment1, "main");
 			transaction.commit();
 			break;
