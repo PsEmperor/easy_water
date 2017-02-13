@@ -8,6 +8,10 @@ public class URL {
 	public static final String updateUserinfo = "http://192.168.2.188:8080/cms/app/UserSys/updateUserinfo/userName";
 	//授权单位前缀
 	public static final String urluserAuthInfo = "http://192.168.2.188:8080/cms/app/UserSys/userAuthInfo/";
+	//我-个人信息-手机号码修改-最终修改
+	public static final String updatePhoneNum = "http://192.168.2.188:8080/cms/app/UserSys/updatePhoneNum";
+	//我-个人信息-手机号码修改-获取手机验证码
+	public static final String getAuthCode = "http://192.168.2.188:8080/cms/app/UserSys/getAuthCode/";
 	
 	//查询已关联灌溉设备
 	public static final String findUserReleIrrInfo = "http://192.168.2.188:8080/cms/app/UserSys/findUserReleIrrInfo/";
@@ -85,5 +89,11 @@ public class URL {
 	public static final String updateValueControlSwitch = "http://192.168.2.188:8080/cms/app/IrriUnitSys/updateValueControlSwitch";
 	//应用-灌溉-灌溉计划-立即控制-灌水延续时间修改
 	public static final String updateValueControlIrriDuration = "http://192.168.2.188:8080/cms/app/IrriUnitSys/updateValueControlIrriDuration";
+	//应用-灌溉-灌溉计划-立即控制-灌溉组控制-显示当前灌溉单元下灌溉组灌溉状态,启始时间,通道号名称
+	public static final String findIrriGroupControl = "http://192.168.2.188:8080/cms/app/IrriUnitSys/findIrriGroupControl/";
+	//应用-灌溉-灌溉计划-立即控制-灌溉组控制-操作灌溉组按钮(查询状态)
+	public static final String judgeIrriGroupState = "http://192.168.2.188:8080/cms/app/IrriUnitSys/judgeIrriGroupState/";
+	//应用-灌溉-灌溉计划-立即控制-灌溉组控制-操作灌溉组按钮
+	public static final String controlIrriGroupValue = "http://192.168.2.188:8080/cms/app/IrriUnitSys/IrriGroupState/controlIrriGroupValue";
 	
 }

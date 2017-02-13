@@ -76,8 +76,24 @@ public class MineIrrigationEquipmentFragment extends Fragment implements OnClick
 		actionBar.setActionBarOnClickListener(this);
 		
 		dBManager = DBHelper.getInstance(getActivity()); 
-	    String str1 = "";
-	    listView = (ListView) view.findViewById(R.id.list_irrigation_equipment);
+		listView = (ListView) view.findViewById(R.id.list_irrigation_equipment);
+	    init();
+//	    	List<Irrigation> listentity = dBManager.loadAllSession();  
+//			beans = new ArrayList<IrrigationEquipmentBean>();
+//			IrrigationEquipmentBean bean;
+//			for (int i = 0; i < listentity.size(); i++) {
+//				bean = new IrrigationEquipmentBean();
+//				bean.setEquipment(listentity.get(i).getIrrigation());
+//				bean.setIsCheck(true);
+//				beans.add(bean);
+//			}
+//		adapter.addData(beans, false);
+//		beans = adapter.getData();
+		return view;
+	}
+
+	private void init() {
+		String str1 = "";
 		try {
 			str1 = java.net.URLEncoder.encode("3","UTF-8");
 		} catch (UnsupportedEncodingException e1) {
@@ -155,19 +171,7 @@ public class MineIrrigationEquipmentFragment extends Fragment implements OnClick
 	                  }
 	          		progressDialog.dismiss();
 	            }  
-	        }); 
-//	    	List<Irrigation> listentity = dBManager.loadAllSession();  
-//			beans = new ArrayList<IrrigationEquipmentBean>();
-//			IrrigationEquipmentBean bean;
-//			for (int i = 0; i < listentity.size(); i++) {
-//				bean = new IrrigationEquipmentBean();
-//				bean.setEquipment(listentity.get(i).getIrrigation());
-//				bean.setIsCheck(true);
-//				beans.add(bean);
-//			}
-//		adapter.addData(beans, false);
-//		beans = adapter.getData();
-		return view;
+	        }); 		
 	}
 
 	@Override

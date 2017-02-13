@@ -98,6 +98,11 @@ public class MineIrrigationAddFragment extends Fragment implements OnClickListen
 		dBManager = DBHelper.getInstance(getActivity());    //得到DBHelper对象  
 		dbHelper = DBHelper.getInstance(getActivity()); // 得到DBHelper对象
 		adapter = new IrrigationAddAdapter(getActivity());
+		init();
+		return view;
+	}
+
+	private void init() {
 		String str1 = "";
 		try {
 			str1 = java.net.URLEncoder.encode("3","UTF-8");
@@ -163,8 +168,7 @@ public class MineIrrigationAddFragment extends Fragment implements OnClickListen
 	                  }
 	                  progressDialog.dismiss();
 	            }  
-	        }); 
-		return view;
+	        });
 	}
 
 	@Override
@@ -202,16 +206,15 @@ public class MineIrrigationAddFragment extends Fragment implements OnClickListen
 //					dbHelper.saveSession(irrigation);
 //				}
 //			}
-//			MineIrrigationEquipmentFragment fragment1 = new MineIrrigationEquipmentFragment();
-////			transaction.setCustomAnimations(R.anim.right_in, R.anim.right_out);
-//			transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-//			transaction.replace(R.id.fl, fragment1, "main");
-//			transaction.commit();
-			try {
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			list = new ArrayList<String>();
+			for (int i = 0; i < beens.size(); i++) {
+				if(beens.get(i).isCheck==true){
+					list.add(beens.get(i).getFirstDerviceID());
+				}
 			}
+			if(CheckUtil.IsEmpty(list)){
+				Toast.makeText(getActivity(), "尚未选择任何灌溉单元！", Toast.LENGTH_SHORT).show();
+			}else{
 			RequestParams param2 = new RequestParams(URL.firstDerviceID);  // 网址(请替换成实际的网址) 
 //			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
 			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
@@ -220,16 +223,6 @@ public class MineIrrigationAddFragment extends Fragment implements OnClickListen
 			try {
 				param2.setAsJsonContent(true);
 				js_request.put("userID", "3");
-				list = new ArrayList<String>();
-				for (int i = 0; i < beens.size(); i++) {
-					if(beens.get(i).isCheck==true){
-						list.add(beens.get(i).getFirstDerviceID());
-					}
-				}
-//				String[] array = new String[list.size()];
-//				for (int i = 0; i < list.size(); i++) {
-//					array[i] = list.get(i);
-//				}
 				js_request.put("firstDerviceID", list);
 				param2.setBodyContent(js_request.toString());
 			} catch (Exception e) {
@@ -278,6 +271,12 @@ public class MineIrrigationAddFragment extends Fragment implements OnClickListen
 		                  progressDialog.dismiss();
 		            }  
 		        }); 
+		        MineIrrigationEquipmentFragment fragment1 = new MineIrrigationEquipmentFragment();
+//				transaction.setCustomAnimations(R.anim.right_in, R.anim.right_out);
+				transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
+				transaction.replace(R.id.fl, fragment1, "main");
+				transaction.commit();
+			}
 			break;
 		case R.id.text_irrigation_canel:
 			for (int i = 0; i < beens.size(); i++) {

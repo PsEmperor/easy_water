@@ -22,49 +22,6 @@ import android.widget.TextView;
  */
 public class Myadapter extends BaseAdapter {
 
-//	private Context context;
-//	public List<ApplyIrrigationProjectBean> mType = null;
-//	
-//	public Myadapter(Context context,List<ApplyIrrigationProjectBean> list) {
-//		super(context);
-//		this.context = context;
-//		this.mType = list;
-//	}
-//
-//	@Override
-//	public View MyGetView(int position, View convertView, ViewGroup parent) {
-//		final ViewHolder viewHolder;
-//		if (convertView == null) {
-//			convertView = inflater.inflate(R.layout.fragment_apply_irrigate_project_list, null);
-//			viewHolder = new ViewHolder();
-//			viewHolder.group = (TextView) convertView.findViewById(R.id.image_apply_group);
-//			viewHolder.time_start = (TextView) convertView.findViewById(R.id.text_apply_irriagte_time_start);
-//			viewHolder.time_end = (TextView) convertView.findViewById(R.id.text_apply_irriagte_time_end);
-//			convertView.setTag(viewHolder);
-//		} else {
-//			viewHolder = (ViewHolder) convertView.getTag();
-//		}
-//		ApplyIrrigationProjectBean applyIrrigationProjectBean = list.get(position);
-//		viewHolder.group.setText(applyIrrigationProjectBean.group);
-//		viewHolder.time_start.setText(applyIrrigationProjectBean.time_start);
-//		viewHolder.time_end.setText(applyIrrigationProjectBean.time_end);
-//		notifyDataSetChanged();
-//		return convertView;
-//
-//	}
-//
-//	class ViewHolder {
-//		TextView group;
-//		TextView time_start;
-//		TextView time_end;
-//	}
-//
-//	@Override
-//	public void onClick(View v) {
-//		// TODO Auto-generated method stub
-//		
-//	}
-
 	private Context con;
 	public List<ApplyIrrigationProjectBean> mType = null;
 

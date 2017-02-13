@@ -163,7 +163,6 @@ public class MainTainBasicInfoFragment extends Fragment implements
 	private void init() {
 		String str1 = (String) SharedUtils.getParam(getActivity(),
 				"FirstDerviceID", "");
-		;
 		try {
 			str1 = java.net.URLEncoder.encode(str1, "UTF-8");
 		} catch (UnsupportedEncodingException e1) {
@@ -416,8 +415,6 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				}
 				SharedUtils.setParam(getActivity(), "setNight", setNight);
 				ApplyIrrigateProjectSeasonFragment fragment = new ApplyIrrigateProjectSeasonFragment();
-				// transaction.setCustomAnimations(R.anim.right_in,
-				// R.anim.right_out);
 				Bundle bundle = new Bundle();
 				bundle.putString("units", units);
 				isFront = 1;
@@ -432,8 +429,6 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				Skip = 0;
 				SharedUtils.setParam(getActivity(), "Skip", Skip);
 				MainTainBasicCompileFragment fragment = new MainTainBasicCompileFragment();
-				// transaction.setCustomAnimations(R.anim.right_in,
-				// R.anim.right_out);
 				transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
 				transaction.replace(R.id.fragment_maintain_present_irrigate,
 						fragment, "main");
@@ -448,7 +443,6 @@ public class MainTainBasicInfoFragment extends Fragment implements
 			String str1 = (String) SharedUtils.getParam(getActivity(),
 					"FirstDerviceID", "");
 			RequestParams param2 = new RequestParams(URL.firstDerviceIDIrri); // 网址(请替换成实际的网址)
-			// params.addQueryStringParameter("key", "value"); //
 			// 参数(请替换成实际的参数与值)
 			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
 					"Please wait...", true, false);

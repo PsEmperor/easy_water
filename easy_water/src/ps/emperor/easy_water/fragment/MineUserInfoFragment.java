@@ -182,14 +182,32 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 	                  Gson gson = new Gson();
 	                  UserBean fromJson = gson.fromJson(arg0, UserBean.class);
 	                  List<infoList> infoList = fromJson.getAuthNameList();
-	                  names = infoList.get(0).getFullName();
-	                  units = infoList.get(0).getAuthName();
-	                  tel = infoList.get(0).getPhoneNum();
-	                  role = infoList.get(0).getRoleName();
-	                  name_show.setText(names);
-	                  tv_info_units.setText(units);
-	                  tv_info_user_tel.setText(tel);
-	                  tv_info_role.setText(role);
+	                  if(!CheckUtil.IsEmpty(infoList)){
+	                	  names = infoList.get(0).getFullName();
+	                	  units = infoList.get(0).getAuthName();
+	                	  tel = infoList.get(0).getPhoneNum();
+	                	  role = infoList.get(0).getRoleName();
+	                	  if(!CheckUtil.IsEmpty(names)){
+	                		  name_show.setText(names);
+	                	  }else{
+	                		  name_show.setText("");
+	                	  }
+	                	  if(!CheckUtil.IsEmpty(units)){
+	                		  tv_info_units.setText(units);
+	                	  }else{
+	                		  tv_info_units.setText("");
+	                	  }
+	                	  if(!CheckUtil.IsEmpty(tel)){
+	                		  tv_info_user_tel.setText(tel);
+	                	  }else{
+	                		  tv_info_user_tel.setText("");
+	                	  }
+	                	  if(!CheckUtil.IsEmpty(role)){
+	                		  tv_info_role.setText(role);
+	                	  }else{
+	                		  tv_info_role.setText("");
+	                	  }
+	                  }
 	                  progressDialog.dismiss();
 	            }  
 	        }); 

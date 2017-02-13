@@ -207,11 +207,13 @@ public class MainTainIrrigationInfoFragment extends Fragment implements
 					text_maintain_irrigat_round.setText(beans.get(0)
 							.getGroupNum());
 				}
-				deleteId = irrigationGroups.get(0).getId();
-				if (irrigationGroups.size()!=Integer.valueOf(beans.get(0).getGroupNum())) {
-					for (int i = 0; i < irrigationGroups.size(); i++) {
-						dbHelper.deleteGroupId(deleteId);
-						deleteId++;
+				if(!CheckUtil.IsEmpty(irrigationGroups)){
+					deleteId = irrigationGroups.get(0).getId();
+					if (irrigationGroups.size()!=Integer.valueOf(beans.get(0).getGroupNum())) {
+						for (int i = 0; i < irrigationGroups.size(); i++) {
+							dbHelper.deleteGroupId(deleteId);
+							deleteId++;
+						}
 					}
 				}
 				if (CheckUtil.IsEmpty(irrigationGroups)||irrigationGroups.size()!=Integer.valueOf(beans.get(0).getGroupNum())) {
@@ -566,19 +568,6 @@ public class MainTainIrrigationInfoFragment extends Fragment implements
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		// TODO Auto-generated method stub
 		adapter.changeState(position);
-		// SharedUtils.setParam(getActivity(), "123", position);
-		// if (beens.get(position).getIstrue() == true) {
-		// list[position] = position;// 当前选中的下标
-		// // String a = beans.get(position).getGate();
-		// // infoBeans[position]=a;
-		// Log.i("test", list[position] + "");
-		// } else if (beens.get(position).getIstrue() == false) {
-		// list[position] = 100;// 未选中状态分配00
-		// // String a = beans.get(position).getGate();
-		// // infoBeans.remove(a);
-		// Log.i("tests", list[position] + "");
-		// }
 	}
 }

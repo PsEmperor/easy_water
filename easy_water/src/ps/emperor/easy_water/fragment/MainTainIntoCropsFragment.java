@@ -58,7 +58,7 @@ public class MainTainIntoCropsFragment extends Fragment implements
 	private ArrayList<String> list = new ArrayList<String>();
 	private MainTainIntoCropsAdapter adapter;
 	private GridView gridView;
-	private EditText control_crop,control_time;// 播种时间
+	private EditText control_crop, control_time;// 播种时间
 	private Dialog dialog;
 	private int area;
 	private String year, month, day;
@@ -82,7 +82,8 @@ public class MainTainIntoCropsFragment extends Fragment implements
 		area = getArguments().getInt("area");
 		adapter = new MainTainIntoCropsAdapter(getActivity());
 		gridView = (GridView) view.findViewById(R.id.grid__maintain_into_crops);
-		control_crop = (EditText) view.findViewById(R.id.edit__apply_irrigatr_control_crop);
+		control_crop = (EditText) view
+				.findViewById(R.id.edit__apply_irrigatr_control_crop);
 		control_time = (EditText) view
 				.findViewById(R.id.text__apply_irrigatr_control_time);
 		control_time.setOnClickListener(this);
@@ -113,7 +114,9 @@ public class MainTainIntoCropsFragment extends Fragment implements
 			MainTainIrrigationfarmarcropInfoFragment fragment = new MainTainIrrigationfarmarcropInfoFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
-			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
+			transaction.setCustomAnimations(
+					R.anim.slide_fragment_horizontal_right_in,
+					R.anim.slide_fragment_horizontal_left_out);
 			transaction.replace(R.id.fragment_maintain_present_irrigate,
 					fragment, "main");
 			transaction.commit();
@@ -122,25 +125,22 @@ public class MainTainIntoCropsFragment extends Fragment implements
 			showDateTimePicker(mInflater);
 			break;
 		case R.id.acitionbar_right:
-			RequestParams param2 = new RequestParams(URL.addChanCropInfo);  // 网址(请替换成实际的网址) 
-//			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
+			RequestParams param2 = new RequestParams(URL.addChanCropInfo); // 网址(请替换成实际的网址)
 			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
 					"Please wait...", true, false);
 			JSONObject js_request = new JSONObject();
 			try {
 				param2.setAsJsonContent(true);
-				String str1 = (String) SharedUtils.getParam(getActivity(), "FirstDerviceID", "");;
+				String str1 = (String) SharedUtils.getParam(getActivity(),
+						"FirstDerviceID", "");
+				;
 				try {
-					str1 = java.net.URLEncoder.encode(str1,"UTF-8");
+					str1 = java.net.URLEncoder.encode(str1, "UTF-8");
 				} catch (UnsupportedEncodingException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				js_request.put("firstDerviceID", str1);
-//				String[] array = new String[list.size()];
-//				for (int i = 0; i < list.size(); i++) {
-//					array[i] = list.get(i);
-//				}
 				js_request.put("valueControlChanID", list);
 				js_request.put("cropName", control_crop.getText().toString());
 				js_request.put("plantTime", control_time.getText().toString());
@@ -149,46 +149,65 @@ public class MainTainIntoCropsFragment extends Fragment implements
 			} catch (Exception e) {
 				e.printStackTrace();
 				param2.setAsJsonContent(true);
-			}//根据实际需求添加相应键值对
-			
-		        x.http().request(HttpMethod.POST ,param2, new CommonCallback<String>() {  
-		            @Override  
-		            public void onCancelled(CancelledException arg0) {  
-		                  
-		            }  
-		  
-		         // 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误  
-		            // 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看  
-		            @Override  
-		            public void onError(Throwable ex, boolean isOnCallback) {  
-		                  
-		                Toast.makeText(x.app(), ex.getMessage(), Toast.LENGTH_LONG).show();  
-		                if (ex instanceof HttpException) { // 网络错误    
-		                    HttpException httpEx = (HttpException) ex;  
-		                    int responseCode = httpEx.getCode();  
-		                    String responseMsg = httpEx.getMessage();  
-		                    String errorResult = httpEx.getResult();  
-		                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
-		                    // ...  
-		                    progressDialog.dismiss();
-		                } else { // 其他错误    
-		                    // ...  
-		                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
-		                	progressDialog.dismiss();
-		                }  
-		                  
-		            }  
-		  
-		         // 不管成功或者失败最后都会回调该接口  
-		            @Override  
-		            public void onFinished() {    
-		            }  
-		  
-		            @Override  
-		            public void onSuccess(String arg0) {  
-		                  progressDialog.dismiss();
-		            }  
-		        }); 
+			}// 根据实际需求添加相应键值对
+
+			x.http().request(HttpMethod.POST, param2,
+					new CommonCallback<String>() {
+						@Override
+						public void onCancelled(CancelledException arg0) {
+
+						}
+
+						// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+						// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+						@Override
+						public void onError(Throwable ex, boolean isOnCallback) {
+
+							Toast.makeText(x.app(), ex.getMessage(),
+									Toast.LENGTH_LONG).show();
+							if (ex instanceof HttpException) { // 网络错误 
+								HttpException httpEx = (HttpException) ex;
+								int responseCode = httpEx.getCode();
+								String responseMsg = httpEx.getMessage();
+								String errorResult = httpEx.getResult();
+								Toast.makeText(getActivity(), "请求失败",
+										Toast.LENGTH_SHORT);
+								// ...
+								progressDialog.dismiss();
+							} else { // 其他错误 
+								// ...
+								Toast.makeText(getActivity(), "请求失败",
+										Toast.LENGTH_SHORT);
+								progressDialog.dismiss();
+							}
+
+						}
+
+						// 不管成功或者失败最后都会回调该接口
+						@Override
+						public void onFinished() {
+						}
+
+						@Override
+						public void onSuccess(String arg0) {
+							Toast.makeText(getActivity(), "录入成功！",
+									Toast.LENGTH_SHORT).show();
+							FragmentManager fgManager = getFragmentManager();
+							FragmentTransaction transaction = fgManager
+									.beginTransaction();
+							MainTainIrrigationUserInfoFragment fragment = new MainTainIrrigationUserInfoFragment();
+							// transaction.setCustomAnimations(R.anim.right_in,
+							// R.anim.right_out);
+							transaction.setCustomAnimations(
+									R.anim.slide_fragment_horizontal_right_in,
+									R.anim.slide_fragment_horizontal_left_out);
+							transaction.replace(
+									R.id.fragment_maintain_present_irrigate,
+									fragment, "main");
+							transaction.commit();
+							progressDialog.dismiss();
+						}
+					});
 			break;
 		default:
 			break;

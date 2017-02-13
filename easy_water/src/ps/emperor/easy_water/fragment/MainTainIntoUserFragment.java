@@ -50,8 +50,8 @@ public class MainTainIntoUserFragment extends Fragment implements
 	private GridView gridView;
 	private int area;
 	private ProgressDialog progressDialog;
-	private EditText user_name,user_tel;
-	
+	private EditText user_name, user_tel;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -60,9 +60,11 @@ public class MainTainIntoUserFragment extends Fragment implements
 				container, false);
 		actionBar = (MainActionBars) view
 				.findViewById(R.id.actionbar_maintain_into_user);
-		user_name = (EditText) view.findViewById(R.id.edit__apply_irrigatr_control_user_name);
-		user_tel = (EditText) view.findViewById(R.id.edit__apply_irrigatr_control_user_tel);
-		
+		user_name = (EditText) view
+				.findViewById(R.id.edit__apply_irrigatr_control_user_name);
+		user_tel = (EditText) view
+				.findViewById(R.id.edit__apply_irrigatr_control_user_tel);
+
 		actionBar.setLeftIcon(R.drawable.btn_back_selector);
 		actionBar.setRightText("保存");
 		actionBar.setTitle("录入种植户信息");
@@ -73,8 +75,7 @@ public class MainTainIntoUserFragment extends Fragment implements
 		gridView = (GridView) view.findViewById(R.id.grid__maintain_into_user);
 		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
 				getActivity(), android.R.layout.simple_list_item_1, integers);
-		
-		
+
 		/* 设置ListView的Adapter */
 		gridView.setAdapter(new ArrayAdapter<String>(getActivity(),
 				android.R.layout.simple_list_item_1, integers));
@@ -90,79 +91,98 @@ public class MainTainIntoUserFragment extends Fragment implements
 			MainTainIrrigationUserInfoFragment fragment = new MainTainIrrigationUserInfoFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
-			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
+			transaction.setCustomAnimations(
+					R.anim.slide_fragment_horizontal_right_in,
+					R.anim.slide_fragment_horizontal_left_out);
 			transaction.replace(R.id.fragment_maintain_present_irrigate,
 					fragment, "main");
 			transaction.commit();
 			break;
 		case R.id.acitionbar_right:
-			RequestParams param2 = new RequestParams(URL.addGrowersInfo);  // 网址(请替换成实际的网址) 
-//			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
+			RequestParams param2 = new RequestParams(URL.addGrowersInfo); // 网址(请替换成实际的网址)
 			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
 					"Please wait...", true, false);
 			JSONObject js_request = new JSONObject();
 			try {
 				param2.setAsJsonContent(true);
-				String str1 = (String) SharedUtils.getParam(getActivity(), "FirstDerviceID", "");;
+				String str1 = (String) SharedUtils.getParam(getActivity(),
+						"FirstDerviceID", "");
+				;
 				try {
-					str1 = java.net.URLEncoder.encode(str1,"UTF-8");
+					str1 = java.net.URLEncoder.encode(str1, "UTF-8");
 				} catch (UnsupportedEncodingException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				js_request.put("firstDerviceID", str1);
-//				String[] array = new String[list.size()];
-//				for (int i = 0; i < list.size(); i++) {
-//					array[i] = list.get(i);
-//				}
 				js_request.put("valueControlChanID", list);
 				js_request.put("growersName", user_name.getText().toString());
-				js_request.put("growersPhoneNum", user_tel.getText().toString());
+				js_request
+						.put("growersPhoneNum", user_tel.getText().toString());
 				js_request.put("area", area);
 				param2.setBodyContent(js_request.toString());
 			} catch (Exception e) {
 				e.printStackTrace();
 				param2.setAsJsonContent(true);
-			}//根据实际需求添加相应键值对
-			
-		        x.http().request(HttpMethod.POST ,param2, new CommonCallback<String>() {  
-		            @Override  
-		            public void onCancelled(CancelledException arg0) {  
-		                  
-		            }  
-		  
-		         // 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误  
-		            // 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看  
-		            @Override  
-		            public void onError(Throwable ex, boolean isOnCallback) {  
-		                  
-		                Toast.makeText(x.app(), ex.getMessage(), Toast.LENGTH_LONG).show();  
-		                if (ex instanceof HttpException) { // 网络错误    
-		                    HttpException httpEx = (HttpException) ex;  
-		                    int responseCode = httpEx.getCode();  
-		                    String responseMsg = httpEx.getMessage();  
-		                    String errorResult = httpEx.getResult();  
-		                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
-		                    // ...  
-		                    progressDialog.dismiss();
-		                } else { // 其他错误    
-		                    // ...  
-		                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
-		                	progressDialog.dismiss();
-		                }  
-		                  
-		            }  
-		  
-		         // 不管成功或者失败最后都会回调该接口  
-		            @Override  
-		            public void onFinished() {    
-		            }  
-		  
-		            @Override  
-		            public void onSuccess(String arg0) {  
-		                  progressDialog.dismiss();
-		            }  
-		        }); 
+			}// 根据实际需求添加相应键值对
+
+			x.http().request(HttpMethod.POST, param2,
+					new CommonCallback<String>() {
+						@Override
+						public void onCancelled(CancelledException arg0) {
+
+						}
+
+						// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+						// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+						@Override
+						public void onError(Throwable ex, boolean isOnCallback) {
+
+							Toast.makeText(x.app(), ex.getMessage(),
+									Toast.LENGTH_LONG).show();
+							if (ex instanceof HttpException) { // 网络错误 
+								HttpException httpEx = (HttpException) ex;
+								int responseCode = httpEx.getCode();
+								String responseMsg = httpEx.getMessage();
+								String errorResult = httpEx.getResult();
+								Toast.makeText(getActivity(), "请求失败",
+										Toast.LENGTH_SHORT);
+								// ...
+								progressDialog.dismiss();
+							} else { // 其他错误 
+								// ...
+								Toast.makeText(getActivity(), "请求失败",
+										Toast.LENGTH_SHORT);
+								progressDialog.dismiss();
+							}
+
+						}
+
+						// 不管成功或者失败最后都会回调该接口
+						@Override
+						public void onFinished() {
+						}
+
+						@Override
+						public void onSuccess(String arg0) {
+							Toast.makeText(getActivity(), "录入成功！",
+									Toast.LENGTH_SHORT).show();
+							FragmentManager fgManager = getFragmentManager();
+							FragmentTransaction transaction = fgManager
+									.beginTransaction();
+							MainTainIrrigationUserInfoFragment fragment = new MainTainIrrigationUserInfoFragment();
+							// transaction.setCustomAnimations(R.anim.right_in,
+							// R.anim.right_out);
+							transaction.setCustomAnimations(
+									R.anim.slide_fragment_horizontal_right_in,
+									R.anim.slide_fragment_horizontal_left_out);
+							transaction.replace(
+									R.id.fragment_maintain_present_irrigate,
+									fragment, "main");
+							transaction.commit();
+							progressDialog.dismiss();
+						}
+					});
 			break;
 		default:
 			break;

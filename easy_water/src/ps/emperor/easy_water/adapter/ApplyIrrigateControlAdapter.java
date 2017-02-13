@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.entity.ApplyIrrigateControlBean;
+import ps.emperor.easy_water.entity.ApplyIrrigateControlBean.infoList;
 
 /**
  * 灌溉组控制
@@ -16,7 +17,7 @@ import ps.emperor.easy_water.entity.ApplyIrrigateControlBean;
  * @author 毛国江
  * @version 2016-5-18 上午11:12
  */
-public class ApplyIrrigateControlAdapter extends MyBaseAdapter<ApplyIrrigateControlBean> implements OnClickListener {
+public class ApplyIrrigateControlAdapter extends MyBaseAdapter<infoList> implements OnClickListener {
 
 	private Context context;
 
@@ -36,8 +37,8 @@ public class ApplyIrrigateControlAdapter extends MyBaseAdapter<ApplyIrrigateCont
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		ApplyIrrigateControlBean applyIrrigateControlBean = list.get(position);
-		viewHolder.valves.setText(applyIrrigateControlBean.valve);
+		infoList infoList = list.get(position);
+		viewHolder.valves.setText(infoList.getChanNum());
 		return convertView;
 
 	}

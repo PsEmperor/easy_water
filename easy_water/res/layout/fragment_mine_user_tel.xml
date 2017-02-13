@@ -33,7 +33,7 @@
             android:layout_below="@+id/imageView1"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:text="当前手机号：123456789123"
+            android:text="当前手机号：15279560809"
             android:textColor="@color/black"
             android:textSize="16sp" />
 
@@ -59,10 +59,11 @@
         <EditText
             android:id="@+id/edit_mine_user_info_tel"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
+            android:layout_toLeftOf="@+id/verification_code"
             android:background="@color/transparent"
             android:hint="新手机号" />
 
@@ -75,6 +76,7 @@
             android:layout_marginRight="25dp"
             android:background="@color/blue"
             android:text="获取验证码" />
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -85,25 +87,16 @@
         android:background="@color/white" >
 
         <EditText
+            android:id="@+id/verification_codes"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
             android:background="@color/transparent"
-            android:enabled="false"
             android:hint="验证码" />
 
-        <EditText
-            android:id="@+id/edit_mine_user_info_new_tel"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="25dp"
-            android:background="@color/transparent"
-            android:hint="6位数字验证码"
-            android:singleLine="true" />
     </RelativeLayout>
 
     <Button

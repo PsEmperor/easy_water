@@ -235,38 +235,6 @@ public class MainTainIrrigationfarmarcropInfoFragment extends Fragment
 						fragment1, "main");
 				transaction.commit();
 			}
-//			if (popupWindow == null) {
-//				View view = mInflater.inflate(
-//						R.layout.layout_irrigation_user_popu, null);
-//				popupWindow = new PopupWindow(view,
-//						ViewGroup.LayoutParams.WRAP_CONTENT,
-//						ViewGroup.LayoutParams.WRAP_CONTENT);
-//				popupWindow.setFocusable(true);
-//				WindowManager.LayoutParams params = getActivity().getWindow()
-//						.getAttributes();
-//				params.alpha = 0.7f;
-//				getActivity().getWindow().setAttributes(params);
-//				popupWindow.setOnDismissListener(new OnDismissListener() {
-//
-//					@Override
-//					public void onDismiss() {
-//						popupWindow.dismiss();
-//						popupWindow = null;
-//						WindowManager.LayoutParams params = getActivity()
-//								.getWindow().getAttributes();
-//						params.alpha = 1f;
-//						getActivity().getWindow().setAttributes(params);
-//					}
-//				});
-//				popupWindow.setFocusable(true);
-//				popupWindow.setBackgroundDrawable(new ColorDrawable());
-//				view.findViewById(R.id.text_irrigation_info_save)
-//						.setOnClickListener(changlistener);
-//				view.findViewById(R.id.text_irrigation_info_group)
-//						.setOnClickListener(changlistener);
-//			}
-//			// popupWindow.showAtLocation(getActivity().findViewById(R.id.setting),
-//			popupWindow.showAsDropDown(actionBar);
 			break;
 		case R.id.btn_main_irrigate_info_all:
 			adapter.changeAllState(true);
@@ -276,81 +244,6 @@ public class MainTainIrrigationfarmarcropInfoFragment extends Fragment
 			break;
 		}
 	}
-
-//	private View.OnClickListener changlistener = new View.OnClickListener() {
-//
-//		@Override
-//		public void onClick(View v) {
-//			FragmentManager fgManager = getFragmentManager();
-//			FragmentTransaction transaction = fgManager.beginTransaction();
-//			switch (v.getId()) {
-//			case R.id.text_irrigation_info_save:// 下一步
-//				for (int i = 0; i < beans.size(); i++) {
-//					if (!CheckUtil.IsEmpty(beans.get(i).getIstrue())) {
-//						if (beans.get(i).getIstrue() == true) {
-//							infoBeans.add(beans.get(i).getGate());
-//						}
-//					}
-//				}
-//				if (CheckUtil.IsEmpty(infoBeans)) {
-//					Toast.makeText(getActivity(), "并未选中任何阀门",
-//							Toast.LENGTH_SHORT).show();
-//				} else {
-//					MainTainIntoCropsFragment fragment = new MainTainIntoCropsFragment();
-//					Bundle bundle = new Bundle();
-//					bundle.putStringArrayList("info",
-//							(ArrayList<String>) infoBeans);
-//					fragment.setArguments(bundle);
-//					transaction
-//							.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-//					transaction.replace(
-//							R.id.fragment_maintain_present_irrigate,
-//							fragment, "main");
-//					transaction.commit();
-//				}
-//				popupWindow.dismiss();
-//				break;
-//			case R.id.text_irrigation_info_group:// 重置
-//				new AlertDialog.Builder(getActivity())
-//						.setTitle("系统提示")
-//						// 设置对话框标题
-//
-//						.setMessage("重置所有信息将清除已录入的种植作物信息！您确认重置吗？")
-//						// 设置显示的内容
-//
-//						.setPositiveButton("确定",
-//								new DialogInterface.OnClickListener() {// 添加确定按钮
-//
-//									@Override
-//									public void onClick(DialogInterface dialog,
-//											int which) {// 确定按钮的响应事件
-//
-//										// TODO Auto-generated method stub
-//										Toast.makeText(getActivity(), "重置成功",
-//												Toast.LENGTH_SHORT).show();
-//										dialog.dismiss();
-//										popupWindow.dismiss();
-//									}
-//
-//								})
-//						.setNegativeButton("返回",
-//								new DialogInterface.OnClickListener() {// 添加返回按钮
-//
-//									@Override
-//									public void onClick(DialogInterface dialog,
-//											int which) {// 响应事件
-//
-//										// TODO Auto-generated method stub
-//
-//										dialog.dismiss();
-//										popupWindow.dismiss();
-//									}
-//
-//								}).show();// 在按键响应事件中显示此对话框
-//				break;
-//			}
-//		}
-//	};
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,

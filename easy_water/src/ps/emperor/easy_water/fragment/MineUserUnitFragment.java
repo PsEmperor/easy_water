@@ -216,7 +216,7 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 		            }  
 		  
 		            @Override  
-		            public void onSuccess(String arg0) {  
+						public void onSuccess(String arg0) {  
 		                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
 		                  Gson gson = new Gson();
 		                  System.out.println(arg0);

@@ -57,7 +57,7 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 	private MainActionBars actionBar;
 	private ImageView isOpen;
 	private Dialog dialog;
-	int hour,minute;
+	int hour,minute,second;
 	private RelativeLayout valve_control;
 	private TextView text_apply_irriagte_valve_control,irriUnit,tv_ChanNum,userName,crop,area,
 	valueControlID,count,totalIrriTime,irriWater,irriDuration;
@@ -98,12 +98,12 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 		totalIrriTime = (TextView) view.findViewById(R.id.text_apply_irriagte_valve_control_time);
 		irriWater = (TextView) view.findViewById(R.id.text_apply_irriagte_valve_control_water);
 		irriDuration = (TextView) view.findViewById(R.id.text_apply_irriagte_valve_control);
-		
-		init();
 		// 灌水延续时间显示
 		text_apply_irriagte_valve_control = (TextView) view
 				.findViewById(R.id.text_apply_irriagte_valve_control);
-		text_apply_irriagte_valve_control.setText(hour + ":" + minute);
+		
+		init();
+		
 
 		isOpen = (ImageView) view
 				.findViewById(R.id.image_irriagte_valve_control_isopen);
@@ -213,7 +213,7 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 					if(!CheckUtil.IsEmpty(beens.get(0).getIrriDuration())){
 						irriDuration.setText(beens.get(0).getIrriDuration());
 					}else{
-						irriDuration.setText("00：00");
+						irriDuration.setText("00:00:00");
 					}
 					if(beens.get(0).getValueControlSwitch().equals("0")){
 						isOpens = 0;
@@ -260,7 +260,7 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 			try {
 				param2.setAsJsonContent(true);
 				js_request.put("valueControlChanID", ValueControlChanID);
-				js_request.put("irriDuration", hour+":"+minute);
+				js_request.put("irriDuration", irriDuration.getText().toString());
 				param2.setBodyContent(js_request.toString());
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -401,6 +401,7 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 		Calendar calendar = Calendar.getInstance();
 		int hour = calendar.get(Calendar.HOUR_OF_DAY);
 		int minute = calendar.get(Calendar.MINUTE);
+		int second = calendar.get(Calendar.SECOND);
 
 		dialog = new Dialog(getActivity());
 		dialog.setTitle("请选择灌水持续时间");
@@ -410,7 +411,7 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 
 		// 时
 		final WheelView wv_hours = (WheelView) view
-				.findViewById(R.id.hour_filter);
+				.findViewById(R.id.hour_filters);
 		wv_hours.setAdapter(new NumericWheelAdapter(0, 23));
 		wv_hours.setCyclic(true);
 		wv_hours.setLabel("时");// 添加文字
@@ -418,19 +419,19 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 
 		// 分
 		final WheelView wv_minute = (WheelView) view
-				.findViewById(R.id.minute_filter);
+				.findViewById(R.id.minute_filters);
 		wv_minute.setAdapter(new NumericWheelAdapter(0, 59));
 		wv_minute.setCyclic(true);
 		wv_minute.setLabel("分");// 添加文字
 		wv_minute.setCurrentItem(minute);
 
-		// // 秒
-		// final WheelView wv_second = (WheelView)
-		// view.findViewById(R.id.second);
-		// wv_second.setAdapter(new NumericWheelAdapter(0, 59, "%02d"));
-		// wv_second.setCyclic(true);
-		// wv_second.setCurrentItem(second);
-		// wv_second.setLabel("秒");// 添加文字
+		 // 秒
+		 final WheelView wv_second = (WheelView)
+		 view.findViewById(R.id.second_filters);
+		 wv_second.setAdapter(new NumericWheelAdapter(0, 59, "%02d"));
+		 wv_second.setCyclic(true);
+		 wv_second.setCurrentItem(second);
+		 wv_second.setLabel("秒");// 添加文字
 		// 根据屏幕密度来指定选择器字体的大小
 		// int textSize = 0;
 		//
@@ -452,9 +453,12 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 				text_apply_irriagte_valve_control.setText(decimal
 						.format(wv_hours.getCurrentItem())
 						+ ":"
-						+ decimal.format(wv_minute.getCurrentItem()));
+						+ decimal.format(wv_minute.getCurrentItem())
+						+ ":"
+						+ decimal.format(wv_second.getCurrentItem()));
 				ApplyIrrigateControlValveFragment.this.hour = wv_hours.getCurrentItem();
 				ApplyIrrigateControlValveFragment.this.minute = wv_minute.getCurrentItem();
+				ApplyIrrigateControlValveFragment.this.second = wv_second.getCurrentItem();
 				// 设置日期的显示
 				// tv_time.setText((wv_year.getCurrentItem() + START_YEAR) + "-"
 				// + decimal.format((wv_month.getCurrentItem() + 1)) + "-"

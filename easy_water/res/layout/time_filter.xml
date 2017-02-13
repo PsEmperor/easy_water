@@ -12,12 +12,18 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp">
         <ps.emperor.easy_water.view.WheelView
-            android:id="@+id/hour_filter"
+            android:id="@+id/hour_filters"
             android:layout_width="150dp"
             android:layout_height="120dp"
             android:layout_weight="1"/>
         <ps.emperor.easy_water.view.WheelView
-            android:id="@+id/minute_filter"
+            android:id="@+id/minute_filters"
+            android:layout_width="150dp"
+            android:layout_height="120dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="20dp"/>
+         <ps.emperor.easy_water.view.WheelView
+            android:id="@+id/second_filters"
             android:layout_width="150dp"
             android:layout_height="120dp"
             android:layout_weight="1"

@@ -87,6 +87,12 @@ public class MineWaterAddFragment extends Fragment implements OnClickListener {
 		
 		// checkBox.setOnCheckedChangeListener(listener1);
 		adapter = new IrrigationAddDisAdapter(getActivity());
+		init();
+		return view;
+	}
+
+
+	private void init() {
 		String str1 = "";
 		try {
 			str1 = java.net.URLEncoder.encode("3","UTF-8");
@@ -152,11 +158,7 @@ public class MineWaterAddFragment extends Fragment implements OnClickListener {
 	                }
 	                  progressDialog.dismiss();
 	            }  
-	        }); 
-//		adapter.addData(beans, false);
-//		listView.setAdapter(adapter);
-//		beans = adapter.getData();
-		return view;
+	        }); 		
 	}
 
 
@@ -174,6 +176,15 @@ public class MineWaterAddFragment extends Fragment implements OnClickListener {
 			transaction.commit();
 			break;
 		case R.id.text_irrigation_add:
+			list = new ArrayList<String>();
+			for (int i = 0; i < beens.size(); i++) {
+				if(beens.get(i).isCheck==true){
+					list.add(beens.get(i).getDisEquID());
+				}
+			}
+			if(CheckUtil.IsEmpty(list)){
+				Toast.makeText(getActivity(), "尚未选择任何配水设备！", Toast.LENGTH_SHORT).show();
+			}else{
 			RequestParams param2 = new RequestParams(URL.disEquID);  // 网址(请替换成实际的网址) 
 //			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
 			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
@@ -182,16 +193,6 @@ public class MineWaterAddFragment extends Fragment implements OnClickListener {
 			try {
 				param2.setAsJsonContent(true);
 				js_request.put("userID", "3");
-				list = new ArrayList<String>();
-				for (int i = 0; i < beens.size(); i++) {
-					if(beens.get(i).isCheck==true){
-						list.add(beens.get(i).getDisEquID());
-					}
-				}
-//				String[] array = new String[list.size()];
-//				for (int i = 0; i < list.size(); i++) {
-//					array[i] = list.get(i);
-//				}
 				js_request.put("disEquID", list);
 				param2.setBodyContent(js_request.toString());
 			} catch (Exception e) {
@@ -241,6 +242,13 @@ public class MineWaterAddFragment extends Fragment implements OnClickListener {
 		                  progressDialog.dismiss();
 		            }  
 		        }); 
+		        MineWaterDistributionFragment fragment1 = new MineWaterDistributionFragment();
+				// transaction.setCustomAnimations(R.anim.right_in,
+				// R.anim.right_out);
+				transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
+				transaction.replace(R.id.fl, fragment1, "main");
+				transaction.commit();
+			}
 			break;
 		case R.id.text_irrigation_canel:
 			for (int i = 0; i < beens.size(); i++) {
