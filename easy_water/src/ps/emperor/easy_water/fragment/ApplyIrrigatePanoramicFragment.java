@@ -76,34 +76,6 @@ public class ApplyIrrigatePanoramicFragment extends Fragment implements
 		gridView = (MyGridView) view
 				.findViewById(R.id.grid_maintain_panoramic);
 		adapter2 = new ApplyIrrigateSingleValveAdapter(getActivity());
-//		beans = new Vector<ApplyIrrigateSingleValveBean>();
-//		ApplyIrrigateSingleValveBean bean;
-//		bean = new ApplyIrrigateSingleValveBean();
-//		bean.setValve("1-1");
-//		bean.setNames("张三");
-//		bean.setCrops("玉米");
-//		beans.add(bean);
-//		bean = new ApplyIrrigateSingleValveBean();
-//		bean.setValve("1-2");
-//		bean.setNames("张三");
-//		bean.setCrops("玉米");
-//		beans.add(bean);
-//		bean = new ApplyIrrigateSingleValveBean();
-//		bean.setValve("1-3");
-//		bean.setNames("张三");
-//		bean.setCrops("玉米");
-//		beans.add(bean);
-//		bean = new ApplyIrrigateSingleValveBean();
-//		bean.setValve("1-4");
-//		bean.setNames("张三");
-//		bean.setCrops("玉米");
-//		beans.add(bean);
-//		bean = new ApplyIrrigateSingleValveBean();
-//		bean.setValve("1-5");
-//		bean.setNames("张三");
-//		bean.setCrops("玉米");
-//		beans.add(bean);
-//		adapter = new ImageAdapters(getActivity(), beans);
 		init();
 		return view;
 

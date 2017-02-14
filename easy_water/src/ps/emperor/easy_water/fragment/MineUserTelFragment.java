@@ -86,7 +86,7 @@ public class MineUserTelFragment extends Fragment implements OnClickListener {
 			break;
 		case R.id.verification_code:
 			String str1 = edit_mine_user_info_tel.getText().toString();
-			String str2 = "2";
+			String str2 = "3";
 			try {
 				str1 = java.net.URLEncoder.encode(str1, "UTF-8");
 				str2 = java.net.URLEncoder.encode(str2, "UTF-8");

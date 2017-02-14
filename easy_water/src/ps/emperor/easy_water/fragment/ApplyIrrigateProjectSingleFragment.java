@@ -96,6 +96,10 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 			switch (msg.what) {
 			case 100:
 				if (CheckUtil.IsEmpty(time_max_start)||"0000-00-00 00:00".equals(time_max_start)) {
+					Date date = new Date(System.currentTimeMillis());
+					SimpleDateFormat sdf = new SimpleDateFormat(
+							"yyyy-MM-dd HH:mm");
+					time_start = sdf.format(date);
 					tv_time_start.setText(time_start);
 				} else {
 					tv_time_start.setText(time_max_start);
@@ -237,7 +241,6 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 									"yyyy-MM-dd HH:mm");
 							time_start = sdf.format(date);
 							time_max_start = time_start;
-
 						}
 					}
 				}else {

@@ -77,11 +77,11 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 			notifys, IsEmpty, empty = 0, isSkips;
 	EditText runPager;
 	private String time, units, compareTime;
-	private Long deletePage,deletePages,deletePageId;
+	private Long deletePage, deletePageId;
 	private int MatchedNum, names;
 	private ProgressDialog progressDialog;
 	ApplyIrrigationProjectBean bean;
-	private int currentItem;
+	private int currentItem, deletePages;
 
 	private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
@@ -376,8 +376,9 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 					// 需要花时间计算的方法
 					irrigationGroups = dbHelper.loadGroupByUnits(units);
 					MatchedNum = irrigationGroups.size();
-//					MatchedNum = 5;
-//					listentity = dbHelper.loadLastMsgBySessionidTen(units, MatchedNum);
+					// MatchedNum = 5;
+					// listentity = dbHelper.loadLastMsgBySessionidTen(units,
+					// MatchedNum);
 					listentity = dbHelper.loadLastMsgBySessionids(units);
 					for (int i = 0; i < listentity.size(); i++) {
 						bean = new ApplyIrrigationProjectBean();
@@ -408,23 +409,32 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 					}
 					if (isNot == 1) {
 						beans.clear();
-//						listentity = dbHelper.loadLastMsgBySessionidTen(units, MatchedNum);
+						deletePages = 0;
+						// listentity =
+						// dbHelper.loadLastMsgBySessionidTen(units,
+						// MatchedNum);
 						listentity = dbHelper.loadLastMsgBySessionids(units);
-						for (int j = 1; j < listentity.size()+1; j++) {
-							if(CheckUtil.IsEmpty(listentity.get(j).getProjectstart())&&CheckUtil.IsEmpty(listentity.get(j).getProjectend())){
-								if(j == MatchedNum*(nowPage-1)+1){
+						for (int j = 0; j < listentity.size(); j++) {
+							if (nowPage < 2) {
+								nowPage = 1;
+							}
+							if (j > MatchedNum * nowPage - 1) {
+								nowPage++;
+							}
+							if (CheckUtil.IsEmpty(listentity.get(j)
+									.getProjectstart())
+									&& CheckUtil.IsEmpty(listentity.get(j)
+											.getProjectend())) {
+								if (j == MatchedNum * (nowPage - 1)) {
 									deletePageId = listentity.get(j).getId();
-									for (int i = j; i < MatchedNum; i++) {
-										if(CheckUtil.IsEmpty(listentity.get(j).getProjectstart())&&CheckUtil.IsEmpty(listentity.get(j).getProjectend())){
-											deletePages ++ ;
-										}
+								}
+								deletePages++;
+								if (deletePages == MatchedNum) {
+									for (int i = 0; i < MatchedNum; i++) {
+										dbHelper.deleteNote(deletePageId);
+										deletePageId++;
 									}
-									if(deletePages == MatchedNum){
-										for (int i = 0; i < MatchedNum; i++) {
-											dbHelper.deleteNote(deletePageId);
-											deletePageId ++ ;
-										}
-									}
+									deletePages = 0;
 								}
 							}
 						}
@@ -608,7 +618,9 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 			Bundle bundle = new Bundle();
 			bundle.putString("units", units);
 			fragment.setArguments(bundle);
-			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
+			transaction.setCustomAnimations(
+					R.anim.slide_fragment_horizontal_right_in,
+					R.anim.slide_fragment_horizontal_left_out);
 			transaction.replace(R.id.fl, fragment, "main");
 			transaction.commit();
 			break;
@@ -816,7 +828,10 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 											Bundle bundle = new Bundle();
 											bundle.putString("units", units);
 											fragment.setArguments(bundle);
-											transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
+											transaction
+													.setCustomAnimations(
+															R.anim.slide_fragment_horizontal_left_in,
+															R.anim.slide_fragment_horizontal_right_out);
 											transaction.replace(R.id.fl,
 													fragment, "main");
 											transaction.commit();
@@ -830,7 +845,10 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 											Bundle bundle = new Bundle();
 											bundle.putString("units", units);
 											fragment1.setArguments(bundle);
-											transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
+											transaction
+													.setCustomAnimations(
+															R.anim.slide_fragment_horizontal_left_in,
+															R.anim.slide_fragment_horizontal_right_out);
 											transaction.replace(R.id.fl,
 													fragment1, "main");
 											transaction.commit();
@@ -877,9 +895,9 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 														irrigationProject
 																.setIrrigation(units);
 														irrigationProject
-																.setProjectstart("0000-00-00 00:00");
+																.setProjectstart("");
 														irrigationProject
-																.setProjectend("0000-00-00 00:00");
+																.setProjectend("");
 														irrigationProject
 																.setRound((now_round + 1)
 																		+ "");
@@ -1007,104 +1025,106 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 				}
 			}).start();
 
-//			listentity = dbHelper.loadProjectByOne(units, MatchedNum * pageNum,
-//					MatchedNum);
-//			if (CheckUtil.IsEmpty(listentity)) {
-//
-//			}
-//			else {
-//				do {
-//					empty = 0;
-//					for (int i = 0; i < listentity.size() ; i++) {
-//							if ("0000-00-00 00:00".equals(listentity.get(
-//									i).getProjectstart())) {
-//								IsEmpty = 1;
-//								empty++;
-//							} else {
-//								IsEmpty = 2;
-//							}
-//							if (empty == MatchedNum) {
-//								deletePage = listentity.get(i)
-//										.getId()-MatchedNum+1;
-//								for (int c = 0; c < MatchedNum; c++) {
-//									// dbHelper.updateProjects(units,nowPage+"",
-//									// i+1,
-//									// "", "");
-//									dbHelper.deleteNote(deletePage);
-//									deletePage++;
-//									empty = 0;
-//								}
-//						}
-//					}
-//					listentity = dbHelper.loadProjectByOne(units, MatchedNum * pageNum,
-//							MatchedNum);
-//					for (int i = 0; i < listentity.size() ; i++) {
-//						if ("0000-00-00 00:00".equals(listentity.get(
-//								i).getProjectstart())) {
-//							empty = MatchedNum;
-//						} else {
-//							empty = 0;
-//						}
-//					}
-//				} while (empty == MatchedNum);
-//				if (CheckUtil.IsEmpty(listentity)) {
-//
-//				}else{
-//					for (int i = 0; i < listentity.size(); i++) {
-//						bean = new ApplyIrrigationProjectBean();
-//						if (i > MatchedNum - 1) {
-//							bean.setGroup(Engroup[a]);
-//							a++;
-//							if (a > MatchedNum - 1) {
-//								a = 0;
-//							}
-//						} else {
-//							bean.setGroup(Engroup[i]);
-//						}
-//						// bean.setGroup(listentity.get(i).getRound());
-//						if (listentity.get(i).getProjectstart()
-//								.equals("0000-00-00 00:00")) {
-//							bean.setTime_start("");
-//						} else {
-//							bean.setTime_start(listentity.get(i).getProjectstart());
-//						}
-//						if (listentity.get(i).getProjectend()
-//								.equals("0000-00-00 00:00")) {
-//							bean.setTime_end("");
-//						} else {
-//							bean.setTime_end(listentity.get(i).getProjectend());
-//						}
-//						beans.add(bean);
-//					}
-//					listPager = new ListViewPagerAdapter1(getActivity(), beans,
-//							MatchedNum, units);
-//					pager.setAdapter(listPager);
-//					pager.setOnPageChangeListener(listener);
-//					// 此处为轮次组数 限定多少组为一轮
-//					pageNum = (int) Math.ceil(beans.size() / MatchedNum);
-//					if (beans.size() > 0 && beans.size() <= MatchedNum) {
-//						pageNum = 1;
-//					}
-//					if (!CheckUtil.IsEmpty(beans)) {
-//						tv_indicator.setText("第" + 1 + "轮" + "/" + "共" + pageNum
-//								+ "轮");
-//						indicator.setText(1 + "");
-//					} else {
-//						tv_indicator.setText("第" + 0 + "轮" + "/" + "共" + pageNum
-//								+ "轮");
-//						indicator.setText(0 + "");
-//					}
-//					pager.setCurrentItem(pageNum - 1);
-//					firsts = dbHelper.loadisFirst(units);
-//					if (CheckUtil.IsEmpty(firsts)) {
-//						irrigationIsFirst.setIrrigation(units);
-//						irrigationIsFirst.setIsFirst(0);
-//						dbHelper.saveIsFirst(irrigationIsFirst);
-//					}
-//					break;
-//				}
-//				}
-			}
+			// listentity = dbHelper.loadProjectByOne(units, MatchedNum *
+			// pageNum,
+			// MatchedNum);
+			// if (CheckUtil.IsEmpty(listentity)) {
+			//
+			// }
+			// else {
+			// do {
+			// empty = 0;
+			// for (int i = 0; i < listentity.size() ; i++) {
+			// if ("0000-00-00 00:00".equals(listentity.get(
+			// i).getProjectstart())) {
+			// IsEmpty = 1;
+			// empty++;
+			// } else {
+			// IsEmpty = 2;
+			// }
+			// if (empty == MatchedNum) {
+			// deletePage = listentity.get(i)
+			// .getId()-MatchedNum+1;
+			// for (int c = 0; c < MatchedNum; c++) {
+			// // dbHelper.updateProjects(units,nowPage+"",
+			// // i+1,
+			// // "", "");
+			// dbHelper.deleteNote(deletePage);
+			// deletePage++;
+			// empty = 0;
+			// }
+			// }
+			// }
+			// listentity = dbHelper.loadProjectByOne(units, MatchedNum *
+			// pageNum,
+			// MatchedNum);
+			// for (int i = 0; i < listentity.size() ; i++) {
+			// if ("0000-00-00 00:00".equals(listentity.get(
+			// i).getProjectstart())) {
+			// empty = MatchedNum;
+			// } else {
+			// empty = 0;
+			// }
+			// }
+			// } while (empty == MatchedNum);
+			// if (CheckUtil.IsEmpty(listentity)) {
+			//
+			// }else{
+			// for (int i = 0; i < listentity.size(); i++) {
+			// bean = new ApplyIrrigationProjectBean();
+			// if (i > MatchedNum - 1) {
+			// bean.setGroup(Engroup[a]);
+			// a++;
+			// if (a > MatchedNum - 1) {
+			// a = 0;
+			// }
+			// } else {
+			// bean.setGroup(Engroup[i]);
+			// }
+			// // bean.setGroup(listentity.get(i).getRound());
+			// if (listentity.get(i).getProjectstart()
+			// .equals("0000-00-00 00:00")) {
+			// bean.setTime_start("");
+			// } else {
+			// bean.setTime_start(listentity.get(i).getProjectstart());
+			// }
+			// if (listentity.get(i).getProjectend()
+			// .equals("0000-00-00 00:00")) {
+			// bean.setTime_end("");
+			// } else {
+			// bean.setTime_end(listentity.get(i).getProjectend());
+			// }
+			// beans.add(bean);
+			// }
+			// listPager = new ListViewPagerAdapter1(getActivity(), beans,
+			// MatchedNum, units);
+			// pager.setAdapter(listPager);
+			// pager.setOnPageChangeListener(listener);
+			// // 此处为轮次组数 限定多少组为一轮
+			// pageNum = (int) Math.ceil(beans.size() / MatchedNum);
+			// if (beans.size() > 0 && beans.size() <= MatchedNum) {
+			// pageNum = 1;
+			// }
+			// if (!CheckUtil.IsEmpty(beans)) {
+			// tv_indicator.setText("第" + 1 + "轮" + "/" + "共" + pageNum
+			// + "轮");
+			// indicator.setText(1 + "");
+			// } else {
+			// tv_indicator.setText("第" + 0 + "轮" + "/" + "共" + pageNum
+			// + "轮");
+			// indicator.setText(0 + "");
+			// }
+			// pager.setCurrentItem(pageNum - 1);
+			// firsts = dbHelper.loadisFirst(units);
+			// if (CheckUtil.IsEmpty(firsts)) {
+			// irrigationIsFirst.setIrrigation(units);
+			// irrigationIsFirst.setIsFirst(0);
+			// dbHelper.saveIsFirst(irrigationIsFirst);
+			// }
+			// break;
+			// }
+			// }
+		}
 	}
 
 	@Override
