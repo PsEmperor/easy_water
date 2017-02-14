@@ -192,8 +192,8 @@ public class MineWaterAddFragment extends Fragment implements OnClickListener {
 			JSONObject js_request = new JSONObject();
 			try {
 				param2.setAsJsonContent(true);
-				js_request.put("userID", "3");
-				js_request.put("disEquID", list);
+				js_request.put("userID","3");
+				js_request.put("disEquID",list);
 				param2.setBodyContent(js_request.toString());
 			} catch (Exception e) {
 				e.printStackTrace();

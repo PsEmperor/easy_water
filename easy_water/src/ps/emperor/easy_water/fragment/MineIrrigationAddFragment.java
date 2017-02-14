@@ -222,8 +222,8 @@ public class MineIrrigationAddFragment extends Fragment implements OnClickListen
 			JSONObject js_request = new JSONObject();
 			try {
 				param2.setAsJsonContent(true);
-				js_request.put("userID", "3");
-				js_request.put("firstDerviceID", list);
+				js_request.put("userID","3");
+				js_request.put("firstDerviceID",list);
 				param2.setBodyContent(js_request.toString());
 			} catch (Exception e) {
 				e.printStackTrace();

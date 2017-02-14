@@ -2,11 +2,11 @@ package ps.emperor.easy_water.fragment;
 
 import java.io.UnsupportedEncodingException;
 
-
 import java.util.List;
 
 import org.json.JSONObject;
 import org.xutils.x;
+import org.xutils.common.Callback.CancelledException;
 import org.xutils.common.Callback.CommonCallback;
 import org.xutils.ex.HttpException;
 import org.xutils.http.HttpMethod;
@@ -60,14 +60,14 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 	private LayoutInflater mInflater;
 	private MainActionBars actionBar;
 	private MyGridView gridView;
-	private ApplyIrrigateControlAdapter adapter; //灌溉组控制adapter
+	private ApplyIrrigateControlAdapter adapter; // 灌溉组控制adapter
 	private ImageView irrigatr_control;
 	private String units;
 	private ProgressDialog progressDialog;
 	private List<infoList> beens;
 	private List<ps.emperor.easy_water.entity.ApplyIrrigateControlBeans.infoList> been;
 	private List<groupList> beans;
-	private TextView status,start_time,end_time,group_name;
+	private TextView status, start_time, end_time, group_name;
 	private String Engroup[] = new String[26];
 	private Button button_operation;
 	private TextView unit;
@@ -88,19 +88,25 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 		actionBar.setActionBarOnClickListener(this);
 
 		units = getArguments().getString("units");
-		
+
 		irrigatr_control = (ImageView) view
 				.findViewById(R.id.image_apply_irrigate_control);
 		irrigatr_control.setOnClickListener(this);
-		status = (TextView) view.findViewById(R.id.text_apply_irrigate_control_status);
-		start_time = (TextView) view.findViewById(R.id.text_apply_irrigate_control_time_start);
-		end_time = (TextView) view.findViewById(R.id.text_apply_irrigate_control_time_end);
-		group_name = (TextView) view.findViewById(R.id.text_apply_irrigate_control_group_cut);
-		button_operation = (Button) view.findViewById(R.id.button_apply_irriagte_control_operation);
-		unit = (TextView) view.findViewById(R.id.text_apply_irrigate_control_unit);
+		status = (TextView) view
+				.findViewById(R.id.text_apply_irrigate_control_status);
+		start_time = (TextView) view
+				.findViewById(R.id.text_apply_irrigate_control_time_start);
+		end_time = (TextView) view
+				.findViewById(R.id.text_apply_irrigate_control_time_end);
+		group_name = (TextView) view
+				.findViewById(R.id.text_apply_irrigate_control_group_cut);
+		button_operation = (Button) view
+				.findViewById(R.id.button_apply_irriagte_control_operation);
+		unit = (TextView) view
+				.findViewById(R.id.text_apply_irrigate_control_unit);
 		unit.setText(units);
 		button_operation.setOnClickListener(this);
-		
+
 		Engroup[0] = "A";
 		Engroup[1] = "B";
 		Engroup[2] = "C";
@@ -128,7 +134,6 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 		Engroup[24] = "Y";
 		Engroup[25] = "Z";
 
-		
 		gridView = (MyGridView) view
 				.findViewById(R.id.grid_apply_irrigate_control_fm);
 		gridView.setOnItemClickListener(this);
@@ -145,12 +150,13 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 		String str2 = "";
 		try {
 			str1 = java.net.URLEncoder.encode(str1, "UTF-8");
-			str2 = java.net.URLEncoder.encode(group_name.getText().toString(), "UTF-8");
+			str2 = java.net.URLEncoder.encode(group_name.getText().toString(),
+					"UTF-8");
 		} catch (UnsupportedEncodingException e1) {
 			e1.printStackTrace();
 		}
-		RequestParams param3 = new RequestParams(URL.findIrriGroupControl + str1
-				+ "/" + str2); // 网址(请替换成实际的网址)
+		RequestParams param3 = new RequestParams(URL.findIrriGroupControl
+				+ str1 + "/" + str2); // 网址(请替换成实际的网址)
 		// params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)
 		progressDialog = ProgressDialog.show(getActivity(), "Loading...",
 				"Please wait...", true, false);
@@ -201,86 +207,151 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 						ApplyIrrigateControlBean.class);
 				beens = fromJson.getInfoList();
 				beans = fromJson.getGroupList();
-				if(!CheckUtil.IsEmpty(beens)){
+				if (!CheckUtil.IsEmpty(beens)) {
 					adapter.addData(beens, true);
 					gridView.setAdapter(adapter);
 					gridView.setVerticalSpacing(5);
 					gridView.setPadding(10, 10, 5, 10);
-				if(CheckUtil.IsEmpty(beens.get(0).getPlanStat())){
-					status.setText("状态异常！");
-				}else{
-					status.setText(beens.get(0).getPlanStat());
-				}
-				if(CheckUtil.IsEmpty(beens.get(0).getStartTime())){
-					start_time.setText("0000-00-00 00:00");
-				}else{
-					start_time.setText(beens.get(0).getStartTime());
-				}
-				if(CheckUtil.IsEmpty(beens.get(0).getEndTime())){
-					end_time.setText("0000-00-00 00:00");
-				}else{
-					end_time.setText(beens.get(0).getEndTime());
-				}
-				if(!CheckUtil.IsEmpty(beans)){
-					if(beans.get(0).getGroupNum().equals("1")){
-						group = new String[]{"	组A	"};
-					}else if(beans.get(0).getGroupNum().equals("2")){
-						group = new String[]{"	组A	","	组B	"};
-					}else if(beans.get(0).getGroupNum().equals("3")){
-						group = new String[]{"	组A	","	组B	","	组C	"};
-					}else if(beans.get(0).getGroupNum().equals("4")){
-						group = new String[]{"	组A	","	组B	","	组C	","	组D	"};
-					}else if(beans.get(0).getGroupNum().equals("5")){
-						group = new String[]{"	组A	","	组B	","	组C	","	组D	","	组E	"};
-					}else if(beans.get(0).getGroupNum().equals("6")){
-						group = new String[]{"	组A	","	组B	","	组C	","	组D	","	组E	","	组F	"};
-					}else if(beans.get(0).getGroupNum().equals("7")){
-						group = new String[]{"	组A	","	组B	","	组C	","	组D	","	组E	","	组F	","	组G	"};
-					}else if(beans.get(0).getGroupNum().equals("8")){
-						group = new String[]{"	组A	","	组B	","	组C	","	组D	","	组E	","	组F	","	组G	","	组H	"};
-					}else if(beans.get(0).getGroupNum().equals("9")){
-						group = new String[]{"	组A	","	组B	","	组C	","	组D	","	组E	","	组F	","	组G	","	组H	","	组I	"};
-					}else if(beans.get(0).getGroupNum().equals("10")){
-						group = new String[]{"	组A	","	组B	","	组C	","	组D	","	组E	","	组F	","	组G	","	组H	","	组I	","	组J	"};
-					}else if(beans.get(0).getGroupNum().equals("11")){
-						group = new String[]{"	组A	","	组B	","	组C	","	组D	","	组E	","	组F	","	组G	","	组H	","	组I	","	组J","	组K	"};
-					}else if(beans.get(0).getGroupNum().equals("12")){
-						group = new String[]{"	组A	","	组B	","	组C	","	组D	","	组E	","	组F	","	组G	","	组H	","	组I	","	组J","	组K	","	组L	"};
-					}else if(beans.get(0).getGroupNum().equals("13")){
-						group = new String[]{"	组A	","	组B	","	组C	","	组D	","	组E	","	组F	","	组G	","	组H	","	组I	","	组J","	组K	","	组L	","	组M	"};
-					}else if(beans.get(0).getGroupNum().equals("14")){
-						group = new String[]{"	组A	","	组B	","	组C	","	组D	","	组E	","	组F	","	组G	","	组H	","	组I	","	组J","	组K	","	组L	","	组M	","	组N	"};
-					}else if(beans.get(0).getGroupNum().equals("15")){
-						group = new String[]{"	组A	","	组B	","	组C	","	组D	","	组E	","	组F	","	组G	","	组H	","	组I	","	组J","	组K	","	组L	","	组M	","	组N	","	组O	"};
-					}else if(beans.get(0).getGroupNum().equals("16")){
-						group = new String[]{"	组A	","	组B	","	组C	","	组D	","	组E	","	组F	","	组G	","	组H	","	组I	","	组J","	组K	","	组L	","	组M	","	组N	","	组O	","	组P	"};
-					}else if(beans.get(0).getGroupNum().equals("17")){
-						group = new String[]{"	组A	","	组B	","	组C	","	组D	","	组E	","	组F	","	组G	","	组H	","	组I	","	组J","	组K	","	组L	","	组M	","	组N	","	组O	","	组P	","	组Q	"};
-					}else if(beans.get(0).getGroupNum().equals("18")){
-						group = new String[]{"	组A	","	组B	","	组C	","	组D	","	组E	","	组F	","	组G	","	组H	","	组I	","	组J","	组K	","	组L	","	组M	","	组N	","	组O	","	组P	","	组Q	","	组R	"};
-					}else if(beans.get(0).getGroupNum().equals("19")){
-						group = new String[]{"	组A	","	组B	","	组C	","	组D	","	组E	","	组F	","	组G	","	组H	","	组I	","	组J","	组K	","	组L	","	组M	","	组N	","	组O	","	组P	","	组Q	","	组R	","	组S	"};
-					}else if(beans.get(0).getGroupNum().equals("20")){
-						group = new String[]{"	组A	","	组B	","	组C	","	组D	","	组E	","	组F	","	组G	","	组H	","	组I	","	组J","	组K	","	组L	","	组M	","	组N	","	组O	","	组P	","	组Q	","	组R	","	组S	","	组T	"};
-					}else if(beans.get(0).getGroupNum().equals("21")){
-						group = new String[]{"	组A	","	组B	","	组C	","	组D	","	组E	","	组F	","	组G	","	组H	","	组I	","	组J","	组K	","	组L	","	组M	","	组N	","	组O	","	组P	","	组Q	","	组R	","	组S	","	组T	","	组U	"};
-					}else if(beans.get(0).getGroupNum().equals("22")){
-						group = new String[]{"	组A	","	组B	","	组C	","	组D	","	组E	","	组F	","	组G	","	组H	","	组I	","	组J","	组K	","	组L	","	组M	","	组N	","	组O	","	组P	","	组Q	","	组R	","	组S	","	组T	","	组U	","	组V	"};
-					}else if(beans.get(0).getGroupNum().equals("23")){
-						group = new String[]{"	组A	","	组B	","	组C	","	组D	","	组E	","	组F	","	组G	","	组H	","	组I	","	组J","	组K	","	组L	","	组M	","	组N	","	组O	","	组P	","	组Q	","	组R	","	组S	","	组T	","	组U	","	组V	","	组W	"};
-					}else if(beans.get(0).getGroupNum().equals("24")){
-						group = new String[]{"	组A	","	组B	","	组C	","	组D	","	组E	","	组F	","	组G	","	组H	","	组I	","	组J","	组K	","	组L	","	组M	","	组N	","	组O	","	组P	","	组Q	","	组R	","	组S	","	组T	","	组U	","	组V	","	组W	","	组X	"};
-					}else if(beans.get(0).getGroupNum().equals("25")){
-						group = new String[]{"	组A	","	组B	","	组C	","	组D	","	组E	","	组F	","	组G	","	组H	","	组I	","	组J","	组K	","	组L	","	组M	","	组N	","	组O	","	组P	","	组Q	","	组R	","	组S	","	组T	","	组U	","	组V	","	组W	","	组X	","	组Y	"};
-					}else if(beans.get(0).getGroupNum().equals("26")){
-						group = new String[]{"	组A	","	组B	","	组C	","	组D	","	组E	","	组F	","	组G	","	组H	","	组I	","	组J","	组K	","	组L	","	组M	","	组N	","	组O	","	组P	","	组Q	","	组R	","	组S	","	组T	","	组U	","	组V	","	组W	","	组X	","	组Y	","	组Z	"};
+					if (CheckUtil.IsEmpty(beens.get(0).getPlanStat())) {
+						status.setText("状态异常！");
+					} else {
+						status.setText(beens.get(0).getPlanStat());
 					}
-				}
+					if (CheckUtil.IsEmpty(beens.get(0).getStartTime())) {
+						start_time.setText("0000-00-00 00:00");
+					} else {
+						start_time.setText(beens.get(0).getStartTime());
+					}
+					if (CheckUtil.IsEmpty(beens.get(0).getEndTime())) {
+						end_time.setText("0000-00-00 00:00");
+					} else {
+						end_time.setText(beens.get(0).getEndTime());
+					}
+					if (!CheckUtil.IsEmpty(beans)) {
+						if (beans.get(0).getGroupNum().equals("1")) {
+							group = new String[] { "	组A	" };
+						} else if (beans.get(0).getGroupNum().equals("2")) {
+							group = new String[] { "	组A	", "	组B	" };
+						} else if (beans.get(0).getGroupNum().equals("3")) {
+							group = new String[] { "	组A	", "	组B	", "	组C	" };
+						} else if (beans.get(0).getGroupNum().equals("4")) {
+							group = new String[] { "	组A	", "	组B	", "	组C	",
+									"	组D	" };
+						} else if (beans.get(0).getGroupNum().equals("5")) {
+							group = new String[] { "	组A	", "	组B	", "	组C	",
+									"	组D	", "	组E	" };
+						} else if (beans.get(0).getGroupNum().equals("6")) {
+							group = new String[] { "	组A	", "	组B	", "	组C	",
+									"	组D	", "	组E	", "	组F	" };
+						} else if (beans.get(0).getGroupNum().equals("7")) {
+							group = new String[] { "	组A	", "	组B	", "	组C	",
+									"	组D	", "	组E	", "	组F	", "	组G	" };
+						} else if (beans.get(0).getGroupNum().equals("8")) {
+							group = new String[] { "	组A	", "	组B	", "	组C	",
+									"	组D	", "	组E	", "	组F	", "	组G	", "	组H	" };
+						} else if (beans.get(0).getGroupNum().equals("9")) {
+							group = new String[] { "	组A	", "	组B	", "	组C	",
+									"	组D	", "	组E	", "	组F	", "	组G	", "	组H	",
+									"	组I	" };
+						} else if (beans.get(0).getGroupNum().equals("10")) {
+							group = new String[] { "	组A	", "	组B	", "	组C	",
+									"	组D	", "	组E	", "	组F	", "	组G	", "	组H	",
+									"	组I	", "	组J	" };
+						} else if (beans.get(0).getGroupNum().equals("11")) {
+							group = new String[] { "	组A	", "	组B	", "	组C	",
+									"	组D	", "	组E	", "	组F	", "	组G	", "	组H	",
+									"	组I	", "	组J", "	组K	" };
+						} else if (beans.get(0).getGroupNum().equals("12")) {
+							group = new String[] { "	组A	", "	组B	", "	组C	",
+									"	组D	", "	组E	", "	组F	", "	组G	", "	组H	",
+									"	组I	", "	组J", "	组K	", "	组L	" };
+						} else if (beans.get(0).getGroupNum().equals("13")) {
+							group = new String[] { "	组A	", "	组B	", "	组C	",
+									"	组D	", "	组E	", "	组F	", "	组G	", "	组H	",
+									"	组I	", "	组J", "	组K	", "	组L	", "	组M	" };
+						} else if (beans.get(0).getGroupNum().equals("14")) {
+							group = new String[] { "	组A	", "	组B	", "	组C	",
+									"	组D	", "	组E	", "	组F	", "	组G	", "	组H	",
+									"	组I	", "	组J", "	组K	", "	组L	", "	组M	",
+									"	组N	" };
+						} else if (beans.get(0).getGroupNum().equals("15")) {
+							group = new String[] { "	组A	", "	组B	", "	组C	",
+									"	组D	", "	组E	", "	组F	", "	组G	", "	组H	",
+									"	组I	", "	组J", "	组K	", "	组L	", "	组M	",
+									"	组N	", "	组O	" };
+						} else if (beans.get(0).getGroupNum().equals("16")) {
+							group = new String[] { "	组A	", "	组B	", "	组C	",
+									"	组D	", "	组E	", "	组F	", "	组G	", "	组H	",
+									"	组I	", "	组J", "	组K	", "	组L	", "	组M	",
+									"	组N	", "	组O	", "	组P	" };
+						} else if (beans.get(0).getGroupNum().equals("17")) {
+							group = new String[] { "	组A	", "	组B	", "	组C	",
+									"	组D	", "	组E	", "	组F	", "	组G	", "	组H	",
+									"	组I	", "	组J", "	组K	", "	组L	", "	组M	",
+									"	组N	", "	组O	", "	组P	", "	组Q	" };
+						} else if (beans.get(0).getGroupNum().equals("18")) {
+							group = new String[] { "	组A	", "	组B	", "	组C	",
+									"	组D	", "	组E	", "	组F	", "	组G	", "	组H	",
+									"	组I	", "	组J", "	组K	", "	组L	", "	组M	",
+									"	组N	", "	组O	", "	组P	", "	组Q	", "	组R	" };
+						} else if (beans.get(0).getGroupNum().equals("19")) {
+							group = new String[] { "	组A	", "	组B	", "	组C	",
+									"	组D	", "	组E	", "	组F	", "	组G	", "	组H	",
+									"	组I	", "	组J", "	组K	", "	组L	", "	组M	",
+									"	组N	", "	组O	", "	组P	", "	组Q	", "	组R	",
+									"	组S	" };
+						} else if (beans.get(0).getGroupNum().equals("20")) {
+							group = new String[] { "	组A	", "	组B	", "	组C	",
+									"	组D	", "	组E	", "	组F	", "	组G	", "	组H	",
+									"	组I	", "	组J", "	组K	", "	组L	", "	组M	",
+									"	组N	", "	组O	", "	组P	", "	组Q	", "	组R	",
+									"	组S	", "	组T	" };
+						} else if (beans.get(0).getGroupNum().equals("21")) {
+							group = new String[] { "	组A	", "	组B	", "	组C	",
+									"	组D	", "	组E	", "	组F	", "	组G	", "	组H	",
+									"	组I	", "	组J", "	组K	", "	组L	", "	组M	",
+									"	组N	", "	组O	", "	组P	", "	组Q	", "	组R	",
+									"	组S	", "	组T	", "	组U	" };
+						} else if (beans.get(0).getGroupNum().equals("22")) {
+							group = new String[] { "	组A	", "	组B	", "	组C	",
+									"	组D	", "	组E	", "	组F	", "	组G	", "	组H	",
+									"	组I	", "	组J", "	组K	", "	组L	", "	组M	",
+									"	组N	", "	组O	", "	组P	", "	组Q	", "	组R	",
+									"	组S	", "	组T	", "	组U	", "	组V	" };
+						} else if (beans.get(0).getGroupNum().equals("23")) {
+							group = new String[] { "	组A	", "	组B	", "	组C	",
+									"	组D	", "	组E	", "	组F	", "	组G	", "	组H	",
+									"	组I	", "	组J", "	组K	", "	组L	", "	组M	",
+									"	组N	", "	组O	", "	组P	", "	组Q	", "	组R	",
+									"	组S	", "	组T	", "	组U	", "	组V	", "	组W	" };
+						} else if (beans.get(0).getGroupNum().equals("24")) {
+							group = new String[] { "	组A	", "	组B	", "	组C	",
+									"	组D	", "	组E	", "	组F	", "	组G	", "	组H	",
+									"	组I	", "	组J", "	组K	", "	组L	", "	组M	",
+									"	组N	", "	组O	", "	组P	", "	组Q	", "	组R	",
+									"	组S	", "	组T	", "	组U	", "	组V	", "	组W	",
+									"	组X	" };
+						} else if (beans.get(0).getGroupNum().equals("25")) {
+							group = new String[] { "	组A	", "	组B	", "	组C	",
+									"	组D	", "	组E	", "	组F	", "	组G	", "	组H	",
+									"	组I	", "	组J", "	组K	", "	组L	", "	组M	",
+									"	组N	", "	组O	", "	组P	", "	组Q	", "	组R	",
+									"	组S	", "	组T	", "	组U	", "	组V	", "	组W	",
+									"	组X	", "	组Y	" };
+						} else if (beans.get(0).getGroupNum().equals("26")) {
+							group = new String[] { "	组A	", "	组B	", "	组C	",
+									"	组D	", "	组E	", "	组F	", "	组G	", "	组H	",
+									"	组I	", "	组J", "	组K	", "	组L	", "	组M	",
+									"	组N	", "	组O	", "	组P	", "	组Q	", "	组R	",
+									"	组S	", "	组T	", "	组U	", "	组V	", "	组W	",
+									"	组X	", "	组Y	", "	组Z	" };
+						}
+					}
 				}
 				progressDialog.dismiss();
 			}
 		});
-}
+	}
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -295,7 +366,9 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 			Bundle bundle = new Bundle();
 			bundle.putString("units", units);
 			fragment.setArguments(bundle);
-			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
+			transaction.setCustomAnimations(
+					R.anim.slide_fragment_horizontal_right_in,
+					R.anim.slide_fragment_horizontal_left_out);
 			transaction.replace(R.id.fl, fragment, "main");
 			transaction.commit();
 			break;
@@ -306,7 +379,9 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 			Bundle bundle1 = new Bundle();
 			bundle1.putString("units", units);
 			fragment1.setArguments(bundle1);
-			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
+			transaction.setCustomAnimations(
+					R.anim.slide_fragment_horizontal_left_in,
+					R.anim.slide_fragment_horizontal_right_out);
 			transaction.replace(R.id.fl, fragment1, "main");
 			transaction.commit();
 			break;
@@ -319,57 +394,57 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					int name = catalogWheel.getCurrentItem();
-					if(name == 0){
+					if (name == 0) {
 						group_name.setText("组A");
-					}else if(name == 1){
+					} else if (name == 1) {
 						group_name.setText("组B");
-					}else if(name == 2){
+					} else if (name == 2) {
 						group_name.setText("组C");
-					}else if(name == 3){
+					} else if (name == 3) {
 						group_name.setText("组D");
-					}else if(name == 4){
+					} else if (name == 4) {
 						group_name.setText("组E");
-					}else if(name == 5){
+					} else if (name == 5) {
 						group_name.setText("组F");
-					}else if(name == 6){
+					} else if (name == 6) {
 						group_name.setText("组G");
-					}else if(name == 7){
+					} else if (name == 7) {
 						group_name.setText("组H");
-					}else if(name == 8){
+					} else if (name == 8) {
 						group_name.setText("组I");
-					}else if(name == 9){
+					} else if (name == 9) {
 						group_name.setText("组J");
-					}else if(name == 10){
+					} else if (name == 10) {
 						group_name.setText("组K");
-					}else if(name == 11){
+					} else if (name == 11) {
 						group_name.setText("组L");
-					}else if(name == 12){
+					} else if (name == 12) {
 						group_name.setText("组M");
-					}else if(name == 13){
+					} else if (name == 13) {
 						group_name.setText("组N");
-					}else if(name == 14){
+					} else if (name == 14) {
 						group_name.setText("组O");
-					}else if(name == 15){
+					} else if (name == 15) {
 						group_name.setText("组P");
-					}else if(name == 16){
+					} else if (name == 16) {
 						group_name.setText("组Q");
-					}else if(name == 17){
+					} else if (name == 17) {
 						group_name.setText("组R");
-					}else if(name == 18){
+					} else if (name == 18) {
 						group_name.setText("组S");
-					}else if(name == 19){
+					} else if (name == 19) {
 						group_name.setText("组T");
-					}else if(name == 20){
+					} else if (name == 20) {
 						group_name.setText("组U");
-					}else if(name == 21){
+					} else if (name == 21) {
 						group_name.setText("组V");
-					}else if(name == 22){
+					} else if (name == 22) {
 						group_name.setText("组W");
-					}else if(name == 23){
+					} else if (name == 23) {
 						group_name.setText("组X");
-					}else if(name == 24){
+					} else if (name == 24) {
 						group_name.setText("组Y");
-					}else if(name == 25){
+					} else if (name == 25) {
 						group_name.setText("组Z");
 					}
 					init();
@@ -397,13 +472,15 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 			String str2 = "";
 			try {
 				str1 = java.net.URLEncoder.encode(str1, "UTF-8");
-				str2 = java.net.URLEncoder.encode(group_name.getText().toString(), "UTF-8");
+				str2 = java.net.URLEncoder.encode(group_name.getText()
+						.toString(), "UTF-8");
 			} catch (UnsupportedEncodingException e1) {
 				e1.printStackTrace();
 			}
-			RequestParams param3 = new RequestParams(URL.judgeIrriGroupState + str1
-					+ "/" + str2); // 网址(请替换成实际的网址)
-			// params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)
+			RequestParams param3 = new RequestParams(URL.judgeIrriGroupState
+					+ str1 + "/" + str2); // 网址(请替换成实际的网址)
+			// params.addQueryStringParameter("key", "value"); //
+			// 参数(请替换成实际的参数与值)
 			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
 					"Please wait...", true, false);
 			JSONObject js_request2 = new JSONObject();
@@ -414,119 +491,337 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 				param3.setAsJsonContent(true);
 			}// 根据实际需求添加相应键值对
 
-			x.http().request(HttpMethod.GET, param3, new CommonCallback<String>() {
-				@Override
-				public void onCancelled(CancelledException arg0) {
+			x.http().request(HttpMethod.GET, param3,
+					new CommonCallback<String>() {
+						@Override
+						public void onCancelled(CancelledException arg0) {
 
-				}
+						}
 
-				// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
-				// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
-				@Override
-				public void onError(Throwable ex, boolean isOnCallback) {
+						// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+						// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+						@Override
+						public void onError(Throwable ex, boolean isOnCallback) {
 
-					Toast.makeText(x.app(), ex.getMessage(), Toast.LENGTH_LONG)
-							.show();
-					if (ex instanceof HttpException) { // 网络错误 
-						HttpException httpEx = (HttpException) ex;
-						int responseCode = httpEx.getCode();
-						String responseMsg = httpEx.getMessage();
-						String errorResult = httpEx.getResult();
-						// ...
-						progressDialog.dismiss();
-					} else { // 其他错误 
-						// ...
-						progressDialog.dismiss();
-					}
+							Toast.makeText(x.app(), ex.getMessage(),
+									Toast.LENGTH_LONG).show();
+							if (ex instanceof HttpException) { // 网络错误 
+								HttpException httpEx = (HttpException) ex;
+								int responseCode = httpEx.getCode();
+								String responseMsg = httpEx.getMessage();
+								String errorResult = httpEx.getResult();
+								// ...
+								progressDialog.dismiss();
+							} else { // 其他错误 
+								// ...
+								progressDialog.dismiss();
+							}
 
-				}
+						}
 
-				// 不管成功或者失败最后都会回调该接口
-				@Override
-				public void onFinished() {
-				}
+						// 不管成功或者失败最后都会回调该接口
+						@Override
+						public void onFinished() {
+						}
 
-				@Override
-				public void onSuccess(String arg0) {
-					Gson gson = new Gson();
-					progressDialog.dismiss();
-					ApplyIrrigateControlBeans fromJson = gson.fromJson(arg0,
-							ApplyIrrigateControlBeans.class);
-					been = fromJson.getAuthNameList();
-					if("1".equals(been.get(0).getCode())){
-						
-					}else if("2".equals(been.get(0).getCode())){
-						
-					}else if("3".equals(been.get(0).getCode())){
-						
-					}else if("4".equals(been.get(0).getCode())){
-						
-					}else if("5".equals(been.get(0).getCode())){
-						
-					}else if("6".equals(been.get(0).getCode())){
-						
-					}
-				}
-			});
+						@Override
+						public void onSuccess(String arg0) {
+							Gson gson = new Gson();
+							progressDialog.dismiss();
+							ApplyIrrigateControlBeans fromJson = gson.fromJson(
+									arg0, ApplyIrrigateControlBeans.class);
+							been = fromJson.getAuthNameList();
+							if ("1".equals(been.get(0).getCode())) {
+								new AlertDialog.Builder(getActivity())
+										.setTitle("系统提示")
+										// 设置对话框标题
 
-			
-			
-//			RequestParams param2 = new RequestParams(URL.judgeIrriGroupState);  // 网址(请替换成实际的网址) 
-//			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
-//					"Please wait...", true, false);
-//			JSONObject js_request = new JSONObject();
-//			try {
-//				param2.setAsJsonContent(true);
-//				js_request.put("paramState", beens.get(0).get);
-//				js_request.put("firstDerviceID",str1);
-//				js_request.put("groupID",strs[1]);
-//				js_request.put("isNewPlan",strs[1]);
-//				js_request.put("irriDuration",);
-//				param2.setBodyContent(js_request.toString());
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//				param2.setAsJsonContent(true);
-//			}//根据实际需求添加相应键值对
-//			
-//		        x.http().request(HttpMethod.PUT ,param2, new CommonCallback<String>() {  
-//		            @Override  
-//		            public void onCancelled(CancelledException arg0) {  
-//		                  
-//		            }  
-//		  
-//		         // 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误  
-//		            // 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看  
-//		            @Override  
-//		            public void onError(Throwable ex, boolean isOnCallback) {  
-//		                  
-//		                Toast.makeText(x.app(), ex.getMessage(), Toast.LENGTH_LONG).show();  
-//		                if (ex instanceof HttpException) { // 网络错误    
-//		                    HttpException httpEx = (HttpException) ex;  
-//		                    int responseCode = httpEx.getCode();  
-//		                    String responseMsg = httpEx.getMessage();  
-//		                    String errorResult = httpEx.getResult();  
-//		                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
-//		                    // ...  
-//		                    progressDialog.dismiss();
-//		                } else { // 其他错误    
-//		                    // ...  
-//		                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
-//		                	progressDialog.dismiss();
-//		                }  
-//		                  
-//		            }  
-//		  
-//		         // 不管成功或者失败最后都会回调该接口  
-//		            @Override  
-//		            public void onFinished() {    
-//		            }  
-//		  
-//		            @Override  
-//		            public void onSuccess(String arg0) { 
-//		            	  Toast.makeText(getActivity(), "成功", Toast.LENGTH_SHORT).show(); 
-//		                  progressDialog.dismiss();
-//		            }  
-//		        }); 
+										.setMessage(
+												"您当前正在打开一个没有灌溉计划的灌溉组，是否设置灌溉时长")
+										// 设置显示的内容
+
+										.setPositiveButton(
+												"设置时长",
+												new DialogInterface.OnClickListener() {// 添加确定按钮
+
+													@Override
+													public void onClick(
+															DialogInterface dialog,
+															int which) {// 确定按钮的响应事件
+													}
+
+												})
+										.setNeutralButton(
+												"仅开阀",
+												new DialogInterface.OnClickListener() {
+													@Override
+													public void onClick(
+															DialogInterface dialog,
+															int which) {
+
+													}
+												})
+										.setNegativeButton(
+												"放弃",
+												new DialogInterface.OnClickListener() {// 添加返回按钮
+
+													@Override
+													public void onClick(
+															DialogInterface dialog,
+															int which) {// 响应事件
+														dialog.dismiss();
+													}
+
+												}).show();// 在按键响应事件中显示此对话框
+							} else if ("2".equals(been.get(0).getCode())) {
+								new AlertDialog.Builder(getActivity())
+										.setTitle("系统提示")
+										// 设置对话框标题
+
+										.setMessage(
+												"您当前正在关闭一个正在执行灌溉计划的灌溉组，该计划将被随之被终止 ，是否继续")
+										// 设置显示的内容
+
+										.setPositiveButton(
+												"继续",
+												new DialogInterface.OnClickListener() {// 添加确定按钮
+
+													@Override
+													public void onClick(
+															DialogInterface dialog,
+															int which) {// 确定按钮的响应事件
+													}
+
+												})
+										.setNegativeButton(
+												"放弃",
+												new DialogInterface.OnClickListener() {// 添加返回按钮
+
+													@Override
+													public void onClick(
+															DialogInterface dialog,
+															int which) {// 响应事件
+														dialog.dismiss();
+													}
+
+												}).show();// 在按键响应事件中显示此对话框
+
+							} else if ("3".equals(been.get(0).getCode())) {
+								new AlertDialog.Builder(getActivity())
+										.setTitle("系统提示")
+										// 设置对话框标题
+
+										.setMessage(
+												"您当前正在打开一个设有灌溉计划但尚未执行的灌溉组，该计划仍将被执行")
+										// 设置显示的内容
+
+										.setPositiveButton(
+												"确定",
+												new DialogInterface.OnClickListener() {// 添加确定按钮
+
+													@Override
+													public void onClick(
+															DialogInterface dialog,
+															int which) {// 确定按钮的响应事件
+													}
+
+												})
+										.setNegativeButton(
+												"放弃",
+												new DialogInterface.OnClickListener() {// 添加返回按钮
+
+													@Override
+													public void onClick(
+															DialogInterface dialog,
+															int which) {// 响应事件
+														dialog.dismiss();
+													}
+
+												}).show();// 在按键响应事件中显示此对话框
+
+							} else if ("4".equals(been.get(0).getCode())) {
+								new AlertDialog.Builder(getActivity())
+										.setTitle("系统提示")
+										// 设置对话框标题
+
+										.setMessage(
+												"您当前正在关闭一个全组开启但无灌溉计划的灌溉组，是否关闭所有阀门")
+										// 设置显示的内容
+
+										.setPositiveButton(
+												"确定",
+												new DialogInterface.OnClickListener() {// 添加确定按钮
+
+													@Override
+													public void onClick(
+															DialogInterface dialog,
+															int which) {// 确定按钮的响应事件
+													}
+
+												})
+										.setNegativeButton(
+												"放弃",
+												new DialogInterface.OnClickListener() {// 添加返回按钮
+
+													@Override
+													public void onClick(
+															DialogInterface dialog,
+															int which) {// 响应事件
+														dialog.dismiss();
+													}
+
+												}).show();// 在按键响应事件中显示此对话框
+
+							} else if ("5".equals(been.get(0).getCode())) {
+								new AlertDialog.Builder(getActivity())
+										.setTitle("系统提示")
+										// 设置对话框标题
+
+										.setMessage(
+												"您当前正在打开一个设有单阀灌溉计划且正在执行的灌溉组，是否选择开启其余阀门")
+										// 设置显示的内容
+
+										.setPositiveButton(
+												"设置时长",
+												new DialogInterface.OnClickListener() {// 添加确定按钮
+
+													@Override
+													public void onClick(
+															DialogInterface dialog,
+															int which) {// 确定按钮的响应事件
+													}
+
+												})
+										.setNeutralButton(
+												"仅开阀",
+												new DialogInterface.OnClickListener() {
+													@Override
+													public void onClick(
+															DialogInterface dialog,
+															int which) {
+
+													}
+												})
+										.setNegativeButton(
+												"放弃",
+												new DialogInterface.OnClickListener() {// 添加返回按钮
+
+													@Override
+													public void onClick(
+															DialogInterface dialog,
+															int which) {// 响应事件
+														dialog.dismiss();
+													}
+
+												}).show();// 在按键响应事件中显示此对话框
+
+							} else if ("6".equals(been.get(0).getCode())) {
+								new AlertDialog.Builder(getActivity())
+										.setTitle("系统提示")
+										// 设置对话框标题
+
+										.setMessage(
+												"您当前正在打开一个单阀开启但无灌溉计划的灌溉组，是否选择开启其余阀门")
+										// 设置显示的内容
+
+										.setPositiveButton(
+												"设置时长",
+												new DialogInterface.OnClickListener() {// 添加确定按钮
+
+													@Override
+													public void onClick(
+															DialogInterface dialog,
+															int which) {// 确定按钮的响应事件
+													}
+
+												})
+										.setNeutralButton(
+												"仅开阀",
+												new DialogInterface.OnClickListener() {
+													@Override
+													public void onClick(
+															DialogInterface dialog,
+															int which) {
+
+													}
+												})
+										.setNegativeButton(
+												"放弃",
+												new DialogInterface.OnClickListener() {// 添加返回按钮
+
+													@Override
+													public void onClick(
+															DialogInterface dialog,
+															int which) {// 响应事件
+														dialog.dismiss();
+													}
+
+												}).show();// 在按键响应事件中显示此对话框
+
+							}
+						}
+					});
+
+			// RequestParams param2 = new
+			// RequestParams(URL.judgeIrriGroupState); // 网址(请替换成实际的网址)
+			// progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+			// "Please wait...", true, false);
+			// JSONObject js_request = new JSONObject();
+			// try {
+			// param2.setAsJsonContent(true);
+			// js_request.put("paramState", beens.get(0).get);
+			// js_request.put("firstDerviceID",str1);
+			// js_request.put("groupID",strs[1]);
+			// js_request.put("isNewPlan",strs[1]);
+			// js_request.put("irriDuration",);
+			// param2.setBodyContent(js_request.toString());
+			// } catch (Exception e) {
+			// e.printStackTrace();
+			// param2.setAsJsonContent(true);
+			// }//根据实际需求添加相应键值对
+			//
+			// x.http().request(HttpMethod.PUT ,param2, new
+			// CommonCallback<String>() {
+			// @Override
+			// public void onCancelled(CancelledException arg0) {
+			//
+			// }
+			//
+			// //
+			// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+			// // 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+			// @Override
+			// public void onError(Throwable ex, boolean isOnCallback) {
+			//
+			// Toast.makeText(x.app(), ex.getMessage(),
+			// Toast.LENGTH_LONG).show();
+			// if (ex instanceof HttpException) { // 网络错误 
+			// HttpException httpEx = (HttpException) ex;
+			// int responseCode = httpEx.getCode();
+			// String responseMsg = httpEx.getMessage();
+			// String errorResult = httpEx.getResult();
+			// Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+			// // ...
+			// progressDialog.dismiss();
+			// } else { // 其他错误 
+			// // ...
+			// Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+			// progressDialog.dismiss();
+			// }
+			//
+			// }
+			//
+			// // 不管成功或者失败最后都会回调该接口
+			// @Override
+			// public void onFinished() {
+			// }
+			//
+			// @Override
+			// public void onSuccess(String arg0) {
+			// Toast.makeText(getActivity(), "成功", Toast.LENGTH_SHORT).show();
+			// progressDialog.dismiss();
+			// }
+			// });
 			break;
 		}
 	}
@@ -540,7 +835,9 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 		Bundle bundle = new Bundle();
 		bundle.putString("units", units);
 		fragment1.setArguments(bundle);
-		transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
+		transaction.setCustomAnimations(
+				R.anim.slide_fragment_horizontal_left_in,
+				R.anim.slide_fragment_horizontal_right_out);
 		transaction.replace(R.id.fl, fragment1, "main");
 		transaction.commit();
 	}

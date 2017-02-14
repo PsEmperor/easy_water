@@ -77,7 +77,7 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 			notifys, IsEmpty, empty = 0, isSkips;
 	EditText runPager;
 	private String time, units, compareTime;
-	private Long deletePage;
+	private Long deletePage,deletePages,deletePageId;
 	private int MatchedNum, names;
 	private ProgressDialog progressDialog;
 	ApplyIrrigationProjectBean bean;
@@ -409,6 +409,25 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 					if (isNot == 1) {
 						beans.clear();
 //						listentity = dbHelper.loadLastMsgBySessionidTen(units, MatchedNum);
+						listentity = dbHelper.loadLastMsgBySessionids(units);
+						for (int j = 1; j < listentity.size()+1; j++) {
+							if(CheckUtil.IsEmpty(listentity.get(j).getProjectstart())&&CheckUtil.IsEmpty(listentity.get(j).getProjectend())){
+								if(j == MatchedNum*(nowPage-1)+1){
+									deletePageId = listentity.get(j).getId();
+									for (int i = j; i < MatchedNum; i++) {
+										if(CheckUtil.IsEmpty(listentity.get(j).getProjectstart())&&CheckUtil.IsEmpty(listentity.get(j).getProjectend())){
+											deletePages ++ ;
+										}
+									}
+									if(deletePages == MatchedNum){
+										for (int i = 0; i < MatchedNum; i++) {
+											dbHelper.deleteNote(deletePageId);
+											deletePageId ++ ;
+										}
+									}
+								}
+							}
+						}
 						listentity = dbHelper.loadLastMsgBySessionids(units);
 						for (int i = 0; i < listentity.size(); i++) {
 							bean = new ApplyIrrigationProjectBean();

@@ -17,7 +17,9 @@ import com.google.gson.Gson;
 
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.adapter.ApplyIrrigationAdapter;
+import ps.emperor.easy_water.adapter.ApplyIrrigationDBAdapter;
 import ps.emperor.easy_water.application.ApplicationFragment;
+import ps.emperor.easy_water.entity.ApplyIrrigationBean;
 import ps.emperor.easy_water.entity.IrrigationEquipmentBean;
 import ps.emperor.easy_water.entity.UserReleIrrInfoBean;
 import ps.emperor.easy_water.entity.UserReleIrrInfoBean.infoList;
@@ -60,6 +62,8 @@ public class ApplyIrrigateFragment extends Fragment implements OnClickListener,
 	private MainActionBar actionBar;
 	private ListView listView;
 	private ApplyIrrigationAdapter adapter;
+//	private ApplyIrrigationDBAdapter adapter1;
+//	private List<ApplyIrrigationBean> beans;
 	private DBHelper dbHelper;
 	private List<Irrigation> irrigation;
 	private ProgressDialog progressDialog;
@@ -90,6 +94,27 @@ public class ApplyIrrigateFragment extends Fragment implements OnClickListener,
 		image_apply_irrigation_add.setOnClickListener(this);
 		ed_apply_irrigation_add = (EditText) view.findViewById(R.id.ed_apply_irrigation_add);
 		
+	    init();
+//		数据库操作
+//		beans = new ArrayList<ApplyIrrigationBean>();
+//		List<Irrigation> listentity = dbHelper.loadAllSession(); 
+//		ApplyIrrigationBean bean;
+//		for (int i = 0; i < listentity.size(); i++) {
+//			bean = new ApplyIrrigationBean();
+//			bean.setUnits(listentity.get(i).getIrrigation());
+//			bean.setWhether("正在灌溉");
+//			bean.setWhether_percent("50%");
+//			bean.setCurrent_state(180);
+//			beans.add(bean);
+//		}
+//		adapter1.addData(beans, false);
+//		listView.setAdapter(adapter);
+//		beans = adapter1.getData();
+
+		return view;
+	}
+
+	private void init() {
 		String str1 = "";
 		try {
 			str1 = java.net.URLEncoder.encode("3","UTF-8");
@@ -130,6 +155,7 @@ public class ApplyIrrigateFragment extends Fragment implements OnClickListener,
 	                    progressDialog.dismiss();
 	                } else { // 其他错误    
 	                    // ...  
+	                	Toast.makeText(getActivity(), "当前网络状况不佳，请检查后再次尝试", Toast.LENGTH_SHORT).show();
 	                	progressDialog.dismiss();
 	                }  
 	                  
@@ -153,25 +179,7 @@ public class ApplyIrrigateFragment extends Fragment implements OnClickListener,
 	                  }
 	          		progressDialog.dismiss();
 	            }  
-	        }); 
-	        
-		//数据库操作
-//		beans = new ArrayList<ApplyIrrigationBean>();
-//		List<Irrigation> listentity = dbHelper.loadAllSession(); 
-//		ApplyIrrigationBean bean;
-//		for (int i = 0; i < listentity.size(); i++) {
-//			bean = new ApplyIrrigationBean();
-//			bean.setUnits(listentity.get(i).getIrrigation());
-//			bean.setWhether("正在灌溉");
-//			bean.setWhether_percent("50%");
-//			bean.setCurrent_state(180);
-//			beans.add(bean);
-//		}
-//		adapter.addData(beans, false);
-//		listView.setAdapter(adapter);
-//		beans = adapter.getData();
-
-		return view;
+	        }); 		
 	}
 
 	@Override
