@@ -831,7 +831,7 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 		int currentMonth = c.get(Calendar.MONTH);
 		int currentDay = c.get(Calendar.DATE);
 		int currentHour = c.get(Calendar.HOUR_OF_DAY);
-		int currentMinute = c.get(Calendar.MINUTE);
+		int currentMinute = c.get(Calendar.MINUTE)+1;
 //		int Hour = c.get(Calendar.HOUR_OF_DAY);
 //		int Minute = c.get(Calendar.MINUTE);
 
@@ -988,7 +988,9 @@ public class ApplyWaterDistrbutionGate extends Fragment implements
 				} else {
 					isBefore = -1;
 				}
-				if (isBefore == 1) {
+				if(hour.getCurrentItem()==0&&minute.getCurrentItem()==0){
+					Toast.makeText(getActivity(), "请设置正确的持续时间！", Toast.LENGTH_SHORT).show();
+				}else if (isBefore == 1) {
 					timestart = decimal.format(year.getCurrentItem() + 2016) + "-"
 							+ decimal.format(month.getCurrentItem() + 1) + "-"
 							+ decimal.format(day.getCurrentItem() + 1)+" "+ decimal.format(wv_hour.getCurrentItem())

@@ -247,7 +247,7 @@ public class AppayWaterGateLinkageFragment extends Fragment implements
 		int currentMonth = c.get(Calendar.MONTH);
 		int currentDay = c.get(Calendar.DATE);
 		int currentHour = c.get(Calendar.HOUR_OF_DAY);
-		int currentMinute = c.get(Calendar.MINUTE);
+		int currentMinute = c.get(Calendar.MINUTE)+1;
 
 		String[] months_big = { "1", "3", "5", "7", "8", "10", "12" };
 		String[] months_little = { "4", "6", "9", "11" };
@@ -268,12 +268,12 @@ public class AppayWaterGateLinkageFragment extends Fragment implements
 		month.setCurrentItem(currentMonth);
 
 		wv_hour = (WheelView) view.findViewById(R.id.hours_gate);
-		wv_hour.setAdapter(new NumbericWheelAdapter(1, 12));
+		wv_hour.setAdapter(new NumbericWheelAdapter(0, 12));
 		wv_hour.setCyclic(true);
 		wv_hour.setLabel("时");// 添加文字
 
 		wv_minute = (WheelView) view.findViewById(R.id.minutes_gate);
-		wv_minute.setAdapter(new NumbericWheelAdapter(0, 23));
+		wv_minute.setAdapter(new NumbericWheelAdapter(0, 59));
 		wv_minute.setCyclic(true);
 		wv_minute.setLabel("分");
 		
@@ -402,7 +402,9 @@ public class AppayWaterGateLinkageFragment extends Fragment implements
 				} else {
 					isBefore = -1;
 				}
-				if (isBefore == 1) {
+				if(hour.getCurrentItem()==0&&minute.getCurrentItem()==0){
+					Toast.makeText(getActivity(), "请设置正确的持续时间！", Toast.LENGTH_SHORT).show();
+				}else if (isBefore == 1) {
 					timestart = decimal.format(year.getCurrentItem() + 2016) + "-"
 							+ decimal.format(month.getCurrentItem() + 1) + "-"
 							+ decimal.format(day.getCurrentItem() + 1)+" "+ decimal.format(wv_hour.getCurrentItem())

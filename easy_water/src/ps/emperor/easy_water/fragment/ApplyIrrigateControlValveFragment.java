@@ -17,11 +17,13 @@ import org.xutils.http.RequestParams;
 import com.google.gson.Gson;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +38,7 @@ import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.adapter.NumericWheelAdapter;
 import ps.emperor.easy_water.entity.ApplyIrrigateControlValueBean;
 import ps.emperor.easy_water.entity.ApplyIrrigateControlValueBean.infoList;
+import ps.emperor.easy_water.entity.IrriGroupStateBean;
 import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.utils.URL;
@@ -98,9 +101,6 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 		totalIrriTime = (TextView) view.findViewById(R.id.text_apply_irriagte_valve_control_time);
 		irriWater = (TextView) view.findViewById(R.id.text_apply_irriagte_valve_control_water);
 		irriDuration = (TextView) view.findViewById(R.id.text_apply_irriagte_valve_control);
-		// 灌水延续时间显示
-		text_apply_irriagte_valve_control = (TextView) view
-				.findViewById(R.id.text_apply_irriagte_valve_control);
 		
 		init();
 		
@@ -251,7 +251,7 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 			transaction.commit();
 			break;
 		case R.id.acitionbar_right:
-			RequestParams param2 = new RequestParams(URL.updateValueControlIrriDuration); // 网址(请替换成实际的网址)
+			RequestParams param2 = new RequestParams(URL.updateValueControlSwitch); // 网址(请替换成实际的网址)
 			// params.addQueryStringParameter("key", "value"); //
 			// 参数(请替换成实际的参数与值)
 			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
@@ -260,7 +260,17 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 			try {
 				param2.setAsJsonContent(true);
 				js_request.put("valueControlChanID", ValueControlChanID);
-				js_request.put("irriDuration", irriDuration.getText().toString());
+				if(isOpens == 0){
+					js_request.put("valueControlSwitch", 0);
+				}else{
+					js_request.put("valueControlSwitch", 1);
+				}
+				if(CheckUtil.IsEmpty(irriDuration.getText().toString())||"00:00:00".equals(irriDuration.getText().toString())){
+					js_request.put("isNewPlan", 0);
+				}else{
+					js_request.put("isNewPlan", 1);
+					js_request.put("irriDuration", irriDuration.getText().toString());
+				}
 				param2.setBodyContent(js_request.toString());
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -310,6 +320,33 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 									Toast.LENGTH_SHORT);
 							Gson gson = new Gson();
 							progressDialog.dismiss();
+							if(isOpens == 0){
+								isOpen.setImageResource(R.drawable.off);
+							}
+							if(isOpens == 1){
+								isOpen.setImageResource(R.drawable.on);
+							}
+							IrriGroupStateBean bean = gson.fromJson(arg0, IrriGroupStateBean.class);
+							if("2".equals(bean.getCode())){
+								new AlertDialog.Builder(getActivity())
+								.setTitle("系统提示")
+								// 设置对话框标题
+								.setMessage(
+										"您当前操作的阀门已存在灌溉计划，所以该阀门计划时间将持续至原计划结束时间！")
+								// 设置显示的内容
+								.setPositiveButton(
+										"设置时长",
+										new DialogInterface.OnClickListener() {// 添加确定按钮
+
+											@Override
+											public void onClick(
+													DialogInterface dialog,
+													int which) {// 确定按钮的响应事件
+												showDateTimePicker(mInflater);
+											}
+										}).show();// 在按键响应事件中显示此对话框
+							}
+							progressDialog.dismiss();
 						}
 					});
 			break;
@@ -329,6 +366,12 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 				}else{
 					isOpens = 0;
 					js_request1.put("valueControlSwitch", 0);
+				}
+				if(CheckUtil.IsEmpty(irriDuration.getText().toString())||"00:00:00".equals(irriDuration.getText().toString())){
+					js_request1.put("isNewPlan", 0);
+				}else{
+					js_request1.put("isNewPlan", 1);
+					js_request1.put("irriDuration", irriDuration.getText().toString());
 				}
 				param3.setBodyContent(js_request1.toString());
 			} catch (Exception e) {
@@ -355,14 +398,10 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 								int responseCode = httpEx.getCode();
 								String responseMsg = httpEx.getMessage();
 								String errorResult = httpEx.getResult();
-								Toast.makeText(getActivity(), "请求失败",
-										Toast.LENGTH_SHORT);
 								// ...
 								progressDialog.dismiss();
 							} else { // 其他错误 
 								// ...
-								Toast.makeText(getActivity(), "请求失败",
-										Toast.LENGTH_SHORT);
 								progressDialog.dismiss();
 							}
 
@@ -384,6 +423,26 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 							if(isOpens == 1){
 								isOpen.setImageResource(R.drawable.on);
 							}
+							IrriGroupStateBean bean = gson.fromJson(arg0, IrriGroupStateBean.class);
+							if("2".equals(bean.getCode())){
+								new AlertDialog.Builder(getActivity())
+								.setTitle("系统提示")
+								// 设置对话框标题
+								.setMessage(
+										"您当前操作的阀门已存在灌溉计划，所以该阀门计划时间将持续至原计划结束时间！")
+								// 设置显示的内容
+								.setPositiveButton(
+										"确定",
+										new DialogInterface.OnClickListener() {// 添加确定按钮
+
+											@Override
+											public void onClick(
+													DialogInterface dialog,
+													int which) {// 确定按钮的响应事件
+												showDateTimePicker(mInflater);
+											}
+										}).show();// 在按键响应事件中显示此对话框
+							}
 							progressDialog.dismiss();
 						}
 					});
@@ -399,19 +458,19 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 	 */
 	private void showDateTimePicker(LayoutInflater inflater) {
 		Calendar calendar = Calendar.getInstance();
-		int hour = calendar.get(Calendar.HOUR_OF_DAY);
-		int minute = calendar.get(Calendar.MINUTE);
-		int second = calendar.get(Calendar.SECOND);
+		int hour = 0;
+		int minute = 0;
+		int second = 0;
 
 		dialog = new Dialog(getActivity());
 		dialog.setTitle("请选择灌水持续时间");
 		// 找到dialog的布局文件
 		mInflater = inflater;
-		View view = inflater.inflate(R.layout.time_filter, null);
+		View view = inflater.inflate(R.layout.times, null);
 
 		// 时
 		final WheelView wv_hours = (WheelView) view
-				.findViewById(R.id.hour_filters);
+				.findViewById(R.id.hour_times);
 		wv_hours.setAdapter(new NumericWheelAdapter(0, 23));
 		wv_hours.setCyclic(true);
 		wv_hours.setLabel("时");// 添加文字
@@ -419,7 +478,7 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 
 		// 分
 		final WheelView wv_minute = (WheelView) view
-				.findViewById(R.id.minute_filters);
+				.findViewById(R.id.minute_times);
 		wv_minute.setAdapter(new NumericWheelAdapter(0, 59));
 		wv_minute.setCyclic(true);
 		wv_minute.setLabel("分");// 添加文字
@@ -427,8 +486,8 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 
 		 // 秒
 		 final WheelView wv_second = (WheelView)
-		 view.findViewById(R.id.second_filters);
-		 wv_second.setAdapter(new NumericWheelAdapter(0, 59, "%02d"));
+		 view.findViewById(R.id.second_times);
+		 wv_second.setAdapter(new NumericWheelAdapter(0, 59));
 		 wv_second.setCyclic(true);
 		 wv_second.setCurrentItem(second);
 		 wv_second.setLabel("秒");// 添加文字
@@ -439,8 +498,8 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 		//
 		// wv_hours.TEXT_SIZE = textSize;
 		// wv_minute.TEXT_SIZE = textSize;
-		Button btn_sure = (Button) view.findViewById(R.id.time_sures_filter);
-		Button btn_cancel = (Button) view.findViewById(R.id.time_canles_filter);
+		Button btn_sure = (Button) view.findViewById(R.id.time_sures);
+		Button btn_cancel = (Button) view.findViewById(R.id.time_canles);
 		// 确定
 		btn_sure.setOnClickListener(new OnClickListener() {
 
@@ -450,7 +509,7 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 				// 如果是个数,则显示为"02"的样式
 				String parten = "00";
 				DecimalFormat decimal = new DecimalFormat(parten);
-				text_apply_irriagte_valve_control.setText(decimal
+				irriDuration.setText(decimal
 						.format(wv_hours.getCurrentItem())
 						+ ":"
 						+ decimal.format(wv_minute.getCurrentItem())

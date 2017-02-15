@@ -247,7 +247,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 			} else if (CheckUtil.IsEmpty(tv_time_continue)
 					|| tv_time_continue.getText().equals("0时")
 					|| tv_time_continue.getText().equals("0小时")
-					|| tv_time_continue.getText().equals("0时0分")) {
+					|| tv_time_continue.getText().equals("0小时0分钟")) {
 				Toast.makeText(getActivity(), "请设置持续时间", Toast.LENGTH_SHORT)
 						.show();
 				break;
@@ -3171,7 +3171,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 	 */
 	private void showDateTimePicker(LayoutInflater inflater) {
 		Calendar calendar = Calendar.getInstance();
-		int hour = calendar.get(Calendar.HOUR_OF_DAY);
+		int hour = 0;
 
 		dialog = new Dialog(getActivity());
 		dialog.setTitle("请选择");
@@ -3181,7 +3181,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 
 		// 时
 		final WheelView wv_hours = (WheelView) view.findViewById(R.id.hour);
-		wv_hours.setAdapter(new NumericWheelAdapter(0, 23));
+		wv_hours.setAdapter(new NumericWheelAdapter(1, 23));
 		wv_hours.setCyclic(true);
 		wv_hours.setCurrentItem(hour);
 
@@ -3311,8 +3311,8 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 
 	private void showDateTimePickers(LayoutInflater inflater) {
 		Calendar calendar = Calendar.getInstance();
-		int hour = calendar.get(Calendar.HOUR_OF_DAY);
-		int minute = calendar.get(Calendar.MINUTE);
+		int hour = 0;
+		int minute = 0;
 
 		dialog = new Dialog(getActivity());
 		dialog.setTitle("请选择");
@@ -3325,6 +3325,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 				.findViewById(R.id.hour_filter);
 		wv_hours.setAdapter(new NumericWheelAdapter(0, 23));
 		wv_hours.setCyclic(true);
+		wv_hours.setLabel("时");// 添加文字
 		wv_hours.setCurrentItem(hour);
 
 		// 分
@@ -3332,6 +3333,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 				.findViewById(R.id.minute_filter);
 		wv_minute.setAdapter(new NumericWheelAdapter(0, 59));
 		wv_minute.setCyclic(true);
+		wv_minute.setLabel("分");// 添加文字
 		wv_minute.setCurrentItem(hour);
 
 		Button btn_sure = (Button) view.findViewById(R.id.time_sures_filter);

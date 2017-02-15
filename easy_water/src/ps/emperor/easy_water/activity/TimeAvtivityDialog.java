@@ -75,9 +75,9 @@ public class TimeAvtivityDialog extends BaseActivity implements OnClickListener 
 		int currentMonth = c.get(Calendar.MONTH);
 		int currentDay = c.get(Calendar.DATE);
 		int currentHour = c.get(Calendar.HOUR_OF_DAY);
-		int currentHours = c.get(Calendar.MINUTE);
-		int currentMinute = c.get(Calendar.HOUR_OF_DAY);
-		int currentMinutes = c.get(Calendar.MINUTE);
+		int currentMinute = c.get(Calendar.MINUTE)+1;
+		int currentHours = 0;
+		int currentMinutes = 0;
 
 		String[] months_big = { "1", "3", "5", "7", "8", "10", "12" };
 		String[] months_little = { "4", "6", "9", "11" };
@@ -246,7 +246,9 @@ public class TimeAvtivityDialog extends BaseActivity implements OnClickListener 
 			} else {
 				isBefore = -1;
 			}
-			if (isBefore == 1) {
+			if(hours.getCurrentItem()==0&&minutes.getCurrentItem()==0){
+				Toast.makeText(this, "请设置正确的持续时间！", Toast.LENGTH_SHORT).show();
+			}else if (isBefore == 1) {
 				listentity = dbHelper.loadLastMsgBySessionids(units);
 				Calendar cal = Calendar.getInstance();// 当前日期
 				// 从数据库中查出点击的该项对应的计划结束时间

@@ -217,7 +217,7 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 					gridView.setVerticalSpacing(5);
 					gridView.setPadding(10, 10, 5, 10);
 					if (CheckUtil.IsEmpty(beens.get(0).getPlanStat())) {
-						status.setText("状态异常！");
+						status.setText("无计划");
 					} else {
 						status.setText(beens.get(0).getPlanStat());
 					}
@@ -1001,11 +1001,11 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 		dialog.setTitle("请选择灌水持续时间");
 		// 找到dialog的布局文件
 		mInflater = inflater;
-		View view = inflater.inflate(R.layout.time_filter, null);
+		View view = inflater.inflate(R.layout.times, null);
 
 		// 时
 		final WheelView wv_hours = (WheelView) view
-				.findViewById(R.id.hour_filters);
+				.findViewById(R.id.hour_times);
 		wv_hours.setAdapter(new NumericWheelAdapter(0, 23));
 		wv_hours.setCyclic(true);
 		wv_hours.setLabel("时");// 添加文字
@@ -1013,7 +1013,7 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 
 		// 分
 		final WheelView wv_minute = (WheelView) view
-				.findViewById(R.id.minute_filters);
+				.findViewById(R.id.minute_times);
 		wv_minute.setAdapter(new NumericWheelAdapter(0, 59));
 		wv_minute.setCyclic(true);
 		wv_minute.setLabel("分");// 添加文字
@@ -1021,7 +1021,7 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 
 		 // 秒
 		 final WheelView wv_second = (WheelView)
-		 view.findViewById(R.id.second_filters);
+		 view.findViewById(R.id.second_times);
 		 wv_second.setAdapter(new NumericWheelAdapter(0, 59, "%02d"));
 		 wv_second.setCyclic(true);
 		 wv_second.setCurrentItem(second);

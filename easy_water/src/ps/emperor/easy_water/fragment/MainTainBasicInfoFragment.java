@@ -68,14 +68,11 @@ public class MainTainBasicInfoFragment extends Fragment implements
 			tv_restnight_start, tv_restnight_end, text_season_start,
 			text_season_end;
 	private Dialog dialog;
-	private int id, isFront;
-	private int first_setting, first_crop, minutes, hours, minute, hour;
-	// ,filterHour, filterMinute,isTimeLong,isNightStartHour,isNightStartMinute
-	// ,isNightContinueHour,isNightContinueMinute,isNightEndHour,isNightEndMinute;
+	private int id, isFront,first_setting, first_crop;
 	private int group, value, long_hour, night_start_hour, night_start_minute,
 			night_cont_hour, night_cont_minute, night_end_hour,
 			night_end_minute, setLong, setNight, Skip, aNight;
-	private String units;
+	private String units,filterStart,filterEnd;
 	private WheelView year;
 	private WheelView month;
 	private WheelView day;
@@ -90,6 +87,7 @@ public class MainTainBasicInfoFragment extends Fragment implements
 	private List<Irrigation> irrigation;
 	private ProgressDialog progressDialog;
 	private List<infoList> beens;
+	private String[] NightStart,NightEnd;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -146,6 +144,7 @@ public class MainTainBasicInfoFragment extends Fragment implements
 		tv_time_long = (TextView) view
 				.findViewById(R.id.text_apply_irriagte_project_single_time_long);
 		tv_time_long.setText(long_hour + "");
+		irrigation = dbHelper.loadContinue(units);
 		init();
 
 		return view;
@@ -274,36 +273,66 @@ public class MainTainBasicInfoFragment extends Fragment implements
 					} else {
 						tv_time_long.setText("0");
 					}
+					NightStart = tv_restnight_start.getText().toString().split(":");
+					NightEnd = tv_restnight_end.getText().toString().split(":");
+					night_start_hour = Integer.valueOf(NightStart[0]);
+					night_start_minute = Integer.valueOf(NightStart[1]);
+					night_end_hour = Integer.valueOf(NightEnd[0]);
+					night_end_minute = Integer.valueOf(NightEnd[1]);
+					long_hour = Integer.valueOf(tv_time_long.getText().toString());
+					group = Integer.valueOf(tv_irriagte_group.getText().toString());
+					value = Integer.valueOf(tv_orroagte_valve.getText().toString());
+					
+					if(night_start_hour > night_end_hour){
+						night_cont_hour = night_end_hour + 24 - night_start_hour;
+					}else{
+						night_cont_hour = night_end_hour-night_start_hour;
+					}
+					if(night_start_minute > night_end_hour){
+						night_cont_minute = night_end_minute + 60 -night_start_minute;
+					}else{
+						night_cont_minute = night_end_minute-night_start_minute;
+					}
+					filterStart = tv_filter.getText().toString().substring(0, 2);
+					filterEnd = tv_filter.getText().toString().substring(4, 6);
+					
+//					if (!(decimal.format(irrigation.get(0)
+//							.getIsNightStartHour()) + ":" + decimal
+//							.format(irrigation.get(0)
+//									.getIsNightStartMinute()))
+//							.equals(tv_restnight_start.getText()
+//									.toString())||!(decimal.format(irrigation.get(0)
+//											.getIsNightEndHour()) + ":" + decimal
+//											.format(irrigation.get(0)
+//													.getIsNightEndMinute()))
+//											.equals(tv_restnight_end.getText()
+//													.toString())) {
+//						dbHelper.updateBasicTime(units,
+//								night_start_hour, night_start_minute,
+//								night_cont_hour, night_cont_minute,
+//								night_end_hour, night_end_minute);
+//					}
+//					if (!(irrigation.get(0).getIsTimeLong() + "")
+//							.equals(tv_time_long.getText().toString())) {
+//						dbHelper.updateBasicTimeLong(units, long_hour);
+//					}
+//					if (!(irrigation.get(0).getIsTimeLong() + "")
+//							.equals(tv_irriagte_group.getText().toString())) {
+//						dbHelper.updateBasicGroup(units,group);
+//					}
+//					if (!(irrigation.get(0).getIsTimeLong() + "")
+//							.equals(tv_orroagte_valve.getText().toString())) {
+//						dbHelper.updateBasicVlaue(units,value);
+//					}
+//					if ((irrigation.get(0).getFilterHour() + "")
+//							.equals(Integer.valueOf(filterStart))&&(irrigation.get(0).getFilterMinute()+"").equals(Integer.valueOf(filterEnd))) {
+//					}else{
+//						dbHelper.updateBasicFilter(units,Integer.valueOf(filterStart),Integer.valueOf(filterEnd));
+//					}
 				}
 				progressDialog.dismiss();
 			}
 		});
-
-		irrigation = dbHelper.loadContinue(units);
-
-		// hour = irrigation.get(0).getIsNightStartHour();
-		// minute = irrigation.get(0).getIsNightStartMinute();
-		// hours = irrigation.get(0).getIsNightEndHour();
-		// minutes = irrigation.get(0).getIsNightEndMinute();
-		// // hour = (int) SharedUtils.getParam(getActivity(),
-		// "isNightStartHour", 0);
-		// // minute = (int) SharedUtils.getParam(getActivity(),
-		// "isNightStartMinute", 0);
-		// // hours = (int) SharedUtils.getParam(getActivity(),
-		// "isNightEndHour", 0);
-		// // minutes = (int) SharedUtils.getParam(getActivity(),
-		// "isNightEndMinute", 0);
-		// long_hour = irrigation.get(0).getIsTimeLong();
-		// group = irrigation.get(0).getGroupnumber();
-		// value = irrigation.get(0).getValuenumber();
-		// filterHour = irrigation.get(0).getFilterHour();
-		// filterMinute = irrigation.get(0).getFilterMinute();
-		// if(group == 0){
-		// SharedUtils.setParam(getActivity(), "first_setting", 0);
-		// }
-		// if (value == 0) {
-		// SharedUtils.setParam(getActivity(), "first_crop", 0);
-		// }
 	}
 
 	@SuppressWarnings("deprecation")
@@ -358,17 +387,17 @@ public class MainTainBasicInfoFragment extends Fragment implements
 			}
 			if (setNight == 1) {
 				setNight = 0;
-				hour = irrigation.get(0).getIsNightStartHour();
-				minute = irrigation.get(0).getIsNightStartMinute();
-				hours = irrigation.get(0).getIsNightEndHour();
-				minutes = irrigation.get(0).getIsNightEndMinute();
-				if ((CheckUtil.IsEmpty(hour) || hour == 0)) {
+				night_start_hour = irrigation.get(0).getIsNightStartHour();
+				night_start_minute = irrigation.get(0).getIsNightStartMinute();
+				night_end_hour = irrigation.get(0).getIsNightEndHour();
+				night_end_minute = irrigation.get(0).getIsNightEndMinute();
+				if ((CheckUtil.IsEmpty(night_start_hour) || night_start_hour == 0)) {
 					aNight = 0;
 				} else {
 					aNight = 1;
 				}
 
-				if ((CheckUtil.IsEmpty(hours) || hours == 0)) {
+				if ((CheckUtil.IsEmpty(night_end_hour) || night_end_hour == 0)) {
 					aNight = 0;
 				} else {
 					aNight = 1;
@@ -393,17 +422,17 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				break;
 			} else if (setNight == 2) {
 				setNight = 0;
-				hour = irrigation.get(0).getIsNightStartHour();
-				minute = irrigation.get(0).getIsNightStartMinute();
-				hours = irrigation.get(0).getIsNightEndHour();
-				minutes = irrigation.get(0).getIsNightEndMinute();
-				if ((CheckUtil.IsEmpty(hour) || hour == 0)) {
+				night_start_hour = irrigation.get(0).getIsNightStartHour();
+				night_start_minute = irrigation.get(0).getIsNightStartMinute();
+				night_end_hour = irrigation.get(0).getIsNightEndHour();
+				night_end_minute = irrigation.get(0).getIsNightEndMinute();
+				if ((CheckUtil.IsEmpty(night_start_hour) || night_start_hour == 0)) {
 					aNight = 0;
 				} else {
 					aNight = 1;
 				}
 
-				if ((CheckUtil.IsEmpty(hours) || hours == 0)) {
+				if ((CheckUtil.IsEmpty(night_end_hour) || night_end_hour == 0)) {
 					aNight = 0;
 				} else {
 					aNight = 1;
@@ -575,8 +604,7 @@ public class MainTainBasicInfoFragment extends Fragment implements
 	 * @Description: TODO 弹出日期时间选择器
 	 */
 	private void showDateTimePickers(LayoutInflater inflater) {
-		Calendar calendar = Calendar.getInstance();
-		int hour = calendar.get(Calendar.HOUR_OF_DAY);
+		int hour = 0;
 
 		dialog = new Dialog(getActivity());
 		dialog.setTitle("请选择时间");
@@ -638,8 +666,7 @@ public class MainTainBasicInfoFragment extends Fragment implements
 	 * @Description: TODO 弹出日期时间选择器
 	 */
 	private void showDateTimePicker(LayoutInflater inflater) {
-		Calendar calendar = Calendar.getInstance();
-		int hour = calendar.get(Calendar.HOUR_OF_DAY);
+		int hour = 0;
 
 		dialog = new Dialog(getActivity());
 		dialog.setTitle("请选择");
@@ -664,13 +691,9 @@ public class MainTainBasicInfoFragment extends Fragment implements
 					first_setting = (Integer) SharedUtils.getParam(
 							getActivity(), "first_setting", 0);
 					// if (first_setting == 0) {
-					tv_irriagte_group.setText((wv_hours.getCurrentItem() + 1)
+					group = wv_hours.getCurrentItem() + 1;
+					tv_irriagte_group.setText(group
 							+ "");
-					// SharedUtils.setParam(getActivity(), "groups",
-					// Integer.valueOf(tv_irriagte_group.getText()
-					// .toString()));
-//					dbHelper.updateBasicGroup(units,
-//							(wv_hours.getCurrentItem() + 1));
 					first_setting = 1;
 					SharedUtils.setParam(getActivity(), "first_setting",
 							first_setting);
@@ -744,13 +767,12 @@ public class MainTainBasicInfoFragment extends Fragment implements
 					first_crop = (Integer) SharedUtils.getParam(getActivity(),
 							"first_crop", 0);
 					// if (first_crop == 0) {
-					tv_orroagte_valve.setText((wv_hours.getCurrentItem() + 1)
+					value = wv_hours.getCurrentItem() + 1;
+					tv_orroagte_valve.setText(value
 							+ "");
 					// SharedUtils.setParam(getActivity(), "values",
 					// Integer.valueOf(tv_orroagte_valve.getText()
 					// .toString()));
-					dbHelper.updateBasicVlaue(units,
-							(wv_hours.getCurrentItem() + 1));
 					first_crop = 1;
 					SharedUtils.setParam(getActivity(), "first_crop",
 							first_crop);
@@ -850,9 +872,8 @@ public class MainTainBasicInfoFragment extends Fragment implements
 	 * @Description: TODO 弹出日期时间选择器
 	 */
 	private void showDateTimePicker1(LayoutInflater inflater) {
-		Calendar calendar = Calendar.getInstance();
-		int hour = calendar.get(Calendar.HOUR_OF_DAY);
-		int minute = calendar.get(Calendar.MINUTE);
+		int hour = 0;
+		int minute = 0;
 
 		dialog = new Dialog(getActivity());
 		dialog.setTitle("请选择时间段");
@@ -937,8 +958,8 @@ public class MainTainBasicInfoFragment extends Fragment implements
 		int currentYear = c.get(Calendar.YEAR);
 		int currentMonth = c.get(Calendar.MONTH);
 		int currentDay = c.get(Calendar.DATE);
-		int currentHour = c.get(Calendar.HOUR_OF_DAY);
-		int currentMinute = c.get(Calendar.MINUTE);
+		int currentHour = 0;
+		int currentMinute = 0;
 
 		String[] months_big = { "1", "3", "5", "7", "8", "10", "12" };
 		String[] months_little = { "4", "6", "9", "11" };
@@ -959,7 +980,7 @@ public class MainTainBasicInfoFragment extends Fragment implements
 		month.setCurrentItem(currentMonth);
 
 		wv_hour = (WheelView) view.findViewById(R.id.hours_resean);
-		wv_hour.setAdapter(new NumbericWheelAdapter(1, 12));
+		wv_hour.setAdapter(new NumbericWheelAdapter(0, 12));
 		wv_hour.setCyclic(true);
 		wv_hour.setLabel("月");// 添加文字
 
@@ -1081,17 +1102,10 @@ public class MainTainBasicInfoFragment extends Fragment implements
 		View view = inflater.inflate(R.layout.time_night, null);
 		dialog = new Dialog(getActivity());
 		dialog.setTitle("请选择夜间休息时间段");
-		Calendar c = Calendar.getInstance();
-		int currentHour = c.get(Calendar.HOUR_OF_DAY);
-		int currentHours = c.get(Calendar.MINUTE);
-		int currentMinute = c.get(Calendar.HOUR_OF_DAY);
-		int currentMinutes = c.get(Calendar.MINUTE);
-
-		String[] months_big = { "1", "3", "5", "7", "8", "10", "12" };
-		String[] months_little = { "4", "6", "9", "11" };
-
-		final List<String> list_big = Arrays.asList(months_big);
-		final List<String> list_little = Arrays.asList(months_little);
+		int currentHour = 0;
+		int currentHours = 0;
+		int currentMinute = 0;
+		int currentMinutes = 0;
 
 		wv_hour_night = (WheelView) view.findViewById(R.id.hour_night);
 		wv_hour_night.setAdapter(new NumbericWheelAdapter(0, 23));
@@ -1171,29 +1185,6 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				night_end_hour = date.getHours();
 				night_end_minute = date.getMinutes();
 
-				// dbHelper.updateBasicTime(units,
-				// wv_hour_night.getCurrentItem(),
-				// wv_minute_night.getCurrentItem(),
-				// wv_hour_nights.getCurrentItem(),
-				// wv_minute_nights.getCurrentItem(), date.getHours(),
-				// date.getMinutes());
-				// SharedUtils.setParam(getActivity(), "isNightStartHour",
-				// wv_hour_night
-				// .getCurrentItem());
-				// SharedUtils.setParam(getActivity(), "isNightStartMinute",
-				// wv_minute_night
-				// .getCurrentItem());
-				// SharedUtils.setParam(getActivity(), "isNightContinueHour",
-				// wv_hour_nights
-				// .getCurrentItem());
-				// SharedUtils.setParam(getActivity(), "isNightContinueMinute",
-				// wv_minute_nights
-				// .getCurrentItem());
-				// SharedUtils.setParam(getActivity(), "isNightEndHour",
-				// date.getHours()
-				// );
-				// SharedUtils.setParam(getActivity(), "isNightEndMinute",
-				// date.getMinutes());
 				dialog.dismiss();
 			}
 		});
