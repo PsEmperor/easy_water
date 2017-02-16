@@ -60,12 +60,13 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 	private MainActionBars actionBar;
 	private ImageView isOpen;
 	private Dialog dialog;
-	int hour,minute,second;
+	int hour, minute, second;
 	private RelativeLayout valve_control;
-	private TextView text_apply_irriagte_valve_control,irriUnit,tv_ChanNum,userName,crop,area,
-	valueControlID,count,totalIrriTime,irriWater,irriDuration;
-	private String units,ChanNum,ValueControlChanID;
-	private int isOpens;
+	private TextView text_apply_irriagte_valve_control, irriUnit, tv_ChanNum,
+			userName, crop, area, valueControlID, count, totalIrriTime,
+			irriWater, irriDuration;
+	private String units, ChanNum, ValueControlChanID;
+	private int isOpens, isPlan;
 	private ProgressDialog progressDialog;
 	private List<infoList> beens;
 
@@ -88,29 +89,37 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 		valve_control = (RelativeLayout) view
 				.findViewById(R.id.layout_apply_irriagte_valve_control);
 		valve_control.setOnClickListener(this);
-		ValueControlChanID = (String) SharedUtils.getParam(getActivity(), "ValueControlChanID", "1");
+		ValueControlChanID = (String) SharedUtils.getParam(getActivity(),
+				"ValueControlChanID", "1");
 		ChanNum = (String) SharedUtils.getParam(getActivity(), "ChanNum", "1");
-		
-		irriUnit = (TextView) view.findViewById(R.id.text_apply_irriagte_valve_control_unit);
+
+		irriUnit = (TextView) view
+				.findViewById(R.id.text_apply_irriagte_valve_control_unit);
 		tv_ChanNum = (TextView) view.findViewById(R.id.tv_ChanNum);
-		userName = (TextView) view.findViewById(R.id.text_apply_irriagte_valve_control_name);
-		crop = (TextView) view.findViewById(R.id.text_apply_irriagte_valve_control_crop);
-		area = (TextView) view.findViewById(R.id.text_apply_irriagte_valve_control_area);
-		valueControlID = (TextView) view.findViewById(R.id.text_apply_irriagte_valve_control_valve);
-		count = (TextView) view.findViewById(R.id.text_apply_irriagte_valve_control_number);
-		totalIrriTime = (TextView) view.findViewById(R.id.text_apply_irriagte_valve_control_time);
-		irriWater = (TextView) view.findViewById(R.id.text_apply_irriagte_valve_control_water);
-		irriDuration = (TextView) view.findViewById(R.id.text_apply_irriagte_valve_control);
-		
+		userName = (TextView) view
+				.findViewById(R.id.text_apply_irriagte_valve_control_name);
+		crop = (TextView) view
+				.findViewById(R.id.text_apply_irriagte_valve_control_crop);
+		area = (TextView) view
+				.findViewById(R.id.text_apply_irriagte_valve_control_area);
+		valueControlID = (TextView) view
+				.findViewById(R.id.text_apply_irriagte_valve_control_valve);
+		count = (TextView) view
+				.findViewById(R.id.text_apply_irriagte_valve_control_number);
+		totalIrriTime = (TextView) view
+				.findViewById(R.id.text_apply_irriagte_valve_control_time);
+		irriWater = (TextView) view
+				.findViewById(R.id.text_apply_irriagte_valve_control_water);
+		irriDuration = (TextView) view
+				.findViewById(R.id.text_apply_irriagte_valve_control);
+
 		init();
-		
 
 		isOpen = (ImageView) view
 				.findViewById(R.id.image_irriagte_valve_control_isopen);
 		isOpen.setOnClickListener(this);
 		return view;
 	}
-
 
 	private void init() {
 		String str2 = "";
@@ -119,7 +128,8 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 		} catch (UnsupportedEncodingException e1) {
 			e1.printStackTrace();
 		}
-		RequestParams param3 = new RequestParams(URL.findValueControlInfo + str2); // 网址(请替换成实际的网址)
+		RequestParams param3 = new RequestParams(URL.findValueControlInfo
+				+ str2); // 网址(请替换成实际的网址)
 		// params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)
 		progressDialog = ProgressDialog.show(getActivity(), "Loading...",
 				"Please wait...", true, false);
@@ -169,63 +179,64 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 				ApplyIrrigateControlValueBean fromJson = gson.fromJson(arg0,
 						ApplyIrrigateControlValueBean.class);
 				beens = fromJson.getAuthNameList();
-				if(!CheckUtil.IsEmpty(ChanNum)){
+				if (!CheckUtil.IsEmpty(ChanNum)) {
 					tv_ChanNum.setText(ChanNum);
-				}else{
+				} else {
 					tv_ChanNum.setText("");
 				}
-				if(!CheckUtil.IsEmpty(beens)){
-					if(!CheckUtil.IsEmpty(beens.get(0).getGrowersName())){
+				if (!CheckUtil.IsEmpty(beens)) {
+					if (!CheckUtil.IsEmpty(beens.get(0).getGrowersName())) {
 						userName.setText(beens.get(0).getGrowersName());
-					}else{
+					} else {
 						userName.setText("");
 					}
-					if(!CheckUtil.IsEmpty(beens.get(0).getCropName())){
+					if (!CheckUtil.IsEmpty(beens.get(0).getCropName())) {
 						crop.setText(beens.get(0).getCropName());
-					}else{
+					} else {
 						crop.setText("");
 					}
-					if(!CheckUtil.IsEmpty(beens.get(0).getArea())){
-						area.setText(beens.get(0).getArea()+"亩");
-					}else{
+					if (!CheckUtil.IsEmpty(beens.get(0).getArea())) {
+						area.setText(beens.get(0).getArea() + "亩");
+					} else {
 						area.setText("0亩");
 					}
-					if(!CheckUtil.IsEmpty(beens.get(0).getValueControlID())){
-						valueControlID.setText(beens.get(0).getValueControlID());
-					}else{
+					if (!CheckUtil.IsEmpty(beens.get(0).getValueControlID())) {
+						valueControlID
+								.setText(beens.get(0).getValueControlID());
+					} else {
 						valueControlID.setText("");
 					}
-					if(!CheckUtil.IsEmpty(beens.get(0).getIrriCount())){
-						count.setText(beens.get(0).getIrriCount()+"次");
-					}else{
+					if (!CheckUtil.IsEmpty(beens.get(0).getIrriCount())) {
+						count.setText(beens.get(0).getIrriCount() + "次");
+					} else {
 						count.setText("0次");
 					}
-					if(!CheckUtil.IsEmpty(beens.get(0).getTotalIrriTime())){
+					if (!CheckUtil.IsEmpty(beens.get(0).getTotalIrriTime())) {
 						totalIrriTime.setText(beens.get(0).getTotalIrriTime());
-					}else{
+					} else {
 						totalIrriTime.setText("00:00:00");
 					}
-					if(!CheckUtil.IsEmpty(beens.get(0).getIrriWater())){
-						irriWater.setText(beens.get(0).getIrriWater()+"m³");
-					}else{
+					if (!CheckUtil.IsEmpty(beens.get(0).getIrriWater())) {
+						irriWater.setText(beens.get(0).getIrriWater() + "m³");
+					} else {
 						irriWater.setText("0m³");
 					}
-					if(!CheckUtil.IsEmpty(beens.get(0).getIrriDuration())){
+					if (!CheckUtil.IsEmpty(beens.get(0).getIrriDuration())) {
 						irriDuration.setText(beens.get(0).getIrriDuration());
-					}else{
+					} else {
 						irriDuration.setText("00:00:00");
 					}
-					if(beens.get(0).getValueControlSwitch().equals("0")){
+					if (beens.get(0).getValueControlSwitch().equals("0")) {
 						isOpens = 0;
 						isOpen.setImageResource(R.drawable.off);
-					}else{
+					} else {
 						isOpens = 1;
 						isOpen.setImageResource(R.drawable.on);
 					}
 				}
-				if(!CheckUtil.IsEmpty(units)){
+				if (!CheckUtil.IsEmpty(units)) {
 					irriUnit.setText(units);
-				}else{
+				} else {
 					irriUnit.setText("");
 				}
 				progressDialog.dismiss();
@@ -246,12 +257,15 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 			Bundle bundle = new Bundle();
 			bundle.putString("units", units);
 			fragment.setArguments(bundle);
-			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
+			transaction.setCustomAnimations(
+					R.anim.slide_fragment_horizontal_right_in,
+					R.anim.slide_fragment_horizontal_left_out);
 			transaction.replace(R.id.fl, fragment, "main");
 			transaction.commit();
 			break;
 		case R.id.acitionbar_right:
-			RequestParams param2 = new RequestParams(URL.updateValueControlSwitch); // 网址(请替换成实际的网址)
+			RequestParams param2 = new RequestParams(
+					URL.updateValueControlIrriDuration); // 网址(请替换成实际的网址)
 			// params.addQueryStringParameter("key", "value"); //
 			// 参数(请替换成实际的参数与值)
 			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
@@ -260,17 +274,8 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 			try {
 				param2.setAsJsonContent(true);
 				js_request.put("valueControlChanID", ValueControlChanID);
-				if(isOpens == 0){
-					js_request.put("valueControlSwitch", 0);
-				}else{
-					js_request.put("valueControlSwitch", 1);
-				}
-				if(CheckUtil.IsEmpty(irriDuration.getText().toString())||"00:00:00".equals(irriDuration.getText().toString())){
-					js_request.put("isNewPlan", 0);
-				}else{
-					js_request.put("isNewPlan", 1);
-					js_request.put("irriDuration", irriDuration.getText().toString());
-				}
+				js_request.put("irriDuration", irriDuration.getText()
+						.toString());
 				param2.setBodyContent(js_request.toString());
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -320,132 +325,408 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 									Toast.LENGTH_SHORT);
 							Gson gson = new Gson();
 							progressDialog.dismiss();
-							if(isOpens == 0){
-								isOpen.setImageResource(R.drawable.off);
-							}
-							if(isOpens == 1){
-								isOpen.setImageResource(R.drawable.on);
-							}
-							IrriGroupStateBean bean = gson.fromJson(arg0, IrriGroupStateBean.class);
-							if("2".equals(bean.getCode())){
-								new AlertDialog.Builder(getActivity())
-								.setTitle("系统提示")
-								// 设置对话框标题
-								.setMessage(
-										"您当前操作的阀门已存在灌溉计划，所以该阀门计划时间将持续至原计划结束时间！")
-								// 设置显示的内容
-								.setPositiveButton(
-										"设置时长",
-										new DialogInterface.OnClickListener() {// 添加确定按钮
-
-											@Override
-											public void onClick(
-													DialogInterface dialog,
-													int which) {// 确定按钮的响应事件
-												showDateTimePicker(mInflater);
-											}
-										}).show();// 在按键响应事件中显示此对话框
-							}
-							progressDialog.dismiss();
 						}
 					});
 			break;
 		case R.id.image_irriagte_valve_control_isopen:
-			RequestParams param3 = new RequestParams(URL.updateValueControlSwitch); // 网址(请替换成实际的网址)
-			// params.addQueryStringParameter("key", "value"); //
-			// 参数(请替换成实际的参数与值)
-			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
-					"Please wait...", true, false);
-			JSONObject js_request1 = new JSONObject();
-			try {
-				param3.setAsJsonContent(true);
-				js_request1.put("valueControlChanID", ValueControlChanID);
-				if(isOpens == 0){
-					isOpens = 1;
-					js_request1.put("valueControlSwitch", 1);
-				}else{
-					isOpens = 0;
+			if (1 == isOpens) {
+				String str2 = "";
+				try {
+					str2 = java.net.URLEncoder.encode(ValueControlChanID,
+							"UTF-8");
+				} catch (UnsupportedEncodingException e1) {
+					e1.printStackTrace();
+				}
+				RequestParams param3 = new RequestParams(
+						URL.updateValueControlSwitch); // 网址(请替换成实际的网址)
+				// params.addQueryStringParameter("key", "value"); //
+				// 参数(请替换成实际的参数与值)
+				progressDialog = ProgressDialog.show(getActivity(),
+						"Loading...", "Please wait...", true, false);
+				JSONObject js_request1 = new JSONObject();
+				try {
+					param3.setAsJsonContent(true);
+					js_request1.put("valueControlChanID", ValueControlChanID);
 					js_request1.put("valueControlSwitch", 0);
-				}
-				if(CheckUtil.IsEmpty(irriDuration.getText().toString())||"00:00:00".equals(irriDuration.getText().toString())){
-					js_request1.put("isNewPlan", 0);
-				}else{
-					js_request1.put("isNewPlan", 1);
-					js_request1.put("irriDuration", irriDuration.getText().toString());
-				}
-				param3.setBodyContent(js_request1.toString());
-			} catch (Exception e) {
-				e.printStackTrace();
-				param3.setAsJsonContent(true);
-			}// 根据实际需求添加相应键值对
+					isOpens = 0;
+					param3.setBodyContent(js_request1.toString());
+				} catch (Exception e) {
+					e.printStackTrace();
+					param3.setAsJsonContent(true);
+				}// 根据实际需求添加相应键值对
 
-			x.http().request(HttpMethod.PUT, param3,
-					new CommonCallback<String>() {
-						@Override
-						public void onCancelled(CancelledException arg0) {
+				x.http().request(HttpMethod.PUT, param3,
+						new CommonCallback<String>() {
+							@Override
+							public void onCancelled(CancelledException arg0) {
 
-						}
+							}
 
-						// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
-						// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
-						@Override
-						public void onError(Throwable ex, boolean isOnCallback) {
+							// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+							// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+							@Override
+							public void onError(Throwable ex,
+									boolean isOnCallback) {
 
-							Toast.makeText(x.app(), ex.getMessage(),
-									Toast.LENGTH_LONG).show();
-							if (ex instanceof HttpException) { // 网络错误 
-								HttpException httpEx = (HttpException) ex;
-								int responseCode = httpEx.getCode();
-								String responseMsg = httpEx.getMessage();
-								String errorResult = httpEx.getResult();
-								// ...
+								Toast.makeText(x.app(), ex.getMessage(),
+										Toast.LENGTH_LONG).show();
+								if (ex instanceof HttpException) { // 网络错误 
+									HttpException httpEx = (HttpException) ex;
+									int responseCode = httpEx.getCode();
+									String responseMsg = httpEx.getMessage();
+									String errorResult = httpEx.getResult();
+									// ...
+									progressDialog.dismiss();
+								} else { // 其他错误 
+									// ...
+									progressDialog.dismiss();
+								}
+
+							}
+
+							// 不管成功或者失败最后都会回调该接口
+							@Override
+							public void onFinished() {
+							}
+
+							@Override
+							public void onSuccess(String arg0) {
+								if (isOpens == 0) {
+									isOpen.setImageResource(R.drawable.off);
+								}
+								if (isOpens == 1) {
+									isOpen.setImageResource(R.drawable.on);
+								}
 								progressDialog.dismiss();
-							} else { // 其他错误 
-								// ...
+							}
+						});
+			} else {
+				String str2 = "";
+				try {
+					str2 = java.net.URLEncoder.encode(ValueControlChanID,
+							"UTF-8");
+				} catch (UnsupportedEncodingException e1) {
+					e1.printStackTrace();
+				}
+				RequestParams param3 = new RequestParams(
+						URL.acquireIsExistsGroupPlan + str2); // 网址(请替换成实际的网址)
+				// params.addQueryStringParameter("key", "value"); //
+				// 参数(请替换成实际的参数与值)
+				progressDialog = ProgressDialog.show(getActivity(),
+						"Loading...", "Please wait...", true, false);
+				JSONObject js_request2 = new JSONObject();
+				try {
+					param3.setAsJsonContent(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+					param3.setAsJsonContent(true);
+				}// 根据实际需求添加相应键值对
+
+				x.http().request(HttpMethod.GET, param3,
+						new CommonCallback<String>() {
+							@Override
+							public void onCancelled(CancelledException arg0) {
+
+							}
+
+							// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+							// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+							@Override
+							public void onError(Throwable ex,
+									boolean isOnCallback) {
+
+								Toast.makeText(x.app(), ex.getMessage(),
+										Toast.LENGTH_LONG).show();
+								if (ex instanceof HttpException) { // 网络错误 
+									HttpException httpEx = (HttpException) ex;
+									int responseCode = httpEx.getCode();
+									String responseMsg = httpEx.getMessage();
+									String errorResult = httpEx.getResult();
+									// ...
+									progressDialog.dismiss();
+								} else { // 其他错误 
+									// ...
+									progressDialog.dismiss();
+								}
+
+							}
+
+							// 不管成功或者失败最后都会回调该接口
+							@Override
+							public void onFinished() {
+							}
+
+							@Override
+							public void onSuccess(String arg0) {
+								Gson gson = new Gson();
+								ApplyIrrigateControlValueBean fromJson = gson
+										.fromJson(
+												arg0,
+												ApplyIrrigateControlValueBean.class);
 								progressDialog.dismiss();
-							}
+								IrriGroupStateBean bean = gson.fromJson(arg0,
+										IrriGroupStateBean.class);
+								if ("1".equals(bean.getCode())) {
+									new AlertDialog.Builder(getActivity())
+											.setTitle("系统提示")
+											// 设置对话框标题
+											.setMessage(
+													"您当前操作的阀门已存在灌溉计划，请选择根据原灌溉计划实行或重新设定延续时长 如无需定时关闭可选择不设置时长！")
+											// 设置显示的内容
+											.setPositiveButton(
+													"取消",
+													new DialogInterface.OnClickListener() {// 添加确定按钮
 
-						}
+														@Override
+														public void onClick(
+																DialogInterface dialog,
+																int which) {// 确定按钮的响应事件
+															dialog.dismiss();
+														}
+													})
+											.setNegativeButton(
+													"按原计划",
+													new DialogInterface.OnClickListener() {// 添加确定按钮
 
-						// 不管成功或者失败最后都会回调该接口
-						@Override
-						public void onFinished() {
-						}
+														@Override
+														public void onClick(
+																DialogInterface dialog,
+																int which) {// 确定按钮的响应事件
+															RequestParams param3 = new RequestParams(
+																	URL.updateValueControlSwitch); // 网址(请替换成实际的网址)
+															// params.addQueryStringParameter("key",
+															// "value"); //
+															// 参数(请替换成实际的参数与值)
+															progressDialog = ProgressDialog.show(getActivity(),"Loading...","Please wait...",true,false);
+															JSONObject js_request1 = new JSONObject();
+															try {
+																param3.setAsJsonContent(true);
+																js_request1.put("valueControlChanID",ValueControlChanID);
+																if (isOpens == 0) {
+																	isOpens = 1;
+																	js_request1.put("valueControlSwitch",1);
+																} else {
+																	isOpens = 0;
+																	js_request1.put("valueControlSwitch",0);
+																}
+																js_request1.put("isNewPlan",2);
+																param3.setBodyContent(js_request1
+																		.toString());
+															} catch (Exception e) {
+																e.printStackTrace();
+																param3.setAsJsonContent(true);
+															}// 根据实际需求添加相应键值对
 
-						@Override
-						public void onSuccess(String arg0) {
-							Toast.makeText(getActivity(), "请求成功",
-									Toast.LENGTH_SHORT);
-							Gson gson = new Gson();
-							if(isOpens == 0){
-								isOpen.setImageResource(R.drawable.off);
-							}
-							if(isOpens == 1){
-								isOpen.setImageResource(R.drawable.on);
-							}
-							IrriGroupStateBean bean = gson.fromJson(arg0, IrriGroupStateBean.class);
-							if("2".equals(bean.getCode())){
-								new AlertDialog.Builder(getActivity())
-								.setTitle("系统提示")
-								// 设置对话框标题
-								.setMessage(
-										"您当前操作的阀门已存在灌溉计划，所以该阀门计划时间将持续至原计划结束时间！")
-								// 设置显示的内容
-								.setPositiveButton(
-										"确定",
-										new DialogInterface.OnClickListener() {// 添加确定按钮
+															x.http()
+																	.request(
+																			HttpMethod.PUT,
+																			param3,
+																			new CommonCallback<String>() {
+																				@Override
+																				public void onCancelled(
+																						CancelledException arg0) {
 
-											@Override
-											public void onClick(
-													DialogInterface dialog,
-													int which) {// 确定按钮的响应事件
-												showDateTimePicker(mInflater);
-											}
-										}).show();// 在按键响应事件中显示此对话框
+																				}
+
+																				// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+																				// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+																				@Override
+																				public void onError(Throwable ex,boolean isOnCallback) {
+
+																					Toast.makeText(x.app(),ex.getMessage(),Toast.LENGTH_LONG).show();
+																					if (ex instanceof HttpException) { // 网络错误
+																														// 
+																						HttpException httpEx = (HttpException) ex;
+																						int responseCode = httpEx
+																								.getCode();
+																						String responseMsg = httpEx
+																								.getMessage();
+																						String errorResult = httpEx
+																								.getResult();
+																						// ...
+																						progressDialog.dismiss();
+																					} else { // 其他错误
+																								// 
+																						// ...
+																						progressDialog.dismiss();
+																					}
+
+																				}
+
+																				// 不管成功或者失败最后都会回调该接口
+																				@Override
+																				public void onFinished() {
+																				}
+
+																				@Override
+																				public void onSuccess(
+																						String arg0) {
+																					Toast.makeText(getActivity(),"请求成功",	Toast.LENGTH_SHORT);
+																					Gson gson = new Gson();
+																					if (isOpens == 0) {
+																						isOpen.setImageResource(R.drawable.off);
+																					}
+																					if (isOpens == 1) {
+																						isOpen.setImageResource(R.drawable.on);
+																					}
+																					progressDialog
+																							.dismiss();
+																				}
+																			});
+														}
+													})
+											.setNeutralButton(
+													"设置时长",
+													new DialogInterface.OnClickListener() {// 添加确定按钮
+
+														@Override
+														public void onClick(
+																DialogInterface dialog,
+																int which) {// 确定按钮的响应事件
+															isPlan = 1;
+															showDateTimePicker(mInflater);
+														}
+													}).show();// 在按键响应事件中显示此对话框
+								} else {
+									new AlertDialog.Builder(getActivity())
+											.setTitle("系统提示")
+											// 设置对话框标题
+											.setMessage(
+													"您正在打开一个没有灌溉计划的阀门 是否设置持续时长？")
+											// 设置显示的内容
+											.setPositiveButton("取消",
+													new DialogInterface.OnClickListener() {// 添加确定按钮
+
+														@Override
+														public void onClick(
+																DialogInterface dialog,
+																int which) {// 确定按钮的响应事件
+															dialog.dismiss();
+														}
+													})
+											.setNegativeButton(
+
+													"设置时长",
+													new DialogInterface.OnClickListener() {// 添加确定按钮
+
+														@Override
+														public void onClick(
+																DialogInterface dialog,
+																int which) {// 确定按钮的响应事件
+															isPlan = 1;
+															showDateTimePicker(mInflater);
+														}
+													}
+													)
+											.setNeutralButton("不设置",
+													new DialogInterface.OnClickListener() {// 添加确定按钮
+
+												@Override
+												public void onClick(
+														DialogInterface dialog,
+														int which) {// 确定按钮的响应事件
+
+													RequestParams param3 = new RequestParams(
+															URL.updateValueControlSwitch); // 网址(请替换成实际的网址)
+													// params.addQueryStringParameter("key",
+													// "value"); //
+													// 参数(请替换成实际的参数与值)
+													progressDialog = ProgressDialog
+															.show(getActivity(),
+																	"Loading...",
+																	"Please wait...",
+																	true,
+																	false);
+													JSONObject js_request1 = new JSONObject();
+													try {
+														param3.setAsJsonContent(true);
+														js_request1.put("valueControlChanID",ValueControlChanID);
+														if (isOpens == 0) {
+															isOpens = 1;
+															js_request1.put("valueControlSwitch",1);
+														} else {
+															isOpens = 0;
+															js_request1.put("valueControlSwitch",0);
+														}
+														js_request1.put("isNewPlan",0);
+														param3.setBodyContent(js_request1
+																.toString());
+													} catch (Exception e) {
+														e.printStackTrace();
+														param3.setAsJsonContent(true);
+													}// 根据实际需求添加相应键值对
+
+													x.http()
+															.request(
+																	HttpMethod.PUT,
+																	param3,
+																	new CommonCallback<String>() {
+																		@Override
+																		public void onCancelled(
+																				CancelledException arg0) {
+
+																		}
+																		// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+																		// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+																		@Override
+																		public void onError(
+																				Throwable ex,
+																				boolean isOnCallback) {
+
+																			Toast.makeText(
+																					x.app(),
+																					ex.getMessage(),
+																					Toast.LENGTH_LONG)
+																					.show();
+																			if (ex instanceof HttpException) { // 网络错误
+																												// 
+																				HttpException httpEx = (HttpException) ex;
+																				int responseCode = httpEx
+																						.getCode();
+																				String responseMsg = httpEx
+																						.getMessage();
+																				String errorResult = httpEx
+																						.getResult();
+																				// ...
+																				progressDialog
+																						.dismiss();
+																			} else { // 其他错误
+																				// ...
+																				progressDialog
+																						.dismiss();
+																			}
+
+																		}
+
+																		// 不管成功或者失败最后都会回调该接口
+																		@Override
+																		public void onFinished() {
+																		}
+
+																		@Override
+																		public void onSuccess(
+																				String arg0) {
+																			Toast.makeText(
+																					getActivity(),
+																					"请求成功",
+																					Toast.LENGTH_SHORT);
+																			Gson gson = new Gson();
+																			if (isOpens == 0) {
+																				isOpen.setImageResource(R.drawable.off);
+																			}
+																			if (isOpens == 1) {
+																				isOpen.setImageResource(R.drawable.on);
+																			}
+																			progressDialog
+																					.dismiss();
+																		}
+																	});
+												}
+											}).show();// 在按键响应事件中显示此对话框
+								}
 							}
-							progressDialog.dismiss();
-						}
-					});
+						});
+			}
 			break;
 		case R.id.layout_apply_irriagte_valve_control:
 			showDateTimePicker(mInflater);
@@ -484,13 +765,13 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 		wv_minute.setLabel("分");// 添加文字
 		wv_minute.setCurrentItem(minute);
 
-		 // 秒
-		 final WheelView wv_second = (WheelView)
-		 view.findViewById(R.id.second_times);
-		 wv_second.setAdapter(new NumericWheelAdapter(0, 59));
-		 wv_second.setCyclic(true);
-		 wv_second.setCurrentItem(second);
-		 wv_second.setLabel("秒");// 添加文字
+		// 秒
+		final WheelView wv_second = (WheelView) view
+				.findViewById(R.id.second_times);
+		wv_second.setAdapter(new NumericWheelAdapter(0, 59));
+		wv_second.setCyclic(true);
+		wv_second.setCurrentItem(second);
+		wv_second.setLabel("秒");// 添加文字
 		// 根据屏幕密度来指定选择器字体的大小
 		// int textSize = 0;
 		//
@@ -509,15 +790,96 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 				// 如果是个数,则显示为"02"的样式
 				String parten = "00";
 				DecimalFormat decimal = new DecimalFormat(parten);
-				irriDuration.setText(decimal
-						.format(wv_hours.getCurrentItem())
-						+ ":"
-						+ decimal.format(wv_minute.getCurrentItem())
-						+ ":"
-						+ decimal.format(wv_second.getCurrentItem()));
-				ApplyIrrigateControlValveFragment.this.hour = wv_hours.getCurrentItem();
-				ApplyIrrigateControlValveFragment.this.minute = wv_minute.getCurrentItem();
-				ApplyIrrigateControlValveFragment.this.second = wv_second.getCurrentItem();
+				irriDuration.setText(decimal.format(wv_hours.getCurrentItem())
+						+ ":" + decimal.format(wv_minute.getCurrentItem())
+						+ ":" + decimal.format(wv_second.getCurrentItem()));
+				ApplyIrrigateControlValveFragment.this.hour = wv_hours
+						.getCurrentItem();
+				ApplyIrrigateControlValveFragment.this.minute = wv_minute
+						.getCurrentItem();
+				ApplyIrrigateControlValveFragment.this.second = wv_second
+						.getCurrentItem();
+
+				if (isPlan == 1) {
+					RequestParams param3 = new RequestParams(
+							URL.updateValueControlSwitch); // 网址(请替换成实际的网址)
+					// params.addQueryStringParameter("key", "value"); //
+					// 参数(请替换成实际的参数与值)
+					progressDialog = ProgressDialog.show(getActivity(),
+							"Loading...", "Please wait...", true, false);
+					JSONObject js_request1 = new JSONObject();
+					try {
+						param3.setAsJsonContent(true);
+						js_request1.put("valueControlChanID",ValueControlChanID);
+						if (isOpens == 0) {
+							isOpens = 1;
+							js_request1.put("valueControlSwitch", 1);
+						} else {
+							isOpens = 0;
+							js_request1.put("valueControlSwitch", 0);
+						}
+						if (CheckUtil.IsEmpty(irriDuration.getText().toString())
+								|| "00:00:00".equals(irriDuration.getText().toString())) {
+							js_request1.put("isNewPlan", 0);
+						}
+						js_request1.put("isNewPlan", 1);
+						js_request1.put("irriDuration", irriDuration.getText()
+								.toString());
+						param3.setBodyContent(js_request1.toString());
+					} catch (Exception e) {
+						e.printStackTrace();
+						param3.setAsJsonContent(true);
+					}// 根据实际需求添加相应键值对
+
+					x.http().request(HttpMethod.PUT, param3,
+							new CommonCallback<String>() {
+								@Override
+								public void onCancelled(CancelledException arg0) {
+
+								}
+								// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+								// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+								@Override
+								public void onError(Throwable ex,
+										boolean isOnCallback) {
+
+									Toast.makeText(x.app(), ex.getMessage(),
+											Toast.LENGTH_LONG).show();
+									if (ex instanceof HttpException) { // 网络错误 
+										HttpException httpEx = (HttpException) ex;
+										int responseCode = httpEx.getCode();
+										String responseMsg = httpEx
+												.getMessage();
+										String errorResult = httpEx.getResult();
+										// ...
+										progressDialog.dismiss();
+									} else { // 其他错误 
+										progressDialog.dismiss();
+									}
+
+								}
+
+								// 不管成功或者失败最后都会回调该接口
+								@Override
+								public void onFinished() {
+								}
+
+								@Override
+								public void onSuccess(String arg0) {
+									Toast.makeText(getActivity(), "请求成功",
+											Toast.LENGTH_SHORT);
+									Gson gson = new Gson();
+									if (isOpens == 0) {
+										isOpen.setImageResource(R.drawable.off);
+									}
+									if (isOpens == 1) {
+										isOpen.setImageResource(R.drawable.on);
+									}
+									progressDialog.dismiss();
+								}
+							});
+				}
+				isPlan = 0;
 				// 设置日期的显示
 				// tv_time.setText((wv_year.getCurrentItem() + START_YEAR) + "-"
 				// + decimal.format((wv_month.getCurrentItem() + 1)) + "-"

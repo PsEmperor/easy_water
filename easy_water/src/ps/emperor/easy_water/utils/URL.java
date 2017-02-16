@@ -95,5 +95,9 @@ public class URL {
 	public static final String judgeIrriGroupState = "http://192.168.2.188:8080/cms/app/IrriUnitSys/judgeIrriGroupState/";
 	//应用-灌溉-灌溉计划-立即控制-灌溉组控制-操作灌溉组按钮
 	public static final String controlIrriGroupValue = "http://192.168.2.188:8080/cms/app/IrriUnitSys/IrriGroupState/controlIrriGroupValue";
+	//应用-灌溉-灌溉计划-立即控制-灌溉阀门控制开关-获取是否存在组计划状态
+	public static final String acquireIsExistsGroupPlan = "http://192.168.2.188:8080/cms/app/IrriUnitSys/acquireIsExistsGroupPlan/";
+	//应用-灌溉-灌溉单元管理-首部-显示
+	public static final String acquireFirstDerviceInfo = "http://192.168.2.188:8080/cms/app/IrriUnitSys/acquireFirstDerviceInfo/";
 	
 }

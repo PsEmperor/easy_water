@@ -203,8 +203,8 @@ public class MainTainIrrigateFragment extends Fragment implements OnClickListene
 			irrigation.setFilterMinute(0);
 			irrigation.setFilterMinute(0);
 			irrigation.setFilterMinute(0);
-			irrigation.setSeasonStrat(0);
-			irrigation.setSeasonEnd(0);
+			irrigation.setSeasonStrat("0");
+			irrigation.setSeasonEnd("0");
 			dbHelper.saveSession(irrigation);
 		}
 		startActivity(intent);

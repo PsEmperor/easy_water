@@ -45,8 +45,8 @@ public class IrrigationDao extends AbstractDao<Irrigation, Long> {
         public final static Property NMinutes = new Property(19, Integer.class, "nMinutes", false, "N_MINUTES");
         public final static Property NNumber = new Property(20, Integer.class, "nNumber", false, "N_NUMBER");
         public final static Property NRound = new Property(21, Integer.class, "nRound", false, "N_ROUND");
-        public final static Property SeasonStrat = new Property(22, Integer.class, "seasonStrat", false, "SEASON_STRAT");
-        public final static Property SeasonEnd = new Property(23, Integer.class, "seasonEnd", false, "SEASON_END");
+        public final static Property SeasonStrat = new Property(22, String.class, "seasonStrat", false, "SEASON_STRAT");
+        public final static Property SeasonEnd = new Property(23, String.class, "seasonEnd", false, "SEASON_END");
         public final static Property SeasonRound = new Property(24, Integer.class, "seasonRound", false, "SEASON_ROUND");
     };
 
@@ -85,8 +85,8 @@ public class IrrigationDao extends AbstractDao<Irrigation, Long> {
                 "'N_MINUTES' INTEGER," + // 19: nMinutes
                 "'N_NUMBER' INTEGER," + // 20: nNumber
                 "'N_ROUND' INTEGER," + // 21: nRound
-                "'SEASON_STRAT' INTEGER," + // 22: seasonStrat
-                "'SEASON_END' INTEGER," + // 23: seasonEnd
+                "'SEASON_STRAT' TEXT," + // 22: seasonStrat
+                "'SEASON_END' TEXT," + // 23: seasonEnd
                 "'SEASON_ROUND' INTEGER);"); // 24: seasonRound
     }
 
@@ -211,14 +211,14 @@ public class IrrigationDao extends AbstractDao<Irrigation, Long> {
             stmt.bindLong(22, nRound);
         }
  
-        Integer seasonStrat = entity.getSeasonStrat();
+        String seasonStrat = entity.getSeasonStrat();
         if (seasonStrat != null) {
-            stmt.bindLong(23, seasonStrat);
+            stmt.bindString(23, seasonStrat);
         }
  
-        Integer seasonEnd = entity.getSeasonEnd();
+        String seasonEnd = entity.getSeasonEnd();
         if (seasonEnd != null) {
-            stmt.bindLong(24, seasonEnd);
+            stmt.bindString(24, seasonEnd);
         }
  
         Integer seasonRound = entity.getSeasonRound();
@@ -259,8 +259,8 @@ public class IrrigationDao extends AbstractDao<Irrigation, Long> {
             cursor.isNull(offset + 19) ? null : cursor.getInt(offset + 19), // nMinutes
             cursor.isNull(offset + 20) ? null : cursor.getInt(offset + 20), // nNumber
             cursor.isNull(offset + 21) ? null : cursor.getInt(offset + 21), // nRound
-            cursor.isNull(offset + 22) ? null : cursor.getInt(offset + 22), // seasonStrat
-            cursor.isNull(offset + 23) ? null : cursor.getInt(offset + 23), // seasonEnd
+            cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22), // seasonStrat
+            cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23), // seasonEnd
             cursor.isNull(offset + 24) ? null : cursor.getInt(offset + 24) // seasonRound
         );
         return entity;
@@ -291,8 +291,8 @@ public class IrrigationDao extends AbstractDao<Irrigation, Long> {
         entity.setNMinutes(cursor.isNull(offset + 19) ? null : cursor.getInt(offset + 19));
         entity.setNNumber(cursor.isNull(offset + 20) ? null : cursor.getInt(offset + 20));
         entity.setNRound(cursor.isNull(offset + 21) ? null : cursor.getInt(offset + 21));
-        entity.setSeasonStrat(cursor.isNull(offset + 22) ? null : cursor.getInt(offset + 22));
-        entity.setSeasonEnd(cursor.isNull(offset + 23) ? null : cursor.getInt(offset + 23));
+        entity.setSeasonStrat(cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22));
+        entity.setSeasonEnd(cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23));
         entity.setSeasonRound(cursor.isNull(offset + 24) ? null : cursor.getInt(offset + 24));
      }
     

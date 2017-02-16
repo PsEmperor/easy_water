@@ -72,7 +72,7 @@ public class MainTainBasicInfoFragment extends Fragment implements
 	private int group, value, long_hour, night_start_hour, night_start_minute,
 			night_cont_hour, night_cont_minute, night_end_hour,
 			night_end_minute, setLong, setNight, Skip, aNight;
-	private String units,filterStart,filterEnd;
+	private String units,filterStart,filterEnd,seasonStart,seasonEnd;
 	private WheelView year;
 	private WheelView month;
 	private WheelView day;
@@ -199,12 +199,8 @@ public class MainTainBasicInfoFragment extends Fragment implements
 					int responseCode = httpEx.getCode();
 					String responseMsg = httpEx.getMessage();
 					String errorResult = httpEx.getResult();
-					Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
-					// ...
 					progressDialog.dismiss();
 				} else { // 其他错误 
-					// ...
-					Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
 					progressDialog.dismiss();
 				}
 
@@ -295,6 +291,8 @@ public class MainTainBasicInfoFragment extends Fragment implements
 					}
 					filterStart = tv_filter.getText().toString().substring(0, 2);
 					filterEnd = tv_filter.getText().toString().substring(4, 6);
+					seasonStart = text_season_start.getText().toString();
+					seasonEnd = text_season_end.getText().toString();
 					
 //					if (!(decimal.format(irrigation.get(0)
 //							.getIsNightStartHour()) + ":" + decimal
@@ -316,11 +314,11 @@ public class MainTainBasicInfoFragment extends Fragment implements
 //							.equals(tv_time_long.getText().toString())) {
 //						dbHelper.updateBasicTimeLong(units, long_hour);
 //					}
-//					if (!(irrigation.get(0).getIsTimeLong() + "")
+//					if (!(irrigation.get(0).getGroupnumber() + "")
 //							.equals(tv_irriagte_group.getText().toString())) {
 //						dbHelper.updateBasicGroup(units,group);
 //					}
-//					if (!(irrigation.get(0).getIsTimeLong() + "")
+//					if (!(irrigation.get(0).getValuenumber() + "")
 //							.equals(tv_orroagte_valve.getText().toString())) {
 //						dbHelper.updateBasicVlaue(units,value);
 //					}
@@ -329,6 +327,14 @@ public class MainTainBasicInfoFragment extends Fragment implements
 //					}else{
 //						dbHelper.updateBasicFilter(units,Integer.valueOf(filterStart),Integer.valueOf(filterEnd));
 //					}
+					if((irrigation.get(0).getSeasonStrat()+"")
+							.equals(seasonStart)&&(irrigation.get(0).getSeasonEnd()+"").equals(seasonEnd)){
+					}else{
+						dbHelper.updateBasicSeason(units,seasonStart,seasonEnd);
+					}
+					irrigation = dbHelper.loadContinue(units);
+					System.out.println(irrigation.get(0).getSeasonStrat()+"");
+					System.out.println(irrigation.get(0).getSeasonEnd()+"");
 				}
 				progressDialog.dismiss();
 			}
@@ -409,8 +415,6 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				}
 				SharedUtils.setParam(getActivity(), "setNight", setNight);
 				ApplyIrrigateProjectSingleFragment fragment = new ApplyIrrigateProjectSingleFragment();
-				// transaction.setCustomAnimations(R.anim.right_in,
-				// R.anim.right_out);
 				Bundle bundle = new Bundle();
 				bundle.putString("units", units);
 				isFront = 1;
@@ -519,14 +523,10 @@ public class MainTainBasicInfoFragment extends Fragment implements
 								int responseCode = httpEx.getCode();
 								String responseMsg = httpEx.getMessage();
 								String errorResult = httpEx.getResult();
-								Toast.makeText(getActivity(), "请求失败",
-										Toast.LENGTH_SHORT);
 								// ...
 								progressDialog.dismiss();
 							} else { // 其他错误 
 								// ...
-								Toast.makeText(getActivity(), "请求失败",
-										Toast.LENGTH_SHORT);
 								progressDialog.dismiss();
 							}
 
@@ -539,8 +539,6 @@ public class MainTainBasicInfoFragment extends Fragment implements
 
 						@Override
 						public void onSuccess(String arg0) {
-							Toast.makeText(getActivity(), "请求成功",
-									Toast.LENGTH_SHORT);
 							Gson gson = new Gson();
 							SharedUtils.setParam(getActivity(),
 									"irriagte_group", tv_irriagte_group
@@ -653,7 +651,6 @@ public class MainTainBasicInfoFragment extends Fragment implements
 
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
 				dialog.dismiss();
 			}
 		});

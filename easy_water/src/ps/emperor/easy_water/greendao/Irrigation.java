@@ -28,8 +28,8 @@ public class Irrigation {
     private Integer nMinutes;
     private Integer nNumber;
     private Integer nRound;
-    private Integer seasonStrat;
-    private Integer seasonEnd;
+    private String seasonStrat;
+    private String seasonEnd;
     private Integer seasonRound;
 
     public Irrigation() {
@@ -39,7 +39,7 @@ public class Irrigation {
         this.id = id;
     }
 
-    public Irrigation(Long id, String irrigation, Integer isrelevance, Integer groupnumber, Integer valuenumber, Integer filterHour, Integer filterMinute, String userinfo, String userphone, String cropsinfo, String cropstime, Integer isNightStartHour, Integer isNightStartMinute, Integer isNightContinueHour, Integer isNightContinueMinute, Integer isNightEndHour, Integer isNightEndMinute, Integer isTimeLong, Integer nHour, Integer nMinutes, Integer nNumber, Integer nRound, Integer seasonStrat, Integer seasonEnd, Integer seasonRound) {
+    public Irrigation(Long id, String irrigation, Integer isrelevance, Integer groupnumber, Integer valuenumber, Integer filterHour, Integer filterMinute, String userinfo, String userphone, String cropsinfo, String cropstime, Integer isNightStartHour, Integer isNightStartMinute, Integer isNightContinueHour, Integer isNightContinueMinute, Integer isNightEndHour, Integer isNightEndMinute, Integer isTimeLong, Integer nHour, Integer nMinutes, Integer nNumber, Integer nRound, String seasonStrat, String seasonEnd, Integer seasonRound) {
         this.id = id;
         this.irrigation = irrigation;
         this.isrelevance = isrelevance;
@@ -243,19 +243,19 @@ public class Irrigation {
         this.nRound = nRound;
     }
 
-    public Integer getSeasonStrat() {
+    public String getSeasonStrat() {
         return seasonStrat;
     }
 
-    public void setSeasonStrat(Integer seasonStrat) {
+    public void setSeasonStrat(String seasonStrat) {
         this.seasonStrat = seasonStrat;
     }
 
-    public Integer getSeasonEnd() {
+    public String getSeasonEnd() {
         return seasonEnd;
     }
 
-    public void setSeasonEnd(Integer seasonEnd) {
+    public void setSeasonEnd(String seasonEnd) {
         this.seasonEnd = seasonEnd;
     }
 

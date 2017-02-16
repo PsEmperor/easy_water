@@ -1,21 +1,39 @@
 package ps.emperor.easy_water.fragment;
 
+import java.io.UnsupportedEncodingException;
+
+import java.text.DecimalFormat;
+import java.util.List;
+
+import org.json.JSONObject;
+import org.xutils.x;
+import org.xutils.common.Callback.CommonCallback;
+import org.xutils.ex.HttpException;
+import org.xutils.http.HttpMethod;
+import org.xutils.http.RequestParams;
+
+import com.google.gson.Gson;
+
 import ps.emperor.easy_water.R;
+import ps.emperor.easy_water.entity.PreludeBean;
+import ps.emperor.easy_water.entity.PreludeBean.infoList;
+import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
+import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.MainActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 /**
@@ -31,6 +49,9 @@ public class ApplyirrigatePreludeFragment extends Fragment implements
 	private ToggleButton bt_water_pump, bt_filter, bt_fertilizer_drill; //水泵、反过滤冲洗器、施肥机
 	private Boolean isWaterPump, isFilter, isFertilizer_drill;
 	private String units;
+	private ProgressDialog progressDialog;
+	private List<infoList> beens;
+	private TextView work_stress,filter_pressure,flow_rate,cumulative_water,cumulative_power;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,23 +72,128 @@ public class ApplyirrigatePreludeFragment extends Fragment implements
 		bt_filter = (ToggleButton) view.findViewById(R.id.Toggle_prelude_filter);
 		bt_fertilizer_drill = (ToggleButton) view
 				.findViewById(R.id.Toggle_prelude_fertilizer_drill);
+		work_stress = (TextView) view.findViewById(R.id.text_prelude_work_stress);
+		filter_pressure = (TextView) view.findViewById(R.id.text_prelude_filter_pressure);
+		flow_rate = (TextView) view.findViewById(R.id.text_prelude_flow_rate);
+		cumulative_water = (TextView) view.findViewById(R.id.text_prelude_cumulative_water);
+		cumulative_power = (TextView) view.findViewById(R.id.text_prelude_cumulative_power);
 		init();
-		bt_water_pump.setChecked(isWaterPump);
-		bt_filter.setChecked(isFilter);
-		bt_fertilizer_drill.setChecked(isFertilizer_drill);
 
 		bt_water_pump.setOnCheckedChangeListener(this);
 		bt_filter.setOnCheckedChangeListener(this);
 		bt_fertilizer_drill.setOnCheckedChangeListener(this);
-		// if(!isMsg){
-		// initToggle = false;
-		// }
 		return view;
 	}
 	private void init() {
-		isWaterPump = (Boolean) SharedUtils.getParam(getActivity(), "water_pump", false);
-		isFilter = (Boolean) SharedUtils.getParam(getActivity(), "filter", false);
-		isFertilizer_drill = (Boolean) SharedUtils.getParam(getActivity(), "fertilizer_drill", false);
+
+		String str1 = (String) SharedUtils.getParam(getActivity(),
+				"FirstDerviceID", "");
+		try {
+			str1 = java.net.URLEncoder.encode(str1, "UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		RequestParams param3 = new RequestParams(URL.acquireFirstDerviceInfo
+				+ str1); // 网址(请替换成实际的网址)
+		// params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)
+		progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+				"Please wait...", true, false);
+		JSONObject js_request2 = new JSONObject();
+		try {
+			param3.setAsJsonContent(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			param3.setAsJsonContent(true);
+		}// 根据实际需求添加相应键值对
+
+		x.http().request(HttpMethod.GET, param3, new CommonCallback<String>() {
+			@Override
+			public void onCancelled(CancelledException arg0) {
+
+			}
+
+			// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+			// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+			@Override
+			public void onError(Throwable ex, boolean isOnCallback) {
+
+				Toast.makeText(x.app(), ex.getMessage(), Toast.LENGTH_LONG)
+						.show();
+				if (ex instanceof HttpException) { // 网络错误 
+					HttpException httpEx = (HttpException) ex;
+					int responseCode = httpEx.getCode();
+					String responseMsg = httpEx.getMessage();
+					String errorResult = httpEx.getResult();
+					progressDialog.dismiss();
+				} else { // 其他错误 
+					progressDialog.dismiss();
+				}
+
+			}
+
+			// 不管成功或者失败最后都会回调该接口
+			@Override
+			public void onFinished() {
+			}
+
+			@Override
+			public void onSuccess(String arg0) {
+				Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
+				Gson gson = new Gson();
+				PreludeBean fromJson = gson.fromJson(arg0,
+						PreludeBean.class);
+				beens = fromJson.getAuthNameList();
+				if("0".equals(beens.get(0).getPumpSwitch())){
+					isWaterPump = false;
+				}else{
+					isWaterPump = true;
+				}
+				if("0".equals(beens.get(0).getFilterSwitch())){
+					isFilter = false;
+				}else{
+					isFilter = true;
+				}
+				if("0".equals(beens.get(0).getFertilizerSwitch())){
+					isFertilizer_drill = false;
+				}else{
+					isFertilizer_drill = true;
+				}
+				if(!CheckUtil.IsEmpty(beens.get(0).getWorkStress())){
+					work_stress.setText(beens.get(0).getWorkStress());
+				}else{
+					work_stress.setText("");
+				}
+				if(!CheckUtil.IsEmpty(beens.get(0).getPressThreshold())){
+					filter_pressure.setText(beens.get(0).getPressThreshold());
+				}else{
+					filter_pressure.setText("");
+				}
+				if(!CheckUtil.IsEmpty(beens.get(0).getInstantFlow())){
+					flow_rate.setText(beens.get(0).getInstantFlow());
+				}else{
+					flow_rate.setText("");
+				}
+				if(!CheckUtil.IsEmpty(beens.get(0).getAccumulateWater())){
+					cumulative_water.setText(beens.get(0).getAccumulateWater());
+				}else{
+					cumulative_water.setText("");
+				}
+				if(!CheckUtil.IsEmpty(beens.get(0).getAccumulateElectric())){
+					cumulative_power.setText(beens.get(0).getAccumulateElectric());
+				}else{
+					cumulative_power.setText("");
+				}
+				bt_water_pump.setChecked(isWaterPump);
+				bt_filter.setChecked(isFilter);
+				bt_fertilizer_drill.setChecked(isFertilizer_drill);
+				progressDialog.dismiss();
+			}
+		});
+	
+//		isWaterPump = (Boolean) SharedUtils.getParam(getActivity(), "water_pump", false);
+//		isFilter = (Boolean) SharedUtils.getParam(getActivity(), "filter", false);
+//		isFertilizer_drill = (Boolean) SharedUtils.getParam(getActivity(), "fertilizer_drill", false);
 		
 		units = getArguments().getString("units");
 	}

@@ -261,6 +261,15 @@ public class DBHelper {
       	    irrigationDao.update(findUser);
       	}
       }
+      //更新灌季
+      public void updateBasicSeason(String id,String seasonStart,String seasonEnd) {
+    	  Irrigation findUser = irrigationDao.queryBuilder().where(Properties.Irrigation.eq(id)).build().unique();
+    	  if(findUser != null) {
+    		  findUser.setSeasonStrat(seasonStart);
+    		  findUser.setSeasonEnd(seasonEnd);
+    		  irrigationDao.update(findUser);
+    	  }
+      }
     //删除Session表  
     public  void dropSessionTable()  
     {  
