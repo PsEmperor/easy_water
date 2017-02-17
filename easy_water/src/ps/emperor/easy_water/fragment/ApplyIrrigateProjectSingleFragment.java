@@ -186,7 +186,7 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 	public void onResume() {
 		super.onResume();
 		isNight = (Boolean) SharedUtils.getParam(getActivity(), "SingleNight",
-				false);
+				true);
 		isRandom = (Boolean) SharedUtils.getParam(getActivity(),
 				"SingleInterval", false);
 		isLong = (Boolean) SharedUtils.getParam(getActivity(), "SingleLong",
@@ -200,7 +200,7 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 		}
 		if ((CheckUtil.IsEmpty(isNightStartHour) || isNightStartHour == 0)
 				&& (CheckUtil.IsEmpty(isNightEnd) || isNightEnd == 0)) {
-			isNight = false;
+			isNight = true;
 		}
 		time_night.setChecked(isNight);
 		time_interval.setChecked(isRandom);
@@ -4597,6 +4597,8 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 			SharedUtils.setParam(getActivity(), "SingleNight", isChecked);
 			if (isChecked) {
 				isNight = true;
+			} else {
+				isNight = false;
 				if ((CheckUtil.IsEmpty(isNightStartHour) || isNightStartHour == 0)
 						&& (CheckUtil.IsEmpty(isNightEnd) || isNightEnd == 0)) {
 					setNight = 1;
@@ -4614,8 +4616,6 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 					transaction.replace(R.id.fl, fragment, "main");
 					transaction.commit();
 				}
-			} else {
-				isNight = false;
 			}
 			break;
 		case R.id.toggle_apply_irriagte_project_single_time_random:// 规律

@@ -473,8 +473,7 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 			String str2 = "";
 			try {
 				str1 = java.net.URLEncoder.encode(str1, "UTF-8");
-				str2 = java.net.URLEncoder.encode(group_name.getText()
-						.toString(), "UTF-8");
+				str2 = java.net.URLEncoder.encode(beens.get(0).getGroupID(), "UTF-8");
 			} catch (UnsupportedEncodingException e1) {
 				e1.printStackTrace();
 			}
@@ -540,15 +539,16 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 												"您当前正在打开一个没有灌溉计划的灌溉组，是否设置灌溉时长")
 										// 设置显示的内容
 										.setPositiveButton(
-												"设置时长",
-												new DialogInterface.OnClickListener() {// 添加确定按钮
+												"放弃",
+												new DialogInterface.OnClickListener() {// 添加返回按钮
 
 													@Override
 													public void onClick(
 															DialogInterface dialog,
-															int which) {// 确定按钮的响应事件
-														showDateTimePicker(mInflater);
+															int which) {// 响应事件
+														dialog.dismiss();
 													}
+
 												})
 										.setNeutralButton(
 												"仅开阀",
@@ -610,6 +610,26 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 													}
 												})
 										.setNegativeButton(
+
+												"设置时长",
+												new DialogInterface.OnClickListener() {// 添加确定按钮
+
+													@Override
+													public void onClick(
+															DialogInterface dialog,
+															int which) {// 确定按钮的响应事件
+														showDateTimePicker(mInflater);
+													}
+												}
+												).show();// 在按键响应事件中显示此对话框
+							} else if ("2".equals(been.get(0).getCode())) {
+								new AlertDialog.Builder(getActivity())
+										.setTitle("系统提示")
+										// 设置对话框标题
+										.setMessage(
+												"您当前正在关闭一个正在执行灌溉计划的灌溉组，该计划将被随之被终止 ，是否继续")
+										// 设置显示的内容
+										.setPositiveButton(
 												"放弃",
 												new DialogInterface.OnClickListener() {// 添加返回按钮
 
@@ -620,15 +640,9 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 														dialog.dismiss();
 													}
 
-												}).show();// 在按键响应事件中显示此对话框
-							} else if ("2".equals(been.get(0).getCode())) {
-								new AlertDialog.Builder(getActivity())
-										.setTitle("系统提示")
-										// 设置对话框标题
-										.setMessage(
-												"您当前正在关闭一个正在执行灌溉计划的灌溉组，该计划将被随之被终止 ，是否继续")
-										// 设置显示的内容
-										.setPositiveButton(
+												})
+										.setNegativeButton(
+
 												"继续",
 												new DialogInterface.OnClickListener() {// 添加确定按钮
 
@@ -638,19 +652,8 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 															int which) {// 确定按钮的响应事件
 														HttpClose();
 													}
-												})
-										.setNegativeButton(
-												"放弃",
-												new DialogInterface.OnClickListener() {// 添加返回按钮
-
-													@Override
-													public void onClick(
-															DialogInterface dialog,
-															int which) {// 响应事件
-														dialog.dismiss();
-													}
-
-												}).show();// 在按键响应事件中显示此对话框
+												}
+												).show();// 在按键响应事件中显示此对话框
 
 							} else if ("3".equals(been.get(0).getCode())) {
 								new AlertDialog.Builder(getActivity())
@@ -662,15 +665,16 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 										// 设置显示的内容
 
 										.setPositiveButton(
-												"设置时长",
-												new DialogInterface.OnClickListener() {// 添加确定按钮
+												"放弃",
+												new DialogInterface.OnClickListener() {// 添加返回按钮
 
 													@Override
 													public void onClick(
 															DialogInterface dialog,
-															int which) {// 确定按钮的响应事件
-														showDateTimePicker(mInflater);
+															int which) {// 响应事件
+														dialog.dismiss();
 													}
+
 												})
 												.setNeutralButton(
 												"仅开阀",
@@ -732,17 +736,18 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 													}
 												})
 										.setNegativeButton(
-												"放弃",
-												new DialogInterface.OnClickListener() {// 添加返回按钮
+
+												"设置时长",
+												new DialogInterface.OnClickListener() {// 添加确定按钮
 
 													@Override
 													public void onClick(
 															DialogInterface dialog,
-															int which) {// 响应事件
-														dialog.dismiss();
+															int which) {// 确定按钮的响应事件
+														showDateTimePicker(mInflater);
 													}
-
-												}).show();// 在按键响应事件中显示此对话框
+												}
+												).show();// 在按键响应事件中显示此对话框
 
 							} else if ("4".equals(been.get(0).getCode())) {
 								new AlertDialog.Builder(getActivity())
@@ -754,17 +759,6 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 										// 设置显示的内容
 
 										.setPositiveButton(
-												"确定",
-												new DialogInterface.OnClickListener() {// 添加确定按钮
-
-													@Override
-													public void onClick(
-															DialogInterface dialog,
-															int which) {// 确定按钮的响应事件
-														HttpClose();
-													}
-												})
-										.setNegativeButton(
 												"放弃",
 												new DialogInterface.OnClickListener() {// 添加返回按钮
 
@@ -775,7 +769,20 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 														dialog.dismiss();
 													}
 
-												}).show();// 在按键响应事件中显示此对话框
+												})
+										.setNegativeButton(
+
+												"确定",
+												new DialogInterface.OnClickListener() {// 添加确定按钮
+
+													@Override
+													public void onClick(
+															DialogInterface dialog,
+															int which) {// 确定按钮的响应事件
+														HttpClose();
+													}
+												}
+												).show();// 在按键响应事件中显示此对话框
 
 							} else if ("5".equals(been.get(0).getCode())) {
 								new AlertDialog.Builder(getActivity())
@@ -1028,8 +1035,8 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 		 wv_second.setLabel("秒");// 添加文字
 
 		 
-		 Button btn_sure = (Button) view.findViewById(R.id.time_sures_filter);
-		 Button btn_cancel = (Button) view.findViewById(R.id.time_canles_filter);
+		 Button btn_sure = (Button) view.findViewById(R.id.time_sures);
+		 Button btn_cancel = (Button) view.findViewById(R.id.time_canles);
 		// 确定
 		 btn_sure.setOnClickListener(new OnClickListener() {
 
@@ -1046,14 +1053,6 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 				// + decimal.format(wv_hours.getCurrentItem()) + ":"
 				// + decimal.format(wv_minute.getCurrentItem()));
 				irriDuration = wv_hours.getCurrentItem() + ":" + wv_minute.getCurrentItem() + ":" + wv_second.getCurrentItem();
-				dialog.dismiss();
-			}
-		});
-		// 取消
-		btn_cancel.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
 				if("1".equals(been.get(0).getCode())){
 					RequestParams param2 = new
 							 RequestParams(URL.controlIrriGroupValue); // 网址(请替换成实际的网址)
@@ -1356,6 +1355,15 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 						}
 					});
 				}
+				dialog.dismiss();
+			}
+		});
+		// 取消
+		btn_cancel.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				
 				dialog.dismiss();
 			}
 		});

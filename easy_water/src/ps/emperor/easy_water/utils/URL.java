@@ -99,5 +99,11 @@ public class URL {
 	public static final String acquireIsExistsGroupPlan = "http://192.168.2.188:8080/cms/app/IrriUnitSys/acquireIsExistsGroupPlan/";
 	//应用-灌溉-灌溉单元管理-首部-显示
 	public static final String acquireFirstDerviceInfo = "http://192.168.2.188:8080/cms/app/IrriUnitSys/acquireFirstDerviceInfo/";
+	//应用-灌溉-灌溉单元管理-首部-水泵开启关闭-查询该灌溉单元是否正在灌溉
+	public static final String acquireIrriState = "http://192.168.2.188:8080/cms/app/IrriUnitSys/acquireIrriState/";
+	//应用-灌溉-灌溉单元管理-首部-水泵开启关闭
+	public static final String updatePumpSwitchState = "http://192.168.2.188:8080/cms/app/IrriUnitSys/updatePumpSwitchState";
+	//应用-灌溉-灌溉单元管理-首部-过滤器反冲洗开启/关闭
+	public static final String updateFilterSwitchState = "http://192.168.2.188:8080/cms/app/IrriUnitSys/updateFilterSwitchState";
 	
 }

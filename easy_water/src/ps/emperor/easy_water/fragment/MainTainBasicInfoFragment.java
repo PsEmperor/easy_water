@@ -398,17 +398,17 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				night_end_hour = irrigation.get(0).getIsNightEndHour();
 				night_end_minute = irrigation.get(0).getIsNightEndMinute();
 				if ((CheckUtil.IsEmpty(night_start_hour) || night_start_hour == 0)) {
-					aNight = 0;
-				} else {
 					aNight = 1;
+				} else {
+					aNight = 0;
 				}
 
 				if ((CheckUtil.IsEmpty(night_end_hour) || night_end_hour == 0)) {
-					aNight = 0;
-				} else {
 					aNight = 1;
+				} else {
+					aNight = 0;
 				}
-				if (aNight == 0) {
+				if (aNight == 1) {
 					SharedUtils.setParam(getActivity(), "SingleNight", false);
 				} else {
 					SharedUtils.setParam(getActivity(), "SingleNight", true);
