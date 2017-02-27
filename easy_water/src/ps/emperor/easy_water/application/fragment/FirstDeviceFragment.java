@@ -5,6 +5,7 @@ import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
 
 import ps.emperor.easy_water.R;
+import ps.emperor.easy_water.application.activity.FirstPartDeviceActivity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
@@ -26,7 +27,10 @@ public class FirstDeviceFragment extends Fragment implements OnClickListener {
 	private Button bte;
 	@ViewInject(R.id.tv_text)
 	private TextView tvc;
-	//设备ID  getText()+获取
+	//设备ID  getText()+获取  tv_id
+	@ViewInject(R.id.tv_id)
+	private TextView tid;
+	//类别
 	@ViewInject(R.id.tv_stitle)
 	private TextView tv_t;
 	//水源
@@ -51,6 +55,8 @@ public class FirstDeviceFragment extends Fragment implements OnClickListener {
 	@ViewInject(R.id.tv_yl)
 	private TextView tv_yl;
 	//水位
+	@ViewInject(R.id.tv_psw)
+	private TextView psw;
 	@ViewInject(R.id.tv_sw)
 	private TextView tv_sw;
 //	@ViewInject(R.id.ll_sy)
@@ -76,10 +82,19 @@ public class FirstDeviceFragment extends Fragment implements OnClickListener {
 			Bundle savedInstanceState) {
 		View v = x.view().inject(this, inflater, null);
 		control();
+		
+		
+		
+		
 		return v;
 	}
 	
 	private void control() {
+		
+
+		
+		
+		
 		tvc.setText("首部设备");
 //		ll_sy.setOnClickListener(this);
 //		ll_lg.setOnClickListener(this);
@@ -90,6 +105,30 @@ public class FirstDeviceFragment extends Fragment implements OnClickListener {
 		ll_yl.setOnClickListener(this);
 		ll_sw.setOnClickListener(this);
 		
+		
+		
+		//灌溉单元类别
+		
+		String type = ((FirstPartDeviceActivity)getActivity()).getType();
+		String id = ((FirstPartDeviceActivity)getActivity()).getId();
+		String wt = ((FirstPartDeviceActivity)getActivity()).getWaterType();
+		
+		tid.setText(tid.getText()+id);
+		
+		tv_t.setText(tv_t.getText()+type);
+		
+		
+		String[] arrt = {"渠道","机井","自压"};	
+		if(wt.equals(arrt[0])){
+			
+			psw.setText("蓄水池水位");
+		}else if(wt.equals(arrt[1])){
+			psw.setText("井水位");
+		}else if(wt.equals(arrt[2])){
+			ll_sb.setVisibility(View.GONE);
+			ll_sw.setVisibility(View.GONE);
+		}
+		
 	}
 
 
@@ -98,16 +137,6 @@ public class FirstDeviceFragment extends Fragment implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-//		case R.id.ll_sy:
-//			final String[] arr = {"渠道之蓄水池取水","渠道之直接取水","机井取水","管道自压取水"};
-//			eject(arr,tv_sy,null);
-			
-//			break;
-//		case R.id.ll_lg:
-//			final String[] arr1 = {"支管轮灌","辅管轮灌"};
-//			eject(arr1, tv_lg,null);
-//			
-//			break;
 		case R.id.ll_sb://水泵
 			final String[] arrsb = {"有","无"};
 			WaterPumpFragment sb = new WaterPumpFragment();

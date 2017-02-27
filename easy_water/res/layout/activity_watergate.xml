@@ -39,21 +39,22 @@
                         android:text="设备类别" />
 
                     <EditText
-                        android:id="@+id/sp_fm"
+                        android:id="@+id/et_fm"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
+                        android:background="@color/gray_2"
                         android:gravity="center"
                         android:inputType="text"
-                        android:visibility="gone" />
+                         />
 
-                    <TextView
+<!--                     <TextView
                         android:id="@+id/tv_fm"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:gravity="center"
-                        android:inputType="text" />
+                        android:inputType="text" /> -->
                 </LinearLayout>
 
                 <LinearLayout
@@ -76,14 +77,15 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:inputType="text"
-                        android:visibility="gone" />
+                        android:background="@color/gray_2"
+                         />
 
-                    <TextView
+<!--                     <TextView
                         android:id="@+id/tv_id"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:inputType="text" />
+                        android:inputType="text" /> -->
                 </LinearLayout>
 
                 <LinearLayout
@@ -100,9 +102,10 @@
                         android:gravity="center"
                         android:text="位置" />
 
-                    <TextView
-                        android:id="@+id/tv_location"
+                    <EditText
+                        android:id="@+id/et_location"
                         android:layout_width="0dp"
+                        android:background="@color/gray_2"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:text="经度：\n纬度：" />
@@ -123,6 +126,7 @@
                         android:text="设备名称" />
 
                     <EditText
+                        android:background="@color/gray_2"
                         android:id="@+id/et_mc"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -195,6 +199,36 @@
                         android:inputType="text"
                         android:text="搜索" />
                 </LinearLayout>
+                                     <LinearLayout
+                    android:layout_margin="10dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="设计流量(m3/s)" />
+
+                    <EditText
+                        android:id="@+id/et_sj"
+                        android:background="@color/gray_2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:inputType="number" />
+
+                    <TextView
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left|center_vertical"
+                         />
+                </LinearLayout>
+                
 
                 <LinearLayout
                     android:layout_margin="10dp"
@@ -208,22 +242,24 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="控制面积" />
+                        android:text="控制面积(亩)" />
 
                     <EditText
                         android:id="@+id/et_mj"
+                        android:background="@color/gray_2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2"
+                        android:layout_weight="1"
                         android:inputType="number" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:gravity="left|center_vertical"
-                        android:text="亩" />
+                         />
                 </LinearLayout>
-
+                
+           
                 <LinearLayout
                     android:layout_margin="10dp"
                     android:layout_width="fill_parent"
@@ -244,6 +280,13 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:inputType="text" />
+                    
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                         />
                 </LinearLayout>
 
                 <LinearLayout
@@ -259,14 +302,31 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="上游水位" />
+                    
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:visibility="invisible"
+                         />
 
                     <ToggleButton
                         android:id="@+id/tb_up"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2"
+                        android:layout_weight="1"
                         android:background="@drawable/bt_check_selector"
                         android:gravity="center" />
+                    
+                    
+                     <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:visibility="invisible"
+                         />
                 </LinearLayout>
 
                 <LinearLayout
@@ -303,14 +363,28 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="下游水位" />
+                     <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:visibility="invisible"
+                         />
 
                     <ToggleButton
                         android:id="@+id/tb_down"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2"
+                        android:layout_weight="1"
                         android:background="@drawable/bt_check_selector"
                         android:gravity="center" />
+                     <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:visibility="invisible"
+                         />
                 </LinearLayout>
 
                 <LinearLayout

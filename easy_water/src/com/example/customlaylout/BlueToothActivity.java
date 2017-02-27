@@ -121,6 +121,8 @@ public class BlueToothActivity extends BaseActivity implements OnSeekBarChangeLi
 	// 特征
 	BluetoothGattCharacteristic characteristic, characteristic1,
 			characteristic2, characteristic3, characteristic4;
+	
+	public static final  int TIMEROUT = 0x1109;
 
 	private boolean mScanning;
 	private Handler mHandler = new Handler(){
@@ -148,6 +150,11 @@ public class BlueToothActivity extends BaseActivity implements OnSeekBarChangeLi
 //				pd.getWindow().setGravity(Gravity.TOP);
 				
 				
+				
+				break;
+			case TIMEROUT:
+				Toast.makeText(context, "没有搜索到设备，请确认后重试!!!", 0).show();
+				BlueToothActivity.this.finish();
 				
 				break;
 
@@ -209,19 +216,23 @@ public class BlueToothActivity extends BaseActivity implements OnSeekBarChangeLi
 	private void scanLeDevice(final boolean enable) {
 		if (enable) {
 			// Stops scanning after a pre-defined scan period.
-			mHandler.postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					mScanning = false;
-					mBluetoothAdapter.stopLeScan(mLeScanCallback);
-				}
-			}, SCAN_PERIOD);
+//			mHandler.postDelayed(new Runnable() {
+//				@Override
+//				public void run() {
+//					mScanning = false;
+//					mBluetoothAdapter.stopLeScan(mLeScanCallback);
+//					pdg.dismiss();
+//					BlueToothActivity.this.finish();
+//					Toast.makeText(context, "没有搜索到设备，请确认后重试!!!", 0).show();
+//				}
+//			}, SCAN_PERIOD);
 
 			mScanning = true;
 			mBluetoothAdapter.startLeScan(mLeScanCallback);
 		} else {
 			mScanning = false;
 			mBluetoothAdapter.stopLeScan(mLeScanCallback);
+			
 		}
 
 	}
@@ -250,14 +261,18 @@ public class BlueToothActivity extends BaseActivity implements OnSeekBarChangeLi
 							return;
 						boolean connect = mBluetoothLeService.connect(address);
 
+				
 					}
 
 					mBluetoothAdapter.stopLeScan(mLeScanCallback);
 					mScanning = false;
+					
 				}
 			});
 		}
 	};
+	
+
 
 	private void read(BluetoothGattCharacteristic characteristic) {
 		// mBluetoothLeService.readCharacteristic(readCharacteristic);
@@ -401,7 +416,21 @@ public class BlueToothActivity extends BaseActivity implements OnSeekBarChangeLi
 		control();
 		pdg = Utils.showProgressDialog(context, null, "闸门连接中。。", false);
 		
-		scanLeDevice(true);
+		
+		Timer tr = new Timer();
+		TimerTask tt = new TimerTask(){
+			@Override
+			public void run() {
+				if(pdg.isShowing()){
+					pdg.dismiss();
+					Message msg = new Message();
+					msg.what = TIMEROUT;
+					mHandler.sendMessage(msg);
+				}
+				
+			}
+		};
+		tr.schedule(tt,SCAN_PERIOD);
 
 
 

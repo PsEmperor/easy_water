@@ -139,24 +139,26 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			break;
 		case R.id.bt_go:
 			Toast.makeText(this, "登录按钮", 0).show();
+			Intent mintent = new Intent(LoginActivity.this,MainActivity.class);
+			startActivity(mintent);
 			
-			String user = etUser.getText().toString().trim();
-			String password =  etPa.getText().toString().trim();
-			
-			RequestParams rp = new RequestParams(PsUtils.urlLogin);
-			rp.setAsJsonContent(true);
-			JSONObject jo = new JSONObject();
-			try {
-				jo.put("userName", user);
-				jo.put("password", password);
-				rp.setBodyContent(jo.toString());
-				
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			PsUtils.send(rp, HttpMethod.POST, mHandler,context);
+//			String user = etUser.getText().toString().trim();
+//			String password =  etPa.getText().toString().trim();
+//			
+//			RequestParams rp = new RequestParams(PsUtils.urlLogin);
+//			rp.setAsJsonContent(true);
+//			JSONObject jo = new JSONObject();
+//			try {
+//				jo.put("userName", user);
+//				jo.put("password", password);
+//				rp.setBodyContent(jo.toString());
+//				
+//			} catch (JSONException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			
+//			PsUtils.send(rp, HttpMethod.POST, mHandler,context);
 			
 	
 			

@@ -37,6 +37,8 @@ public class HandSelectActivity extends BaseActivity implements OnItemClickListe
 	private void control() {
 		list.add(new AppBeen(R.drawable.icon_arrow, "配水设备"));
 		list.add(new AppBeen(R.drawable.icon_arrow, "灌溉单元"));
+		list.add(new AppBeen(R.drawable.icon_arrow, "阀控器配置"));
+		list.add(new AppBeen(R.drawable.icon_arrow, "闸门配置（未定）"));
 		
 		title.setText("手动配置选择");
 		
@@ -58,16 +60,29 @@ public class HandSelectActivity extends BaseActivity implements OnItemClickListe
 			long id) {
 		switch (position) {
 		case 0:
-			
+			//跳转配水设备
 			Intent i = new Intent(HandSelectActivity.this,WaterGateActivity.class);
 			startActivity(i);
 			
 			break;
 			
 		case 1:
-			
+			//跳转灌溉单元
 			Intent i1 = new Intent(HandSelectActivity.this,FirstPartActivity.class);
 			startActivity(i1);
+			
+			break;
+		case 2:
+			//跳转阀控器
+			Intent i2 = new Intent(HandSelectActivity.this,ValveDeviceActivity1.class);
+			startActivity(i2);
+			
+			break;
+			
+		case 3:
+			//跳转闸门设备    ----跳转是错误的，需要跳转到单个闸门设置中
+			Intent i3 = new Intent(HandSelectActivity.this,WaterGateActivity.class);
+			startActivity(i3);
 			
 			break;
 

@@ -118,7 +118,7 @@ public class ForgotActivity extends BaseActivity implements OnClickListener {
 				e.printStackTrace();
 			}
 			
-			PsUtils.send(rp, HttpMethod.PUT, mHandler,context);
+			PsUtils.send(rp, HttpMethod.PUT, mHandler,context,"注册中。。。");
 			
 			
 			break;

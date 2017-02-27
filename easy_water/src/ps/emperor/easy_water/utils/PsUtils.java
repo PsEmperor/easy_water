@@ -33,7 +33,66 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class PsUtils {
+	public final static int SEND_REGISTER = 0x99;
+	public final static int SEND_REGISTER_ERROR = 0x98;
 	
+	
+	/**
+	 * get 请求
+	 */
+	
+	public static final String urlRegister = "http://60.205.220.245:8080/cms/app/UserSys/addAccount/phoneNum/password";
+	public static final String urlPassword = "http://60.205.220.245:8080/cms/app/UserSys/resetUserPass/phoneNum/password";
+	//登录
+	public static final String urlLogin = "http://60.205.220.245:8080/cms/app/UserSys/login/userName/password";
+	//模糊查询  -------未添加
+	public static final String urlSearch ="http://60.205.220.245:8080/cms/app/DisWaterSys/fuzzyQuery/findEquInfos/%s";
+	//灌溉单元ID重名检测
+	public static final String urlCheck = "http://60.205.220.245:8080/cms/app/IrriUnitSys/duplicatecheck/%s";
+	//获取授权单位
+	public static final String urlAuthor = "http://60.205.220.245:8080/cms/app/UserSys/currentUserAuth/%s";
+	
+	
+	
+	/**
+	 * 判断传入手机号是否符合手机号码正则
+	 * @param phoneNum	手机号
+	 * @return	 boolean
+	 */
+	public static boolean checkPhoneNum(String phoneNum){
+	boolean b = false;
+	phoneNum = phoneNum.trim();
+	if(phoneNum != null && phoneNum.length() == 11){
+	//手机号码正则
+	String regex = "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$";
+	b = phoneNum.matches(regex);
+	}
+	return b;
+	}
+	
+	
+	/**
+	 * POST请求
+	 */
+	//配水信息添加
+	public static final String  add_water_info= "http://60.205.220.245:8080/cms/app/DisWaterSys/addDisWaterEquInfo";
+	//闸门信息添加
+	public static final String add_gate_info = "http://60.205.220.245:8080/cms/app/DisWaterSys/addSluiceGateInfo";
+	
+	//灌溉信息添加
+	public static final String add_irr_info = "http://60.205.220.245:8080/cms/app/IrriUnitSys/addIrriUnitInfo";
+	//水泵信息添加
+	public static final String add_pump_info = "http://60.205.220.245:8080/cms/app/IrriUnitSys/addPumpInfo/firstDerviceID";
+	//过滤器信息添加
+	public static final String add_filter_info = "http://60.205.220.245:8080/cms/app/IrriUnitSys/addFilterInfo/firstDerviceID";
+	//压力传感器信息添加
+	public static final String add_press_info ="http://60.205.220.245:8080/cms/app/IrriUnitSys/addPressureSensorInfo/firstDerviceID";
+	//流量传感器信息添加
+	public static final String add_flow_info  = "http://60.205.220.245:8080/cms/app/IrriUnitSys/addFlowSensorInfo/firstDerviceID";
+	//阀控器信息添加
+	public static final String add_control_info = "http://60.205.220.245:8080/cms/app/IrriUnitSys/addValueControInfo/firstDerviceID";
+	//获取授权单位
+	public static final String get_auth = "http://60.205.220.245:8080/cms/app/UserSys/findUserAuthInfos/authName/%s";
 	
 	/**
 	 * 设置通用ArrayAdapter
@@ -106,7 +165,7 @@ public class PsUtils {
 	}
 
 	/**
-	 * 开启蓝牙并搜索指定蓝牙设备
+	 * 检查蓝牙并开启
 	 */
 	public static void openBlue(Context context) {
 		BluetoothAdapter ba = BluetoothAdapter.getDefaultAdapter();
@@ -216,33 +275,9 @@ public class PsUtils {
 	
 	
 	
-	/*private Handler handler  = new Handler(){
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
-			case Utils.SEND_REGISTER:
-				//获取信息成功操作
-				System.out.println("结果是--------------："+msg.obj);
-				Gson g = new Gson();
-				Test t = g.fromJson((String) msg.obj, Test.class);
-				List<AuthNameListBean> list = t.getAuthNameList();
-				for (AuthNameListBean a : list) {
-					System.out.println("省---------------------------："+a.getAuthProvince());
-				}
-				break;
-			}
-		};
-	};*/
+
 	
-	public final static int SEND_REGISTER = 0x99;
-	public final static int SEND_REGISTER_ERROR = 0x98;
-	public static final String urlRegister = "http://192.168.2.188:8080/cms/app/UserSys/addAccount/phoneNum/password";
-	public static final String urlPassword = "http://192.168.2.188:8080/cms/app/UserSys/resetUserPass/phoneNum/password";
-	public static final String urlLogin = "http://192.168.2.188:8080/cms/app/UserSys/login/userName/password";
-	
-	
-	
-	
-	
+
 
 	/**
 	 * 加载布局
@@ -256,16 +291,35 @@ public class PsUtils {
 		
 		return pd;
 	}
+
 	
-	
-	
+	/*
+	 * 
+	private Handler handler  = new Handler(){
+	public void handleMessage(Message msg) {
+		switch (msg.what) {
+		case Utils.SEND_REGISTER:
+			//获取信息成功操作
+			System.out.println("结果是--------------："+msg.obj);
+			Gson g = new Gson();
+			Test t = g.fromJson((String) msg.obj, Test.class);
+			List<AuthNameListBean> list = t.getAuthNameList();
+			for (AuthNameListBean a : list) {
+				System.out.println("省---------------------------："+a.getAuthProvince());
+			}
+			break;
+		}
+	};
+};
+
+*/
 	/**
 	 * 发送请求方法
 	 * 
 	 * 需要在每个请求中加入handler，上面为Handler样例
 	 */
-	public static void send(RequestParams rp,HttpMethod httpMethod ,final Handler handler,Context context){
-		final ProgressDialog pd = proDiag("登录中。。。", context);
+	public static void send(RequestParams rp,HttpMethod httpMethod ,final Handler handler,Context context,String msg){
+		final ProgressDialog pd = proDiag(msg, context);
 		
 		x.http().request(httpMethod, rp, new CommonCallback<String>() {
 
@@ -303,6 +357,52 @@ public class PsUtils {
 		
 		
 	}
+	
+	
+    /** 
+     * 字符串转换为16进制字符串 
+     *  
+     * @param s 
+     * @return 
+     */  
+    public static String strToHexStr(String s) {  
+        String str = "";  
+        for (int i = 0; i < s.length(); i++) {  
+            int ch = (int) s.charAt(i);  
+            String s4 = Integer.toHexString(ch);  
+            str = str + s4;  
+        }  
+        return str;  
+    }  
+  
+    /** 
+     * 16进制字符串转换为字符串 
+     *  
+     * @param s 
+     * @return 
+     */  
+    public static String hexStrToStr(String s) {  
+        if (s == null || s.equals("")) {  
+            return null;  
+        }  
+        s = s.replace(" ", "");  
+        byte[] baKeyword = new byte[s.length() / 2];  
+        for (int i = 0; i < baKeyword.length; i++) {  
+            try {  
+                baKeyword[i] = (byte) (0xff & Integer.parseInt(  
+                        s.substring(i * 2, i * 2 + 2), 16));  
+            } catch (Exception e) {  
+                e.printStackTrace();  
+            }  
+        }  
+        try {  
+            s = new String(baKeyword, "gbk");  
+            new String();  
+        } catch (Exception e1) {  
+            e1.printStackTrace();  
+        }  
+        return s;  
+    }  
 	
 	
 

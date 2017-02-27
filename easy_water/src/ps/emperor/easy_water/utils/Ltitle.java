@@ -15,11 +15,12 @@ public class Ltitle extends RelativeLayout  {
 
 	private TextView text;
 	private Button btEdit;
+	private Button btBack;
 
 	public Ltitle(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		LayoutInflater.from(context).inflate(R.layout.title, this);
-		Button btBack = (Button) findViewById(R.id.bt_back);
+		btBack = (Button) findViewById(R.id.bt_back);
 		btEdit = (Button) findViewById(R.id.bt_edit);
 		text = (TextView) findViewById(R.id.tv_text);
 		
@@ -46,13 +47,15 @@ public class Ltitle extends RelativeLayout  {
 		});
 	}
 	//设置标题栏名称
-	public void setText(String tv){
+	public Button setText(String tv){
 		text.setText(tv);
+		return btBack;
 	}
 	//设置右菜单名称
-	public void setEditText(String tv){
+	public Button setEditText(String tv){
 		btEdit.setVisibility(View.VISIBLE);
 		btEdit.setText(tv);
+		return btEdit;
 	}
 
 }

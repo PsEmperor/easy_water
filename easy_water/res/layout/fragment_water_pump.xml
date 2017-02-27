@@ -15,7 +15,7 @@
         android:layout_weight="1"
         android:background="@color/gray_3"
         android:gravity="center"
-        android:text="设备类别:"
+        android:text="类别:"
         android:textSize="18sp" />
     <TextView
         android:id="@+id/tv_id"
@@ -24,7 +24,7 @@
         android:layout_weight="1"
         android:background="@color/gray_3"
         android:gravity="center"
-        android:text="设备ID:"
+        android:text="ID:"
         android:textSize="18sp" />
 
   <!--   <LinearLayout
@@ -268,6 +268,7 @@
         android:padding="10dp" >
 
         <TextView
+            android:id="@+id/tv_psw"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"

@@ -1,8 +1,14 @@
 package ps.emperor.easy_water.application.activity;
 
-import org.xutils.x;
-import org.xutils.view.annotation.ContentView;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xutils.x;
+import org.xutils.http.HttpMethod;
+import org.xutils.http.RequestParams;
+import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
@@ -10,27 +16,50 @@ import ps.emperor.easy_water.BaseActivity;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.utils.PsUtils;
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.app.Dialog;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 @ContentView(R.layout.activity_firstpart)
 public class FirstPartActivity extends BaseActivity implements OnClickListener {
+	@ViewInject(R.id.et_mj)
+	private EditText mj;
+	@ViewInject(R.id.et_location1)
+	private EditText jd ;
+	@ViewInject(R.id.et_location2)
+	private EditText wd ;
 	
+	@ViewInject(R.id.et_fk)
+	private EditText fk;
+	@ViewInject(R.id.et_mc)
+	private EditText irrName;
+	@ViewInject(R.id.bt_inFirstDevice)
+	private Button bif;
+	@ViewInject(R.id.sp_lb)
+	private Spinner sp;
 	private TextView tvt;
 	private Button bte;
+	@ViewInject(R.id.et_id)
+	private EditText eid;
 	private LocationManager lm;
 	private Criteria c;
 	private String bestProvider;
@@ -48,17 +77,46 @@ public class FirstPartActivity extends BaseActivity implements OnClickListener {
 	private TextView tv_lg;
 	@ViewInject(R.id.ll_lg)
 	private LinearLayout ll_lg;
+	@ViewInject(R.id.tv_up_search)
+	private TextView upS;
+	private ProgressDialog pd_edit;
+	
+	
+	private Handler  handler = new Handler(){
+		public void handleMessage(android.os.Message msg) {
+			switch (msg.what) {
+			case PsUtils.SEND_REGISTER:
+				System.out.println("result===66666===========:"+(String)msg.obj);
+				
+				break;
+
+			default:
+				break;
+			}
+		};
+	};
+	
+	
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		x.view().inject(this);
 		lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		
+		initfm();
 		findView();
+		if(sp.getSelectedItem().toString().equals("虚拟首部")){
+			bif.setVisibility(View.GONE);
+			
+		}
 		PsUtils.readGPS(lm, tv_lo);
 		
 	}
+	
+	
+	
+
 
 	/**
 	 * 初始化控件
@@ -70,9 +128,52 @@ public class FirstPartActivity extends BaseActivity implements OnClickListener {
 		tvt.setText("灌溉单元配置");
 		bte.setVisibility(View.VISIBLE);
 		bte.setText("保存");
+		bte.setOnClickListener(this);
 		ll_sy.setOnClickListener(this);
 		ll_lg.setOnClickListener(this);
+		upS.setOnClickListener(this);
+		sp.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long id) {
+				switch (position) {
+				case 0:
+					//隐藏首部设备选项
+					bif.setVisibility(View.GONE);
+					break;
+				case 1:
+					bif.setVisibility(View.VISIBLE);
+					break;
+
+				default:
+					break;
+				}
+				
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
+	
+	
+	/**
+	 * 初始化设备类别
+	 */
+	private void initfm() {
+		List<String> list = new ArrayList<String>();
+		list.add("虚拟首部");
+		list.add("实体首部");
+		
+		ArrayAdapter adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,list);
+		adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+		sp.setAdapter(adapter);
+	}
+	
 	
 	/**
 	 * 进入阀控器配置
@@ -80,8 +181,23 @@ public class FirstPartActivity extends BaseActivity implements OnClickListener {
 	 */
 	@Event(R.id.bt_inConDevice)
 	private void inValueDevice(View v){
-		startActivity(new Intent(this,ValveDeviceActivity.class));
-//		finish();
+		Intent i = new Intent (this,ValveDeviceActivity1.class);
+		//父类名称   隐藏授权单位、上级设备为灌溉单元名称
+		i.putExtra("super", "FirstPartActivity");
+		//灌溉单元名称
+		i.putExtra("irrName", irrName.getText().toString());
+		//轮灌方式  辅管--支管      支管--分干
+		i.putExtra("irrMode", tv_lg.getText().toString());
+		//类别      虚拟--短信阀控器    实体--全部  
+		i.putExtra("classType", sp.getSelectedItem().toString());
+		//阀控器数量
+		i.putExtra("valueNum", fk.getText().toString());
+		//写入传入标记
+		i.putExtra("from",1);
+		//写入设备id
+		i.putExtra("ID", eid.getText().toString());
+		
+		startActivity(i);
 	}
 	
 	/**
@@ -90,15 +206,21 @@ public class FirstPartActivity extends BaseActivity implements OnClickListener {
 	 */
 	@Event(R.id.bt_inFirstDevice)
 	private void inFirstDevice(View v){
-		startActivity(new Intent(this,FirstPartDeviceActivity.class));
+		String content = tv_sy.getText().toString();
+		
+		//首部类型
+		String type = sp.getSelectedItem().toString();
+		
+		String id = eid.getText().toString();
+		
+		Intent i = new Intent(this,FirstPartDeviceActivity.class);
+		i.putExtra("water_type", content);
+		i.putExtra("fid", id);
+		i.putExtra("ftype", type);
+		startActivity(i);
 	}
 	
-//	@Event(R.id.tv_change)
-//	private void onClickTvc(View v){
-//		String [] arr = {"阀控器","首部控制器","闸门控制器"};
-//		eject(arr, tvc);
-//	}
-	
+
 	
 	/**
 	 * 弹出框
@@ -112,18 +234,20 @@ public class FirstPartActivity extends BaseActivity implements OnClickListener {
 			public void onClick(DialogInterface dialog, int which) {
 				tv.setText(arr[which]);
 				switch (arr[which]) {
-				case "阀控器":
-					Toast.makeText(FirstPartActivity.this,"阀控器", 0).show();
-
-					
+				case "虚拟首部":
+					Toast.makeText(FirstPartActivity.this,"虚拟首部", 0).show();
 					break;
-				case "首部控制器":
-					Toast.makeText(FirstPartActivity.this,"首部控制器", 0).show();
+				case "实体首部":
+					Toast.makeText(FirstPartActivity.this,"实体首部", 0).show();
 					break;
-
-				default:
-				case "闸门控制器":
+				case "渠道":
 					Toast.makeText(FirstPartActivity.this,"闸门控制器", 0).show();
+					break;
+				case "机井":
+					Toast.makeText(FirstPartActivity.this,"闸门控制器", 0).show();
+					break;
+				case "自压":
+					Toast.makeText(FirstPartActivity.this,"自压", 0).show();
 					break;
 					
 
@@ -138,8 +262,8 @@ public class FirstPartActivity extends BaseActivity implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.ll_sy:
-			final String[] arr = {"渠道之蓄水池取水","渠道之直接取水","机井取水","管道自压取水"};
-			eject(arr,tv_sy,null);
+			final String[] arr = {"渠道","机井","自压"};
+			eject(arr,tv_sy);
 			
 			break;
 		case R.id.ll_lg:
@@ -148,11 +272,128 @@ public class FirstPartActivity extends BaseActivity implements OnClickListener {
 			
 			break;
 			
+		case R.id.tv_up_search:
+			Intent intent = new Intent(FirstPartActivity.this,ConfigureSearchActivity.class);
+			startActivityForResult(intent, 1);
+			break;
+			
+		case R.id.bt_edit:
+			
+			if(sp.getSelectedItem().toString().equals("虚拟首部")){
+				//添加限制设备id校验
+				
+				boolean checkPhoneNum = PsUtils.checkPhoneNum(eid.getText().toString());
+				if(!checkPhoneNum){
+					
+					AlertDialog.Builder b = new Builder(FirstPartActivity.this);
+					b.setMessage("虚拟首部时ID应为手机号码，请重新输入！！！~");
+					b.setPositiveButton("确定",new Dialog.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							eid.requestFocus();
+							
+						}
+					});
+					b.setCancelable(false);
+					b.show();
+					
+					
+					
+					return;
+				}
+				
+				
+			}
+			
+			
+
+		
+			RequestParams rp  = new RequestParams(PsUtils.add_irr_info);
+//			String tag ;
+			String tag2;
+			String tag3="0";
+//			if(sp.getSelectedItem().toString().equals("虚拟首部")){
+//				tag = "0";
+//			}else{
+//				tag = "1";
+//			}
+			
+			
+			if(tv_lg.getText().toString().equals("支管轮灌")){
+				tag2 = "0";
+			}else{
+				tag2 = "1";
+			}
+			
+			if(tv_sy.getText().toString().equals("渠道")){
+				tag3 = "0";
+				
+			}else if(tv_sy.getText().toString().equals("机井")){
+				tag3 = "1";
+				
+			}else if(tv_sy.getText().toString().equals("自压")){
+				tag3 = "2";
+			}
+		
+			JSONObject jo = new JSONObject();
+			
+			try {
+				jo.put("irriEquTpye", sp.getSelectedItem().toString());  //类别  0虚拟   1实体
+				jo.put("irriUnitName", irrName.getText().toString());//灌溉单元名称
+				jo.put("firstDerviceID", eid.getText().toString());
+				jo.put("longitude", jd.getText().toString());
+				jo.put("latitude", wd.getText().toString());
+				jo.put("authID", "1");   //授权单位暂时为假数据
+				jo.put("superEqu", "配水设备5");//上级设备暂时为假数据
+				jo.put("area", mj.getText().toString());		//面积
+				jo.put("irriMothed", tag2);	//轮灌方式    0是支管  1是辅管
+				jo.put("classID", tag3);	//水源类型    0是渠道，1，机井，2，自压
+				jo.put("valueControlNum", fk.getText().toString());		//闸门数量
+				rp.setBodyContent(jo.toString());
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}//ID
+			
+			
+			
+			
+			
+			//上传灌溉单元配置
+			PsUtils.send(rp, HttpMethod.POST, handler, FirstPartActivity.this,"上传保存数据中。。。");
+			
+			
+			break;
+			
 		default:
 			break;
 		}
 	
 	}
+	
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		
+		switch (requestCode) {
+		case 1:
+			if(resultCode==RESULT_OK){
+				//获取模糊搜索接口返回的数据
+				String back = data.getStringExtra("up_dev");
+				//设置上级设备显示名称
+				upS.setText(back);
+			}
+			
+			break;
+
+		default:
+			break;
+		}
+
+	}
+	
+	
 	
 	
 
@@ -187,34 +428,6 @@ public class FirstPartActivity extends BaseActivity implements OnClickListener {
 	}
 	
 	
-	
-/*	@Event(R.id.bt_nextStep)
-	private void onClickbtG(View v){
-		switch (tvc.getText().toString()) {
-		case "阀控器":
-			startActivity(new Intent(this,ValveDeviceActivity.class));
-//			finish();
-			
-			break;
-		case "首部控制器":
-			startActivity(new Intent(this,FirstPartDeviceActivity.class));
-			break;
-
-		case "闸门控制器":
-			Intent i2 = new Intent(
-					this,
-					WaterGateActivity.class);
-			startActivity(i2);
-			break;
-			
-
-		}
-		
-	}*/
-
-	
-	
-
 
 
 }

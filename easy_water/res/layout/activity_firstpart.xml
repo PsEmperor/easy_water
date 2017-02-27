@@ -25,35 +25,40 @@
                 android:orientation="horizontal"
                 android:padding="10dp" >
 
-                <TextView
+   <!--              <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="设备类别" />
-                
-                
-                
-                 <TextView
-                     android:id="@+id/tv_lb"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:gravity="center"
-                     />
+                    android:text="类别" />
 
-<!--                 <EditText
+
+                 <EditText
                     android:id="@+id/et_lb"
+                    android:background="@color/gray_2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:inputType="text" /> -->
-
-<!--                 <Button
-                    android:id="@+id/tv_change"
+                 
+                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2" /> -->
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="类别" />
+
+                <Spinner
+                    android:background="@drawable/bg_circular_square_edittext_selector"
+                    android:id="@+id/sp_lb"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="30dp"
+                    android:layout_weight="2"
+                    android:inputType="text" />
+
+
             </LinearLayout>
 
             <LinearLayout
@@ -68,21 +73,17 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="设备ID" />
+                    android:text="ID" />
 
-<!--                 <EditText
+               <EditText
                     android:id="@+id/et_id"
                     android:layout_width="0dp"
+                    android:background="@drawable/bg_circular_square_edittext_selector"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:inputType="text" /> -->
-                
-                <TextView
-                    android:id="@+id/tv_id"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:inputType="text" />
+                    android:inputType="text" /> 
+                    
+
                 
             </LinearLayout>
 
@@ -99,13 +100,32 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="位置" />
-
-                <TextView
-                    android:id="@+id/tv_location"
+                
+                <LinearLayout 
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:text="经度：\n纬度：" />
+                    android:orientation="vertical"
+                    >
+                    
+                     <EditText
+                    android:id="@+id/et_location1"
+                    android:background="@drawable/bg_circular_square_edittext_selector"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:hint="经度：" />
+                <EditText
+                    android:id="@+id/et_location2"
+                    android:background="@drawable/bg_circular_square_edittext_selector"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:hint="纬度：" />
+                    
+                </LinearLayout>
+
+               
             </LinearLayout>
 
             <LinearLayout
@@ -121,10 +141,11 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="设备名称" />
+                    android:text="灌溉单元名称" />
 
                 <EditText
                     android:id="@+id/et_mc"
+                    android:background="@drawable/bg_circular_square_edittext_selector"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -170,7 +191,8 @@
                     android:text="上级设备" />
 
                 <TextView
-                    android:id="@+id/et_sb"
+                    android:clickable="true"
+                    android:id="@+id/tv_up_search"
                     android:layout_width="0dp"
                     android:gravity="center"
        				android:text="搜索"
@@ -195,6 +217,7 @@
 
                 <EditText
                     android:id="@+id/et_mj"
+                    android:background="@drawable/bg_circular_square_edittext_selector"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -256,7 +279,7 @@
                     android:layout_weight="2"
                     android:drawableRight="@drawable/icon_arrow"
                     android:gravity="right"
-                    android:text="方式" />
+                    android:text="支管轮灌" />
             </LinearLayout>
 
             <LinearLayout
@@ -276,10 +299,20 @@
                     android:text="阀控器数量" />
 
                 <EditText
-                    android:id="@+id/tv_fk"
+                    android:id="@+id/et_fk"
+                    android:background="@drawable/bg_circular_square_edittext_selector"
+                    android:inputType="number"
                     android:layout_width="0dp"
+                    android:text="1"
+                    android:numeric="integer"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2" />
+                    android:layout_weight="1" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                     />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

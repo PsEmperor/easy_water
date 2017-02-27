@@ -164,7 +164,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
 
 			
 			//注册
-			PsUtils.send(rp, HttpMethod.POST, mHandler,context);
+			PsUtils.send(rp, HttpMethod.POST, mHandler,context,"注册中。。。");
 			
 			
 			break;

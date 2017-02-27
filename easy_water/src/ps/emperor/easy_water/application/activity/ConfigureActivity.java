@@ -2,6 +2,8 @@ package ps.emperor.easy_water.application.activity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.UUID;
 
 import org.xutils.x;
 import org.xutils.view.annotation.ContentView;
@@ -14,16 +16,32 @@ import ps.emperor.easy_water.application.adapter.Configure_Lv_Adapter;
 import ps.emperor.easy_water.application.entity.Configure_Lv_item;
 import ps.emperor.easy_water.application.qrcode.MipcaActivityCapture;
 import ps.emperor.easy_water.utils.PsUtils;
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattService;
+import android.bluetooth.BluetoothManager;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -31,6 +49,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.customlaylout.BluetoothLeService;
+import com.example.customlaylout.Utils;
 
 
 
@@ -43,7 +64,7 @@ public class ConfigureActivity extends BaseActivity implements
 	private Button scan;
 	@ViewInject(R.id.bt_edit)
 	private Button edit;
-	@ViewInject(R.id.bt_nf)
+	@ViewInject(R.id.bt_blue)
 	private Button ly;
 	private TextView tvt;
 //	private ListView lvc;
@@ -54,6 +75,7 @@ public class ConfigureActivity extends BaseActivity implements
 
 	private LocationManager lm;
 
+	private Context context = ConfigureActivity.this;
 
 
 
@@ -61,6 +83,10 @@ public class ConfigureActivity extends BaseActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		x.view().inject(this);
+		
+		checkBluetooth();
+		Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
+		bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 		lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		findView();
 
@@ -319,10 +345,13 @@ public class ConfigureActivity extends BaseActivity implements
 		Toast.makeText(this, "版本:" + ver, 1).show();
 		PsUtils.readCard(intent);
 		
-		//记住NFC标签数据
+		//暂时取消记住NFC标签数据
+		//打开蓝牙配对连接
 		
 		
-		//打开蓝牙配对
+		
+		
+		
 		
 		
 		//进入配置界面
@@ -342,16 +371,28 @@ public class ConfigureActivity extends BaseActivity implements
 			startActivity(p);
 
 			break;
-		case R.id.bt_nf:
-			PsUtils.openBlue(ConfigureActivity.this);
-			
-			break;
-		
+//		case R.id.bt_nfc:
+//			PsUtils.openBlue(ConfigureActivity.this);
+//			Toast.makeText(context, "点击了NFC按钮", 0).show();
+//			
+//			break;
+//		
 		case R.id.bt_scan:
 			Intent intent = new Intent();
 			intent.setClass(ConfigureActivity.this, MipcaActivityCapture.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivityForResult(intent, SCANNIN_GREQUEST_CODE);
+			break;
+			
+		case R.id.bt_blue:
+			
+			//直接蓝牙连接
+			PsUtils.openBlue(ConfigureActivity.this);
+			Toast.makeText(context, "点击了蓝牙按钮", 0).show();
+			read(characteristic4);
+			
+			
+			
 			break;
 		
 
@@ -371,7 +412,19 @@ public class ConfigureActivity extends BaseActivity implements
 				Bundle bundle = data.getExtras();
 				//扫描得到的内容
 				String content = bundle.getString("result");
-				Toast.makeText(this, "扫描到的内容为："+content, 1).show();
+				
+				String substring = content.substring(2,4);
+				
+				Toast.makeText(this, "扫描到的内容为："+content+"............:"+substring, 1).show();
+				System.out.println("扫描到的内容为："+content+"............:"+substring);
+				
+				//根据类型跳转到对应设备配置
+				
+				
+				
+				
+				
+				
 			
 
 			}
@@ -379,6 +432,296 @@ public class ConfigureActivity extends BaseActivity implements
 		}
 	}
 	
+	
+	private Timer t;
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
+
+		if (!mBluetoothAdapter.isEnabled()) {
+			Intent enableBtIntent = new Intent(
+					BluetoothAdapter.ACTION_REQUEST_ENABLE);
+			startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+		}
+		registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+		if (mBluetoothLeService != null) {
+			final boolean result = mBluetoothLeService.connect(address);
+			Log.d(TAG, "Connect request result=" + result);
+		}
+
+		scanLeDevice(true);
+		
+	}
+	
+
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		scanLeDevice(false);
+		
+	}
+	
+	private Handler mHandler = new Handler();
+	@SuppressLint("NewApi")
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
+	private void scanLeDevice(final boolean enable) {
+		if (enable) {
+			// Stops scanning after a pre-defined scan period.
+
+
+			mScanning = true;
+			mBluetoothAdapter.startLeScan(mLeScanCallback);
+		} else {
+			mScanning = false;
+			mBluetoothAdapter.stopLeScan(mLeScanCallback);
+			
+		}
+
+	}
+	
+	
+	// Device scan callback.
+	@SuppressLint("NewApi")
+	private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
+
+		@Override
+		public void onLeScan(final BluetoothDevice device, int rssi,
+				byte[] scanRecord) {
+			runOnUiThread(new Runnable() {
+				@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
+				@Override
+				public void run() {
+					if (device == null)
+						return;
+
+					if (Utils.name.equals(device.getName())) {
+						// 连接指定地址 device.getAddress()
+
+						address = device.getAddress();
+						System.out.println("address=======：" + address
+								+ "      deviceName======" + device.getName());
+						if (mBluetoothLeService == null)
+							return;
+						boolean connect = mBluetoothLeService.connect(address);
+
+				
+					}
+
+					mBluetoothAdapter.stopLeScan(mLeScanCallback);
+					mScanning = false;
+					
+				}
+			});
+		}
+	};
+		
+		
+		
+		/**
+		 * 检测蓝牙是否存在，有则开启，没有则退出程序
+		 */
+		@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
+		private void checkBluetooth() {
+			// Use this check to determine whether BLE is supported on the device.
+			// Then you can
+			// selectively disable BLE-related features.
+			// 是否支持低功耗蓝牙。。不支持退出
+			if (!getPackageManager().hasSystemFeature(
+					PackageManager.FEATURE_BLUETOOTH_LE)) {
+				Toast.makeText(this, "不支持低功耗蓝牙，请更换设备！～", Toast.LENGTH_SHORT).show();
+				finish();
+			}
+
+			// Initializes a Bluetooth adapter. For API level 18 and above, get a
+			// reference to
+			// BluetoothAdapter through BluetoothManager.
+			// 获取BluetoothAdapter的对象
+			final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+			mBluetoothAdapter = bluetoothManager.getAdapter();
+
+			// Checks if Bluetooth is supported on the device.
+			// 检测设备是否支持蓝牙
+			if (mBluetoothAdapter == null) {
+				Toast.makeText(this, "不支持蓝牙，请更换设备！～", Toast.LENGTH_SHORT).show();
+				finish();
+				return;
+			}
+
+		}
+	
+		private boolean mScanning;
+		private BluetoothAdapter mBluetoothAdapter;
+		// 目标地址
+		private String address;
+		private BluetoothLeService mBluetoothLeService;
+		
+		private static String TAG = ConfigureActivity.class.getSimpleName();
+		
+		private static final int REQUEST_ENABLE_BT = 110;
+		// 服务
+		BluetoothGattService supportedGattServices;
+		// 特征
+		BluetoothGattCharacteristic  characteristic4;
+//		private BluetoothGattCharacteristic mNotifyCharacteristic;
+		private boolean mConnected = false;
+		private static final long SCAN_PERIOD = 10000;
+		
+		private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
+			@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				final String action = intent.getAction();
+				System.out.println("action================" + action);
+				if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
+					mConnected = true;
+				} else if (BluetoothLeService.ACTION_GATT_DISCONNECTED
+						.equals(action)) {
+					mConnected = false;
+				}
+				// 发现有可支持的服务
+				else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED
+						.equals(action)) {
+					// 服务
+					supportedGattServices = mBluetoothLeService
+							.getSupportedGattServices(UUID.fromString(Utils.uuid_s));
+					
+					// 闸门序列号
+					characteristic4 = supportedGattServices.getCharacteristic(UUID
+							.fromString(Utils.uuid_c4));
+
+//					if (mNotifyCharacteristic != null) {
+//						mBluetoothLeService.setCharacteristicNotification(
+//								mNotifyCharacteristic, true);
+//						mNotifyCharacteristic = null;
+//					}
+					
+					
+
+				
+
+				}
+				// 显示数据
+				else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
+//					pdg.dismiss();
+					
+					// 将数据显示在mDataField上
+					String data = intent
+							.getStringExtra(BluetoothLeService.EXTRA_DATA);
+					String uuid = intent.getStringExtra("uuid");
+					System.out.println("uuid========================:"+uuid);
+					if(Utils.uuid_c4.equals(uuid)){
+						
+						//获取的数据data
+						Toast.makeText(context, "获取的数据为===========================： "+data, 1).show();
+						
+						String sub = data.substring(4, 8);
+						
+						String result = PsUtils.hexStrToStr(sub);
+						
+						System.out.println("获取的数据为===========================： "+data+"------------截取数据------："+result);
+						
+						
+						
+						//根据result进行判断进入指定界面FK、FM、GG
+						if(result.equalsIgnoreCase("fk")){
+							
+							
+						}else if(result.equalsIgnoreCase("fm")){
+							
+						}else if(result.equalsIgnoreCase("gg")){
+							
+						}
+						
+						
+						
+						
+						
+					}
+ 
+				
+
+				}
+			}
+		};
+
+		
+
+		// 管理服务的生命周期
+		private final ServiceConnection mServiceConnection = new ServiceConnection() {
+
+			@Override
+			public void onServiceConnected(ComponentName componentName,
+					IBinder service) {
+				mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
+				if (!mBluetoothLeService.initialize()) {
+					Log.e(TAG, "Unable to initialize Bluetooth");
+					finish();
+				}
+				// Automatically connects to the device upon successful start-up
+				// initialization.
+
+//				if (address == null)
+//					return;
+//				mBluetoothLeService.connect(address);
+			}
+
+			@Override
+			public void onServiceDisconnected(ComponentName componentName) {
+				mBluetoothLeService = null;
+			}
+		};
+		
+		
+		private void read(BluetoothGattCharacteristic characteristic) {
+			// mBluetoothLeService.readCharacteristic(readCharacteristic);
+			// readCharacteristic的数据发生变化，发出通知
+			// mBluetoothLeService.setCharacteristicNotification(readCharacteristic,
+			// true);
+			// Toast.makeText(this, "读成功", Toast.LENGTH_SHORT).show();
+
+//			if (mNotifyCharacteristic != null) {
+//				mBluetoothLeService.setCharacteristicNotification(
+//						mNotifyCharacteristic, true);
+//				mNotifyCharacteristic = null;
+//			}
+			mBluetoothLeService.readCharacteristic(characteristic);
+		}
+		
+		@Override
+		protected void onStop() {
+			super.onStop();
+			//取消定时操作
+			if(t!=null){
+				t.cancel();
+				
+			}
+		}
+		
+		
+		@Override
+		protected void onDestroy() {
+			super.onDestroy();
+			unbindService(mServiceConnection);
+			mBluetoothLeService = null;
+		}
+
+		
+		
+	private static IntentFilter makeGattUpdateIntentFilter() {
+		final IntentFilter intentFilter = new IntentFilter();
+		// 服务器已经连接
+		intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
+		// 服务器已经断开
+		intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);
+		// 发现服务
+		intentFilter
+				.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
+		// 发现可用的数据
+		intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
+		return intentFilter;
+	}
 	
 
 }

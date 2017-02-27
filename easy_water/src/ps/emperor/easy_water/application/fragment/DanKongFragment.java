@@ -60,6 +60,8 @@ public class DanKongFragment extends Fragment {
 				//保存
 				Toast.makeText(getActivity(),"保存数据返回上级菜单",Toast.LENGTH_SHORT).show();
 				
+				
+				
 			}
 		});
 		
