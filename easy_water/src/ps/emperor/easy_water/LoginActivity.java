@@ -1,32 +1,20 @@
 package ps.emperor.easy_water;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.xmlpull.v1.XmlPullParser;
-import org.xutils.x;
-import org.xutils.common.Callback.CancelledException;
-import org.xutils.common.Callback.CommonCallback;
-import org.xutils.ex.HttpException;
 import org.xutils.http.HttpMethod;
 import org.xutils.http.RequestParams;
 
-import cn.jpush.android.api.JPushInterface;
-import ps.emperor.easy_water.application.entity.AppBeen;
-import ps.emperor.easy_water.entity.Person;
 import ps.emperor.easy_water.register.ForgotActivity;
 import ps.emperor.easy_water.register.RegisterActivity;
 import ps.emperor.easy_water.utils.PsUtils;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Xml;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -34,6 +22,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * 登录界面activity
@@ -48,9 +37,13 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	private Button btLogin;
 	private TextView tvForgot, tvRegister;
 	private Context context = LoginActivity.this;
+	private SharedPreferences sp;
+	
 	
 	private Handler mHandler = new Handler(){
 		
+	
+
 		@Override
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
@@ -58,6 +51,17 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				String result = (String) msg.obj;
 				if(result.equals("1")){
 					Toast.makeText(context, "登录成功", 0).show();
+					
+					//保存账号密码、是否保存密码状态
+					
+					
+					Editor e = sp.edit();
+					e.putString("user", user);
+					e.putString("pass",password);
+					e.putBoolean("checked", cbSave.isChecked());
+					e.commit();
+					
+					
 					Intent mintent = new Intent(LoginActivity.this,MainActivity.class);
 					startActivity(mintent);
 					finish();
@@ -81,14 +85,24 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		
 	};
 	private ProgressDialog pd;
+	//账号
+	private String user;
+	//密码
+	private String password;
 	
 	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		sp = getSharedPreferences("ps", 0);
 		setContentView(R.layout.activity_login);
 		findView();
+		
+		if(cbSave.isChecked()){
+			etUser.setText(sp.getString("user", ""));
+			etPa.setText(sp.getString("pass", ""));
+		}
 	}
 	
 	
@@ -114,7 +128,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		btLogin = (Button) findViewById(R.id.bt_go);
 		tvForgot = (TextView) findViewById(R.id.tv_forgot);
 		tvRegister = (TextView) findViewById(R.id.tv_register);
-
+			cbSave.setChecked(sp.getBoolean("checked", false));
+		
 		// etUser.setOnClickListener(this);
 		// etPa.setOnClickListener(this);
 		cbSave.setOnClickListener(this);
@@ -139,26 +154,26 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			break;
 		case R.id.bt_go:
 			Toast.makeText(this, "登录按钮", 0).show();
-			Intent mintent = new Intent(LoginActivity.this,MainActivity.class);
-			startActivity(mintent);
+//			Intent mintent = new Intent(LoginActivity.this,MainActivity.class);
+//			startActivity(mintent);
 			
-//			String user = etUser.getText().toString().trim();
-//			String password =  etPa.getText().toString().trim();
-//			
-//			RequestParams rp = new RequestParams(PsUtils.urlLogin);
-//			rp.setAsJsonContent(true);
-//			JSONObject jo = new JSONObject();
-//			try {
-//				jo.put("userName", user);
-//				jo.put("password", password);
-//				rp.setBodyContent(jo.toString());
-//				
-//			} catch (JSONException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			
-//			PsUtils.send(rp, HttpMethod.POST, mHandler,context);
+			user = etUser.getText().toString().trim();
+			password = etPa.getText().toString().trim();
+			
+			RequestParams rp = new RequestParams(PsUtils.urlLogin);
+			rp.setAsJsonContent(true);
+			JSONObject jo = new JSONObject();
+			try {
+				jo.put("userName", user);
+				jo.put("password", password);
+				rp.setBodyContent(jo.toString());
+				
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			PsUtils.send(rp, HttpMethod.POST, mHandler,context,"登录中。。。");
 			
 	
 			

@@ -49,7 +49,7 @@ public class PsUtils {
 	public static final String urlSearch ="http://60.205.220.245:8080/cms/app/DisWaterSys/fuzzyQuery/findEquInfos/%s";
 	//灌溉单元ID重名检测
 	public static final String urlCheck = "http://60.205.220.245:8080/cms/app/IrriUnitSys/duplicatecheck/%s";
-	//获取授权单位
+	//获取授权单位 -----未添加
 	public static final String urlAuthor = "http://60.205.220.245:8080/cms/app/UserSys/currentUserAuth/%s";
 	
 	

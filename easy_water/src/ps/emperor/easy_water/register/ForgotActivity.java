@@ -11,9 +11,13 @@ import org.xutils.view.annotation.ViewInject;
 import ps.emperor.easy_water.BaseActivity;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.utils.PsUtils;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -28,6 +32,9 @@ public class ForgotActivity extends BaseActivity implements OnClickListener {
 	private EditText etP;
 	@ViewInject(R.id.etf_pass)
 	private EditText etPa;
+	@ViewInject(R.id.etf_comfirmPass)
+	private EditText etCp;
+	
 	@ViewInject(R.id.etf_authNum)
 	private EditText etAu;
 	@ViewInject(R.id.title)
@@ -87,7 +94,7 @@ public class ForgotActivity extends BaseActivity implements OnClickListener {
 	 */
 	private void control() {
 		btc.setOnClickListener(this);
-		title.setText("重置密码");
+		title.setText("忘记密码");
 	}
 
 
@@ -96,9 +103,56 @@ public class ForgotActivity extends BaseActivity implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.bt_change:
+			
+			//etP 手机号码       etPa 手机密码
+			
+			
+			if(!PsUtils.checkPhoneNum(etP.getText().toString())){
+				AlertDialog.Builder ab = new Builder(ForgotActivity.this);
+				ab.setMessage("手机号码不正确，请重新输入！！！");
+				ab.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						etP.requestFocus();
+						
+						
+					}
+				});
+				ab.show();
+				
+				return;
+			}
+			
+			if(TextUtils.isEmpty(etPa.getText().toString())||TextUtils.isEmpty(etCp.getText().toString())){
+				Toast.makeText(this, "密码不能为空！！", 0).show();
+				return;
+			}
+			
+			
+			if(!etPa.getText().toString().equals(etCp.getText().toString())){
+				
+				
+				AlertDialog.Builder b = new Builder(this);
+				b.setMessage("两次输入密码不相同，请重新输入！！！");
+				b.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						etP.requestFocus();
+						
+					}
+				});
+				b.show();
+				
+				return;
+			}
+			
+			
+			
+			
 			//重置
-			
-			
+		
 			String user = etP.getText().toString();
 			String password =  etPa.getText().toString();
 			String code = etAu.getText().toString();
@@ -118,7 +172,7 @@ public class ForgotActivity extends BaseActivity implements OnClickListener {
 				e.printStackTrace();
 			}
 			
-			PsUtils.send(rp, HttpMethod.PUT, mHandler,context,"注册中。。。");
+			PsUtils.send(rp, HttpMethod.PUT, mHandler,context,"重设密码中。。。");
 			
 			
 			break;
