@@ -140,6 +140,11 @@ public class FirstPartActivity extends BaseActivity implements OnClickListener {
 				
 				Gson gs = new Gson();
 				AuthUnitBeen fj = gs.fromJson(re, AuthUnitBeen.class);
+				if(fj==null){
+					dw.setText("未知");
+					authID = 1;
+					return;
+				}
 				InfoListBean ilb = fj.getInfoList().get(0);
 				dw.setText(ilb.getAuthName());
 				authID = ilb.getAuthID();
@@ -326,8 +331,7 @@ public class FirstPartActivity extends BaseActivity implements OnClickListener {
 		case R.id.tv_dw:
 			//获取授权单位
 			SharedPreferences sh = PsUtils.getShared(this);
-			String url = String.format(PsUtils.urlAuthor, sh.getString("user", ""));
-			System.out.println("1111111111111==="+url);
+			String url = String.format(PsUtils.get_auth, sh.getString("user", ""));
 			
 			RequestParams rrp = new RequestParams(url);
 			

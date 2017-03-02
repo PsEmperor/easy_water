@@ -76,30 +76,12 @@ public class PsUtils {
 	public static final String urlSearch ="http://60.205.220.245:8080/cms/app/DisWaterSys/fuzzyQuery/findEquInfos/%s";
 	//灌溉单元ID重名检测
 	public static final String urlCheck = "http://60.205.220.245:8080/cms/app/IrriUnitSys/duplicatecheck/%s";
-	//获取授权单位 -----未添加
-	public static final String urlAuthor = "http://60.205.220.245:8080/cms/app/UserSys/currentUserAuth/%s";
 	//注册验证码
 	public static final String urlCode_reg= "http://60.205.220.245:8080/cms/app/UserSys/getAuthCode/%s/1";
 	//密码重置验证码
 	public static final String urlCode_pas= "http://60.205.220.245:8080/cms/app/UserSys/getAuthCode/%s/2";
-	
-	
-	
-	/**
-	 * 判断传入手机号是否符合手机号码正则
-	 * @param phoneNum	手机号
-	 * @return	 boolean
-	 */
-	public static boolean checkPhoneNum(String phoneNum){
-	boolean b = false;
-	phoneNum = phoneNum.trim();
-	if(phoneNum != null && phoneNum.length() == 11){
-	//手机号码正则
-	String regex = "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$";
-	b = phoneNum.matches(regex);
-	}
-	return b;
-	}
+	//获取授权单位
+	public static final String get_auth = "http://60.205.220.245:8080/cms/app/UserSys/findUserAuthInfos/authName/%s";
 	
 	
 	/**
@@ -122,8 +104,26 @@ public class PsUtils {
 	public static final String add_flow_info  = "http://60.205.220.245:8080/cms/app/IrriUnitSys/addFlowSensorInfo/firstDerviceID";
 	//阀控器信息添加
 	public static final String add_control_info = "http://60.205.220.245:8080/cms/app/IrriUnitSys/addValueControInfo/firstDerviceID";
-	//获取授权单位
-	public static final String get_auth = "http://60.205.220.245:8080/cms/app/UserSys/findUserAuthInfos/authName/%s";
+
+	
+	
+	/**
+	 * 判断传入手机号是否符合手机号码正则
+	 * @param phoneNum	手机号
+	 * @return	 boolean
+	 */
+	public static boolean checkPhoneNum(String phoneNum){
+	boolean b = false;
+	phoneNum = phoneNum.trim();
+	if(phoneNum != null && phoneNum.length() == 11){
+	//手机号码正则
+	String regex = "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$";
+	b = phoneNum.matches(regex);
+	}
+	return b;
+	}
+	
+	
 	
 	
 	/**
