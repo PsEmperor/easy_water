@@ -12,8 +12,13 @@ import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
+import com.google.gson.Gson;
+
 import ps.emperor.easy_water.BaseActivity;
 import ps.emperor.easy_water.R;
+import ps.emperor.easy_water.application.entity.AuthUnitBeen;
+import ps.emperor.easy_water.application.entity.AuthUnitBeen.InfoListBean;
+import ps.emperor.easy_water.application.entity.BaseBeen;
 import ps.emperor.easy_water.utils.PsUtils;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -23,6 +28,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Criteria;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -41,12 +47,19 @@ import android.widget.Toast;
 
 @ContentView(R.layout.activity_firstpart)
 public class FirstPartActivity extends BaseActivity implements OnClickListener {
+	
+	//授权单位
+	@ViewInject(R.id.tv_dw)
+	private TextView dw;
+	
 	@ViewInject(R.id.et_mj)
 	private EditText mj;
 	@ViewInject(R.id.et_location1)
 	private EditText jd ;
 	@ViewInject(R.id.et_location2)
 	private EditText wd ;
+	@ViewInject(R.id.tv_authUnit)
+	private TextView tv_au;
 	
 	@ViewInject(R.id.et_fk)
 	private EditText fk;
@@ -77,16 +90,63 @@ public class FirstPartActivity extends BaseActivity implements OnClickListener {
 	private TextView tv_lg;
 	@ViewInject(R.id.ll_lg)
 	private LinearLayout ll_lg;
-	@ViewInject(R.id.tv_up_search)
+	@ViewInject(R.id.tv_up_device)
 	private TextView upS;
 	private ProgressDialog pd_edit;
-	
+	private int authID;
 	
 	private Handler  handler = new Handler(){
+		
+
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
-			case PsUtils.SEND_REGISTER:
-				System.out.println("result===66666===========:"+(String)msg.obj);
+			case PsUtils.SAVE_INFO:
+				//添加解析判断
+				String result = (String) msg.obj;
+//				Toast.makeText(FirstPartActivity.this, "信息为-----------："+result, 0).show();
+				System.out.println("信息为-----------："+result);
+				Gson g = new Gson();
+				BaseBeen bb = g.fromJson(result, BaseBeen.class);
+				String code = bb.getCode();
+				
+				if(code.equals("1")){
+					Toast.makeText(FirstPartActivity.this, "保存完成", 0).show();
+				}else{
+					Toast.makeText(FirstPartActivity.this, "保存失败", 0).show();
+				}
+				
+				
+	
+				break;
+				
+			case PsUtils.GET_UP_DEV:
+				//获取上级设备
+				
+				
+				//----------------------------没有完成解析
+				String result1 = (String) msg.obj;
+				Toast.makeText(FirstPartActivity.this, "名字为-----------："+result1, 0).show();
+				
+			
+				
+				
+				break;
+				
+			case PsUtils.GET_UNIT_NAME: 
+				
+				//获取授权ID
+				
+				String re = (String) msg.obj;
+				
+				Gson gs = new Gson();
+				AuthUnitBeen fj = gs.fromJson(re, AuthUnitBeen.class);
+				InfoListBean ilb = fj.getInfoList().get(0);
+				dw.setText(ilb.getAuthName());
+				authID = ilb.getAuthID();
+				
+				
+				
+			
 				
 				break;
 
@@ -132,6 +192,8 @@ public class FirstPartActivity extends BaseActivity implements OnClickListener {
 		ll_sy.setOnClickListener(this);
 		ll_lg.setOnClickListener(this);
 		upS.setOnClickListener(this);
+		tv_au.setOnClickListener(this);
+		dw.setOnClickListener(this);
 		sp.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
@@ -261,6 +323,19 @@ public class FirstPartActivity extends BaseActivity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+		case R.id.tv_dw:
+			//获取授权单位
+			SharedPreferences sh = PsUtils.getShared(this);
+			String url = String.format(PsUtils.urlAuthor, sh.getString("user", ""));
+			System.out.println("1111111111111==="+url);
+			
+			RequestParams rrp = new RequestParams(url);
+			
+			PsUtils.send(rrp, HttpMethod.GET, handler, this, "获取授权名称中。。。",PsUtils.GET_UNIT_NAME);
+			
+			
+			break;
+		
 		case R.id.ll_sy:
 			final String[] arr = {"渠道","机井","自压"};
 			eject(arr,tv_sy);
@@ -272,7 +347,8 @@ public class FirstPartActivity extends BaseActivity implements OnClickListener {
 			
 			break;
 			
-		case R.id.tv_up_search:
+		case R.id.tv_up_device:
+			//获取上级设备
 			Intent intent = new Intent(FirstPartActivity.this,ConfigureSearchActivity.class);
 			startActivityForResult(intent, 1);
 			break;
@@ -338,13 +414,14 @@ public class FirstPartActivity extends BaseActivity implements OnClickListener {
 		
 			JSONObject jo = new JSONObject();
 			
+			
 			try {
 				jo.put("irriEquTpye", sp.getSelectedItem().toString());  //类别  0虚拟   1实体
 				jo.put("irriUnitName", irrName.getText().toString());//灌溉单元名称
 				jo.put("firstDerviceID", eid.getText().toString());
 				jo.put("longitude", jd.getText().toString());
 				jo.put("latitude", wd.getText().toString());
-				jo.put("authID", "1");   //授权单位暂时为假数据
+				jo.put("authID",authID);   //授权单位暂时为假数据
 				jo.put("superEqu", "配水设备5");//上级设备暂时为假数据
 				jo.put("area", mj.getText().toString());		//面积
 				jo.put("irriMothed", tag2);	//轮灌方式    0是支管  1是辅管
@@ -361,7 +438,8 @@ public class FirstPartActivity extends BaseActivity implements OnClickListener {
 			
 			
 			//上传灌溉单元配置
-			PsUtils.send(rp, HttpMethod.POST, handler, FirstPartActivity.this,"上传保存数据中。。。");
+			PsUtils.send(rp, HttpMethod.POST, handler, FirstPartActivity.this,"上传保存数据中。。。",PsUtils.SAVE_INFO);
+			
 			
 			
 			break;

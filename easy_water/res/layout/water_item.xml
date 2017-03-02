@@ -23,6 +23,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@drawable/bg_circular_square_edittext_selector"
             android:gravity="center"
             android:textSize="18sp" />
     </LinearLayout>
@@ -46,6 +47,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
+            android:background="@drawable/bg_circular_square_edittext_selector"
             android:textSize="18sp" />
     </LinearLayout>
         <LinearLayout
@@ -67,6 +69,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@drawable/bg_circular_square_edittext_selector"
             android:gravity="center"
             android:textSize="18sp" />
     </LinearLayout>

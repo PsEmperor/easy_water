@@ -160,6 +160,8 @@
                 android:padding="10dp" >
 
                 <TextView
+                    android:clickable="true"
+                    android:id="@+id/tv_authUnit"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -169,11 +171,12 @@
                 <TextView
                     android:id="@+id/tv_dw"
                     android:layout_width="0dp"
+                    android:clickable="true"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:gravity="center"
        				android:text="搜索"
-                    android:inputType="text" />
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -192,7 +195,7 @@
 
                 <TextView
                     android:clickable="true"
-                    android:id="@+id/tv_up_search"
+                    android:id="@+id/tv_up_device"
                     android:layout_width="0dp"
                     android:gravity="center"
        				android:text="搜索"

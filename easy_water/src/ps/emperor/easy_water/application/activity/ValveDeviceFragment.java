@@ -12,7 +12,11 @@ import org.xutils.http.RequestParams;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
+
+import com.google.gson.Gson;
+
 import ps.emperor.easy_water.R;
+import ps.emperor.easy_water.application.entity.BaseBeen;
 import ps.emperor.easy_water.application.entity.ValueControlBeen;
 import ps.emperor.easy_water.application.entity.ValueControlBeen.ChanListBean;
 import ps.emperor.easy_water.utils.PsUtils;
@@ -25,6 +29,7 @@ import android.content.DialogInterface;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -165,14 +170,28 @@ public class ValveDeviceFragment extends Fragment implements android.view.View.O
 		
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
-			case PsUtils.SEND_REGISTER:
+			case PsUtils.SAVE_INFO:
 				//判断结果----未完成
 				System.out.println("add_valveDevice------------result========="+msg.obj.toString());
 				
+				//添加解析判断
+				String result = (String) msg.obj;
+//				Toast.makeText(FirstPartActivity.this, "信息为-----------："+result, 0).show();
+				System.out.println("信息为-----------："+result);
+				Gson g = new Gson();
+				BaseBeen bb = g.fromJson(result, BaseBeen.class);
+				String code = bb.getCode();
+				
+				if(code.equals("1")){
+					Toast.makeText(getActivity(), "保存完成", 0).show();
+				}else{
+					Toast.makeText(getActivity(), "保存失败"+code, 0).show();
+				}
 				
 				
 				
 				
+	
 				
 				
 				
@@ -249,7 +268,7 @@ public class ValveDeviceFragment extends Fragment implements android.view.View.O
 				
 				for (int j = 0; j < arr.length-1; j++) {
 					for (int i = j+1; i < arr.length; i++) {
-						if(arr[j].equals(arr[i])){
+						if(arr[j].equals(arr[i])&&!TextUtils.isEmpty(arr[j])&&!TextUtils.isEmpty(arr[i])){
 							Toast.makeText(context, "通道的地块名不能相同，请重新输入！！！", 1).show();
 							et_c1.requestFocus();
 							return;
@@ -292,7 +311,7 @@ public class ValveDeviceFragment extends Fragment implements android.view.View.O
 					jo.put("thrieChan",sp_gd.getSelectedItem().toString());
 					jo.put("totalChanNum",tv_td.getText().toString());
 					jo.put("area","0");
-					jo.put("ValueControlID", eid.getText().toString());
+					jo.put("valueControlID", eid.getText().toString());
 					jo.put("chanList",lis);
 
 					rp.setBodyContent(jo.toString());
@@ -301,7 +320,7 @@ public class ValveDeviceFragment extends Fragment implements android.view.View.O
 					e.printStackTrace();
 				}
 				
-				PsUtils.send(rp, HttpMethod.POST, handler, context, "数据保存中。。。");
+				PsUtils.send(rp, HttpMethod.POST, handler, context, "数据保存中。。。",PsUtils.SAVE_INFO);
 				
 				
 				

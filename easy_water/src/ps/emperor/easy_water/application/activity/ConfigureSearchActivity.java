@@ -26,7 +26,7 @@ public class ConfigureSearchActivity extends BaseActivity implements OnClickList
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-			case PsUtils.SEND_REGISTER:
+			case PsUtils.GET_SEARCH:
 				
 				break;
 			case PsUtils.SEND_REGISTER_ERROR:
@@ -63,7 +63,7 @@ public class ConfigureSearchActivity extends BaseActivity implements OnClickList
 		case R.id.iv_search:
 //			PsUtils.urlSearch
 			RequestParams rp  = new RequestParams(PsUtils.urlSearch);
-			PsUtils.send(rp, HttpMethod.GET, handler, context,"搜索中。。。");
+			PsUtils.send(rp, HttpMethod.GET, handler, context,"搜索中。。。",PsUtils.GET_SEARCH);
 			
 			break;
 //		case:

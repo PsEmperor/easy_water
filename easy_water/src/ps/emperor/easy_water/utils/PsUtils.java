@@ -2,20 +2,23 @@ package ps.emperor.easy_water.utils;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 
 import org.xutils.x;
-import org.xutils.common.Callback.CancelledException;
 import org.xutils.common.Callback.CommonCallback;
 import org.xutils.http.HttpMethod;
 import org.xutils.http.RequestParams;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -33,8 +36,32 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class PsUtils {
+	
+	/**
+	 * 				//保存手机号账号信息
+	 * 		        e.putString("user", user);
+	 * 				//保存密码
+					e.putString("pass",password);
+					//保存checkd状态
+					e.putBoolean("checked", cbSave.isChecked());
+	 */
+	
+	
+	
 	public final static int SEND_REGISTER = 0x99;
 	public final static int SEND_REGISTER_ERROR = 0x98;
+	//获取授权单位
+	public final static int GET_UNIT_NAME = 0x97;
+	//保存信息
+	public final static int SAVE_INFO = 0x96;
+	//登录
+	public final static int LOGIN_IN  = 0x95;
+	//查询
+	public final static int GET_SEARCH = 0x94;
+	//获取上级设备
+	public final static int GET_UP_DEV= 0x93;
+	//获取验证码
+	public final static int GET_CHECK_CODE = 0x92;
 	
 	
 	/**
@@ -51,6 +78,10 @@ public class PsUtils {
 	public static final String urlCheck = "http://60.205.220.245:8080/cms/app/IrriUnitSys/duplicatecheck/%s";
 	//获取授权单位 -----未添加
 	public static final String urlAuthor = "http://60.205.220.245:8080/cms/app/UserSys/currentUserAuth/%s";
+	//注册验证码
+	public static final String urlCode_reg= "http://60.205.220.245:8080/cms/app/UserSys/getAuthCode/%s/1";
+	//密码重置验证码
+	public static final String urlCode_pas= "http://60.205.220.245:8080/cms/app/UserSys/getAuthCode/%s/2";
 	
 	
 	
@@ -93,6 +124,7 @@ public class PsUtils {
 	public static final String add_control_info = "http://60.205.220.245:8080/cms/app/IrriUnitSys/addValueControInfo/firstDerviceID";
 	//获取授权单位
 	public static final String get_auth = "http://60.205.220.245:8080/cms/app/UserSys/findUserAuthInfos/authName/%s";
+	
 	
 	/**
 	 * 设置通用ArrayAdapter
@@ -318,7 +350,7 @@ public class PsUtils {
 	 * 
 	 * 需要在每个请求中加入handler，上面为Handler样例
 	 */
-	public static void send(RequestParams rp,HttpMethod httpMethod ,final Handler handler,Context context,String msg){
+	public static void send(RequestParams rp,HttpMethod httpMethod ,final Handler handler,Context context,String msg,final int whatContent){
 		final ProgressDialog pd = proDiag(msg, context);
 		
 		x.http().request(httpMethod, rp, new CommonCallback<String>() {
@@ -327,7 +359,7 @@ public class PsUtils {
 			public void onSuccess(String result) {
 				Message msg = new Message();
 				msg.obj = result;
-				msg.what = SEND_REGISTER;
+				msg.what = whatContent;
 				handler.sendMessage(msg);
 				
 			}
@@ -404,6 +436,36 @@ public class PsUtils {
         return s;  
     }  
 	
+    /**
+     * 获取SharedPre
+     * @param context
+     * @return
+     */
+    public static SharedPreferences getShared(Context context){
+    	SharedPreferences sp = context.getSharedPreferences("ps", 0);
+    	
+    	return sp;
+    }
+    
+    
+
+    
+    
+//    TimerTask task = new TimerTask() {    
+//        @Override    
+//        public void run() {    
+//   
+//            runOnUiThread(new Runnable() {      // UI thread    
+//                @Override    
+//                public void run() {    
+//                    recLen--;    
+//                    if(recLen < 0){    
+//                        timer.cancel();    
+//                    }    
+//                }    
+//            });    
+//        }    
+//    };    
 	
 
 

@@ -1,5 +1,8 @@
 package ps.emperor.easy_water.register;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.x;
@@ -59,6 +62,14 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
 			case PsUtils.SEND_REGISTER_ERROR:
 				
 				Toast.makeText(context, "注册异常", 0).show();
+				
+				break;
+				
+				
+			case PsUtils.GET_CHECK_CODE:
+				//获取验证码
+				
+				
 				
 				break;
 
@@ -168,6 +179,51 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
 		}).start();
 
 	}
+	
+	
+	
+	
+
+	 private int recLen = 30;
+
+	
+   /**
+    * 获取倒计时timer对象
+    * 
+    * @param task
+    * @return
+    */
+   public  void backTimer(){
+	   btAu.setText(recLen+"");
+	   btAu.setEnabled(false);
+
+   	final Timer t = new Timer();
+   	
+	    TimerTask task = new TimerTask() {    
+	        @Override    
+	        public void run() {    
+
+	           runOnUiThread(new Runnable() {      // UI thread    
+	                @Override    
+	                public void run() {    
+	                	
+	                    recLen--;    
+	                    btAu.setText(recLen+"");
+	                    if(recLen < 0){    
+	                    	t.cancel();    
+	                    	btAu.setText("获取验证码");
+	                    	btAu.setEnabled(true);
+	                    	recLen = 30;
+	                    }    
+	                }    
+	            });    
+	        }    
+	    };
+
+   	t.schedule(task, 1000, 1000);
+	
+   }
+	
 
 
 	@Override
@@ -175,6 +231,16 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.bt_auth:
 			//点击获取验证码
+			backTimer();
+			
+			String url  = String.format(PsUtils.urlCode_reg, PsUtils.getShared(context).getString("user", ""));
+			
+			RequestParams rc = new RequestParams(url);
+			
+			PsUtils.send(rc, HttpMethod.GET, mHandler, context,  "获取验证中。。。",PsUtils.GET_CHECK_CODE);
+			
+			
+			
 			
 			break;
 		case R.id.bt_register:
@@ -245,7 +311,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
 
 			
 			//注册
-			PsUtils.send(rp, HttpMethod.POST, mHandler,context,"注册中。。。");
+			PsUtils.send(rp, HttpMethod.POST, mHandler,context,"注册中。。。",PsUtils.SEND_REGISTER);
 			
 			
 			break;

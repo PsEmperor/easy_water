@@ -47,7 +47,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		@Override
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
-			case PsUtils.SEND_REGISTER:
+			case PsUtils.LOGIN_IN :
+				
 				String result = (String) msg.obj;
 				if(result.equals("1")){
 					Toast.makeText(context, "登录成功", 0).show();
@@ -169,17 +170,10 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				rp.setBodyContent(jo.toString());
 				
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
-			PsUtils.send(rp, HttpMethod.POST, mHandler,context,"登录中。。。");
-			
-	
-			
-			
-			
-			
+			PsUtils.send(rp, HttpMethod.POST, mHandler,context,"登录中。。。",PsUtils.LOGIN_IN);
 
 			break;
 		case R.id.tv_forgot:

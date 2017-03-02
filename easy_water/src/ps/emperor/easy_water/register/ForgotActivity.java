@@ -1,5 +1,8 @@
 package ps.emperor.easy_water.register;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.x;
@@ -39,6 +42,8 @@ public class ForgotActivity extends BaseActivity implements OnClickListener {
 	private EditText etAu;
 	@ViewInject(R.id.title)
 	private ps.emperor.easy_water.utils.Ltitle title;
+	@ViewInject(R.id.btf_auth)
+	private Button bt_getCode;
 	
 	
 	
@@ -52,14 +57,13 @@ public class ForgotActivity extends BaseActivity implements OnClickListener {
 		@Override
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
-			case PsUtils.SEND_REGISTER:
+			case PsUtils.SAVE_INFO:
 				String result = (String) msg.obj;
 				if(result.equals("1")){
 					Toast.makeText(context, "重置成功", 0).show();
 				}else if(result.equals("0")){
 					Toast.makeText(context, "重置失败", 0).show();
 				}
-				
 				
 				break;
 			case PsUtils.SEND_REGISTER_ERROR:
@@ -95,13 +99,73 @@ public class ForgotActivity extends BaseActivity implements OnClickListener {
 	private void control() {
 		btc.setOnClickListener(this);
 		title.setText("忘记密码");
+		bt_getCode.setOnClickListener(this);
 	}
 
+
+
+	 private int recLen = 30;
+
+	
+    /**
+     * 获取倒计时timer对象
+     * 
+     * @param task
+     * @return
+     */
+    public  void backTimer(){
+    	bt_getCode.setText(recLen+"");
+    	bt_getCode.setEnabled(false);
+
+    	final Timer t = new Timer();
+    	
+	    TimerTask task = new TimerTask() {    
+	        @Override    
+	        public void run() {    
+
+	           runOnUiThread(new Runnable() {      // UI thread    
+	                @Override    
+	                public void run() {    
+	                	
+	                    recLen--;    
+	                    bt_getCode.setText(recLen+"");
+	                    if(recLen < 0){    
+	                    	t.cancel();    
+	                    	bt_getCode.setText("获取验证码");
+	                    	bt_getCode.setEnabled(true);
+	                    	recLen = 30;
+	                    }    
+	                }    
+	            });    
+	        }    
+	    };
+
+    	t.schedule(task, 1000, 1000);
+	
+    }
+	
 
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+		case R.id.btf_auth:
+			
+			
+
+			backTimer();
+			
+			//获取验证码
+			String url  = String.format(PsUtils.urlCode_pas, PsUtils.getShared(context).getString("pass", ""));
+			
+			RequestParams rc = new RequestParams(url);
+			
+			PsUtils.send(rc, HttpMethod.GET, mHandler, context,  "获取验证中。。。",PsUtils.GET_CHECK_CODE);
+			
+			
+			break;
+		
+		
 		case R.id.bt_change:
 			
 			//etP 手机号码       etPa 手机密码
@@ -172,7 +236,7 @@ public class ForgotActivity extends BaseActivity implements OnClickListener {
 				e.printStackTrace();
 			}
 			
-			PsUtils.send(rp, HttpMethod.PUT, mHandler,context,"重设密码中。。。");
+			PsUtils.send(rp, HttpMethod.PUT, mHandler,context,"重设密码中。。。",PsUtils.SAVE_INFO);
 			
 			
 			break;
