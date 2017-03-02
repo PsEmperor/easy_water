@@ -2,6 +2,7 @@ package ps.emperor.easy_water.fragment;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
+import java.net.SocketTimeoutException;
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
@@ -49,6 +51,7 @@ import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.entity.UserBean;
 import ps.emperor.easy_water.entity.UserBean.infoList;
 import ps.emperor.easy_water.utils.CheckUtil;
+import ps.emperor.easy_water.utils.NetStatusUtil;
 import ps.emperor.easy_water.utils.PutToFile;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.utils.URL;
@@ -70,9 +73,9 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 	private Bitmap bitmap;
 	private ImageView image_info_head;
 	private MainActionBars actionBar;
-	private String names,units,tel,role;
+	private String names, units, tel, role;
 	private EditText name;
-	private TextView name_show,tv_info_units,tv_info_user_tel,tv_info_role;
+	private TextView name_show, tv_info_units, tv_info_user_tel, tv_info_role;
 	private ProgressDialog progressDialog;
 
 	@Override
@@ -82,12 +85,13 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 		View view = inflater.inflate(R.layout.fragment_mine_user_info,
 				container, false);
 
-		actionBar = (MainActionBars) view.findViewById(R.id.actionbar_user_info);
+		actionBar = (MainActionBars) view
+				.findViewById(R.id.actionbar_user_info);
 		actionBar.setLeftIcon(R.drawable.btn_back_selector);
 		actionBar.setRightText("保存");
 		actionBar.setTitle("个人信息");
 		actionBar.setActionBarOnClickListener(this);
-	        
+
 		ivHead = (RelativeLayout) view.findViewById(R.id.layout_info_head);// 用户头像
 		image_info_head = (ImageView) view.findViewById(R.id.image_info_ivhead); // 显示头像的image
 		user_tel = (RelativeLayout) view
@@ -96,122 +100,127 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 		info_role = (RelativeLayout) view.findViewById(R.id.layout_info_role);// 角色申请
 		info_user_name = (RelativeLayout) view
 				.findViewById(R.id.layout_info_user_name);// 用户姓名
-		
+
 		info_user_name.setOnClickListener(this);
 		info_role.setOnClickListener(this);
 		info_units.setOnClickListener(this);
 		ivHead.setOnClickListener(this);
 		user_tel.setOnClickListener(this);
-		
+
 		tv_info_units = (TextView) view.findViewById(R.id.tv_info_units);
 		tv_info_user_tel = (TextView) view.findViewById(R.id.tv_info_user_tel);
 		tv_info_role = (TextView) view.findViewById(R.id.tv_info_role);
-		
+
 		if (PutToFile.getBitmapFromFile() != null) {
 			image_info_head.setImageBitmap(PutToFile.getBitmapFromFile());
 		}
-		init();
+		if (NetStatusUtil.isNetValid(getActivity())) {
+			init();
+		} else {
+			Toast.makeText(getActivity(), "当前网络不可用！请检查您的网络状态！", Toast.LENGTH_SHORT)
+					.show();
+		}
 
 		name_show = (TextView) view.findViewById(R.id.tv_info_user_name);
 		name_show.setText(names);
 
 		return view;
 	}
-	
+
 	private void init() {
 		names = (String) SharedUtils.getParam(getActivity(),
 				"dialog_user_name", "	");
 		String str = "";
 		try {
-			str = java.net.URLEncoder.encode("12345","UTF-8");
+			str = java.net.URLEncoder.encode("12345", "UTF-8");
 		} catch (UnsupportedEncodingException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		RequestParams params = new RequestParams(URL.userInfo+"/"+str);    // 网址(请替换成实际的网址)  
-//		 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)  
+		RequestParams params = new RequestParams(URL.userInfo + "/" + str); // 网址(请替换成实际的网址)
+		// params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)
 		progressDialog = ProgressDialog.show(getActivity(), "Loading...",
 				"Please wait...", true, false);
 		JSONObject js_request = new JSONObject();
 		try {
 			params.setAsJsonContent(true);
-//			params.setBodyContent("{\"userId\":\"\",\"userName\":\"\",\"userPhone\":\"\",\"fullName\":\"二狗子\",\"authID\":\"\",\"pathtoPhoto\":\"\"}");
+			// params.setBodyContent("{\"userId\":\"\",\"userName\":\"\",\"userPhone\":\"\",\"fullName\":\"二狗子\",\"authID\":\"\",\"pathtoPhoto\":\"\"}");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-//			params.setAsJsonContent(true);
-//			params.setBodyContent("Content-Type: application/json"+js_request.toString());
-		}//根据实际需求添加相应键值对
-		
-	        x.http().request(HttpMethod.GET ,params, new CommonCallback<String>() {  
-	            @Override  
-	            public void onCancelled(CancelledException arg0) {  
-	                  
-	            }  
-	  
-	            // 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误  
-	            // 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看  
-	            @Override  
-	            public void onError(Throwable ex, boolean isOnCallback) {  
-	                  
-	                Toast.makeText(x.app(), ex.getMessage(), Toast.LENGTH_LONG).show();  
-	                if (ex instanceof HttpException) { // 网络错误  
-	                    HttpException httpEx = (HttpException) ex;  
-	                    int responseCode = httpEx.getCode();  
-	                    String responseMsg = httpEx.getMessage();  
-	                    String errorResult = httpEx.getResult();  
-	                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
-	                    // ...  
-	                    progressDialog.dismiss();
-	                } else { // 其他错误  
-	                    // ...  
-	                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
-	                	progressDialog.dismiss();
-	                }  
-	                  
-	            }  
-	  
-	            // 不管成功或者失败最后都会回调该接口  
-	            @Override  
-	            public void onFinished() {    
-	            }  
-	  
-	            @Override  
-	            public void onSuccess(String arg0) {  
-	                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
-	                  Gson gson = new Gson();
-	                  UserBean fromJson = gson.fromJson(arg0, UserBean.class);
-	                  List<infoList> infoList = fromJson.getAuthNameList();
-	                  if(!CheckUtil.IsEmpty(infoList)){
-	                	  names = infoList.get(0).getFullName();
-	                	  units = infoList.get(0).getAuthName();
-	                	  tel = infoList.get(0).getPhoneNum();
-	                	  role = infoList.get(0).getRoleName();
-	                	  if(!CheckUtil.IsEmpty(names)){
-	                		  name_show.setText(names);
-	                	  }else{
-	                		  name_show.setText("");
-	                	  }
-	                	  if(!CheckUtil.IsEmpty(units)){
-	                		  tv_info_units.setText(units);
-	                	  }else{
-	                		  tv_info_units.setText("");
-	                	  }
-	                	  if(!CheckUtil.IsEmpty(tel)){
-	                		  tv_info_user_tel.setText(tel);
-	                	  }else{
-	                		  tv_info_user_tel.setText("");
-	                	  }
-	                	  if(!CheckUtil.IsEmpty(role)){
-	                		  tv_info_role.setText(role);
-	                	  }else{
-	                		  tv_info_role.setText("");
-	                	  }
-	                  }
-	                  progressDialog.dismiss();
-	            }  
-	        }); 
-		
+			// params.setAsJsonContent(true);
+			// params.setBodyContent("Content-Type: application/json"+js_request.toString());
+		}// 根据实际需求添加相应键值对
+
+		x.http().request(HttpMethod.GET, params, new CommonCallback<String>() {
+			@Override
+			public void onCancelled(CancelledException arg0) {
+
+			}
+
+			// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+			// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+			@Override
+			public void onError(Throwable ex, boolean isOnCallback) {
+
+				Toast.makeText(x.app(), ex.getMessage(), Toast.LENGTH_LONG)
+						.show();
+				if (ex instanceof HttpException) { // 网络错误
+					HttpException httpEx = (HttpException) ex;
+					int responseCode = httpEx.getCode();
+					String errorResult = httpEx.getResult();
+					Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+					// ...
+					progressDialog.dismiss();
+				} else { // 其他错误
+					// ...
+					Toast.makeText(getActivity(), "网络请求超时！", Toast.LENGTH_SHORT);
+					progressDialog.dismiss();
+				}
+
+			}
+
+			// 不管成功或者失败最后都会回调该接口
+			@Override
+			public void onFinished() {
+			}
+
+			@Override
+			public void onSuccess(String arg0) {
+				Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
+				Gson gson = new Gson();
+				UserBean fromJson = gson.fromJson(arg0, UserBean.class);
+				List<infoList> infoList = fromJson.getAuthNameList();
+				if (!CheckUtil.IsEmpty(infoList)) {
+					names = infoList.get(0).getFullName();
+					units = infoList.get(0).getAuthName();
+					tel = infoList.get(0).getPhoneNum();
+					role = infoList.get(0).getRoleName();
+					if (!CheckUtil.IsEmpty(names)) {
+						name_show.setText(names);
+					} else {
+						name_show.setText("");
+					}
+					if (!CheckUtil.IsEmpty(units)) {
+						tv_info_units.setText(units);
+					} else {
+						tv_info_units.setText("");
+					}
+					if (!CheckUtil.IsEmpty(tel)) {
+						tv_info_user_tel.setText(tel);
+					} else {
+						tv_info_user_tel.setText("");
+					}
+					if (!CheckUtil.IsEmpty(role)) {
+						tv_info_role.setText(role);
+					} else {
+						tv_info_role.setText("");
+					}
+				}
+				progressDialog.dismiss();
+			}
+		});
+
 	}
 
 	@SuppressLint("ResourceAsColor")
@@ -220,19 +229,27 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 		FragmentManager fgManager = getFragmentManager();
 		FragmentTransaction transaction = fgManager.beginTransaction();
 		switch (v.getId()) {
-		case R.id.acitionbar_left://回退
+		case R.id.acitionbar_left:// 回退
 			MinesFragment fragment = new MinesFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
-//			transaction
-//					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
+			// transaction
+			// .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.setCustomAnimations(
+					R.anim.slide_fragment_horizontal_right_in,
+					R.anim.slide_fragment_horizontal_left_out);
 			transaction.replace(R.id.fl, fragment, "main");
 			transaction.commit();
+//			fgManager.popBackStack();
 			break;
 		case R.id.acitionbar_right:
-			RequestParams param1 = new RequestParams(URL.updateUserinfo);    // 网址(请替换成实际的网址)  
-//			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)  
+			if (!NetStatusUtil.isNetValid(getActivity())) {
+				Toast.makeText(getActivity(), "当前网络不可用！请检查您的网络状态！", Toast.LENGTH_SHORT)
+				.show();
+			} else {
+			RequestParams param1 = new RequestParams(URL.updateUserinfo); // 网址(请替换成实际的网址)
+			// params.addQueryStringParameter("key", "value"); //
+			// 参数(请替换成实际的参数与值)
 			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
 					"Please wait...", true, false);
 			JSONObject js_request = new JSONObject();
@@ -244,52 +261,59 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 				param1.setBodyContent(js_request.toString());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				param1.setBodyContent("Content-Type: application/json"+js_request.toString());
+				param1.setBodyContent("Content-Type: application/json"
+						+ js_request.toString());
 				e.printStackTrace();
 				param1.setAsJsonContent(true);
-			}//根据实际需求添加相应键值对
-			
-		        x.http().request(HttpMethod.PUT ,param1, new CommonCallback<String>() {  
-		            @Override  
-		            public void onCancelled(CancelledException arg0) {  
-		                  
-		            }  
-		  
-		            // 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误  
-		            // 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看  
-		            @Override  
-		            public void onError(Throwable ex, boolean isOnCallback) {  
-		                  
-		                Toast.makeText(x.app(), ex.getMessage(), Toast.LENGTH_LONG).show();  
-		                if (ex instanceof HttpException) { // 网络错误  
-		                    HttpException httpEx = (HttpException) ex;  
-		                    int responseCode = httpEx.getCode();  
-		                    String responseMsg = httpEx.getMessage();  
-		                    String errorResult = httpEx.getResult();  
-		                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
-		                    // ...  
-		                    progressDialog.dismiss();
-		                } else { // 其他错误  
-		                    // ...  
-		                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
-		                	progressDialog.dismiss();
-		                }  
-		                  
-		            }  
-		  
-		            // 不管成功或者失败最后都会回调该接口  
-		            @Override  
-		            public void onFinished() {    
-		            }  
-		  
-		            @Override  
-		            public void onSuccess(String arg0) {  
-		                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
-		                  progressDialog.dismiss();
-		            }  
-		        }); 
+			}// 根据实际需求添加相应键值对
+
+			x.http().request(HttpMethod.PUT, param1,
+					new CommonCallback<String>() {
+						@Override
+						public void onCancelled(CancelledException arg0) {
+
+						}
+
+						// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+						// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+						@Override
+						public void onError(Throwable ex, boolean isOnCallback) {
+
+							Toast.makeText(x.app(), ex.getMessage(),
+									Toast.LENGTH_LONG).show();
+							if (ex instanceof HttpException) { // 网络错误
+								HttpException httpEx = (HttpException) ex;
+								int responseCode = httpEx.getCode();
+								String responseMsg = httpEx.getMessage();
+								String errorResult = httpEx.getResult();
+								Toast.makeText(getActivity(), "请求失败",
+										Toast.LENGTH_SHORT);
+								// ...
+								progressDialog.dismiss();
+							} else { // 其他错误
+								// ...
+								Toast.makeText(getActivity(), "请求失败",
+										Toast.LENGTH_SHORT);
+								progressDialog.dismiss();
+							}
+
+						}
+
+						// 不管成功或者失败最后都会回调该接口
+						@Override
+						public void onFinished() {
+						}
+
+						@Override
+						public void onSuccess(String arg0) {
+							Toast.makeText(getActivity(), "请求成功",
+									Toast.LENGTH_SHORT);
+							progressDialog.dismiss();
+						}
+					});
+			}
 			break;
-		case R.id.layout_info_head://头像上传
+		case R.id.layout_info_head:// 头像上传
 			if (popupWindow == null) {
 				View view = mInflater
 						.inflate(R.layout.layout_accout_popu, null);
@@ -298,18 +322,20 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 						ViewGroup.LayoutParams.WRAP_CONTENT);
 				popupWindow.setAnimationStyle(R.style.mypopwindow_anim_style);
 				popupWindow.setFocusable(true);
-				WindowManager.LayoutParams params=getActivity().getWindow().getAttributes();  
-		        params.alpha=0.7f;  
-		        getActivity().getWindow().setAttributes(params);  
+				WindowManager.LayoutParams params = getActivity().getWindow()
+						.getAttributes();
+				params.alpha = 0.7f;
+				getActivity().getWindow().setAttributes(params);
 				popupWindow.setOnDismissListener(new OnDismissListener() {
-					
+
 					@Override
 					public void onDismiss() {
-						 popupWindow.dismiss();     
-					      popupWindow = null;     
-					      WindowManager.LayoutParams params=getActivity().getWindow().getAttributes();  
-					      params.alpha=1f;  
-					      getActivity().getWindow().setAttributes(params);  
+						popupWindow.dismiss();
+						popupWindow = null;
+						WindowManager.LayoutParams params = getActivity()
+								.getWindow().getAttributes();
+						params.alpha = 1f;
+						getActivity().getWindow().setAttributes(params);
 					}
 				});
 				popupWindow.setBackgroundDrawable(new ColorDrawable());
@@ -320,12 +346,12 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 				view.findViewById(R.id.text_user_info_canel)
 						.setOnClickListener(changlistener);
 			}
-			
+
 			popupWindow.showAtLocation(
 					getActivity().findViewById(R.id.account), Gravity.BOTTOM,
 					0, 0);
 			break;
-		case R.id.layout_info_user_name: //姓名弹出dialog
+		case R.id.layout_info_user_name: // 姓名弹出dialog
 			Builder builder = new Builder(getActivity());
 
 			final View contentview = LayoutInflater.from(getActivity())
@@ -334,20 +360,23 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 					new android.content.DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							
+
 							name = (EditText) contentview
 									.findViewById(R.id.edit_mine_user_name);
 							String names = name.getText().toString().trim();
-							if(checkNameChese(names) == true && !CheckUtil.IsEmpty(names)){
+							if (checkNameChese(names) == true
+									&& !CheckUtil.IsEmpty(names)) {
 								name.setText(names);
 								name_show.setText(names);
 								SharedUtils.setParam(getActivity(),
 										"dialog_user_name", names);
-							}else{
-								if(CheckUtil.IsEmpty(names)){
-								Toast.makeText(getActivity(), "姓名不能为空！", Toast.LENGTH_SHORT).show();
-								}else{
-								Toast.makeText(getActivity(), "请输入正确的姓名！", Toast.LENGTH_SHORT).show();
+							} else {
+								if (CheckUtil.IsEmpty(names)) {
+									Toast.makeText(getActivity(), "姓名不能为空！",
+											Toast.LENGTH_SHORT).show();
+								} else {
+									Toast.makeText(getActivity(), "请输入正确的姓名！",
+											Toast.LENGTH_SHORT).show();
 								}
 							}
 						}
@@ -359,27 +388,33 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 			MineUserTelFragment fragment1 = new MineUserTelFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
-			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
-			transaction.replace(R.id.fl, fragment1, "main");
+			transaction.setCustomAnimations(
+					R.anim.slide_fragment_horizontal_left_in,
+					R.anim.slide_fragment_horizontal_right_out);
+			transaction.add(R.id.fl, fragment1, "main").addToBackStack(null);
 			transaction.commit();
 			break;
 		case R.id.layout_info_units: // 授权单位
 			MineUserUnitFragment fragment2 = new MineUserUnitFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
-			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
-			transaction.replace(R.id.fl, fragment2, "main");
+			transaction.setCustomAnimations(
+					R.anim.slide_fragment_horizontal_left_in,
+					R.anim.slide_fragment_horizontal_right_out);
+			transaction.add(R.id.fl, fragment2, "main").addToBackStack(null);
 			transaction.commit();
 			break;
 		case R.id.layout_info_role: // 角色申请
-			if(CheckUtil.IsEmpty(units)){
-				
-			}else{
+			if (CheckUtil.IsEmpty(units)) {
+
+			} else {
 				MineUserRoleFragment fragment3 = new MineUserRoleFragment();
 				// transaction.setCustomAnimations(R.anim.right_in,
 				// R.anim.right_out);
-				transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
-				transaction.replace(R.id.fl, fragment3, "main");
+				transaction.setCustomAnimations(
+						R.anim.slide_fragment_horizontal_left_in,
+						R.anim.slide_fragment_horizontal_right_out);
+				transaction.add(R.id.fl, fragment3, "main").addToBackStack(null);
 				transaction.commit();
 			}
 			break;
@@ -387,10 +422,10 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 			break;
 		}
 	}
-		
+
 	protected void setOnKeyListener(OnKeyListener onKeyListener) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private View.OnClickListener changlistener = new View.OnClickListener() {
@@ -405,8 +440,8 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 				popupWindow.dismiss();
 				break;
 			case R.id.text_user_info_photo_album:// 相册取出
-					startActivityForResult(getPhonePic(), 1080);
-					popupWindow.dismiss();
+				startActivityForResult(getPhonePic(), 1080);
+				popupWindow.dismiss();
 				break;
 			case R.id.text_user_info_canel:
 				popupWindow.dismiss();
@@ -438,60 +473,61 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 				PutToFile.putToFile(bitmap);
 			}
 		} else if (requestCode == 1080) {
-			if(!CheckUtil.IsEmpty(data)){
+			if (!CheckUtil.IsEmpty(data)) {
 				Bundle bundle = data.getExtras();
-				if(!CheckUtil.IsEmpty(bundle)){
+				if (!CheckUtil.IsEmpty(bundle)) {
 					bitmap = (Bitmap) bundle.get("data");
 					if (!CheckUtil.IsEmpty(bitmap)) {
 						image_info_head.setImageBitmap(bitmap);
 						SharedUtils.setParam(getActivity(), "ivHead", bitmap);
 						PutToFile.putToFile(bitmap);
 					} else {
-						image_info_head.setImageResource(R.drawable.ic_launcher);
+						image_info_head
+								.setImageResource(R.drawable.ic_launcher);
 					}
-				}else{
-					Toast.makeText(getActivity(), "未选中任何图片", Toast.LENGTH_SHORT).show();
+				} else {
+					Toast.makeText(getActivity(), "未选中任何图片", Toast.LENGTH_SHORT)
+							.show();
 				}
-				}
+			}
 		}
 		// sendIcon();
 	}
-	
-	 /**
-     * 判定输入汉字
-     * @param c
-     * @return
-     */
-    public  boolean isChinese(char c) {
-    Character.UnicodeBlock ub = Character.UnicodeBlock.of(c);
-    if (ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS
-         || ub == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS
-        || ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A
-        || ub == Character.UnicodeBlock.GENERAL_PUNCTUATION
-        || ub == Character.UnicodeBlock.CJK_SYMBOLS_AND_PUNCTUATION
-        || ub == Character.UnicodeBlock.HALFWIDTH_AND_FULLWIDTH_FORMS) {
-        return true;
-    }
-    return false;
-}
-    
-    /**
-     * 检测String是否全是中文
-     * @param name
-     * @return
-     */
-	 public  boolean checkNameChese(String name)
-	   {
-	           boolean res=true;
-	           char [] cTemp = name.toCharArray(); 
-	           for(int i=0;i<name.length();i++)
-	           {
-	                   if(!isChinese(cTemp[i]))
-	                   {
-	                           res=false;
-	                           break;
-	                   }
-	           }           
-	           return res;
-	   }
+
+	/**
+	 * 判定输入汉字
+	 * 
+	 * @param c
+	 * @return
+	 */
+	public boolean isChinese(char c) {
+		Character.UnicodeBlock ub = Character.UnicodeBlock.of(c);
+		if (ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS
+				|| ub == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS
+				|| ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A
+				|| ub == Character.UnicodeBlock.GENERAL_PUNCTUATION
+				|| ub == Character.UnicodeBlock.CJK_SYMBOLS_AND_PUNCTUATION
+				|| ub == Character.UnicodeBlock.HALFWIDTH_AND_FULLWIDTH_FORMS) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * 检测String是否全是中文
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public boolean checkNameChese(String name) {
+		boolean res = true;
+		char[] cTemp = name.toCharArray();
+		for (int i = 0; i < name.length(); i++) {
+			if (!isChinese(cTemp[i])) {
+				res = false;
+				break;
+			}
+		}
+		return res;
+	}
 }

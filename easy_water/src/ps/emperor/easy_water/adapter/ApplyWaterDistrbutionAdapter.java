@@ -33,7 +33,6 @@ public class ApplyWaterDistrbutionAdapter extends MyBaseAdapter<infoList> implem
 			convertView = inflater.inflate(R.layout.fragment_apply_water_distrbution_list, null);
 			viewHolder = new ViewHolder();
 			viewHolder.units = (TextView) convertView.findViewById(R.id.text_apply_water_units);
-			viewHolder.gate = (TextView) convertView.findViewById(R.id.text_apply_water_gate);
 			viewHolder.whether = (TextView) convertView.findViewById(R.id.text_apply_water_whether);
 			convertView.setTag(viewHolder);
 		} else {

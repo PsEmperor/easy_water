@@ -45,11 +45,13 @@ public class ApplyWaterDistrbutionPalnFragment extends Fragment implements
 		OnClickListener {
 	private MainActionBar actionBar;
 	private LayoutInflater mInflater;
-	private RelativeLayout layout_apply_water_distrbution_plan,layout_plan_hight;
-	private TextView tv_plan_start,tv_plan_end,tv_plan_hight;
+	private RelativeLayout layout_apply_water_distrbution_plan,
+			layout_plan_hight;
+	private TextView tv_plan_start, tv_plan_end, tv_plan_hight;
 	private Dialog dialog;
 	private int id;
-	private String year,minutes, month, hours, minute, hour, day,timestart,timeend;
+	private String year, minutes, month, hours, minute, hour, day, timestart,
+			timeend;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,18 +68,23 @@ public class ApplyWaterDistrbutionPalnFragment extends Fragment implements
 		actionBar.setRightGone();
 		actionBar.setTitle("配水计划");
 		actionBar.setActionBarOnClickListener(this);
-		
+
 		init();
-		
-		layout_apply_water_distrbution_plan = (RelativeLayout) view.findViewById(R.id.layout_apply_water_distrbution_plan);
+
+		layout_apply_water_distrbution_plan = (RelativeLayout) view
+				.findViewById(R.id.layout_apply_water_distrbution_plan);
 		layout_apply_water_distrbution_plan.setOnClickListener(this);
-		layout_plan_hight = (RelativeLayout) view.findViewById(R.id.layout_apply_water_distrbution_plan_hight);
+		layout_plan_hight = (RelativeLayout) view
+				.findViewById(R.id.layout_apply_water_distrbution_plan_hight);
 		layout_plan_hight.setOnClickListener(this);
-		
-		tv_plan_start = (TextView) view.findViewById(R.id.text_apply_water_distrbution_plan_start);
-		tv_plan_end = (TextView) view.findViewById(R.id.text_apply_water_distrbution_plan_end);
-		tv_plan_hight = (TextView)view.findViewById(R.id.text_apply_water_distrbution_plan_hight);
-		
+
+		tv_plan_start = (TextView) view
+				.findViewById(R.id.text_apply_water_distrbution_plan_start);
+		tv_plan_end = (TextView) view
+				.findViewById(R.id.text_apply_water_distrbution_plan_end);
+		tv_plan_hight = (TextView) view
+				.findViewById(R.id.text_apply_water_distrbution_plan_hight);
+
 		Date date = new Date();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		try {
@@ -88,11 +95,11 @@ public class ApplyWaterDistrbutionPalnFragment extends Fragment implements
 		date.setHours(date.getHours() + Integer.valueOf(hours));
 		date.setMinutes(date.getMinutes() + Integer.valueOf(minutes));
 		timeend = format.format(date);
-		
-		if(CheckUtil.IsEmpty(timestart)){
+
+		if (CheckUtil.IsEmpty(timestart)) {
 			tv_plan_start.setText("0000-00-00 00:00");
 			tv_plan_end.setText("0000-00-00 00:00");
-		}else{
+		} else {
 			if (timestart.equals("0-0-0 0:0")) {
 				tv_plan_start.setText("0000-00-00 00:00");
 				tv_plan_end.setText("0000-00-00 00:00");
@@ -101,14 +108,14 @@ public class ApplyWaterDistrbutionPalnFragment extends Fragment implements
 				tv_plan_end.setText(timeend);
 			}
 		}
-		
+
 		return view;
 	}
 
 	@Override
 	public void onResume() {
 		init();
-		
+
 		Date date = new Date();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		try {
@@ -119,11 +126,11 @@ public class ApplyWaterDistrbutionPalnFragment extends Fragment implements
 		date.setHours(date.getHours() + Integer.valueOf(hours));
 		date.setMinutes(date.getMinutes() + Integer.valueOf(minutes));
 		timeend = format.format(date);
-		
-		if(CheckUtil.IsEmpty(timestart)){
+
+		if (CheckUtil.IsEmpty(timestart)) {
 			tv_plan_start.setText("0000-00-00 00:00");
 			tv_plan_end.setText("0000-00-00 00:00");
-		}else{
+		} else {
 			if (timestart.equals("0-0-0 0:0")) {
 				tv_plan_start.setText("0000-00-00 00:00");
 				tv_plan_end.setText("0000-00-00 00:00");
@@ -134,18 +141,22 @@ public class ApplyWaterDistrbutionPalnFragment extends Fragment implements
 		}
 		super.onResume();
 	}
-	
+
 	private void init() {
 		year = (String) SharedUtils.getParam(getActivity(), "water_year", "0");
-		month = (String) SharedUtils.getParam(getActivity(), "water_month", "0");
+		month = (String) SharedUtils
+				.getParam(getActivity(), "water_month", "0");
 		day = (String) SharedUtils.getParam(getActivity(), "water_day", "0");
 		hour = (String) SharedUtils.getParam(getActivity(), "water_hour", "0");
-		minute = (String) SharedUtils.getParam(getActivity(), "water_minute", "0");
-		hours = (String) SharedUtils.getParam(getActivity(), "water_hours", "0");
-		minutes = (String) SharedUtils.getParam(getActivity(), "water_minutes", "0");
+		minute = (String) SharedUtils.getParam(getActivity(), "water_minute",
+				"0");
+		hours = (String) SharedUtils
+				.getParam(getActivity(), "water_hours", "0");
+		minutes = (String) SharedUtils.getParam(getActivity(), "water_minutes",
+				"0");
 
 		timestart = year + "-" + month + "-" + day + " " + hour + ":" + minute;
-		}
+	}
 
 	@Override
 	public void onClick(View v) {
@@ -162,7 +173,8 @@ public class ApplyWaterDistrbutionPalnFragment extends Fragment implements
 			transaction.commit();
 			break;
 		case R.id.layout_apply_water_distrbution_plan:
-			Intent intent = new Intent(getActivity(), TimeAvtivityDialogWater.class);
+			Intent intent = new Intent(getActivity(),
+					TimeAvtivityDialogWater.class);
 			startActivity(intent);
 			break;
 		case R.id.layout_apply_water_distrbution_plan_hight:
@@ -172,6 +184,7 @@ public class ApplyWaterDistrbutionPalnFragment extends Fragment implements
 			break;
 		}
 	}
+
 	/**
 	 * @Description: TODO 弹出日期时间选择器
 	 */
@@ -198,8 +211,8 @@ public class ApplyWaterDistrbutionPalnFragment extends Fragment implements
 
 			@Override
 			public void onClick(View v) {
-				tv_plan_hight.setText(wv_hours.getCurrentItem()+"％");
-				
+				tv_plan_hight.setText(wv_hours.getCurrentItem() + "％");
+
 				// TODO Auto-generated method stub
 				// 如果是个数,则显示为"02"的样式
 				// 设置日期的显示
@@ -225,5 +238,5 @@ public class ApplyWaterDistrbutionPalnFragment extends Fragment implements
 		dialog.setContentView(view);
 		dialog.show();
 	}
-	
+
 }

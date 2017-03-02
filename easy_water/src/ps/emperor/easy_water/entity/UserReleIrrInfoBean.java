@@ -25,7 +25,16 @@ public class UserReleIrrInfoBean {
     	private int StatusCode;
     	private String FirstDerviceID;
     	private String IrriUnitName;
-    	public String getAuthName() {
+    	private String IrriState;
+    	
+    	
+    	public String getIrriState() {
+			return IrriState;
+		}
+		public void setIrriState(String irriState) {
+			IrriState = irriState;
+		}
+		public String getAuthName() {
 			return AuthName;
 		}
 		public void setAuthName(String authName) {

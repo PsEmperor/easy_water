@@ -28,6 +28,9 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:singleLine="true"
             android:text="141团6连1#地块"
             android:textColor="@color/black" />
 
@@ -44,7 +47,7 @@
             android:layout_weight="1" >
 
             <ImageView
-                android:id="@+id/textView1"
+                android:id="@+id/image_apply_irriagte_valve_control_unit"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
@@ -55,13 +58,13 @@
                 android:layout_marginBottom="20dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:src="@drawable/value_on" />
+                android:src="@drawable/value_selected" />
 
             <TextView
                 android:id="@+id/tv_ChanNum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/textView1"
+                android:layout_alignBottom="@+id/image_apply_irriagte_valve_control_unit"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="18dp"
                 android:text="1-1" 
@@ -78,7 +81,7 @@
                 android:id="@+id/image_irriagte_valve_control_isopen"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/on" />
+                android:src="@drawable/off" />
         </RelativeLayout>
     </LinearLayout>
 
@@ -267,10 +270,10 @@
             android:id="@+id/text_apply_irriagte_valve_control"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textView10"
-            android:layout_alignBottom="@+id/textView10"
+            android:layout_alignBaseline="@+id/image_apply_irriagte_valve_control_unit0"
+            android:layout_alignBottom="@+id/image_apply_irriagte_valve_control_unit0"
             android:layout_marginLeft="40dp"
-            android:layout_toRightOf="@+id/textView10"
+            android:layout_toRightOf="@+id/image_apply_irriagte_valve_control_unit0"
             android:text="00:00"
             android:textColor="@color/red"
             android:textSize="15sp"
@@ -279,7 +282,7 @@
             android:drawablePadding="15dp"/>
 
         <TextView
-            android:id="@+id/textView10"
+            android:id="@+id/image_apply_irriagte_valve_control_unit0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"

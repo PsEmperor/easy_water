@@ -30,7 +30,9 @@ public class IrrigationProjectDao extends AbstractDao<IrrigationProject, Long> {
         public final static Property Projectstart = new Property(4, String.class, "projectstart", false, "PROJECTSTART");
         public final static Property Projectduration = new Property(5, String.class, "projectduration", false, "PROJECTDURATION");
         public final static Property Projectend = new Property(6, String.class, "projectend", false, "PROJECTEND");
-        public final static Property Projectsole = new Property(7, Integer.class, "projectsole", false, "PROJECTSOLE");
+        public final static Property Projectrest = new Property(7, String.class, "projectrest", false, "PROJECTREST");
+        public final static Property Modification = new Property(8, Integer.class, "modification", false, "MODIFICATION");
+        public final static Property Projectsole = new Property(9, Integer.class, "projectsole", false, "PROJECTSOLE");
     };
 
 
@@ -53,7 +55,9 @@ public class IrrigationProjectDao extends AbstractDao<IrrigationProject, Long> {
                 "'PROJECTSTART' TEXT," + // 4: projectstart
                 "'PROJECTDURATION' TEXT," + // 5: projectduration
                 "'PROJECTEND' TEXT," + // 6: projectend
-                "'PROJECTSOLE' INTEGER);"); // 7: projectsole
+                "'PROJECTREST' TEXT," + // 7: projectrest
+                "'MODIFICATION' INTEGER," + // 8: modification
+                "'PROJECTSOLE' INTEGER);"); // 9: projectsole
     }
 
     /** Drops the underlying database table. */
@@ -102,9 +106,19 @@ public class IrrigationProjectDao extends AbstractDao<IrrigationProject, Long> {
             stmt.bindString(7, projectend);
         }
  
+        String projectrest = entity.getProjectrest();
+        if (projectrest != null) {
+            stmt.bindString(8, projectrest);
+        }
+ 
+        Integer modification = entity.getModification();
+        if (modification != null) {
+            stmt.bindLong(9, modification);
+        }
+ 
         Integer projectsole = entity.getProjectsole();
         if (projectsole != null) {
-            stmt.bindLong(8, projectsole);
+            stmt.bindLong(10, projectsole);
         }
     }
 
@@ -125,7 +139,9 @@ public class IrrigationProjectDao extends AbstractDao<IrrigationProject, Long> {
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // projectstart
             cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // projectduration
             cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // projectend
-            cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7) // projectsole
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // projectrest
+            cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // modification
+            cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9) // projectsole
         );
         return entity;
     }
@@ -140,7 +156,9 @@ public class IrrigationProjectDao extends AbstractDao<IrrigationProject, Long> {
         entity.setProjectstart(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setProjectduration(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
         entity.setProjectend(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setProjectsole(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
+        entity.setProjectrest(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setModification(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
+        entity.setProjectsole(cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9));
      }
     
     /** @inheritdoc */

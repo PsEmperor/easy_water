@@ -21,19 +21,19 @@ public class UserReleIrrInfoToOneBean {
 
     public static class infoList {
 
-    	private String IrriSeasonStart;
-    	private String FirstDerviceID;
-    	private String ValueNum;
-    	private String Area;
-    	private String IrriSeasonEnd;
-    	private String IrriUnitName;
-    	private String MaxGroup;
-    	private String Latitude;
-    	private String Longitude;
-    	private String RestStart;
-    	private String RestEnd;
-    	private String SuperEqu;
-		private String FlushTime;
+    	private String IrriSeasonStart;//灌季开始
+    	private String FirstDerviceID;//设备ID
+    	private String ValueNum;//最大阀门
+    	private String Area;//面积
+    	private String IrriSeasonEnd;//灌季结束
+    	private String IrriUnitName;//灌溉单元名称
+    	private String MaxGroup;//最大组
+    	private String Latitude;//S
+    	private String Longitude;//N
+    	private String RestStart;//夜间休息开始
+    	private String RestEnd;//夜间休息结束
+    	private String SuperEqu;//上级设备
+		private String FlushTime;//反过滤冲洗时间
 		private String LongestTime;
 
 		public String getLongestTime() {

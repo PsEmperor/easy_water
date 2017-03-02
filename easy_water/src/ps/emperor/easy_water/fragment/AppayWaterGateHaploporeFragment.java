@@ -20,6 +20,7 @@ import ps.emperor.easy_water.entity.ApplyWaterGateLinkageBean;
 import ps.emperor.easy_water.entity.FindDisWaterInfoOneBean.DisWaterInfoBean;
 import ps.emperor.easy_water.entity.FindDisWaterInfoOneBean.SluiceGateInfoBean;
 import ps.emperor.easy_water.utils.DensityUtil;
+import ps.emperor.easy_water.utils.NetStatusUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.MainActionBar;
@@ -133,6 +134,10 @@ public class AppayWaterGateHaploporeFragment extends Fragment implements
 			transaction.commit();
 			break;
 		case R.id.acitionbar_right:
+			if (!NetStatusUtil.isNetValid(getActivity())) {
+				Toast.makeText(getActivity(), "当前网络不可用！请检查您的网络状态！", Toast.LENGTH_SHORT)
+				.show();
+			} else {
 			if(all == 0){
 				RequestParams param2 = new RequestParams(URL.openProportionOne);  // 网址(请替换成实际的网址) 
 //				 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
@@ -258,7 +263,7 @@ public class AppayWaterGateHaploporeFragment extends Fragment implements
 			            }  
 			  
 			            @Override  
-			            public void onSuccess(String arg0) {  
+								public void onSuccess(String arg0) {  
 			                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
 			                  Gson gson = new Gson();
 			                  System.out.println(arg0);
@@ -282,6 +287,7 @@ public class AppayWaterGateHaploporeFragment extends Fragment implements
 			      			transaction.commit();
 			            }  
 			        }); 
+			}
 			}
 			break;
 		}

@@ -33,7 +33,7 @@ public class PreludeBean {
         private String pumpEquID;	 //水泵ID
         private String filterEquID;	 //过滤器ID
         private String firstDerviceID;	 //首部ID
-        private String fertilizerSwitch;	 //首部ID
+        private String fertilizerSwitch;	 //施肥机ID
 		
         public String getPumpSwitch() {
 			return pumpSwitch;

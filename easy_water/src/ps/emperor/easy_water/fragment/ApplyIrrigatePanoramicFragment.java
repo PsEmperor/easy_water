@@ -32,6 +32,7 @@ import ps.emperor.easy_water.entity.ApplyIrrigateSingleValveBean.infoList;
 import ps.emperor.easy_water.entity.MainTainIrrigationInfoBean;
 import ps.emperor.easy_water.entity.UserReleIrrInfoToOneBean;
 import ps.emperor.easy_water.utils.CheckUtil;
+import ps.emperor.easy_water.utils.NetStatusUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.MainActionBar;
@@ -63,9 +64,8 @@ public class ApplyIrrigatePanoramicFragment extends Fragment implements
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		mInflater = inflater;
-		View view = inflater
-				.inflate(R.layout.fragment_maintain_panoramic,
-						container, false);
+		View view = inflater.inflate(R.layout.fragment_maintain_panoramic,
+				container, false);
 		actionBar = (MainActionBar) view
 				.findViewById(R.id.actionbar_main_panoramic);
 		actionBar.setLeftIcon(R.drawable.btn_back_selector);
@@ -73,10 +73,16 @@ public class ApplyIrrigatePanoramicFragment extends Fragment implements
 		actionBar.setTitle("全局浏览");
 		actionBar.setActionBarOnClickListener(this);
 
-		gridView = (MyGridView) view
-				.findViewById(R.id.grid_maintain_panoramic);
+		gridView = (MyGridView) view.findViewById(R.id.grid_maintain_panoramic);
 		adapter2 = new ApplyIrrigateSingleValveAdapter(getActivity());
-		init();
+
+		if (NetStatusUtil.isNetValid(getActivity())) {
+			init();
+		} else {
+			Toast.makeText(getActivity(), "当前网络不可用！请检查您的网络状态！", Toast.LENGTH_SHORT)
+					.show();
+		}
+
 		return view;
 
 	}
@@ -92,8 +98,9 @@ public class ApplyIrrigatePanoramicFragment extends Fragment implements
 		} catch (UnsupportedEncodingException e1) {
 			e1.printStackTrace();
 		}
-		RequestParams param3 = new RequestParams(URL.findIrriUnitChan+str1+ "/" + str2);  // 网址(请替换成实际的网址) 
-//		 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
+		RequestParams param3 = new RequestParams(URL.findIrriUnitChan + str1
+				+ "/" + str2); // 网址(请替换成实际的网址)
+		// params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)
 		progressDialog = ProgressDialog.show(getActivity(), "Loading...",
 				"Please wait...", true, false);
 		JSONObject js_request2 = new JSONObject();
@@ -102,59 +109,61 @@ public class ApplyIrrigatePanoramicFragment extends Fragment implements
 		} catch (Exception e) {
 			e.printStackTrace();
 			param3.setAsJsonContent(true);
-		}//根据实际需求添加相应键值对
-		
-	        x.http().request(HttpMethod.GET ,param3, new CommonCallback<String>() {  
-	            @Override  
-	            public void onCancelled(CancelledException arg0) {  
-	                  
-	            }  
-	  
-	         // 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误  
-	            // 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看  
-	            @Override  
-	            public void onError(Throwable ex, boolean isOnCallback) {  
-	                  
-	                Toast.makeText(x.app(), ex.getMessage(), Toast.LENGTH_LONG).show();  
-	                if (ex instanceof HttpException) { // 网络错误    
-	                    HttpException httpEx = (HttpException) ex;  
-	                    int responseCode = httpEx.getCode();  
-	                    String responseMsg = httpEx.getMessage();  
-	                    String errorResult = httpEx.getResult();  
-	                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
-	                    // ...  
-	                    progressDialog.dismiss();
-	                } else { // 其他错误    
-	                    // ...  
-	                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
-	                	progressDialog.dismiss();
-	                }  
-	                  
-	            }  
-	  
-	         // 不管成功或者失败最后都会回调该接口  
-	            @Override  
-	            public void onFinished() {    
-	            }  
-	  
-	            @Override  
-	            public void onSuccess(String arg0) {  
-	                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
-	                  Gson gson = new Gson();
-	                  System.out.println(arg0);
-	                  ApplyIrrigateSingleValveBean fromJson = gson.fromJson(arg0, ApplyIrrigateSingleValveBean.class);
-//	                  authorizedBeen = new AuthorizedBeen();
-//	                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
-	                  beans = fromJson.getAuthNameList();
-	                  if(!CheckUtil.IsEmpty(beans)){
-	                	  adapter2.addData(beans, true);
-	                	  gridView.setAdapter(adapter2);
-	                	  gridView.setVerticalSpacing(5);
-	                	  gridView.setPadding(10, 10, 5, 10);
-	                  }
-	                  progressDialog.dismiss();
-	            }  
-	        }); 
+		}// 根据实际需求添加相应键值对
+
+		x.http().request(HttpMethod.GET, param3, new CommonCallback<String>() {
+			@Override
+			public void onCancelled(CancelledException arg0) {
+
+			}
+
+			// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+			// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+			@Override
+			public void onError(Throwable ex, boolean isOnCallback) {
+
+				Toast.makeText(x.app(), ex.getMessage(), Toast.LENGTH_LONG)
+						.show();
+				if (ex instanceof HttpException) { // 网络错误 
+					HttpException httpEx = (HttpException) ex;
+					int responseCode = httpEx.getCode();
+					String responseMsg = httpEx.getMessage();
+					String errorResult = httpEx.getResult();
+					Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+					// ...
+					progressDialog.dismiss();
+				} else { // 其他错误 
+					// ...
+					Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+					progressDialog.dismiss();
+				}
+
+			}
+
+			// 不管成功或者失败最后都会回调该接口
+			@Override
+			public void onFinished() {
+			}
+
+			@Override
+			public void onSuccess(String arg0) {
+				Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
+				Gson gson = new Gson();
+				System.out.println(arg0);
+				ApplyIrrigateSingleValveBean fromJson = gson.fromJson(arg0,
+						ApplyIrrigateSingleValveBean.class);
+				// authorizedBeen = new AuthorizedBeen();
+				// authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
+				beans = fromJson.getAuthNameList();
+				if (!CheckUtil.IsEmpty(beans)) {
+					adapter2.addData(beans, true);
+					gridView.setAdapter(adapter2);
+					gridView.setVerticalSpacing(5);
+					gridView.setPadding(10, 10, 5, 10);
+				}
+				progressDialog.dismiss();
+			}
+		});
 	}
 
 	@Override
@@ -166,14 +175,16 @@ public class ApplyIrrigatePanoramicFragment extends Fragment implements
 			MainTainIrrigateInfoFragment fragment = new MainTainIrrigateInfoFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
-			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
-			transaction.replace(R.id.fragment_maintain_present_irrigate, fragment, "main");
+			transaction.setCustomAnimations(
+					R.anim.slide_fragment_horizontal_right_in,
+					R.anim.slide_fragment_horizontal_left_out);
+			transaction.replace(R.id.fragment_maintain_present_irrigate,
+					fragment, "main");
 			transaction.commit();
 			break;
 		default:
 			break;
 		}
 	}
-
 
 }

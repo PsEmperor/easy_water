@@ -34,6 +34,7 @@ import ps.emperor.easy_water.entity.UserReleDisInfoBean;
 import ps.emperor.easy_water.entity.UserReleDisInfoBean.infoList;
 import ps.emperor.easy_water.entity.UserReleIrrInfoBean;
 import ps.emperor.easy_water.utils.CheckUtil;
+import ps.emperor.easy_water.utils.NetStatusUtil;
 import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.MainActionBar;
 
@@ -68,7 +69,12 @@ public class MineWaterDistributionFragment extends Fragment implements
 		actionBar.setActionBarOnClickListener(this);
 		listView = (ListView) view.findViewById(R.id.list_irrigation_equipment);
 		adapter = new IrrigationEquipmentDisAdapter(getActivity());
-		init();
+		if (NetStatusUtil.isNetValid(getActivity())) {
+			init();
+		} else {
+			Toast.makeText(getActivity(), "当前网络不可用！请检查您的网络状态！",
+					Toast.LENGTH_SHORT).show();
+		}
 		return view;
 	}
 

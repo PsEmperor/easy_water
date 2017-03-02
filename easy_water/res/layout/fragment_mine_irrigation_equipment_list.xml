@@ -15,6 +15,8 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
+            android:layout_marginRight="80dp"
+            android:singleLine="true"
             android:text="141团5连7#地块4#灌溉单元" 
             android:textSize="14sp"
             android:textColor="@color/gray_1"/>

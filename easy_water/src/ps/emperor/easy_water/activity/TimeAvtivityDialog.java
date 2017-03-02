@@ -7,17 +7,30 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import org.json.JSONObject;
+import org.xutils.x;
+import org.xutils.common.Callback.CancelledException;
+import org.xutils.common.Callback.CommonCallback;
+import org.xutils.ex.HttpException;
+import org.xutils.http.HttpMethod;
+import org.xutils.http.RequestParams;
+
+import com.google.gson.Gson;
+
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.Interface.OnWheelChangedListener;
 import ps.emperor.easy_water.BaseActivity;
 import ps.emperor.easy_water.adapter.NumbericWheelAdapter;
 import ps.emperor.easy_water.greendao.DBHelper;
 import ps.emperor.easy_water.greendao.IrrigationProject;
+import ps.emperor.easy_water.utils.NetStatusUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
+import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.WheelView;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -52,6 +65,7 @@ public class TimeAvtivityDialog extends BaseActivity implements OnClickListener 
 	private int nowItem, nowPages, isOne, isSkip,isSkips, position;
 	private DBHelper dbHelper;
 	private List<IrrigationProject> listentity;
+	private ProgressDialog progressDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -249,100 +263,161 @@ public class TimeAvtivityDialog extends BaseActivity implements OnClickListener 
 			if(hours.getCurrentItem()==0&&minutes.getCurrentItem()==0){
 				Toast.makeText(this, "请设置正确的持续时间！", Toast.LENGTH_SHORT).show();
 			}else if (isBefore == 1) {
-				listentity = dbHelper.loadLastMsgBySessionids(units);
-				Calendar cal = Calendar.getInstance();// 当前日期
-				// 从数据库中查出点击的该项对应的计划结束时间
-//				for (int i = 0; i < listentity.size(); i++) {
-					time_end = listentity.get(position).getProjectend();
-					time_start = listentity.get(position).getProjectstart();
-
-					java.util.Date date = new java.util.Date();
-					SimpleDateFormat format = new SimpleDateFormat(
-							"yyyy-MM-dd HH:mm");
+				if(NetStatusUtil.isNetValid(this)){
+					String str1 = (String) SharedUtils.getParam(this,
+							"FirstDerviceID", "");
+					RequestParams param2 = new RequestParams(URL.firstDerviceIDIrri); // 网址(请替换成实际的网址)
+					// 参数(请替换成实际的参数与值)
+					progressDialog = ProgressDialog.show(this, "Loading...",
+							"Please wait...", true, false);
+					JSONObject js_request = new JSONObject();
 					try {
-						date = format.parse(time_end);
-					} catch (ParseException e) {
+						param2.setAsJsonContent(true);
+						js_request.put("firstDerviceID", str1);
+						param2.setBodyContent(js_request.toString());
+					} catch (Exception e) {
 						e.printStackTrace();
-					}
+						param2.setAsJsonContent(true);
+					}// 根据实际需求添加相应键值对
 
-					java.util.Date date3 = new java.util.Date();
-					SimpleDateFormat format3 = new SimpleDateFormat(
-							"yyyy-MM-dd HH:mm");
-					try {
-						date3 = format.parse(time_start);
-					} catch (ParseException e) {
-						e.printStackTrace();
-					}
+					x.http().request(HttpMethod.PUT, param2,
+							new CommonCallback<String>() {
+								@Override
+								public void onCancelled(CancelledException arg0) {
 
-					java.util.Date date1 = new java.util.Date();
-					SimpleDateFormat format1 = new SimpleDateFormat(
-							"yyyy-MM-dd HH:mm");
-					try {
-						date1 = format1.parse(aYear + "-" + aMonth + "-" + aDay
-								+ " " + aHours + ":" + aMinutes);
-					} catch (ParseException e) {
-						e.printStackTrace();
-					}
-					date1.setHours(date1.getHours()
-							+ Integer.valueOf(hours.getCurrentItem()));
-					date1.setMinutes(date1.getMinutes()
-							+ Integer.valueOf(minutes.getCurrentItem()));
-					time_ends = format1.format(date1);
+								}
 
-					if (aYear > date3.getYear() + 1900
-							|| aYear < date3.getYear() + 1900) {
-						isOne = 1;
-					} else if (aYear == date3.getYear() + 1900) {
-						minuteOfDay = aMonth * 30 * 24 * 60 + aDay * 24 * 60
-								+ aHours * 60 + aMinutes;// 现在选中的开始时间
-						nowEnd = Integer.valueOf((date1.getMonth() + 1) * 30
-								* 24 * 60 + date1.getDate() * 24 * 60 // 现在设定的结束时间
-								+ date1.getHours() * 60 + date1.getMinutes());
-						start = Integer.valueOf((date3.getMonth() + 1) * 30
-								* 24 * 60 + date3.getDate() * 24 * 60// 起始时间（从数据库中调出）
-								+ date3.getHours() * 60 + date3.getMinutes());
-						end = Integer.valueOf((date.getMonth() + 1) * 30 * 24
-								* 60 + date.getDate() * 24 * 60
-								+ date.getHours() * 60 + date.getMinutes());// 结束时间（从数据库中调出）
+								// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+								// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+								@Override
+								public void onError(Throwable ex, boolean isOnCallback) {
 
-						if (minuteOfDay >= start&& nowEnd <= end ) {
-							isOne = 1;
-						} else {
-							isOne = 2;
-						}
+									Toast.makeText(x.app(), ex.getMessage(),
+											Toast.LENGTH_LONG).show();
+									if (ex instanceof HttpException) { // 网络错误 
+										HttpException httpEx = (HttpException) ex;
+										int responseCode = httpEx.getCode();
+										String responseMsg = httpEx.getMessage();
+										String errorResult = httpEx.getResult();
+										// ...
+										progressDialog.dismiss();
+									} else { // 其他错误 
+										// ...
+										progressDialog.dismiss();
+									}
+
+								}
+
+								// 不管成功或者失败最后都会回调该接口
+								@Override
+								public void onFinished() {
+								}
+
+								@Override
+								public void onSuccess(String arg0) {
+									Gson gson = new Gson();
+									progressDialog.dismiss();
+									finish();
+								}
+							});
+				}else{
+					Toast.makeText(getApplicationContext(), "当前网络不可用！请检查您的网络状态！", Toast.LENGTH_LONG).show();
+				}
+				
+//				listentity = dbHelper.loadLastMsgBySessionids(units);
+//				Calendar cal = Calendar.getInstance();// 当前日期
+//				// 从数据库中查出点击的该项对应的计划结束时间
+////				for (int i = 0; i < listentity.size(); i++) {
+//					time_end = listentity.get(position).getProjectend();
+//					time_start = listentity.get(position).getProjectstart();
+//
+//					java.util.Date date = new java.util.Date();
+//					SimpleDateFormat format = new SimpleDateFormat(
+//							"yyyy-MM-dd HH:mm");
+//					try {
+//						date = format.parse(time_end);
+//					} catch (ParseException e) {
+//						e.printStackTrace();
 //					}
-				}
-				if (isOne == 1) {
-					String nowStar = decimal
-							.format(year.getCurrentItem() + 2016)
-							+ "-"
-							+ decimal.format(month.getCurrentItem() + 1)
-							+ "-"
-							+ decimal.format(day.getCurrentItem() + 1)
-							+ " "
-							+ decimal.format(hour.getCurrentItem())
-							+ ":"
-							+ decimal.format(minute.getCurrentItem());
-					// dbHelper.updateProject(nowPages + "", nowItem,
-					// nowStar + "", time_ends + "");
-					// for (int i = 0; i < listentity.size(); i++) {
-					// if(compareTime.equals(listentity.get(i).getProjectstart())){
-					// compareRound = listentity.get(i).getRound();
-					// break;
-					// }
-					// }
-					compareRound = listentity.get(position).getRound();
-					dbHelper.updateProjects(units, compareRound, nowItem,
-							nowStar + "", time_ends + "");
-					isSkip = 1;
-					SharedUtils.setParam(getApplication(), "isSkip", isSkip);
-					isSkips = 1;
-					SharedUtils.setParam(getApplication(), "isSkips", isSkips);
-					finish();
-				} else {
-					Toast.makeText(getApplication(), "在范围内", Toast.LENGTH_SHORT)
-							.show();
-				}
+//
+//					java.util.Date date3 = new java.util.Date();
+//					SimpleDateFormat format3 = new SimpleDateFormat(
+//							"yyyy-MM-dd HH:mm");
+//					try {
+//						date3 = format.parse(time_start);
+//					} catch (ParseException e) {
+//						e.printStackTrace();
+//					}
+//
+//					java.util.Date date1 = new java.util.Date();
+//					SimpleDateFormat format1 = new SimpleDateFormat(
+//							"yyyy-MM-dd HH:mm");
+//					try {
+//						date1 = format1.parse(aYear + "-" + aMonth + "-" + aDay
+//								+ " " + aHours + ":" + aMinutes);
+//					} catch (ParseException e) {
+//						e.printStackTrace();
+//					}
+//					date1.setHours(date1.getHours()
+//							+ Integer.valueOf(hours.getCurrentItem()));
+//					date1.setMinutes(date1.getMinutes()
+//							+ Integer.valueOf(minutes.getCurrentItem()));
+//					time_ends = format1.format(date1);
+//
+//					if (aYear > date3.getYear() + 1900
+//							|| aYear < date3.getYear() + 1900) {
+//						isOne = 1;
+//					} else if (aYear == date3.getYear() + 1900) {
+//						minuteOfDay = aMonth * 30 * 24 * 60 + aDay * 24 * 60
+//								+ aHours * 60 + aMinutes;// 现在选中的开始时间
+//						nowEnd = Integer.valueOf((date1.getMonth() + 1) * 30
+//								* 24 * 60 + date1.getDate() * 24 * 60 // 现在设定的结束时间
+//								+ date1.getHours() * 60 + date1.getMinutes());
+//						start = Integer.valueOf((date3.getMonth() + 1) * 30
+//								* 24 * 60 + date3.getDate() * 24 * 60// 起始时间（从数据库中调出）
+//								+ date3.getHours() * 60 + date3.getMinutes());
+//						end = Integer.valueOf((date.getMonth() + 1) * 30 * 24
+//								* 60 + date.getDate() * 24 * 60
+//								+ date.getHours() * 60 + date.getMinutes());// 结束时间（从数据库中调出）
+//
+//						if (minuteOfDay >= start&& nowEnd <= end ) {
+//							isOne = 1;
+//						} else {
+//							isOne = 2;
+//						}
+////					}
+//				}
+//				if (isOne == 1) {
+//					String nowStar = decimal
+//							.format(year.getCurrentItem() + 2016)
+//							+ "-"
+//							+ decimal.format(month.getCurrentItem() + 1)
+//							+ "-"
+//							+ decimal.format(day.getCurrentItem() + 1)
+//							+ " "
+//							+ decimal.format(hour.getCurrentItem())
+//							+ ":"
+//							+ decimal.format(minute.getCurrentItem());
+//					// dbHelper.updateProject(nowPages + "", nowItem,
+//					// nowStar + "", time_ends + "");
+//					// for (int i = 0; i < listentity.size(); i++) {
+//					// if(compareTime.equals(listentity.get(i).getProjectstart())){
+//					// compareRound = listentity.get(i).getRound();
+//					// break;
+//					// }
+//					// }
+//					compareRound = listentity.get(position).getRound();
+//					dbHelper.updateProjects(units, compareRound, nowItem,
+//							nowStar + "", time_ends + "");
+//					isSkip = 1;
+//					SharedUtils.setParam(getApplication(), "isSkip", isSkip);
+//					isSkips = 1;
+//					SharedUtils.setParam(getApplication(), "isSkips", isSkips);
+//					finish();
+//				} else {
+//					Toast.makeText(getApplication(), "在范围内", Toast.LENGTH_SHORT)
+//							.show();
+//				}
 
 			} else {
 				new AlertDialog.Builder(TimeAvtivityDialog.this)

@@ -8,24 +8,19 @@ public class Irrigation {
 
     private Long id;
     private String irrigation;
+    private String firstDerviceID;
+    private String area;
+    private String longitude;
+    private String latitude;
+    private String superEqu;
     private Integer isrelevance;
     private Integer groupnumber;
     private Integer valuenumber;
-    private Integer filterHour;
-    private Integer filterMinute;
-    private String userinfo;
-    private String userphone;
-    private String cropsinfo;
-    private String cropstime;
-    private Integer isNightStartHour;
-    private Integer isNightStartMinute;
-    private Integer isNightContinueHour;
-    private Integer isNightContinueMinute;
-    private Integer isNightEndHour;
-    private Integer isNightEndMinute;
+    private String flushtime;
+    private String nightStart;
+    private String nightEnd;
     private Integer isTimeLong;
-    private Integer nHour;
-    private Integer nMinutes;
+    private String nContinue;
     private Integer nNumber;
     private Integer nRound;
     private String seasonStrat;
@@ -39,27 +34,22 @@ public class Irrigation {
         this.id = id;
     }
 
-    public Irrigation(Long id, String irrigation, Integer isrelevance, Integer groupnumber, Integer valuenumber, Integer filterHour, Integer filterMinute, String userinfo, String userphone, String cropsinfo, String cropstime, Integer isNightStartHour, Integer isNightStartMinute, Integer isNightContinueHour, Integer isNightContinueMinute, Integer isNightEndHour, Integer isNightEndMinute, Integer isTimeLong, Integer nHour, Integer nMinutes, Integer nNumber, Integer nRound, String seasonStrat, String seasonEnd, Integer seasonRound) {
+    public Irrigation(Long id, String irrigation, String firstDerviceID, String area, String longitude, String latitude, String superEqu, Integer isrelevance, Integer groupnumber, Integer valuenumber, String flushtime, String nightStart, String nightEnd, Integer isTimeLong, String nContinue, Integer nNumber, Integer nRound, String seasonStrat, String seasonEnd, Integer seasonRound) {
         this.id = id;
         this.irrigation = irrigation;
+        this.firstDerviceID = firstDerviceID;
+        this.area = area;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.superEqu = superEqu;
         this.isrelevance = isrelevance;
         this.groupnumber = groupnumber;
         this.valuenumber = valuenumber;
-        this.filterHour = filterHour;
-        this.filterMinute = filterMinute;
-        this.userinfo = userinfo;
-        this.userphone = userphone;
-        this.cropsinfo = cropsinfo;
-        this.cropstime = cropstime;
-        this.isNightStartHour = isNightStartHour;
-        this.isNightStartMinute = isNightStartMinute;
-        this.isNightContinueHour = isNightContinueHour;
-        this.isNightContinueMinute = isNightContinueMinute;
-        this.isNightEndHour = isNightEndHour;
-        this.isNightEndMinute = isNightEndMinute;
+        this.flushtime = flushtime;
+        this.nightStart = nightStart;
+        this.nightEnd = nightEnd;
         this.isTimeLong = isTimeLong;
-        this.nHour = nHour;
-        this.nMinutes = nMinutes;
+        this.nContinue = nContinue;
         this.nNumber = nNumber;
         this.nRound = nRound;
         this.seasonStrat = seasonStrat;
@@ -81,6 +71,46 @@ public class Irrigation {
 
     public void setIrrigation(String irrigation) {
         this.irrigation = irrigation;
+    }
+
+    public String getFirstDerviceID() {
+        return firstDerviceID;
+    }
+
+    public void setFirstDerviceID(String firstDerviceID) {
+        this.firstDerviceID = firstDerviceID;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getSuperEqu() {
+        return superEqu;
+    }
+
+    public void setSuperEqu(String superEqu) {
+        this.superEqu = superEqu;
     }
 
     public Integer getIsrelevance() {
@@ -107,100 +137,28 @@ public class Irrigation {
         this.valuenumber = valuenumber;
     }
 
-    public Integer getFilterHour() {
-        return filterHour;
+    public String getFlushtime() {
+        return flushtime;
     }
 
-    public void setFilterHour(Integer filterHour) {
-        this.filterHour = filterHour;
+    public void setFlushtime(String flushtime) {
+        this.flushtime = flushtime;
     }
 
-    public Integer getFilterMinute() {
-        return filterMinute;
+    public String getNightStart() {
+        return nightStart;
     }
 
-    public void setFilterMinute(Integer filterMinute) {
-        this.filterMinute = filterMinute;
+    public void setNightStart(String nightStart) {
+        this.nightStart = nightStart;
     }
 
-    public String getUserinfo() {
-        return userinfo;
+    public String getNightEnd() {
+        return nightEnd;
     }
 
-    public void setUserinfo(String userinfo) {
-        this.userinfo = userinfo;
-    }
-
-    public String getUserphone() {
-        return userphone;
-    }
-
-    public void setUserphone(String userphone) {
-        this.userphone = userphone;
-    }
-
-    public String getCropsinfo() {
-        return cropsinfo;
-    }
-
-    public void setCropsinfo(String cropsinfo) {
-        this.cropsinfo = cropsinfo;
-    }
-
-    public String getCropstime() {
-        return cropstime;
-    }
-
-    public void setCropstime(String cropstime) {
-        this.cropstime = cropstime;
-    }
-
-    public Integer getIsNightStartHour() {
-        return isNightStartHour;
-    }
-
-    public void setIsNightStartHour(Integer isNightStartHour) {
-        this.isNightStartHour = isNightStartHour;
-    }
-
-    public Integer getIsNightStartMinute() {
-        return isNightStartMinute;
-    }
-
-    public void setIsNightStartMinute(Integer isNightStartMinute) {
-        this.isNightStartMinute = isNightStartMinute;
-    }
-
-    public Integer getIsNightContinueHour() {
-        return isNightContinueHour;
-    }
-
-    public void setIsNightContinueHour(Integer isNightContinueHour) {
-        this.isNightContinueHour = isNightContinueHour;
-    }
-
-    public Integer getIsNightContinueMinute() {
-        return isNightContinueMinute;
-    }
-
-    public void setIsNightContinueMinute(Integer isNightContinueMinute) {
-        this.isNightContinueMinute = isNightContinueMinute;
-    }
-
-    public Integer getIsNightEndHour() {
-        return isNightEndHour;
-    }
-
-    public void setIsNightEndHour(Integer isNightEndHour) {
-        this.isNightEndHour = isNightEndHour;
-    }
-
-    public Integer getIsNightEndMinute() {
-        return isNightEndMinute;
-    }
-
-    public void setIsNightEndMinute(Integer isNightEndMinute) {
-        this.isNightEndMinute = isNightEndMinute;
+    public void setNightEnd(String nightEnd) {
+        this.nightEnd = nightEnd;
     }
 
     public Integer getIsTimeLong() {
@@ -211,20 +169,12 @@ public class Irrigation {
         this.isTimeLong = isTimeLong;
     }
 
-    public Integer getNHour() {
-        return nHour;
+    public String getNContinue() {
+        return nContinue;
     }
 
-    public void setNHour(Integer nHour) {
-        this.nHour = nHour;
-    }
-
-    public Integer getNMinutes() {
-        return nMinutes;
-    }
-
-    public void setNMinutes(Integer nMinutes) {
-        this.nMinutes = nMinutes;
+    public void setNContinue(String nContinue) {
+        this.nContinue = nContinue;
     }
 
     public Integer getNNumber() {

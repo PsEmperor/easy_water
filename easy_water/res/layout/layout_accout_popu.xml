@@ -9,7 +9,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="155dp"
-         android:background="@color/gray_1">
+         android:background="@color/white">
          <Button
         android:id="@+id/text_user_info_photograph"
         android:layout_width="match_parent"
@@ -17,11 +17,12 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
-        android:background="@color/gray_3"
+        android:background="@color/gray_1"
         android:gravity="center"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="2dp"
         android:text="拍照"
+        android:textColor="@color/white"
         android:textSize="20dp" />
 
     <Button
@@ -34,7 +35,8 @@
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
         android:layout_marginTop="3dp"
-        android:background="@color/gray_3"
+        android:background="@color/gray_1"
+        android:textColor="@color/white"
         android:gravity="center"
         android:text="从手机相册选择"
         android:textSize="20dp" />
@@ -49,7 +51,8 @@
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
         android:layout_marginTop="3dp"
-        android:background="@color/gray_3"
+        android:background="@color/gray_1"
+        android:textColor="@color/white"
         android:gravity="center"
         android:text="取消"
         android:textSize="20dp"

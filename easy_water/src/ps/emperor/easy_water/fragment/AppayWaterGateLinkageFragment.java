@@ -28,6 +28,7 @@ import ps.emperor.easy_water.entity.UserReleDisInfoBeanAdd;
 import ps.emperor.easy_water.entity.FindDisWaterInfoOneBean.SluiceGateInfoBean;
 import ps.emperor.easy_water.entity.UserReleDisInfoBeanAdd.infoList;
 import ps.emperor.easy_water.utils.CheckUtil;
+import ps.emperor.easy_water.utils.NetStatusUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.MainActionBar;
@@ -54,6 +55,7 @@ import android.widget.Toast;
 
 /**
  * 多孔闸门联动
+ * 
  * @author 毛国江
  * @version 2016-9-9 下午16:50
  */
@@ -64,7 +66,8 @@ public class AppayWaterGateLinkageFragment extends Fragment implements
 	private MainActionBars actionBar;
 	private ApplyWaterGateLinkageAdapter adapter;
 	private List<ApplyWaterGateLinkageBean> beans;
-	private RelativeLayout layout_time_operation,layout_apply_water_time_operation;
+	private RelativeLayout layout_time_operation,
+			layout_apply_water_time_operation;
 	private ListView listView;
 	private Dialog dialog;
 	private WheelView year;
@@ -74,13 +77,14 @@ public class AppayWaterGateLinkageFragment extends Fragment implements
 	private WheelView wv_minute;
 	private WheelView hour;
 	private WheelView minute;
-	private TextView tv_apply_water_time_operation,tv_apply_water_time_operations;
+	private TextView tv_apply_water_time_operation,
+			tv_apply_water_time_operations;
 	private int isBefore;
-	private String timestart,timeend;
+	private String timestart, timeend,planStat;
 	private List<SluiceGateInfoBean> list;
 	private List<String> list1;
 	private ProgressDialog progressDialog;
-	
+
 	@SuppressLint("CutPasteId")
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -95,48 +99,56 @@ public class AppayWaterGateLinkageFragment extends Fragment implements
 		actionBar.setTitle("预约闸门调整");
 		actionBar.setActionBarOnClickListener(this);
 
-		 layout_time_operation = (RelativeLayout)
-		 view.findViewById(R.id.layout_apply_water_time_operation);
-		 layout_time_operation.setOnClickListener(this);
-		 listView = (ListView)
-		 view.findViewById(R.id.list_apply_water_haplopore_gate);
+		layout_time_operation = (RelativeLayout) view
+				.findViewById(R.id.layout_apply_water_time_operation);
+		layout_time_operation.setOnClickListener(this);
+		listView = (ListView) view
+				.findViewById(R.id.list_apply_water_haplopore_gate);
 
-		 tv_apply_water_time_operation = (TextView) view.findViewById(R.id.tv_apply_water_time_starts);
-		 tv_apply_water_time_operations = (TextView) view.findViewById(R.id.tv_apply_water_time_ends);
-		 
-		 layout_apply_water_time_operation = (RelativeLayout) view.findViewById(R.id.layout_apply_water_time_operation);
-		 layout_apply_water_time_operation.setOnClickListener(this);
-		 list = (List<SluiceGateInfoBean>) getArguments().getSerializable("beans");
-		 timestart = getArguments().getString("OpenPoreTime");
-		 timeend = getArguments().getString("ClosePoreTime");
-		 beans = new ArrayList<ApplyWaterGateLinkageBean>();
-		 ApplyWaterGateLinkageBean bean;
-		 if(CheckUtil.IsEmpty(list)){
-			 
-		 }else{
-			 for (int i = 0; i < list.size(); i++) {
-				 bean = new ApplyWaterGateLinkageBean();
-				 if(!CheckUtil.IsEmpty(list.get(i).getOpenProportion())){
-					 bean.setPercentage((int)(Float.valueOf(list.get(i).getOpenProportion())*100)+"");
-					 bean.setShow((Float.valueOf(list.get(i).getOpenProportion())*100)+"");
-				 }else{
-					 bean.setPercentage((int)(Float.valueOf(0)*100)+"");
-					 bean.setShow((Float.valueOf(0))+"");
-				 }
-				 if(!CheckUtil.IsEmpty(list.get(i).getPoreID())){
-					 bean.setHaplopore(list.get(i).getPoreID()+"");
-				 }else{
-					 bean.setHaplopore(0+"");
-				 }
-				 beans.add(bean);
-				 System.out.println(beans.get(i).getPercentage());
-			 }
-		 }
-		 adapter = new ApplyWaterGateLinkageAdapter(getActivity());
-		 adapter.addData(beans, false);
-		 listView.setAdapter(adapter);
-		 tv_apply_water_time_operation.setText(timestart);
-		 tv_apply_water_time_operations.setText(timeend);
+		tv_apply_water_time_operation = (TextView) view
+				.findViewById(R.id.tv_apply_water_time_starts);
+		tv_apply_water_time_operations = (TextView) view
+				.findViewById(R.id.tv_apply_water_time_ends);
+
+		layout_apply_water_time_operation = (RelativeLayout) view
+				.findViewById(R.id.layout_apply_water_time_operation);
+		layout_apply_water_time_operation.setOnClickListener(this);
+		list = (List<SluiceGateInfoBean>) getArguments().getSerializable(
+				"beans");
+		timestart = getArguments().getString("OpenPoreTime");
+		timeend = getArguments().getString("ClosePoreTime");
+		planStat = getArguments().getString("planStat");
+		beans = new ArrayList<ApplyWaterGateLinkageBean>();
+		ApplyWaterGateLinkageBean bean;
+		if (CheckUtil.IsEmpty(list)) {
+
+		} else {
+			for (int i = 0; i < list.size(); i++) {
+				bean = new ApplyWaterGateLinkageBean();
+				if (!CheckUtil.IsEmpty(list.get(i).getOpenProportion())) {
+					bean.setPercentage((int) (Float.valueOf(list.get(i)
+							.getOpenProportion()) * 100) + "");
+					bean.setShow((Float
+							.valueOf(list.get(i).getOpenProportion()) * 100)
+							+ "");
+				} else {
+					bean.setPercentage((int) (Float.valueOf(0) * 100) + "");
+					bean.setShow((Float.valueOf(0)) + "");
+				}
+				if (!CheckUtil.IsEmpty(list.get(i).getPoreID())) {
+					bean.setHaplopore(list.get(i).getPoreID() + "");
+				} else {
+					bean.setHaplopore(0 + "");
+				}
+				beans.add(bean);
+				System.out.println(beans.get(i).getPercentage());
+			}
+		}
+		adapter = new ApplyWaterGateLinkageAdapter(getActivity());
+		adapter.addData(beans, false);
+		listView.setAdapter(adapter);
+		tv_apply_water_time_operation.setText(timestart);
+		tv_apply_water_time_operations.setText(timeend);
 		return view;
 	}
 
@@ -149,83 +161,107 @@ public class AppayWaterGateLinkageFragment extends Fragment implements
 			ApplyWaterDistrbutionGate fragment = new ApplyWaterDistrbutionGate();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
-			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
+			transaction.setCustomAnimations(
+					R.anim.slide_fragment_horizontal_right_in,
+					R.anim.slide_fragment_horizontal_left_out);
 			transaction.replace(R.id.fl, fragment, "main");
 			transaction.commit();
 			break;
 		case R.id.acitionbar_right:
-			RequestParams param2 = new RequestParams(URL.openProportionAll);  // 网址(请替换成实际的网址) 
-//			 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
-			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
-					"Please wait...", true, false);
-			JSONObject js_request = new JSONObject();
-			try {
-				param2.setAsJsonContent(true);
-				js_request.put("disEquID",SharedUtils.getParam(getActivity(), "DisEquID", ""));
-				list1 = new ArrayList<String>();
-				adapter.notifyDataSetChanged();
-				for (int i = 0; i < beans.size(); i++) {
-					list1.add(beans.get(i).getPercentage());
-				}
-				js_request.put("openProportion",list1);
-				js_request.put("openPoreTime",tv_apply_water_time_operation.getText().toString());
-				js_request.put("closePoreTime",tv_apply_water_time_operations.getText().toString());
-				param2.setBodyContent(js_request.toString());
-			} catch (Exception e) {
-				e.printStackTrace();
-				param2.setAsJsonContent(true);
-			}//根据实际需求添加相应键值对
-			
- 		        x.http().request(HttpMethod.PUT ,param2, new CommonCallback<String>() {  
-		            @Override  
-		            public void onCancelled(CancelledException arg0) {  
-		                  
-		            }  
-		  
-		         // 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误  
-		            // 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看  
-		            @Override  
-		            public void onError(Throwable ex, boolean isOnCallback) {  
-		                  
-		                Toast.makeText(x.app(), ex.getMessage(), Toast.LENGTH_LONG).show();  
-		                if (ex instanceof HttpException) { // 网络错误    
-		                    HttpException httpEx = (HttpException) ex;  
-		                    int responseCode = httpEx.getCode();  
-		                    String responseMsg = httpEx.getMessage();  
-		                    String errorResult = httpEx.getResult();  
-		                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
-		                    // ...  
-		                    progressDialog.dismiss();
-		                } else { // 其他错误    
-		                    // ...  
-		                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
-		                	progressDialog.dismiss();
-		                }  
-		                  
-		            }  
-		  
-		         // 不管成功或者失败最后都会回调该接口  
-		            @Override  
-		            public void onFinished() {    
-		            }  
-		  
-		            @Override  
-		            public void onSuccess(String arg0) {  
-		                  Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
-		                  Gson gson = new Gson();
-		                  System.out.println(arg0);
-		                  progressDialog.dismiss();
-//		                  UserReleDisInfoBeanAdd fromJson = gson.fromJson(arg0, UserReleDisInfoBeanAdd.class);
-////		                  authorizedBeen = new AuthorizedBeen();
-////		                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
-//		                  List<infoList> beens = fromJson.getAuthNameList();
-//		                  for (infoList authNameListBean : beens) {
-//		                	authNameListBean.getAuthName();
-//						}
-//		                  adapter.addData(beans, true);
-//		                  listView.setAdapter(adapter);
-		            }  
-		        }); 
+			if (!NetStatusUtil.isNetValid(getActivity())) {
+				Toast.makeText(getActivity(), "当前网络不可用！请检查您的网络状态！", Toast.LENGTH_SHORT)
+						.show();
+			} else {
+				RequestParams param2 = new RequestParams(URL.openProportionAll); // 网址(请替换成实际的网址)
+				// params.addQueryStringParameter("key", "value"); //
+				// 参数(请替换成实际的参数与值)
+				progressDialog = ProgressDialog.show(getActivity(),
+						"Loading...", "Please wait...", true, false);
+				JSONObject js_request = new JSONObject();
+				try {
+					param2.setAsJsonContent(true);
+					js_request
+							.put("disEquID", SharedUtils.getParam(
+									getActivity(), "DisEquID", ""));
+					list1 = new ArrayList<String>();
+					adapter.notifyDataSetChanged();
+					for (int i = 0; i < beans.size(); i++) {
+						list1.add(beans.get(i).getPercentage());
+					}
+					js_request.put("openProportion", list1);
+					js_request.put("duration", "");
+					js_request.put("planStat", planStat);
+					js_request.put("openPoreTime",
+							tv_apply_water_time_operation.getText().toString());
+					js_request
+							.put("closePoreTime",
+									tv_apply_water_time_operations.getText()
+											.toString());
+					param2.setBodyContent(js_request.toString());
+				} catch (Exception e) {
+					e.printStackTrace();
+					param2.setAsJsonContent(true);
+				}// 根据实际需求添加相应键值对
+
+				x.http().request(HttpMethod.PUT, param2,
+						new CommonCallback<String>() {
+							@Override
+							public void onCancelled(CancelledException arg0) {
+
+							}
+
+							// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+							// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+							@Override
+							public void onError(Throwable ex,
+									boolean isOnCallback) {
+
+								Toast.makeText(x.app(), ex.getMessage(),
+										Toast.LENGTH_LONG).show();
+								if (ex instanceof HttpException) { // 网络错误 
+									HttpException httpEx = (HttpException) ex;
+									int responseCode = httpEx.getCode();
+									String responseMsg = httpEx.getMessage();
+									String errorResult = httpEx.getResult();
+									Toast.makeText(getActivity(), "请求失败",
+											Toast.LENGTH_SHORT);
+									// ...
+									progressDialog.dismiss();
+								} else { // 其他错误 
+									// ...
+									Toast.makeText(getActivity(), "请求失败",
+											Toast.LENGTH_SHORT);
+									progressDialog.dismiss();
+								}
+
+							}
+
+							// 不管成功或者失败最后都会回调该接口
+							@Override
+							public void onFinished() {
+							}
+
+							@Override
+							public void onSuccess(String arg0) {
+								Toast.makeText(getActivity(), "请求成功",
+										Toast.LENGTH_SHORT);
+								Gson gson = new Gson();
+								System.out.println(arg0);
+								Toast.makeText(getActivity(), "设置成功", Toast.LENGTH_SHORT).show();
+								FragmentManager fgManager = getFragmentManager();
+								FragmentTransaction transaction = fgManager.beginTransaction();
+								ApplyWaterDistrbutionGate fragment = new ApplyWaterDistrbutionGate();
+								// transaction.setCustomAnimations(R.anim.right_in,
+								// R.anim.right_out);
+								transaction.setCustomAnimations(
+										R.anim.slide_fragment_horizontal_right_in,
+										R.anim.slide_fragment_horizontal_left_out);
+								transaction.replace(R.id.fl, fragment, "main");
+								transaction.commit();
+								progressDialog.dismiss();
+							}
+						});
+			}
 			break;
 		case R.id.layout_apply_water_time_operation:
 			showDateTimePicker(mInflater);
@@ -233,6 +269,7 @@ public class AppayWaterGateLinkageFragment extends Fragment implements
 		}
 
 	}
+
 	/**
 	 * @Description: TODO 弹出日期时间选择器
 	 */
@@ -247,7 +284,7 @@ public class AppayWaterGateLinkageFragment extends Fragment implements
 		int currentMonth = c.get(Calendar.MONTH);
 		int currentDay = c.get(Calendar.DATE);
 		int currentHour = c.get(Calendar.HOUR_OF_DAY);
-		int currentMinute = c.get(Calendar.MINUTE)+1;
+		int currentMinute = c.get(Calendar.MINUTE) + 1;
 
 		String[] months_big = { "1", "3", "5", "7", "8", "10", "12" };
 		String[] months_little = { "4", "6", "9", "11" };
@@ -276,7 +313,7 @@ public class AppayWaterGateLinkageFragment extends Fragment implements
 		wv_minute.setAdapter(new NumbericWheelAdapter(0, 59));
 		wv_minute.setCyclic(true);
 		wv_minute.setLabel("分");
-		
+
 		hour = (WheelView) view.findViewById(R.id.hour_gate);
 		hour.setAdapter(new NumbericWheelAdapter(0, 23));
 		hour.setCyclic(true);
@@ -402,13 +439,15 @@ public class AppayWaterGateLinkageFragment extends Fragment implements
 				} else {
 					isBefore = -1;
 				}
-				if(hour.getCurrentItem()==0&&minute.getCurrentItem()==0){
-					Toast.makeText(getActivity(), "请设置正确的持续时间！", Toast.LENGTH_SHORT).show();
-				}else if (isBefore == 1) {
-					timestart = decimal.format(year.getCurrentItem() + 2016) + "-"
-							+ decimal.format(month.getCurrentItem() + 1) + "-"
-							+ decimal.format(day.getCurrentItem() + 1)+" "+ decimal.format(wv_hour.getCurrentItem())
-							+":"+decimal.format(wv_minute.getCurrentItem());
+				if (hour.getCurrentItem() == 0 && minute.getCurrentItem() == 0) {
+					Toast.makeText(getActivity(), "请设置正确的持续时间！",
+							Toast.LENGTH_SHORT).show();
+				} else if (isBefore == 1) {
+					timestart = decimal.format(year.getCurrentItem() + 2016)
+							+ "-" + decimal.format(month.getCurrentItem() + 1)
+							+ "-" + decimal.format(day.getCurrentItem() + 1)
+							+ " " + decimal.format(wv_hour.getCurrentItem())
+							+ ":" + decimal.format(wv_minute.getCurrentItem());
 					tv_apply_water_time_operation.setText(timestart);
 					java.util.Date date = new java.util.Date();
 					SimpleDateFormat format = new SimpleDateFormat(
@@ -425,27 +464,28 @@ public class AppayWaterGateLinkageFragment extends Fragment implements
 					timeend = format.format(date);
 					tv_apply_water_time_operations.setText(timeend);
 					dialog.dismiss();
-				}else{
-						new AlertDialog.Builder(getActivity())
-								.setTitle("系统提示")
-								// 设置对话框标题
+				} else {
+					new AlertDialog.Builder(getActivity())
+							.setTitle("系统提示")
+							// 设置对话框标题
 
-								.setMessage("设定计划的开始时间不可小于当前时间 请重新设定！")
-								// 设置显示的内容
+							.setMessage("设定计划的开始时间不可小于当前时间 请重新设定！")
+							// 设置显示的内容
 
-								.setPositiveButton("确定",
-										new DialogInterface.OnClickListener() {// 添加确定按钮
+							.setPositiveButton("确定",
+									new DialogInterface.OnClickListener() {// 添加确定按钮
 
-											@Override
-											public void onClick(DialogInterface dialog,
-													int which) {// 确定按钮的响应事件
+										@Override
+										public void onClick(
+												DialogInterface dialog,
+												int which) {// 确定按钮的响应事件
 
-												// TODO Auto-generated
-												// method stub
-												dialog.dismiss();
+											// TODO Auto-generated
+											// method stub
+											dialog.dismiss();
 
-											}
-										}).show();// 在按键响应事件中显示此对话框
+										}
+									}).show();// 在按键响应事件中显示此对话框
 				}
 			}
 		});

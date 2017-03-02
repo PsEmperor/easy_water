@@ -48,6 +48,7 @@ import ps.emperor.easy_water.adapter.MineUserUnitAdapter;
 import ps.emperor.easy_water.entity.AuthorizedBeen.infoList;
 import ps.emperor.easy_water.entity.AuthorizedBeen;
 import ps.emperor.easy_water.utils.CheckUtil;
+import ps.emperor.easy_water.utils.NetStatusUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.MainActionBar;
@@ -106,7 +107,12 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 		actionBar.setTitle("授权单位");
 		actionBar.setActionBarOnClickListener(this);
 		
-		init();
+		if (NetStatusUtil.isNetValid(getActivity())) {
+			init();
+		} else {
+			Toast.makeText(getActivity(), "当前网络不可用！请检查您的网络状态！", Toast.LENGTH_SHORT)
+					.show();
+		}
 		
 		tvProvince = (TextView) view.findViewById(R.id.text_mine_user_info_province);
 		tvState = (TextView) view.findViewById(R.id.text_mine_user_info_state);
@@ -158,15 +164,20 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 				.beginTransaction();
 		switch (v.getId()) {
 		case R.id.acitionbar_left:
-			MineUserInfoFragment fragment = new MineUserInfoFragment();
-			// transaction.setCustomAnimations(R.anim.right_in,
-			// R.anim.right_out);
-			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
-			transaction.replace(R.id.fl, fragment, "main");
-			transaction.commit();
+//			MineUserInfoFragment fragment = new MineUserInfoFragment();
+//			// transaction.setCustomAnimations(R.anim.right_in,
+//			// R.anim.right_out);
+//			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
+//			transaction.replace(R.id.fl, fragment, "main");
+//			transaction.commit();
+			fgManager.popBackStack();
 			break;
 		case R.id.text_mine_user_info_province:
 			chose = 1;
+			if (!NetStatusUtil.isNetValid(getActivity())) {
+				Toast.makeText(getActivity(), "当前网络不可用！请检查您的网络状态！", Toast.LENGTH_SHORT)
+				.show();
+			} else {
 			RequestParams param1 = new RequestParams(URL.urluserAuthInfo); //  网址(请替换成实际的网址) 
 			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
 					"Please wait...", true, false);
@@ -241,10 +252,15 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			listView.setAdapter(adapter);
 			listView.setOnItemClickListener(this);
 		popupWindow.showAsDropDown(tvProvince);
+			}
 		break;
 		case R.id.text_mine_user_info_state:
 			shareProvince = (String) SharedUtils.getParam(getActivity(), "shareProvince", "");
 			chose = 2;
+			if (!NetStatusUtil.isNetValid(getActivity())) {
+				Toast.makeText(getActivity(), "当前网络不可用！", Toast.LENGTH_SHORT)
+				.show();
+			} else {
 			String str = "";
 			try {
 				str = java.net.URLEncoder.encode(shareProvince,"UTF-8");
@@ -329,11 +345,16 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 				listView.setOnItemClickListener(this);
 			popupWindow.showAsDropDown(tvState);
 			}
+			}
 			break;
 		case R.id.text_mine_user_info_district:
 			shareProvince = (String) SharedUtils.getParam(getActivity(), "shareProvince", "");
 			shareState = (String) SharedUtils.getParam(getActivity(), "shareState", "");
 			chose = 3;
+			if (!NetStatusUtil.isNetValid(getActivity())) {
+				Toast.makeText(getActivity(), "当前网络不可用！", Toast.LENGTH_SHORT)
+				.show();
+			} else {
 			String str1 = "";
 			String str2 = "";
 			try {
@@ -422,12 +443,17 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			// Gravity.TOP, 0, 0);
 			popupWindow.showAsDropDown(tvDistrict);
 			}
+			}
 			break;
 		case R.id.text_mine_user_info_even:
 			shareProvince = (String) SharedUtils.getParam(getActivity(), "shareProvince", "");
 			shareState = (String) SharedUtils.getParam(getActivity(), "shareState", "");
 			shareDistrict = (String) SharedUtils.getParam(getActivity(), "shareDistrict", "");
 			chose = 4;
+			if (!NetStatusUtil.isNetValid(getActivity())) {
+				Toast.makeText(getActivity(), "当前网络不可用！", Toast.LENGTH_SHORT)
+				.show();
+			} else {
 			String str3 = "";
 			String str4 = "";
 			String str5 = "";
@@ -520,6 +546,7 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			// Gravity.TOP, 0, 0);
 			popupWindow.showAsDropDown(tvEven);
 		}
+			}
 			break;
 		case R.id.text_mine_user_info_units:
 			shareProvince = (String) SharedUtils.getParam(getActivity(), "shareProvince", "");
@@ -527,6 +554,10 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			shareDistrict = (String) SharedUtils.getParam(getActivity(), "shareDistrict", "");
 			shareEven = (String) SharedUtils.getParam(getActivity(), "shareEven", "");
 			chose = 5;
+			if (!NetStatusUtil.isNetValid(getActivity())) {
+				Toast.makeText(getActivity(), "当前网络不可用！", Toast.LENGTH_SHORT)
+				.show();
+			} else {
 			String str6 = "";
 			String str7 = "";
 			String str8 = "";
@@ -622,6 +653,7 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			// popupWindow.showAtLocation(getActivity().findViewById(R.id.setting),
 			// Gravity.TOP, 0, 0);
 			popupWindow.showAsDropDown(tvUnits);
+			}
 			}
 			break;
 		

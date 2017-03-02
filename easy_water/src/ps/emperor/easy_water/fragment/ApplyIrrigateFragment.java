@@ -27,6 +27,7 @@ import ps.emperor.easy_water.greendao.DBHelper;
 import ps.emperor.easy_water.greendao.Irrigation;
 import ps.emperor.easy_water.greendao.IrrigationGroup;
 import ps.emperor.easy_water.utils.CheckUtil;
+import ps.emperor.easy_water.utils.NetStatusUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.MainActionBar;
@@ -39,6 +40,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -94,7 +96,13 @@ public class ApplyIrrigateFragment extends Fragment implements OnClickListener,
 		image_apply_irrigation_add.setOnClickListener(this);
 		ed_apply_irrigation_add = (EditText) view.findViewById(R.id.ed_apply_irrigation_add);
 		
-	    init();
+		if (NetStatusUtil.isNetValid(getActivity())) {
+			init();
+		} else {
+			Toast.makeText(getActivity(), "当前网络不可用！请检查您的网络状态！", Toast.LENGTH_SHORT)
+					.show();
+		}
+
 //		数据库操作
 //		beans = new ArrayList<ApplyIrrigationBean>();
 //		List<Irrigation> listentity = dbHelper.loadAllSession(); 
@@ -150,7 +158,6 @@ public class ApplyIrrigateFragment extends Fragment implements OnClickListener,
 	                    int responseCode = httpEx.getCode();  
 	                    String responseMsg = httpEx.getMessage();  
 	                    String errorResult = httpEx.getResult();  
-	                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
 	                    // ...  
 	                    progressDialog.dismiss();
 	                } else { // 其他错误    
@@ -188,6 +195,8 @@ public class ApplyIrrigateFragment extends Fragment implements OnClickListener,
 		FragmentTransaction transaction = fgManager.beginTransaction();
 		switch (v.getId()) {
 		case R.id.acitionbar_left:
+			((InputMethodManager)ed_apply_irrigation_add.getContext().getSystemService(getActivity().INPUT_METHOD_SERVICE)). 
+		     hideSoftInputFromWindow(ed_apply_irrigation_add.getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS); 
 			ApplicationFragment fragment = new ApplicationFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
@@ -196,11 +205,14 @@ public class ApplyIrrigateFragment extends Fragment implements OnClickListener,
 			transaction.commit();
 			break;
 		case R.id.image_apply_irrigation_add:
+			if(!NetStatusUtil.isNetValid(getActivity())){
+				Toast.makeText(getActivity(), "当前网络不可用！请检查您的网络状态！", Toast.LENGTH_SHORT).show();
+			}else{
 			String str1 = "";
 			String str2 = "";
 			try {
 				str1 = java.net.URLEncoder.encode("3","UTF-8");
-				str2 = java.net.URLEncoder.encode(ed_apply_irrigation_add.getText().toString(),"UTF-8");
+				str2 = java.net.URLEncoder.encode(ed_apply_irrigation_add.getText().toString().trim(),"UTF-8");
 			} catch (UnsupportedEncodingException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -237,12 +249,11 @@ public class ApplyIrrigateFragment extends Fragment implements OnClickListener,
 		                    int responseCode = httpEx.getCode();  
 		                    String responseMsg = httpEx.getMessage();  
 		                    String errorResult = httpEx.getResult();  
-		                    Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
 		                    // ...  
 		                    progressDialog.dismiss();
 		                } else { // 其他错误    
 		                    // ...  
-		                	Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+		                	Toast.makeText(getActivity(), "当前网络状况不佳，请检查后再次尝试", Toast.LENGTH_SHORT).show();
 		                	progressDialog.dismiss();
 		                }  
 		                  
@@ -268,6 +279,7 @@ public class ApplyIrrigateFragment extends Fragment implements OnClickListener,
 		            }  
 		        }); 
 			}
+			}
 			break;
 		default:
 			break;
@@ -281,30 +293,32 @@ public class ApplyIrrigateFragment extends Fragment implements OnClickListener,
 		if(CheckUtil.IsEmpty(irrigation)){
 			Irrigation irrigation = new Irrigation();
 			irrigation.setIrrigation(beens.get(position).getIrriUnitName());
-			irrigation.setNHour(0);
-			irrigation.setNMinutes(0);
+			irrigation.setNContinue("00:00");
 			irrigation.setNNumber(0);
 			irrigation.setNRound(0);
-			irrigation.setIsNightStartHour(0);
-			irrigation.setIsNightStartMinute(0);
-			irrigation.setIsNightContinueHour(0);
-			irrigation.setIsNightContinueMinute(0);
-			irrigation.setIsNightEndHour(0);
-			irrigation.setIsNightEndMinute(0);
+			irrigation.setFirstDerviceID(beens.get(0).getFirstDerviceID());
+			irrigation.setLongitude("0");
+			irrigation.setLatitude("0");
+			irrigation.setArea("0");
+			irrigation.setSuperEqu("0");
+			irrigation.setNightStart("0");
+			irrigation.setNightEnd("0");
 			irrigation.setIsTimeLong(0);
 			irrigation.setGroupnumber(0);
 			irrigation.setValuenumber(0);
-			irrigation.setFilterHour(0);
-			irrigation.setFilterMinute(0);
+			irrigation.setFlushtime("0");
+			irrigation.setSeasonStrat("0");
+			irrigation.setSeasonEnd("0");
 			dbHelper.saveSession(irrigation);
 		}
-		
+		((InputMethodManager)ed_apply_irrigation_add.getContext().getSystemService(getActivity().INPUT_METHOD_SERVICE)). 
+	     hideSoftInputFromWindow(ed_apply_irrigation_add.getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS); 
 		FragmentManager fgManager = getFragmentManager();
 		FragmentTransaction transaction = fgManager.beginTransaction();
 		ApplyIrrigateUnitControlFragment fragment = new ApplyIrrigateUnitControlFragment();
 		Bundle bundle = new Bundle();
 		bundle.putString("units", beens.get(position).getIrriUnitName());
-		SharedUtils.setParam(getActivity(), "FirstDerviceID", beens.get(0).getFirstDerviceID());
+		SharedUtils.setParam(getActivity(), "FirstDerviceID", beens.get(position).getFirstDerviceID());
 		fragment.setArguments(bundle);
 		transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
 		transaction.replace(R.id.fl, fragment, "main");

@@ -53,7 +53,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@+id/textView6"
                     android:layout_below="@+id/textView6"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="15dp"
                     android:text="上级设备" />
 
                 <TextView
@@ -80,19 +80,23 @@
 
                 <TextView
                     android:id="@+id/tv_maintain_irrigat_info_id"
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_above="@+id/textView3"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="45dp"
+                    android:singleLine="true"
+                    android:gravity="right"
                     android:text="SB2016956495" />
 
                 <TextView
                     android:id="@+id/text_maintain_irrigat_info_equipment"
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_alignBaseline="@+id/textView2"
                     android:layout_alignBottom="@+id/textView2"
+                    android:singleLine="true"
+                    android:gravity="right"
                     android:layout_alignRight="@+id/tv_maintain_irrigat_info_id"
                     android:text="8#地块1斗渠进水闸" />
 
@@ -106,19 +110,23 @@
 
                 <TextView
                     android:id="@+id/text_maintain_irrigat_info_address"
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_alignRight="@+id/text_maintain_irrigat_info_area"
                     android:layout_below="@+id/text_maintain_irrigat_info_addres"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="8dp"
+                    android:singleLine="true"
+                    android:gravity="right"
                     android:text="N : 40.534235" />
 
                 <TextView
                     android:id="@+id/text_maintain_irrigat_info_addres"
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_alignBaseline="@+id/textView3"
                     android:layout_alignBottom="@+id/textView3"
+                    android:singleLine="true"
+                    android:gravity="right"
                     android:layout_alignRight="@+id/text_maintain_irrigat_info_address"
                     android:text="E : 118.476542" />
             </RelativeLayout>

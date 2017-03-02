@@ -157,12 +157,13 @@ public class MineUserRoleFragment extends Fragment implements OnClickListener,On
 		FragmentTransaction transaction = fgManager.beginTransaction();
 		switch (v.getId()) {
 		case R.id.acitionbar_left:
-			MineUserInfoFragment fragment = new MineUserInfoFragment();
-			// transaction.setCustomAnimations(R.anim.right_in,
-			// R.anim.right_out);
-			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
-			transaction.replace(R.id.fl, fragment, "main");
-			transaction.commit();
+//			MineUserInfoFragment fragment = new MineUserInfoFragment();
+//			// transaction.setCustomAnimations(R.anim.right_in,
+//			// R.anim.right_out);
+//			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
+//			transaction.replace(R.id.fl, fragment, "main");
+//			transaction.commit();
+			fgManager.popBackStack();
 			break;
 		case R.id.acitionbar_right:
 			PickNum();

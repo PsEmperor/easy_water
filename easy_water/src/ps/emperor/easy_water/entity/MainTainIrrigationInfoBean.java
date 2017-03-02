@@ -40,9 +40,20 @@ public class MainTainIrrigationInfoBean {
     	private String IsAllocationGrowers;
     	private String IsAllocationCrop;
     	private String IsAllocationGroup;
+    	private String GroupName;
+    	private String TotalChanNum;
+    	private String GrowersName;
+    	private String CropName;
     	
 		public Boolean istrue; // 是否选中
     	
+		
+		public String getGroupName() {
+			return GroupName;
+		}
+		public void setGroupName(String groupName) {
+			GroupName = groupName;
+		}
 		public String getFirstDerviceID() {
 			return FirstDerviceID;
 		}
@@ -90,6 +101,24 @@ public class MainTainIrrigationInfoBean {
 		}
 		public void setIsAllocationGroup(String isAllocationGroup) {
 			IsAllocationGroup = isAllocationGroup;
+		}
+		public String getTotalChanNum() {
+			return TotalChanNum;
+		}
+		public void setTotalChanNum(String totalChanNum) {
+			TotalChanNum = totalChanNum;
+		}
+		public String getGrowersName() {
+			return GrowersName;
+		}
+		public void setGrowersName(String growersName) {
+			GrowersName = growersName;
+		}
+		public String getCropName() {
+			return CropName;
+		}
+		public void setCropName(String cropName) {
+			CropName = cropName;
 		}
     	
     }

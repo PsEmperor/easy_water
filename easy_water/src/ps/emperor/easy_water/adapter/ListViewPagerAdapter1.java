@@ -3,6 +3,7 @@ package ps.emperor.easy_water.adapter;
 import java.util.ArrayList;
 
 
+
 import java.util.List;
 
 import ps.emperor.easy_water.R;
@@ -21,6 +22,7 @@ import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import ps.emperor.easy_water.entity.ApplyIrrigationProjectBean.infoList;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,8 +35,8 @@ public class ListViewPagerAdapter1 extends PagerAdapter implements OnItemClickLi
 	Context context;
 
 	List<View> mListViewPager = new ArrayList<View>(); // ViewPager���������
-	List<ApplyIrrigationProjectBean> list = new ArrayList<ApplyIrrigationProjectBean>();
-	List<List<ApplyIrrigationProjectBean>> lcontant = null;
+	List<infoList> list = new ArrayList<infoList>();
+	List<List<infoList>> lcontant = null;
 	int pageNum = 1;
 	int pageRows=5;
 	private int mChildCount = 0;
@@ -50,7 +52,7 @@ public class ListViewPagerAdapter1 extends PagerAdapter implements OnItemClickLi
 	 * @param customIndicator 圆点控件
 	 * @param rows 每页显示多少条数据
 	 */ 
-	public ListViewPagerAdapter1(final Context context, List<ApplyIrrigationProjectBean> listentity,int rows,final String units) {
+	public ListViewPagerAdapter1(final Context context, List<infoList> listentity,int rows,final String units) {
 		this.pageRows=rows;
 		int count = 0;  //ѭ������
 		int pos = 0;		//��ǰλ��
@@ -60,8 +62,8 @@ public class ListViewPagerAdapter1 extends PagerAdapter implements OnItemClickLi
 		//����ҳ��
 		pageNum = (int) Math.ceil(list.size() / pageRows);
 		dbHelper = DBHelper.getInstance(context); // 得到DBHelper对象
-		irrigationGroups = dbHelper.loadGroupByUnits(units);
-		MatchedNum  = irrigationGroups.size();
+//		irrigationGroups = dbHelper.loadGroupByUnits(units);
+//		MatchedNum  = irrigationGroups.size();
 		int a=list.size() % pageRows;
 		if (a>0) {
 			pageNum=pageNum+1;
@@ -72,10 +74,10 @@ public class ListViewPagerAdapter1 extends PagerAdapter implements OnItemClickLi
 		if (Math.ceil(listentity.size() / pageRows) == 0) {
 			pageNum = 1;
 		}
-		lcontant = new ArrayList<List<ApplyIrrigationProjectBean>>();
+		lcontant = new ArrayList<List<infoList>>();
 		for (int i = 0; i < pageNum; i++) {
 			Log.d("hx2", String.valueOf(i));
-			List<ApplyIrrigationProjectBean> item = new ArrayList<ApplyIrrigationProjectBean>();
+			List<infoList> item = new ArrayList<infoList>();
 			for(int k = pos;k<listentity.size();k++){
 				count++;
 				pos = k;
@@ -106,82 +108,82 @@ public class ListViewPagerAdapter1 extends PagerAdapter implements OnItemClickLi
 					if(pageNum > 30){
 						Toast.makeText(context, "当前轮次过多 请联网操作！", Toast.LENGTH_SHORT).show();
 					}else{
-					if(list.get(position).getGroup().equals("A")){
+					if(list.get(position).getGroupName().equals("A")){
 						nowItem = 1;
 					}
-					if(list.get(position).getGroup().equals("B")){
+					if(list.get(position).getGroupName().equals("B")){
 						nowItem = 2;
 					}
-					if(list.get(position).getGroup().equals("C")){
+					if(list.get(position).getGroupName().equals("C")){
 						nowItem = 3;
 					}
-					if(list.get(position).getGroup().equals("D")){
+					if(list.get(position).getGroupName().equals("D")){
 						nowItem = 4;
 					}
-					if(list.get(position).getGroup().equals("E")){
+					if(list.get(position).getGroupName().equals("E")){
 						nowItem = 5;
 					}
-					if(list.get(position).getGroup().equals("F")){
+					if(list.get(position).getGroupName().equals("F")){
 						nowItem = 6;
 					}
-					if(list.get(position).getGroup().equals("G")){
+					if(list.get(position).getGroupName().equals("G")){
 						nowItem = 7;
 					}
-					if(list.get(position).getGroup().equals("H")){
+					if(list.get(position).getGroupName().equals("H")){
 						nowItem = 8;
 					}
-					if(list.get(position).getGroup().equals("I")){
+					if(list.get(position).getGroupName().equals("I")){
 						nowItem = 9;
 					}
-					if(list.get(position).getGroup().equals("J")){
+					if(list.get(position).getGroupName().equals("J")){
 						nowItem = 10;
 					}
-					if(list.get(position).getGroup().equals("K")){
+					if(list.get(position).getGroupName().equals("K")){
 						nowItem = 11;
 					}
-					if(list.get(position).getGroup().equals("L")){
+					if(list.get(position).getGroupName().equals("L")){
 						nowItem = 12;
 					}
-					if(list.get(position).getGroup().equals("M")){
+					if(list.get(position).getGroupName().equals("M")){
 						nowItem = 13;
 					}
-					if(list.get(position).getGroup().equals("N")){
+					if(list.get(position).getGroupName().equals("N")){
 						nowItem = 14;
 					}
-					if(list.get(position).getGroup().equals("O")){
+					if(list.get(position).getGroupName().equals("O")){
 						nowItem = 15;
 					}
-					if(list.get(position).getGroup().equals("P")){
+					if(list.get(position).getGroupName().equals("P")){
 						nowItem = 16;
 					}
-					if(list.get(position).getGroup().equals("Q")){
+					if(list.get(position).getGroupName().equals("Q")){
 						nowItem = 17;
 					}
-					if(list.get(position).getGroup().equals("R")){
+					if(list.get(position).getGroupName().equals("R")){
 						nowItem = 18;
 					}
-					if(list.get(position).getGroup().equals("S")){
+					if(list.get(position).getGroupName().equals("S")){
 						nowItem = 19;
 					}
-					if(list.get(position).getGroup().equals("T")){
+					if(list.get(position).getGroupName().equals("T")){
 						nowItem = 20;
 					}
-					if(list.get(position).getGroup().equals("U")){
+					if(list.get(position).getGroupName().equals("U")){
 						nowItem = 21;
 					}
-					if(list.get(position).getGroup().equals("V")){
+					if(list.get(position).getGroupName().equals("V")){
 						nowItem = 22;
 					}
-					if(list.get(position).getGroup().equals("W")){
+					if(list.get(position).getGroupName().equals("W")){
 						nowItem = 23;
 					}
-					if(list.get(position).getGroup().equals("X")){
+					if(list.get(position).getGroupName().equals("X")){
 						nowItem = 24;
 					}
-					if(list.get(position).getGroup().equals("Y")){
+					if(list.get(position).getGroupName().equals("Y")){
 						nowItem = 25;
 					}
-					if(list.get(position).getGroup().equals("Z")){
+					if(list.get(position).getGroupName().equals("Z")){
 						nowItem = 26;
 					}
 					nowPage = (Integer) SharedUtils.getParam(context, "nowPage", 1);

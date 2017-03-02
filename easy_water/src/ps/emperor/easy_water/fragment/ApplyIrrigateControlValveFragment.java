@@ -40,6 +40,7 @@ import ps.emperor.easy_water.entity.ApplyIrrigateControlValueBean;
 import ps.emperor.easy_water.entity.ApplyIrrigateControlValueBean.infoList;
 import ps.emperor.easy_water.entity.IrriGroupStateBean;
 import ps.emperor.easy_water.utils.CheckUtil;
+import ps.emperor.easy_water.utils.NetStatusUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.MainActionBars;
@@ -58,7 +59,7 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 
 	private LayoutInflater mInflater;
 	private MainActionBars actionBar;
-	private ImageView isOpen;
+	private ImageView isOpen, imageView;
 	private Dialog dialog;
 	int hour, minute, second;
 	private RelativeLayout valve_control;
@@ -112,8 +113,15 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 				.findViewById(R.id.text_apply_irriagte_valve_control_water);
 		irriDuration = (TextView) view
 				.findViewById(R.id.text_apply_irriagte_valve_control);
+		imageView = (ImageView) view
+				.findViewById(R.id.image_apply_irriagte_valve_control_unit);
 
-		init();
+		if (NetStatusUtil.isNetValid(getActivity())) {
+			init();
+		} else {
+			Toast.makeText(getActivity(), "当前网络不可用！请检查您的网络状态！", Toast.LENGTH_SHORT)
+					.show();
+		}
 
 		isOpen = (ImageView) view
 				.findViewById(R.id.image_irriagte_valve_control_isopen);
@@ -183,6 +191,9 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 					tv_ChanNum.setText(ChanNum);
 				} else {
 					tv_ChanNum.setText("");
+				}
+				if ("1".equals(beens.get(0).getValueControlSwitch())) {
+					imageView.setImageResource(R.drawable.color_17);
 				}
 				if (!CheckUtil.IsEmpty(beens)) {
 					if (!CheckUtil.IsEmpty(beens.get(0).getGrowersName())) {
@@ -264,468 +275,528 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 			transaction.commit();
 			break;
 		case R.id.acitionbar_right:
-			RequestParams param2 = new RequestParams(
-					URL.updateValueControlIrriDuration); // 网址(请替换成实际的网址)
-			// params.addQueryStringParameter("key", "value"); //
-			// 参数(请替换成实际的参数与值)
-			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
-					"Please wait...", true, false);
-			JSONObject js_request = new JSONObject();
-			try {
-				param2.setAsJsonContent(true);
-				js_request.put("valueControlChanID", ValueControlChanID);
-				js_request.put("irriDuration", irriDuration.getText()
-						.toString());
-				param2.setBodyContent(js_request.toString());
-			} catch (Exception e) {
-				e.printStackTrace();
-				param2.setAsJsonContent(true);
-			}// 根据实际需求添加相应键值对
+			if (!NetStatusUtil.isNetValid(getActivity())) {
+				Toast.makeText(getActivity(), "当前网络不可用！请检查您的网络状态！", Toast.LENGTH_SHORT)
+						.show();
+			} else {
+				RequestParams param2 = new RequestParams(
+						URL.updateValueControlIrriDuration); // 网址(请替换成实际的网址)
+				// params.addQueryStringParameter("key", "value"); //
+				// 参数(请替换成实际的参数与值)
+				progressDialog = ProgressDialog.show(getActivity(),
+						"Loading...", "Please wait...", true, false);
+				JSONObject js_request = new JSONObject();
+				try {
+					param2.setAsJsonContent(true);
+					js_request.put("valueControlChanID", ValueControlChanID);
+					js_request.put("irriDuration", irriDuration.getText()
+							.toString());
+					param2.setBodyContent(js_request.toString());
+				} catch (Exception e) {
+					e.printStackTrace();
+					param2.setAsJsonContent(true);
+				}// 根据实际需求添加相应键值对
 
-			x.http().request(HttpMethod.PUT, param2,
-					new CommonCallback<String>() {
-						@Override
-						public void onCancelled(CancelledException arg0) {
+				x.http().request(HttpMethod.PUT, param2,
+						new CommonCallback<String>() {
+							@Override
+							public void onCancelled(CancelledException arg0) {
 
-						}
-
-						// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
-						// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
-						@Override
-						public void onError(Throwable ex, boolean isOnCallback) {
-
-							Toast.makeText(x.app(), ex.getMessage(),
-									Toast.LENGTH_LONG).show();
-							if (ex instanceof HttpException) { // 网络错误 
-								HttpException httpEx = (HttpException) ex;
-								int responseCode = httpEx.getCode();
-								String responseMsg = httpEx.getMessage();
-								String errorResult = httpEx.getResult();
-								Toast.makeText(getActivity(), "请求失败",
-										Toast.LENGTH_SHORT);
-								// ...
-								progressDialog.dismiss();
-							} else { // 其他错误 
-								// ...
-								Toast.makeText(getActivity(), "请求失败",
-										Toast.LENGTH_SHORT);
-								progressDialog.dismiss();
 							}
 
-						}
+							// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+							// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+							@Override
+							public void onError(Throwable ex,
+									boolean isOnCallback) {
 
-						// 不管成功或者失败最后都会回调该接口
-						@Override
-						public void onFinished() {
-						}
+								Toast.makeText(x.app(), ex.getMessage(),
+										Toast.LENGTH_LONG).show();
+								if (ex instanceof HttpException) { // 网络错误 
+									HttpException httpEx = (HttpException) ex;
+									int responseCode = httpEx.getCode();
+									String responseMsg = httpEx.getMessage();
+									String errorResult = httpEx.getResult();
+									Toast.makeText(getActivity(), "请求失败",
+											Toast.LENGTH_SHORT);
+									// ...
+									progressDialog.dismiss();
+								} else { // 其他错误 
+									// ...
+									Toast.makeText(getActivity(), "请求失败",
+											Toast.LENGTH_SHORT);
+									progressDialog.dismiss();
+								}
 
-						@Override
-						public void onSuccess(String arg0) {
-							Toast.makeText(getActivity(), "请求成功",
-									Toast.LENGTH_SHORT);
-							Gson gson = new Gson();
-							progressDialog.dismiss();
-						}
-					});
+							}
+
+							// 不管成功或者失败最后都会回调该接口
+							@Override
+							public void onFinished() {
+							}
+
+							@Override
+							public void onSuccess(String arg0) {
+								Toast.makeText(getActivity(), "请求成功",
+										Toast.LENGTH_SHORT);
+								Gson gson = new Gson();
+								progressDialog.dismiss();
+							}
+						});
+			}
 			break;
 		case R.id.image_irriagte_valve_control_isopen:
-			if (1 == isOpens) {
-				String str2 = "";
-				try {
-					str2 = java.net.URLEncoder.encode(ValueControlChanID,
-							"UTF-8");
-				} catch (UnsupportedEncodingException e1) {
-					e1.printStackTrace();
-				}
-				RequestParams param3 = new RequestParams(
-						URL.updateValueControlSwitch); // 网址(请替换成实际的网址)
-				// params.addQueryStringParameter("key", "value"); //
-				// 参数(请替换成实际的参数与值)
-				progressDialog = ProgressDialog.show(getActivity(),
-						"Loading...", "Please wait...", true, false);
-				JSONObject js_request1 = new JSONObject();
-				try {
-					param3.setAsJsonContent(true);
-					js_request1.put("valueControlChanID", ValueControlChanID);
-					js_request1.put("valueControlSwitch", 0);
-					isOpens = 0;
-					param3.setBodyContent(js_request1.toString());
-				} catch (Exception e) {
-					e.printStackTrace();
-					param3.setAsJsonContent(true);
-				}// 根据实际需求添加相应键值对
-
-				x.http().request(HttpMethod.PUT, param3,
-						new CommonCallback<String>() {
-							@Override
-							public void onCancelled(CancelledException arg0) {
-
-							}
-
-							// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
-							// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
-							@Override
-							public void onError(Throwable ex,
-									boolean isOnCallback) {
-
-								Toast.makeText(x.app(), ex.getMessage(),
-										Toast.LENGTH_LONG).show();
-								if (ex instanceof HttpException) { // 网络错误 
-									HttpException httpEx = (HttpException) ex;
-									int responseCode = httpEx.getCode();
-									String responseMsg = httpEx.getMessage();
-									String errorResult = httpEx.getResult();
-									// ...
-									progressDialog.dismiss();
-								} else { // 其他错误 
-									// ...
-									progressDialog.dismiss();
-								}
-
-							}
-
-							// 不管成功或者失败最后都会回调该接口
-							@Override
-							public void onFinished() {
-							}
-
-							@Override
-							public void onSuccess(String arg0) {
-								if (isOpens == 0) {
-									isOpen.setImageResource(R.drawable.off);
-								}
-								if (isOpens == 1) {
-									isOpen.setImageResource(R.drawable.on);
-								}
-								progressDialog.dismiss();
-							}
-						});
+			if (!NetStatusUtil.isNetValid(getActivity())) {
+				Toast.makeText(getActivity(), "当前网络不可用！", Toast.LENGTH_SHORT)
+						.show();
 			} else {
-				String str2 = "";
-				try {
-					str2 = java.net.URLEncoder.encode(ValueControlChanID,
-							"UTF-8");
-				} catch (UnsupportedEncodingException e1) {
-					e1.printStackTrace();
+				if (1 == isOpens) {
+					String str2 = "";
+					try {
+						str2 = java.net.URLEncoder.encode(ValueControlChanID,
+								"UTF-8");
+					} catch (UnsupportedEncodingException e1) {
+						e1.printStackTrace();
+					}
+					RequestParams param3 = new RequestParams(
+							URL.updateValueControlSwitch); // 网址(请替换成实际的网址)
+					// params.addQueryStringParameter("key", "value"); //
+					// 参数(请替换成实际的参数与值)
+					progressDialog = ProgressDialog.show(getActivity(),
+							"Loading...", "Please wait...", true, false);
+					JSONObject js_request1 = new JSONObject();
+					try {
+						param3.setAsJsonContent(true);
+						js_request1.put("valueControlChanID",
+								ValueControlChanID);
+						js_request1.put("valueControlSwitch", 0);
+						isOpens = 0;
+						param3.setBodyContent(js_request1.toString());
+					} catch (Exception e) {
+						e.printStackTrace();
+						param3.setAsJsonContent(true);
+					}// 根据实际需求添加相应键值对
+
+					x.http().request(HttpMethod.PUT, param3,
+							new CommonCallback<String>() {
+								@Override
+								public void onCancelled(CancelledException arg0) {
+
+								}
+
+								// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+								// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+								@Override
+								public void onError(Throwable ex,
+										boolean isOnCallback) {
+
+									Toast.makeText(x.app(), ex.getMessage(),
+											Toast.LENGTH_LONG).show();
+									if (ex instanceof HttpException) { // 网络错误 
+										HttpException httpEx = (HttpException) ex;
+										int responseCode = httpEx.getCode();
+										String responseMsg = httpEx
+												.getMessage();
+										String errorResult = httpEx.getResult();
+										// ...
+										progressDialog.dismiss();
+									} else { // 其他错误 
+										// ...
+										progressDialog.dismiss();
+									}
+
+								}
+
+								// 不管成功或者失败最后都会回调该接口
+								@Override
+								public void onFinished() {
+								}
+
+								@Override
+								public void onSuccess(String arg0) {
+									if (isOpens == 0) {
+										isOpen.setImageResource(R.drawable.off);
+										imageView
+												.setImageResource(R.drawable.value_selected);
+									}
+									if (isOpens == 1) {
+										isOpen.setImageResource(R.drawable.on);
+										imageView
+												.setImageResource(R.drawable.color_17);
+									}
+									progressDialog.dismiss();
+								}
+							});
+				} else {
+					String str2 = "";
+					try {
+						str2 = java.net.URLEncoder.encode(ValueControlChanID,
+								"UTF-8");
+					} catch (UnsupportedEncodingException e1) {
+						e1.printStackTrace();
+					}
+					RequestParams param3 = new RequestParams(
+							URL.acquireIsExistsGroupPlan + str2); // 网址(请替换成实际的网址)
+					// params.addQueryStringParameter("key", "value"); //
+					// 参数(请替换成实际的参数与值)
+					progressDialog = ProgressDialog.show(getActivity(),
+							"Loading...", "Please wait...", true, false);
+					JSONObject js_request2 = new JSONObject();
+					try {
+						param3.setAsJsonContent(true);
+					} catch (Exception e) {
+						e.printStackTrace();
+						param3.setAsJsonContent(true);
+					}// 根据实际需求添加相应键值对
+
+					x.http().request(HttpMethod.GET, param3,
+							new CommonCallback<String>() {
+								@Override
+								public void onCancelled(CancelledException arg0) {
+
+								}
+
+								// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+								// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+								@Override
+								public void onError(Throwable ex,
+										boolean isOnCallback) {
+
+									Toast.makeText(x.app(), ex.getMessage(),
+											Toast.LENGTH_LONG).show();
+									if (ex instanceof HttpException) { // 网络错误 
+										HttpException httpEx = (HttpException) ex;
+										int responseCode = httpEx.getCode();
+										String responseMsg = httpEx
+												.getMessage();
+										String errorResult = httpEx.getResult();
+										// ...
+										progressDialog.dismiss();
+									} else { // 其他错误 
+										// ...
+										progressDialog.dismiss();
+									}
+
+								}
+
+								// 不管成功或者失败最后都会回调该接口
+								@Override
+								public void onFinished() {
+								}
+
+								@Override
+								public void onSuccess(String arg0) {
+									Gson gson = new Gson();
+									ApplyIrrigateControlValueBean fromJson = gson
+											.fromJson(
+													arg0,
+													ApplyIrrigateControlValueBean.class);
+									progressDialog.dismiss();
+									IrriGroupStateBean bean = gson.fromJson(
+											arg0, IrriGroupStateBean.class);
+									if ("1".equals(bean.getCode())) {
+										new AlertDialog.Builder(getActivity())
+												.setTitle("系统提示")
+												// 设置对话框标题
+												.setMessage(
+														"您当前操作的阀门已存在灌溉计划，请选择根据原灌溉计划实行或重新设定延续时长 如无需定时关闭可选择不设置时长！")
+												// 设置显示的内容
+												.setPositiveButton(
+														"取消",
+														new DialogInterface.OnClickListener() {// 添加确定按钮
+
+															@Override
+															public void onClick(
+																	DialogInterface dialog,
+																	int which) {// 确定按钮的响应事件
+																dialog.dismiss();
+															}
+														})
+												.setNegativeButton(
+														"按原计划",
+														new DialogInterface.OnClickListener() {// 添加确定按钮
+
+															@Override
+															public void onClick(
+																	DialogInterface dialog,
+																	int which) {// 确定按钮的响应事件
+																RequestParams param3 = new RequestParams(
+																		URL.updateValueControlSwitch); // 网址(请替换成实际的网址)
+																// params.addQueryStringParameter("key",
+																// "value"); //
+																// 参数(请替换成实际的参数与值)
+																progressDialog = ProgressDialog
+																		.show(getActivity(),
+																				"Loading...",
+																				"Please wait...",
+																				true,
+																				false);
+																JSONObject js_request1 = new JSONObject();
+																try {
+																	param3.setAsJsonContent(true);
+																	js_request1
+																			.put("valueControlChanID",
+																					ValueControlChanID);
+																	if (isOpens == 0) {
+																		isOpens = 1;
+																		js_request1
+																				.put("valueControlSwitch",
+																						1);
+																	} else {
+																		isOpens = 0;
+																		js_request1
+																				.put("valueControlSwitch",
+																						0);
+																	}
+																	js_request1
+																			.put("isNewPlan",
+																					2);
+																	param3.setBodyContent(js_request1
+																			.toString());
+																} catch (Exception e) {
+																	e.printStackTrace();
+																	param3.setAsJsonContent(true);
+																}// 根据实际需求添加相应键值对
+
+																x.http()
+																		.request(
+																				HttpMethod.PUT,
+																				param3,
+																				new CommonCallback<String>() {
+																					@Override
+																					public void onCancelled(
+																							CancelledException arg0) {
+
+																					}
+
+																					// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+																					// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+																					@Override
+																					public void onError(
+																							Throwable ex,
+																							boolean isOnCallback) {
+
+																						Toast.makeText(
+																								x.app(),
+																								ex.getMessage(),
+																								Toast.LENGTH_LONG)
+																								.show();
+																						if (ex instanceof HttpException) { // 网络错误
+																															// 
+																							HttpException httpEx = (HttpException) ex;
+																							int responseCode = httpEx
+																									.getCode();
+																							String responseMsg = httpEx
+																									.getMessage();
+																							String errorResult = httpEx
+																									.getResult();
+																							// ...
+																							progressDialog
+																									.dismiss();
+																						} else { // 其他错误
+																									// 
+																							// ...
+																							progressDialog
+																									.dismiss();
+																						}
+
+																					}
+
+																					// 不管成功或者失败最后都会回调该接口
+																					@Override
+																					public void onFinished() {
+																					}
+
+																					@Override
+																					public void onSuccess(
+																							String arg0) {
+																						Toast.makeText(
+																								getActivity(),
+																								"请求成功",
+																								Toast.LENGTH_SHORT);
+																						Gson gson = new Gson();
+																						if (isOpens == 0) {
+																							isOpen.setImageResource(R.drawable.off);
+																							imageView
+																									.setImageResource(R.drawable.value_selected);
+																						}
+																						if (isOpens == 1) {
+																							isOpen.setImageResource(R.drawable.on);
+																							imageView
+																									.setImageResource(R.drawable.color_17);
+																						}
+																						progressDialog
+																								.dismiss();
+																					}
+																				});
+															}
+														})
+												.setNeutralButton(
+														"设置时长",
+														new DialogInterface.OnClickListener() {// 添加确定按钮
+
+															@Override
+															public void onClick(
+																	DialogInterface dialog,
+																	int which) {// 确定按钮的响应事件
+																isPlan = 1;
+																showDateTimePicker(mInflater);
+															}
+														}).show();// 在按键响应事件中显示此对话框
+									} else {
+										new AlertDialog.Builder(getActivity())
+												.setTitle("系统提示")
+												// 设置对话框标题
+												.setMessage(
+														"您正在打开一个没有灌溉计划的阀门 是否设置持续时长？")
+												// 设置显示的内容
+												.setPositiveButton(
+														"取消",
+														new DialogInterface.OnClickListener() {// 添加确定按钮
+
+															@Override
+															public void onClick(
+																	DialogInterface dialog,
+																	int which) {// 确定按钮的响应事件
+																dialog.dismiss();
+															}
+														})
+												.setNegativeButton(
+
+														"设置时长",
+														new DialogInterface.OnClickListener() {// 添加确定按钮
+
+															@Override
+															public void onClick(
+																	DialogInterface dialog,
+																	int which) {// 确定按钮的响应事件
+																isPlan = 1;
+																showDateTimePicker(mInflater);
+															}
+														})
+												.setNeutralButton(
+														"不设置",
+														new DialogInterface.OnClickListener() {// 添加确定按钮
+
+															@Override
+															public void onClick(
+																	DialogInterface dialog,
+																	int which) {// 确定按钮的响应事件
+
+																RequestParams param3 = new RequestParams(
+																		URL.updateValueControlSwitch); // 网址(请替换成实际的网址)
+																// params.addQueryStringParameter("key",
+																// "value"); //
+																// 参数(请替换成实际的参数与值)
+																progressDialog = ProgressDialog
+																		.show(getActivity(),
+																				"Loading...",
+																				"Please wait...",
+																				true,
+																				false);
+																JSONObject js_request1 = new JSONObject();
+																try {
+																	param3.setAsJsonContent(true);
+																	js_request1
+																			.put("valueControlChanID",
+																					ValueControlChanID);
+																	if (isOpens == 0) {
+																		isOpens = 1;
+																		js_request1
+																				.put("valueControlSwitch",
+																						1);
+																	} else {
+																		isOpens = 0;
+																		js_request1
+																				.put("valueControlSwitch",
+																						0);
+																	}
+																	js_request1
+																			.put("isNewPlan",
+																					0);
+																	param3.setBodyContent(js_request1
+																			.toString());
+																} catch (Exception e) {
+																	e.printStackTrace();
+																	param3.setAsJsonContent(true);
+																}// 根据实际需求添加相应键值对
+
+																x.http()
+																		.request(
+																				HttpMethod.PUT,
+																				param3,
+																				new CommonCallback<String>() {
+																					@Override
+																					public void onCancelled(
+																							CancelledException arg0) {
+
+																					}
+
+																					// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+																					// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+																					@Override
+																					public void onError(
+																							Throwable ex,
+																							boolean isOnCallback) {
+
+																						Toast.makeText(
+																								x.app(),
+																								ex.getMessage(),
+																								Toast.LENGTH_LONG)
+																								.show();
+																						if (ex instanceof HttpException) { // 网络错误
+																															// 
+																							HttpException httpEx = (HttpException) ex;
+																							int responseCode = httpEx
+																									.getCode();
+																							String responseMsg = httpEx
+																									.getMessage();
+																							String errorResult = httpEx
+																									.getResult();
+																							// ...
+																							progressDialog
+																									.dismiss();
+																						} else { // 其他错误
+																							// ...
+																							progressDialog
+																									.dismiss();
+																						}
+
+																					}
+
+																					// 不管成功或者失败最后都会回调该接口
+																					@Override
+																					public void onFinished() {
+																					}
+
+																					@Override
+																					public void onSuccess(
+																							String arg0) {
+																						Toast.makeText(
+																								getActivity(),
+																								"请求成功",
+																								Toast.LENGTH_SHORT);
+																						Gson gson = new Gson();
+																						if (isOpens == 0) {
+																							isOpen.setImageResource(R.drawable.off);
+																							imageView
+																									.setImageResource(R.drawable.value_selected);
+																						}
+																						if (isOpens == 1) {
+																							isOpen.setImageResource(R.drawable.on);
+																							imageView
+																									.setImageResource(R.drawable.color_17);
+																						}
+																						progressDialog
+																								.dismiss();
+																					}
+																				});
+															}
+														}).show();// 在按键响应事件中显示此对话框
+									}
+								}
+							});
 				}
-				RequestParams param3 = new RequestParams(
-						URL.acquireIsExistsGroupPlan + str2); // 网址(请替换成实际的网址)
-				// params.addQueryStringParameter("key", "value"); //
-				// 参数(请替换成实际的参数与值)
-				progressDialog = ProgressDialog.show(getActivity(),
-						"Loading...", "Please wait...", true, false);
-				JSONObject js_request2 = new JSONObject();
-				try {
-					param3.setAsJsonContent(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-					param3.setAsJsonContent(true);
-				}// 根据实际需求添加相应键值对
-
-				x.http().request(HttpMethod.GET, param3,
-						new CommonCallback<String>() {
-							@Override
-							public void onCancelled(CancelledException arg0) {
-
-							}
-
-							// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
-							// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
-							@Override
-							public void onError(Throwable ex,
-									boolean isOnCallback) {
-
-								Toast.makeText(x.app(), ex.getMessage(),
-										Toast.LENGTH_LONG).show();
-								if (ex instanceof HttpException) { // 网络错误 
-									HttpException httpEx = (HttpException) ex;
-									int responseCode = httpEx.getCode();
-									String responseMsg = httpEx.getMessage();
-									String errorResult = httpEx.getResult();
-									// ...
-									progressDialog.dismiss();
-								} else { // 其他错误 
-									// ...
-									progressDialog.dismiss();
-								}
-
-							}
-
-							// 不管成功或者失败最后都会回调该接口
-							@Override
-							public void onFinished() {
-							}
-
-							@Override
-							public void onSuccess(String arg0) {
-								Gson gson = new Gson();
-								ApplyIrrigateControlValueBean fromJson = gson
-										.fromJson(
-												arg0,
-												ApplyIrrigateControlValueBean.class);
-								progressDialog.dismiss();
-								IrriGroupStateBean bean = gson.fromJson(arg0,
-										IrriGroupStateBean.class);
-								if ("1".equals(bean.getCode())) {
-									new AlertDialog.Builder(getActivity())
-											.setTitle("系统提示")
-											// 设置对话框标题
-											.setMessage(
-													"您当前操作的阀门已存在灌溉计划，请选择根据原灌溉计划实行或重新设定延续时长 如无需定时关闭可选择不设置时长！")
-											// 设置显示的内容
-											.setPositiveButton(
-													"取消",
-													new DialogInterface.OnClickListener() {// 添加确定按钮
-
-														@Override
-														public void onClick(
-																DialogInterface dialog,
-																int which) {// 确定按钮的响应事件
-															dialog.dismiss();
-														}
-													})
-											.setNegativeButton(
-													"按原计划",
-													new DialogInterface.OnClickListener() {// 添加确定按钮
-
-														@Override
-														public void onClick(
-																DialogInterface dialog,
-																int which) {// 确定按钮的响应事件
-															RequestParams param3 = new RequestParams(
-																	URL.updateValueControlSwitch); // 网址(请替换成实际的网址)
-															// params.addQueryStringParameter("key",
-															// "value"); //
-															// 参数(请替换成实际的参数与值)
-															progressDialog = ProgressDialog.show(getActivity(),"Loading...","Please wait...",true,false);
-															JSONObject js_request1 = new JSONObject();
-															try {
-																param3.setAsJsonContent(true);
-																js_request1.put("valueControlChanID",ValueControlChanID);
-																if (isOpens == 0) {
-																	isOpens = 1;
-																	js_request1.put("valueControlSwitch",1);
-																} else {
-																	isOpens = 0;
-																	js_request1.put("valueControlSwitch",0);
-																}
-																js_request1.put("isNewPlan",2);
-																param3.setBodyContent(js_request1
-																		.toString());
-															} catch (Exception e) {
-																e.printStackTrace();
-																param3.setAsJsonContent(true);
-															}// 根据实际需求添加相应键值对
-
-															x.http()
-																	.request(
-																			HttpMethod.PUT,
-																			param3,
-																			new CommonCallback<String>() {
-																				@Override
-																				public void onCancelled(
-																						CancelledException arg0) {
-
-																				}
-
-																				// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
-																				// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
-																				@Override
-																				public void onError(Throwable ex,boolean isOnCallback) {
-
-																					Toast.makeText(x.app(),ex.getMessage(),Toast.LENGTH_LONG).show();
-																					if (ex instanceof HttpException) { // 网络错误
-																														// 
-																						HttpException httpEx = (HttpException) ex;
-																						int responseCode = httpEx
-																								.getCode();
-																						String responseMsg = httpEx
-																								.getMessage();
-																						String errorResult = httpEx
-																								.getResult();
-																						// ...
-																						progressDialog.dismiss();
-																					} else { // 其他错误
-																								// 
-																						// ...
-																						progressDialog.dismiss();
-																					}
-
-																				}
-
-																				// 不管成功或者失败最后都会回调该接口
-																				@Override
-																				public void onFinished() {
-																				}
-
-																				@Override
-																				public void onSuccess(
-																						String arg0) {
-																					Toast.makeText(getActivity(),"请求成功",	Toast.LENGTH_SHORT);
-																					Gson gson = new Gson();
-																					if (isOpens == 0) {
-																						isOpen.setImageResource(R.drawable.off);
-																					}
-																					if (isOpens == 1) {
-																						isOpen.setImageResource(R.drawable.on);
-																					}
-																					progressDialog
-																							.dismiss();
-																				}
-																			});
-														}
-													})
-											.setNeutralButton(
-													"设置时长",
-													new DialogInterface.OnClickListener() {// 添加确定按钮
-
-														@Override
-														public void onClick(
-																DialogInterface dialog,
-																int which) {// 确定按钮的响应事件
-															isPlan = 1;
-															showDateTimePicker(mInflater);
-														}
-													}).show();// 在按键响应事件中显示此对话框
-								} else {
-									new AlertDialog.Builder(getActivity())
-											.setTitle("系统提示")
-											// 设置对话框标题
-											.setMessage(
-													"您正在打开一个没有灌溉计划的阀门 是否设置持续时长？")
-											// 设置显示的内容
-											.setPositiveButton("取消",
-													new DialogInterface.OnClickListener() {// 添加确定按钮
-
-														@Override
-														public void onClick(
-																DialogInterface dialog,
-																int which) {// 确定按钮的响应事件
-															dialog.dismiss();
-														}
-													})
-											.setNegativeButton(
-
-													"设置时长",
-													new DialogInterface.OnClickListener() {// 添加确定按钮
-
-														@Override
-														public void onClick(
-																DialogInterface dialog,
-																int which) {// 确定按钮的响应事件
-															isPlan = 1;
-															showDateTimePicker(mInflater);
-														}
-													}
-													)
-											.setNeutralButton("不设置",
-													new DialogInterface.OnClickListener() {// 添加确定按钮
-
-												@Override
-												public void onClick(
-														DialogInterface dialog,
-														int which) {// 确定按钮的响应事件
-
-													RequestParams param3 = new RequestParams(
-															URL.updateValueControlSwitch); // 网址(请替换成实际的网址)
-													// params.addQueryStringParameter("key",
-													// "value"); //
-													// 参数(请替换成实际的参数与值)
-													progressDialog = ProgressDialog
-															.show(getActivity(),
-																	"Loading...",
-																	"Please wait...",
-																	true,
-																	false);
-													JSONObject js_request1 = new JSONObject();
-													try {
-														param3.setAsJsonContent(true);
-														js_request1.put("valueControlChanID",ValueControlChanID);
-														if (isOpens == 0) {
-															isOpens = 1;
-															js_request1.put("valueControlSwitch",1);
-														} else {
-															isOpens = 0;
-															js_request1.put("valueControlSwitch",0);
-														}
-														js_request1.put("isNewPlan",0);
-														param3.setBodyContent(js_request1
-																.toString());
-													} catch (Exception e) {
-														e.printStackTrace();
-														param3.setAsJsonContent(true);
-													}// 根据实际需求添加相应键值对
-
-													x.http()
-															.request(
-																	HttpMethod.PUT,
-																	param3,
-																	new CommonCallback<String>() {
-																		@Override
-																		public void onCancelled(
-																				CancelledException arg0) {
-
-																		}
-																		// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
-																		// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
-																		@Override
-																		public void onError(
-																				Throwable ex,
-																				boolean isOnCallback) {
-
-																			Toast.makeText(
-																					x.app(),
-																					ex.getMessage(),
-																					Toast.LENGTH_LONG)
-																					.show();
-																			if (ex instanceof HttpException) { // 网络错误
-																												// 
-																				HttpException httpEx = (HttpException) ex;
-																				int responseCode = httpEx
-																						.getCode();
-																				String responseMsg = httpEx
-																						.getMessage();
-																				String errorResult = httpEx
-																						.getResult();
-																				// ...
-																				progressDialog
-																						.dismiss();
-																			} else { // 其他错误
-																				// ...
-																				progressDialog
-																						.dismiss();
-																			}
-
-																		}
-
-																		// 不管成功或者失败最后都会回调该接口
-																		@Override
-																		public void onFinished() {
-																		}
-
-																		@Override
-																		public void onSuccess(
-																				String arg0) {
-																			Toast.makeText(
-																					getActivity(),
-																					"请求成功",
-																					Toast.LENGTH_SHORT);
-																			Gson gson = new Gson();
-																			if (isOpens == 0) {
-																				isOpen.setImageResource(R.drawable.off);
-																			}
-																			if (isOpens == 1) {
-																				isOpen.setImageResource(R.drawable.on);
-																			}
-																			progressDialog
-																					.dismiss();
-																		}
-																	});
-												}
-											}).show();// 在按键响应事件中显示此对话框
-								}
-							}
-						});
 			}
 			break;
 		case R.id.layout_apply_irriagte_valve_control:
@@ -810,7 +881,8 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 					JSONObject js_request1 = new JSONObject();
 					try {
 						param3.setAsJsonContent(true);
-						js_request1.put("valueControlChanID",ValueControlChanID);
+						js_request1.put("valueControlChanID",
+								ValueControlChanID);
 						if (isOpens == 0) {
 							isOpens = 1;
 							js_request1.put("valueControlSwitch", 1);
@@ -818,8 +890,10 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 							isOpens = 0;
 							js_request1.put("valueControlSwitch", 0);
 						}
-						if (CheckUtil.IsEmpty(irriDuration.getText().toString())
-								|| "00:00:00".equals(irriDuration.getText().toString())) {
+						if (CheckUtil
+								.IsEmpty(irriDuration.getText().toString())
+								|| "00:00:00".equals(irriDuration.getText()
+										.toString())) {
 							js_request1.put("isNewPlan", 0);
 						}
 						js_request1.put("isNewPlan", 1);
@@ -837,6 +911,7 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 								public void onCancelled(CancelledException arg0) {
 
 								}
+
 								// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
 								// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
 								@Override
@@ -871,9 +946,13 @@ public class ApplyIrrigateControlValveFragment extends Fragment implements
 									Gson gson = new Gson();
 									if (isOpens == 0) {
 										isOpen.setImageResource(R.drawable.off);
+										imageView
+												.setImageResource(R.drawable.value_selected);
 									}
 									if (isOpens == 1) {
 										isOpen.setImageResource(R.drawable.on);
+										imageView
+												.setImageResource(R.drawable.color_17);
 									}
 									progressDialog.dismiss();
 								}

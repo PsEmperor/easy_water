@@ -23,16 +23,16 @@ public class ApplyIrrigateControlValueBean {
          * AuthProvince : 授
          */
 
-    	private String TotalIrriTime;
-    	private String IrriDuration;
-    	private String IrriCount;
-        private String IrriWater;
-        private String Area;
-        private String CropName;
-        private String ValueControlChanID;
-        private String GrowersName;
-        private String ValueControlID;
-        private String ValueControlSwitch;
+    	private String TotalIrriTime;//累计灌水时间
+    	private String IrriDuration;//灌水持续时间
+    	private String IrriCount;//累计灌溉次数
+        private String IrriWater;//累计水量
+        private String Area;//面积
+        private String CropName;//作物名称
+        private String ValueControlChanID;//阀控器ID
+        private String GrowersName;//用户名
+        private String ValueControlID;//阀门ID
+        private String ValueControlSwitch;//开关状态
         
 		public String getTotalIrriTime() {
 			return TotalIrriTime;

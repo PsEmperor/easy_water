@@ -22,6 +22,9 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:singleLine="true"
             android:text="141团6连1#地块" />
 
     </RelativeLayout>
@@ -48,7 +51,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="10dp"
-                android:text="正在执行灌溉任务" />
+                android:text="" />
 
             <TextView
                 android:id="@+id/textView1"
@@ -118,7 +121,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp">
 
-        <ps.emperor.easy_water.view.MyGridView
+        <GridView
             android:id="@+id/grid_apply_irrigate_control_fm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -126,7 +129,7 @@
             android:layout_alignParentTop="true"
             android:numColumns="4" 
             >
-        </ps.emperor.easy_water.view.MyGridView>
+        </GridView>
     </RelativeLayout>
 
     <RelativeLayout

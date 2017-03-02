@@ -44,6 +44,7 @@ import ps.emperor.easy_water.entity.UserReleIrrInfoToOneBean.infoList;
 import ps.emperor.easy_water.greendao.DBHelper;
 import ps.emperor.easy_water.greendao.Irrigation;
 import ps.emperor.easy_water.utils.CheckUtil;
+import ps.emperor.easy_water.utils.NetStatusUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.MainActionBars;
@@ -68,11 +69,10 @@ public class MainTainBasicInfoFragment extends Fragment implements
 			tv_restnight_start, tv_restnight_end, text_season_start,
 			text_season_end;
 	private Dialog dialog;
-	private int id, isFront,first_setting, first_crop;
-	private int group, value, long_hour, night_start_hour, night_start_minute,
-			night_cont_hour, night_cont_minute, night_end_hour,
-			night_end_minute, setLong, setNight, Skip, aNight;
-	private String units,filterStart,filterEnd,seasonStart,seasonEnd;
+	private int id, isFront, first_setting, first_crop;
+	private int group, value, long_hour, setLong, setNight, Skip, aNight;
+	private String units, filterStart, filterEnd, seasonStart, seasonEnd,
+			night_start, night_end;
 	private WheelView year;
 	private WheelView month;
 	private WheelView day;
@@ -87,7 +87,6 @@ public class MainTainBasicInfoFragment extends Fragment implements
 	private List<Irrigation> irrigation;
 	private ProgressDialog progressDialog;
 	private List<infoList> beens;
-	private String[] NightStart,NightEnd;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -145,7 +144,13 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				.findViewById(R.id.text_apply_irriagte_project_single_time_long);
 		tv_time_long.setText(long_hour + "");
 		irrigation = dbHelper.loadContinue(units);
-		init();
+
+		if (NetStatusUtil.isNetValid(getActivity())) {
+			init();
+		} else {
+			Toast.makeText(getActivity(), "当前网络不可用！请检查您的网络状态！", Toast.LENGTH_SHORT)
+					.show();
+		}
 
 		return view;
 
@@ -225,16 +230,12 @@ public class MainTainBasicInfoFragment extends Fragment implements
 					} else {
 						tv_irriagte_group.setText("0");
 					}
-					SharedUtils.setParam(getActivity(), "irriagte_group", beens
-							.get(0).getMaxGroup());
 					if (!CheckUtil.IsEmpty(beens.get(0).getValueNum())) {
 						tv_orroagte_valve.setText(beens.get(0).getValueNum()
 								+ "");
 					} else {
 						tv_orroagte_valve.setText("0");
 					}
-					SharedUtils.setParam(getActivity(), "irriagte_value", beens
-							.get(0).getValueNum());
 					String parten = "00";
 					DecimalFormat decimal = new DecimalFormat(parten);
 					if (!CheckUtil.IsEmpty(beens.get(0).getRestStart())) {
@@ -269,72 +270,61 @@ public class MainTainBasicInfoFragment extends Fragment implements
 					} else {
 						tv_time_long.setText("0");
 					}
-					NightStart = tv_restnight_start.getText().toString().split(":");
-					NightEnd = tv_restnight_end.getText().toString().split(":");
-					night_start_hour = Integer.valueOf(NightStart[0]);
-					night_start_minute = Integer.valueOf(NightStart[1]);
-					night_end_hour = Integer.valueOf(NightEnd[0]);
-					night_end_minute = Integer.valueOf(NightEnd[1]);
-					long_hour = Integer.valueOf(tv_time_long.getText().toString());
-					group = Integer.valueOf(tv_irriagte_group.getText().toString());
-					value = Integer.valueOf(tv_orroagte_valve.getText().toString());
-					
-					if(night_start_hour > night_end_hour){
-						night_cont_hour = night_end_hour + 24 - night_start_hour;
-					}else{
-						night_cont_hour = night_end_hour-night_start_hour;
-					}
-					if(night_start_minute > night_end_hour){
-						night_cont_minute = night_end_minute + 60 -night_start_minute;
-					}else{
-						night_cont_minute = night_end_minute-night_start_minute;
-					}
-					filterStart = tv_filter.getText().toString().substring(0, 2);
+					night_start = tv_restnight_start.getText().toString();
+					night_end = tv_restnight_end.getText().toString();
+					long_hour = Integer.valueOf(tv_time_long.getText()
+							.toString());
+					group = Integer.valueOf(tv_irriagte_group.getText()
+							.toString());
+					value = Integer.valueOf(tv_orroagte_valve.getText()
+							.toString());
+
+					filterStart = tv_filter.getText().toString()
+							.substring(0, 2);
 					filterEnd = tv_filter.getText().toString().substring(4, 6);
 					seasonStart = text_season_start.getText().toString();
 					seasonEnd = text_season_end.getText().toString();
-					
-//					if (!(decimal.format(irrigation.get(0)
-//							.getIsNightStartHour()) + ":" + decimal
-//							.format(irrigation.get(0)
-//									.getIsNightStartMinute()))
-//							.equals(tv_restnight_start.getText()
-//									.toString())||!(decimal.format(irrigation.get(0)
-//											.getIsNightEndHour()) + ":" + decimal
-//											.format(irrigation.get(0)
-//													.getIsNightEndMinute()))
-//											.equals(tv_restnight_end.getText()
-//													.toString())) {
-//						dbHelper.updateBasicTime(units,
-//								night_start_hour, night_start_minute,
-//								night_cont_hour, night_cont_minute,
-//								night_end_hour, night_end_minute);
-//					}
-//					if (!(irrigation.get(0).getIsTimeLong() + "")
-//							.equals(tv_time_long.getText().toString())) {
-//						dbHelper.updateBasicTimeLong(units, long_hour);
-//					}
-//					if (!(irrigation.get(0).getGroupnumber() + "")
-//							.equals(tv_irriagte_group.getText().toString())) {
-//						dbHelper.updateBasicGroup(units,group);
-//					}
-//					if (!(irrigation.get(0).getValuenumber() + "")
-//							.equals(tv_orroagte_valve.getText().toString())) {
-//						dbHelper.updateBasicVlaue(units,value);
-//					}
-//					if ((irrigation.get(0).getFilterHour() + "")
-//							.equals(Integer.valueOf(filterStart))&&(irrigation.get(0).getFilterMinute()+"").equals(Integer.valueOf(filterEnd))) {
-//					}else{
-//						dbHelper.updateBasicFilter(units,Integer.valueOf(filterStart),Integer.valueOf(filterEnd));
-//					}
-					if((irrigation.get(0).getSeasonStrat()+"")
-							.equals(seasonStart)&&(irrigation.get(0).getSeasonEnd()+"").equals(seasonEnd)){
-					}else{
-						dbHelper.updateBasicSeason(units,seasonStart,seasonEnd);
-					}
+					// if (!irrigation.get(0)
+					// .getNightStart()
+					// .equals(tv_restnight_start.getText()
+					// .toString())||!(irrigation.get(0)
+					// .getNightEnd()
+					// .equals(tv_restnight_end.getText()
+					// .toString()))) {
+					// dbHelper.updateBasicTime(units,
+					// night_start,
+					// night_cont,
+					// night_end);
+					// }
+					// if (!(irrigation.get(0).getIsTimeLong() + "")
+					// .equals(tv_time_long.getText().toString())) {
+					// dbHelper.updateBasicTimeLong(units, long_hour);
+					// }
+					// if (!(irrigation.get(0).getIsTimeLong() + "")
+					// .equals(tv_time_long.getText().toString())) {
+					// dbHelper.updateBasicTimeLong(units, long_hour);
+					// }
+					// if (!(irrigation.get(0).getGroupnumber() + "")
+					// .equals(tv_irriagte_group.getText().toString())) {
+					// dbHelper.updateBasicGroup(units,group);
+					// }
+					// if (!(irrigation.get(0).getValuenumber() + "")
+					// .equals(tv_orroagte_valve.getText().toString())) {
+					// dbHelper.updateBasicVlaue(units,value);
+					// }
+//					 if (irrigation.get(0).getFlushtime().equals(beens.get(0).getFlushTime()))
+//					 {
+//					 }else{
+//					 dbHelper.updateBasicFilter(units,beens.get(0).getFlushTime());
+//					 }
+					// if((irrigation.get(0).getSeasonStrat()+"")
+					// .equals(seasonStart)&&(irrigation.get(0).getSeasonEnd()+"").equals(seasonEnd)){
+					// }else{
+					// dbHelper.updateBasicSeason(units,seasonStart,seasonEnd);
+					// }
 					irrigation = dbHelper.loadContinue(units);
-					System.out.println(irrigation.get(0).getSeasonStrat()+"");
-					System.out.println(irrigation.get(0).getSeasonEnd()+"");
+					System.out.println(irrigation.get(0).getSeasonStrat() + "");
+					System.out.println(irrigation.get(0).getSeasonEnd() + "");
 				}
 				progressDialog.dismiss();
 			}
@@ -353,9 +343,9 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				setLong = 0;
 				SharedUtils.setParam(getActivity(), "setLong", setLong);
 				if (CheckUtil.IsEmpty(long_hour) || long_hour == 0) {
-					SharedUtils.setParam(getActivity(), "SingleLong", false);
-				} else {
 					SharedUtils.setParam(getActivity(), "SingleLong", true);
+				} else {
+					SharedUtils.setParam(getActivity(), "SingleLong", false);
 				}
 				ApplyIrrigateProjectSingleFragment fragment = new ApplyIrrigateProjectSingleFragment();
 
@@ -366,7 +356,9 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				isFront = 1;
 				bundle.putInt("isFront", isFront);
 				fragment.setArguments(bundle);
-				transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
+				transaction.setCustomAnimations(
+						R.anim.slide_fragment_horizontal_right_in,
+						R.anim.slide_fragment_horizontal_left_out);
 				transaction.replace(R.id.fl, fragment, "main");
 				transaction.commit();
 				break;
@@ -386,24 +378,24 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				isFront = 1;
 				bundle.putInt("isFront", isFront);
 				fragment.setArguments(bundle);
-				transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
+				transaction.setCustomAnimations(
+						R.anim.slide_fragment_horizontal_right_in,
+						R.anim.slide_fragment_horizontal_left_out);
 				transaction.replace(R.id.fl, fragment, "main");
 				transaction.commit();
 				break;
 			}
 			if (setNight == 1) {
 				setNight = 0;
-				night_start_hour = irrigation.get(0).getIsNightStartHour();
-				night_start_minute = irrigation.get(0).getIsNightStartMinute();
-				night_end_hour = irrigation.get(0).getIsNightEndHour();
-				night_end_minute = irrigation.get(0).getIsNightEndMinute();
-				if ((CheckUtil.IsEmpty(night_start_hour) || night_start_hour == 0)) {
+				night_start = irrigation.get(0).getNightStart();
+				night_end = irrigation.get(0).getNightEnd();
+				if ((CheckUtil.IsEmpty(night_start) || night_start.equals("0"))) {
 					aNight = 1;
 				} else {
 					aNight = 0;
 				}
 
-				if ((CheckUtil.IsEmpty(night_end_hour) || night_end_hour == 0)) {
+				if ((CheckUtil.IsEmpty(night_end) || night_end.equals("0"))) {
 					aNight = 1;
 				} else {
 					aNight = 0;
@@ -420,23 +412,23 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				isFront = 1;
 				bundle.putInt("isFront", isFront);
 				fragment.setArguments(bundle);
-				transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
+				transaction.setCustomAnimations(
+						R.anim.slide_fragment_horizontal_right_in,
+						R.anim.slide_fragment_horizontal_left_out);
 				transaction.replace(R.id.fl, fragment, "main");
 				transaction.commit();
 				break;
 			} else if (setNight == 2) {
 				setNight = 0;
-				night_start_hour = irrigation.get(0).getIsNightStartHour();
-				night_start_minute = irrigation.get(0).getIsNightStartMinute();
-				night_end_hour = irrigation.get(0).getIsNightEndHour();
-				night_end_minute = irrigation.get(0).getIsNightEndMinute();
-				if ((CheckUtil.IsEmpty(night_start_hour) || night_start_hour == 0)) {
+				night_start = irrigation.get(0).getNightStart();
+				night_end = irrigation.get(0).getNightEnd();
+				if ((CheckUtil.IsEmpty(night_start) || night_start.equals("0"))) {
 					aNight = 0;
 				} else {
 					aNight = 1;
 				}
 
-				if ((CheckUtil.IsEmpty(night_end_hour) || night_end_hour == 0)) {
+				if ((CheckUtil.IsEmpty(night_end) || night_end.equals("0"))) {
 					aNight = 0;
 				} else {
 					aNight = 1;
@@ -453,7 +445,9 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				isFront = 1;
 				bundle.putInt("isFront", isFront);
 				fragment.setArguments(bundle);
-				transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
+				transaction.setCustomAnimations(
+						R.anim.slide_fragment_horizontal_right_in,
+						R.anim.slide_fragment_horizontal_left_out);
 				transaction.replace(R.id.fl, fragment, "main");
 				transaction.commit();
 				break;
@@ -462,7 +456,9 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				Skip = 0;
 				SharedUtils.setParam(getActivity(), "Skip", Skip);
 				MainTainBasicCompileFragment fragment = new MainTainBasicCompileFragment();
-				transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
+				transaction.setCustomAnimations(
+						R.anim.slide_fragment_horizontal_right_in,
+						R.anim.slide_fragment_horizontal_left_out);
 				transaction.replace(R.id.fragment_maintain_present_irrigate,
 						fragment, "main");
 				transaction.commit();
@@ -473,105 +469,121 @@ public class MainTainBasicInfoFragment extends Fragment implements
 			// Integer.valueOf(tv_orroagte_valve.getText().toString()));
 			// Toast.makeText(getActivity(), "保存成功" + value, Toast.LENGTH_SHORT)
 			// .show();
-			String str1 = (String) SharedUtils.getParam(getActivity(),
-					"FirstDerviceID", "");
-			RequestParams param2 = new RequestParams(URL.firstDerviceIDIrri); // 网址(请替换成实际的网址)
-			// 参数(请替换成实际的参数与值)
-			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
-					"Please wait...", true, false);
-			JSONObject js_request = new JSONObject();
-			try {
-				param2.setAsJsonContent(true);
-				js_request.put("firstDerviceID", str1);
-				js_request.put("maxGroup", tv_irriagte_group.getText()
-						.toString());
-				js_request.put("valueNum", tv_orroagte_valve.getText()
-						.toString());
-				js_request.put("flushTime", tv_filter.getText().toString());
-				js_request
-						.put("longestTime", tv_time_long.getText().toString());
-				js_request.put("restStart", tv_restnight_start.getText()
-						.toString());
-				js_request
-						.put("restEnd", tv_restnight_end.getText().toString());
-				js_request.put("irriSeasonStart", text_season_start.getText()
-						.toString());
-				js_request.put("irriSeasonEnd", text_season_end.getText()
-						.toString());
-				param2.setBodyContent(js_request.toString());
-			} catch (Exception e) {
-				e.printStackTrace();
-				param2.setAsJsonContent(true);
-			}// 根据实际需求添加相应键值对
+			if (!NetStatusUtil.isNetValid(getActivity())) {
+				Toast.makeText(getActivity(), "当前网络不可用！请检查您的网络状态！", Toast.LENGTH_SHORT)
+						.show();
+			} else {
+				String str1 = (String) SharedUtils.getParam(getActivity(),
+						"FirstDerviceID", "");
+				RequestParams param2 = new RequestParams(URL.firstDerviceIDIrri); // 网址(请替换成实际的网址)
+				// 参数(请替换成实际的参数与值)
+				progressDialog = ProgressDialog.show(getActivity(),
+						"Loading...", "Please wait...", true, false);
+				JSONObject js_request = new JSONObject();
+				try {
+					param2.setAsJsonContent(true);
+					js_request.put("firstDerviceID", str1);
+					js_request.put("maxGroup", tv_irriagte_group.getText()
+							.toString());
+					js_request.put("valueNum", tv_orroagte_valve.getText()
+							.toString());
+					js_request.put("flushTime", tv_filter.getText().toString());
+					js_request.put("longestTime", tv_time_long.getText()
+							.toString());
+					js_request.put("restStart", tv_restnight_start.getText()
+							.toString());
+					js_request.put("restEnd", tv_restnight_end.getText()
+							.toString());
+					js_request.put("irriSeasonStart", text_season_start
+							.getText().toString());
+					js_request.put("irriSeasonEnd", text_season_end.getText()
+							.toString());
+					param2.setBodyContent(js_request.toString());
+				} catch (Exception e) {
+					e.printStackTrace();
+					param2.setAsJsonContent(true);
+				}// 根据实际需求添加相应键值对
 
-			x.http().request(HttpMethod.PUT, param2,
-					new CommonCallback<String>() {
-						@Override
-						public void onCancelled(CancelledException arg0) {
+				x.http().request(HttpMethod.PUT, param2,
+						new CommonCallback<String>() {
+							@Override
+							public void onCancelled(CancelledException arg0) {
 
-						}
+							}
 
-						// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
-						// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
-						@Override
-						public void onError(Throwable ex, boolean isOnCallback) {
+							// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+							// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+							@Override
+							public void onError(Throwable ex,
+									boolean isOnCallback) {
 
-							Toast.makeText(x.app(), ex.getMessage(),
-									Toast.LENGTH_LONG).show();
-							if (ex instanceof HttpException) { // 网络错误 
-								HttpException httpEx = (HttpException) ex;
-								int responseCode = httpEx.getCode();
-								String responseMsg = httpEx.getMessage();
-								String errorResult = httpEx.getResult();
-								// ...
+								Toast.makeText(x.app(), ex.getMessage(),
+										Toast.LENGTH_LONG).show();
+								if (ex instanceof HttpException) { // 网络错误 
+									HttpException httpEx = (HttpException) ex;
+									int responseCode = httpEx.getCode();
+									String responseMsg = httpEx.getMessage();
+									String errorResult = httpEx.getResult();
+									// ...
+									progressDialog.dismiss();
+								} else { // 其他错误 
+									// ...
+									progressDialog.dismiss();
+								}
+
+							}
+
+							// 不管成功或者失败最后都会回调该接口
+							@Override
+							public void onFinished() {
+							}
+
+							@Override
+							public void onSuccess(String arg0) {
+								Gson gson = new Gson();
+								// 更新数据库
+								String parten = "00";
+								DecimalFormat decimal = new DecimalFormat(
+										parten);
+								if (!irrigation
+										.get(0)
+										.getNightStart()
+										.equals(tv_restnight_start.getText()
+												.toString())
+										|| !(irrigation.get(0).getNightEnd()
+												.equals(tv_restnight_end
+														.getText().toString()))) {
+									dbHelper.updateBasicTime(units,
+											night_start, night_end);
+								}
+								if (!(irrigation.get(0).getIsTimeLong() + "")
+										.equals(tv_time_long.getText()
+												.toString())) {
+									dbHelper.updateBasicTimeLong(units,
+											long_hour);
+								}
+								if (!(irrigation.get(0).getGroupnumber() + "")
+										.equals(tv_irriagte_group.getText()
+												.toString())) {
+									dbHelper.updateBasicGroup(units, group);
+								}
+								if (!(irrigation.get(0).getValuenumber() + "")
+										.equals(tv_orroagte_valve.getText()
+												.toString())) {
+									dbHelper.updateBasicVlaue(units, value);
+								}
+								if ((irrigation.get(0).getSeasonStrat() + "")
+										.equals(seasonStart)
+										&& (irrigation.get(0).getSeasonEnd() + "")
+												.equals(seasonEnd)) {
+								} else {
+									dbHelper.updateBasicSeason(units,
+											seasonStart, seasonEnd);
+								}
 								progressDialog.dismiss();
-							} else { // 其他错误 
-								// ...
-								progressDialog.dismiss();
 							}
-
-						}
-
-						// 不管成功或者失败最后都会回调该接口
-						@Override
-						public void onFinished() {
-						}
-
-						@Override
-						public void onSuccess(String arg0) {
-							Gson gson = new Gson();
-							SharedUtils.setParam(getActivity(),
-									"irriagte_group", tv_irriagte_group
-											.getText().toString());
-							SharedUtils.setParam(getActivity(),
-									"irriagte_value", tv_orroagte_valve
-											.getText().toString());
-							// 更新数据库
-							String parten = "00";
-							DecimalFormat decimal = new DecimalFormat(parten);
-							if (!(decimal.format(irrigation.get(0)
-									.getIsNightStartHour()) + ":" + decimal
-									.format(irrigation.get(0)
-											.getIsNightStartMinute()))
-									.equals(tv_restnight_start.getText()
-											.toString())||!(decimal.format(irrigation.get(0)
-													.getIsNightEndHour()) + ":" + decimal
-													.format(irrigation.get(0)
-															.getIsNightEndMinute()))
-													.equals(tv_restnight_end.getText()
-															.toString())) {
-								dbHelper.updateBasicTime(units,
-										night_start_hour, night_start_minute,
-										night_cont_hour, night_cont_minute,
-										night_end_hour, night_end_minute);
-							}
-							if (!(irrigation.get(0).getIsTimeLong() + "")
-									.equals(tv_time_long.getText().toString())) {
-								dbHelper.updateBasicTimeLong(units, long_hour);
-							}
-							progressDialog.dismiss();
-						}
-					});
+						});
+			}
 			break;
 		case R.id.layout_maintain_basic_info_max_irrigat_group:// 最大轮灌组数量
 			id = 1;
@@ -689,8 +701,7 @@ public class MainTainBasicInfoFragment extends Fragment implements
 							getActivity(), "first_setting", 0);
 					// if (first_setting == 0) {
 					group = wv_hours.getCurrentItem() + 1;
-					tv_irriagte_group.setText(group
-							+ "");
+					tv_irriagte_group.setText(group + "");
 					first_setting = 1;
 					SharedUtils.setParam(getActivity(), "first_setting",
 							first_setting);
@@ -765,11 +776,7 @@ public class MainTainBasicInfoFragment extends Fragment implements
 							"first_crop", 0);
 					// if (first_crop == 0) {
 					value = wv_hours.getCurrentItem() + 1;
-					tv_orroagte_valve.setText(value
-							+ "");
-					// SharedUtils.setParam(getActivity(), "values",
-					// Integer.valueOf(tv_orroagte_valve.getText()
-					// .toString()));
+					tv_orroagte_valve.setText(value + "");
 					first_crop = 1;
 					SharedUtils.setParam(getActivity(), "first_crop",
 							first_crop);
@@ -920,10 +927,8 @@ public class MainTainBasicInfoFragment extends Fragment implements
 					// wv_hour.getCurrentItem(),
 					// wv_minute.getCurrentItem());
 					// } else {
-					tv_filter.setText(wv_hour.getCurrentItem() + "小时"
-							+ wv_minute.getCurrentItem() + "分钟");
-					dbHelper.updateBasicFilter(units, wv_hour.getCurrentItem(),
-							wv_minute.getCurrentItem());
+					tv_filter.setText(decimal.format(wv_hour.getCurrentItem()) + "小时"
+							+ decimal.format(wv_minute.getCurrentItem()) + "分钟");
 					// }
 					dialog.dismiss();
 				}
@@ -1175,12 +1180,11 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				} else {
 					SharedUtils.setParam(getActivity(), "isGreaters", 0);
 				}
-				night_start_hour = wv_hour_night.getCurrentItem();
-				night_start_minute = wv_minute_night.getCurrentItem();
-				night_cont_hour = wv_hour_nights.getCurrentItem();
-				night_cont_minute = wv_minute_nights.getCurrentItem();
-				night_end_hour = date.getHours();
-				night_end_minute = date.getMinutes();
+				night_start = decimal.format(wv_hour_night.getCurrentItem())
+						+ ":"
+						+ decimal.format(wv_minute_night.getCurrentItem()) + "";
+				night_end = decimal.format(date.getHours()) + ":"
+						+ decimal.format(date.getMinutes());
 
 				dialog.dismiss();
 			}

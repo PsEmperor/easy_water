@@ -1,35 +1,103 @@
 package ps.emperor.easy_water.entity;
 
+import java.util.List;
+
+
 
 public class ApplyIrrigationProjectBean {
+	 private List<infoList> infoList;
 
-	/**
-	 * 灌溉计划
-	 */
+	    public List<infoList> getAuthNameList() {
+	        return infoList;
+	    }
 
-	public String group; // 灌溉组
-	public String time_start; // 开始时间
-	public String time_end; // 结束时间
+	    public void setAuthNameList(List<infoList> authNameList) {
+	        this.infoList = authNameList;
+	    }
 
-	public String getGroup() {
-		return group;
-	}
-	public void setGroup(String group) {
-		this.group = group;
-	}
-	public String getTime_start() {
-		return time_start;
-	}
-	public void setTime_start(String time_start) {
-		this.time_start = time_start;
-	}
-	public String getTime_end() {
-		return time_end;
-	}
-	public void setTime_end(String time_end) {
-		this.time_end = time_end;
-	}
+	    public static class infoList {
+	        /**
+	         * 灌溉计划
+	         */
 
-
-
+	    	private String RestTime;
+	    	private String GroupName;
+	    	private String FirstDerviceID;
+	        private String Duration;
+	        private String IrriUnitName;
+	        private String PlanRound;
+	        private String EndTime;
+	        private String StartTime;
+	        private String GroupID;
+	        private String PlanStat;
+	        private String GroupNum;
+	        
+	        
+			public String getGroupNum() {
+				return GroupNum;
+			}
+			public void setGroupNum(String groupNum) {
+				GroupNum = groupNum;
+			}
+			public String getRestTime() {
+				return RestTime;
+			}
+			public void setRestTime(String restTime) {
+				RestTime = restTime;
+			}
+			public String getGroupName() {
+				return GroupName;
+			}
+			public void setGroupName(String groupName) {
+				GroupName = groupName;
+			}
+			public String getFirstDerviceID() {
+				return FirstDerviceID;
+			}
+			public void setFirstDerviceID(String firstDerviceID) {
+				FirstDerviceID = firstDerviceID;
+			}
+			public String getDuration() {
+				return Duration;
+			}
+			public void setDuration(String duration) {
+				Duration = duration;
+			}
+			public String getIrriUnitName() {
+				return IrriUnitName;
+			}
+			public void setIrriUnitName(String irriUnitName) {
+				IrriUnitName = irriUnitName;
+			}
+			public String getPlanRound() {
+				return PlanRound;
+			}
+			public void setPlanRound(String planRound) {
+				PlanRound = planRound;
+			}
+			public String getEndTime() {
+				return EndTime;
+			}
+			public void setEndTime(String endTime) {
+				EndTime = endTime;
+			}
+			public String getStartTime() {
+				return StartTime;
+			}
+			public void setStartTime(String startTime) {
+				StartTime = startTime;
+			}
+			public String getGroupID() {
+				return GroupID;
+			}
+			public void setGroupID(String groupID) {
+				GroupID = groupID;
+			}
+			public String getPlanStat() {
+				return PlanStat;
+			}
+			public void setPlanStat(String planStat) {
+				PlanStat = planStat;
+			}
+	    }
 }

@@ -41,6 +41,7 @@ public class ApplyIrrigateControlBean {
 		public String ValueControlChanID; // 阀控器ID
 		public String ValueControlSwitch; // 阀控器开关
 		public String PlanStat; // 状态
+		public String OpenValueNum; // 状态
 
 		public String getGroupName() {
 			return GroupName;
@@ -106,6 +107,14 @@ public class ApplyIrrigateControlBean {
 			PlanStat = planStat;
 		}
 
+		public String getOpenValueNum() {
+			return OpenValueNum;
+		}
+
+		public void setOpenValueNum(String openValueNum) {
+			OpenValueNum = openValueNum;
+		}
+		
 	}
 	public static class groupList{
 		private String GroupNum;

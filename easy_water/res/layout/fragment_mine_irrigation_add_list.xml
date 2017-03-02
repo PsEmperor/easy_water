@@ -25,6 +25,8 @@
             android:text="141团5连7#地块4#灌溉单元"
             android:textColor="@color/gray_1"
             android:textSize="15sp"
+            android:singleLine="true"
+            android:layout_marginRight="30dp"
             android:layout_marginLeft="20dp" />
 
     </RelativeLayout>

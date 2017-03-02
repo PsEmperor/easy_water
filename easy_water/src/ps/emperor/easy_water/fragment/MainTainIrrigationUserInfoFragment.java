@@ -35,17 +35,21 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.adapter.ImageAdapter;
-import ps.emperor.easy_water.adapter.ImageAdapters;
+import ps.emperor.easy_water.adapter.ImageAdapterUser;
 import ps.emperor.easy_water.entity.MainTainIrrigationInfoBean;
 import ps.emperor.easy_water.entity.MainTainIrrigationInfoBean.infoList;
 import ps.emperor.easy_water.entity.UserReleIrrInfoToOneBean;
 import ps.emperor.easy_water.utils.CheckUtil;
+import ps.emperor.easy_water.utils.DensityUtil;
+import ps.emperor.easy_water.utils.NetStatusUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.MainActionBar;
@@ -71,12 +75,14 @@ public class MainTainIrrigationUserInfoFragment extends Fragment implements
 	private MyGridView gridView;
 	// private PopupWindow popupWindow;
 	Button btn_image_cancel, btn_image_choose;
-	ImageAdapters adapter;
+	ImageAdapterUser adapter;
 	private List<String> infoBeans, list;
 	private RelativeLayout layout_irriagte_group;// 当前轮灌组复用隐藏
 	private Button btn_main_irrigate_info_group;// 重设轮灌组隐藏
 	private ProgressDialog progressDialog;
 	private List<infoList> beens;
+	private FrameLayout frameLayout_gridtableLayout;
+	private LinearLayout linearLayout_gridtableLayout;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,10 +99,13 @@ public class MainTainIrrigationUserInfoFragment extends Fragment implements
 		layout_irriagte_group = (RelativeLayout) view
 				.findViewById(R.id.text_maintain_irrigat_info_round_of_irrigation_group);
 		layout_irriagte_group.setVisibility(View.GONE);
+		linearLayout_gridtableLayout = (LinearLayout) view.findViewById(R.id.linearLayout_gridtableLayout);
 
 		btn_main_irrigate_info_group = (Button) view
 				.findViewById(R.id.btn_main_irrigate_info_group);
 		btn_main_irrigate_info_group.setVisibility(View.GONE);
+		frameLayout_gridtableLayout = (FrameLayout) view
+				.findViewById(R.id.frameLayout_gridtableLayout);
 
 		infoBeans = new ArrayList<String>();
 		list = new ArrayList<String>();
@@ -119,7 +128,12 @@ public class MainTainIrrigationUserInfoFragment extends Fragment implements
 		// beans = adapter.getData();
 		actionBar.setActionBarOnClickListener(this);
 
-		init();
+		if (NetStatusUtil.isNetValid(getActivity())) {
+			init();
+		} else {
+			Toast.makeText(getActivity(), "当前网络不可用！请检查您的网络状态！", Toast.LENGTH_SHORT)
+					.show();
+		}
 
 		return view;
 	}
@@ -127,7 +141,6 @@ public class MainTainIrrigationUserInfoFragment extends Fragment implements
 	private void init() {
 		String str1 = (String) SharedUtils.getParam(getActivity(),
 				"FirstDerviceID", "");
-		;
 		String str2 = "";
 		try {
 			str1 = java.net.URLEncoder.encode(str1, "UTF-8");
@@ -186,8 +199,162 @@ public class MainTainIrrigationUserInfoFragment extends Fragment implements
 				MainTainIrrigationInfoBean fromJson = gson.fromJson(arg0,
 						MainTainIrrigationInfoBean.class);
 				beens = fromJson.getAuthNameList();
-				if(!CheckUtil.IsEmpty(beens)){
-					adapter = new ImageAdapters(getActivity(), true, beens);
+				int[] array = new int[beens.size()];
+				for (int i = 0; i < array.length; i++) {
+					array[i] = Integer.valueOf(beens.get(i).getTotalChanNum());
+				}
+				if (!CheckUtil.IsEmpty(beens)) {
+					int temp;
+					for (int i = 0; i < array.length; i++) {
+						for (int j = i + 1; j < array.length; j++) {
+							if (array[i] < array[j]) {
+								temp = array[i];
+								array[i] = array[j];
+								array[j] = temp; // 两个数交换位置
+							}
+						}
+					}
+					for (int i = 0; i < beens.size(); i += array[0]) {
+						if (Integer.valueOf(beens.get(i).getTotalChanNum()) < array[0]) {
+							for (int j = 0; j < array[0]
+									- Integer.valueOf(beens.get(i)
+											.getTotalChanNum()); j++) {
+								infoList infoList = new infoList();
+								infoList.setChanNum("");
+								infoList.setGroupName("");
+								infoList.setTotalChanNum(beens.get(i)
+										.getTotalChanNum());
+								beens.add(
+										i
+												+ Integer.valueOf(beens.get(i)
+														.getTotalChanNum()),
+										infoList);
+							}
+						}
+					}
+					adapter = new ImageAdapterUser(getActivity(), true, beens);
+					if (array[0] == 5) {
+						FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) frameLayout_gridtableLayout
+								.getLayoutParams();
+						int weight = DensityUtil.dip2px(getActivity(), 360);
+						layoutParams.width = weight;
+						linearLayout_gridtableLayout.setLayoutParams(layoutParams);
+						linearLayout_gridtableLayout.requestLayout();
+						gridView.setLayoutParams(layoutParams);
+					}else if(array[0] == 1){
+						FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) frameLayout_gridtableLayout
+								.getLayoutParams();
+						int weight = DensityUtil.dip2px(getActivity(), 72);
+						layoutParams.width = weight;
+						linearLayout_gridtableLayout.setLayoutParams(layoutParams);
+						linearLayout_gridtableLayout.requestLayout();
+						gridView.setLayoutParams(layoutParams);
+					}else if(array[0] == 2){
+						FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) frameLayout_gridtableLayout
+								.getLayoutParams();
+						int weight = DensityUtil.dip2px(getActivity(), 144);
+						layoutParams.width = weight;
+						linearLayout_gridtableLayout.setLayoutParams(layoutParams);
+						linearLayout_gridtableLayout.requestLayout();
+						gridView.setLayoutParams(layoutParams);
+					}else if(array[0] == 3){
+						FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) frameLayout_gridtableLayout
+								.getLayoutParams();
+						int weight = DensityUtil.dip2px(getActivity(), 216);
+						layoutParams.width = weight;
+						linearLayout_gridtableLayout.setLayoutParams(layoutParams);
+						linearLayout_gridtableLayout.requestLayout();
+						gridView.setLayoutParams(layoutParams);
+					}else if(array[0] == 4){
+						FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) frameLayout_gridtableLayout
+								.getLayoutParams();
+						int weight = DensityUtil.dip2px(getActivity(), 288);
+						layoutParams.width = weight;
+						linearLayout_gridtableLayout.setLayoutParams(layoutParams);
+						linearLayout_gridtableLayout.requestLayout();
+						gridView.setLayoutParams(layoutParams);
+					}else if(array[0] == 6){
+						FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) frameLayout_gridtableLayout
+								.getLayoutParams();
+						int weight = DensityUtil.dip2px(getActivity(), 432);
+						layoutParams.width = weight;
+						linearLayout_gridtableLayout.setLayoutParams(layoutParams);
+						linearLayout_gridtableLayout.requestLayout();
+						gridView.setLayoutParams(layoutParams);
+					}else if(array[0] == 7){
+						FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) frameLayout_gridtableLayout
+								.getLayoutParams();
+						int weight = DensityUtil.dip2px(getActivity(), 504);
+						layoutParams.width = weight;
+						linearLayout_gridtableLayout.setLayoutParams(layoutParams);
+						linearLayout_gridtableLayout.requestLayout();
+						gridView.setLayoutParams(layoutParams);
+					}else if(array[0] == 8){
+						FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) frameLayout_gridtableLayout
+								.getLayoutParams();
+						int weight = DensityUtil.dip2px(getActivity(), 576);
+						layoutParams.width = weight;
+						linearLayout_gridtableLayout.setLayoutParams(layoutParams);
+						linearLayout_gridtableLayout.requestLayout();
+						gridView.setLayoutParams(layoutParams);
+					}else if(array[0] == 9){
+						FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) frameLayout_gridtableLayout
+								.getLayoutParams();
+						int weight = DensityUtil.dip2px(getActivity(), 648);
+						layoutParams.width = weight;
+						linearLayout_gridtableLayout.setLayoutParams(layoutParams);
+						linearLayout_gridtableLayout.requestLayout();
+						gridView.setLayoutParams(layoutParams);
+					}else if(array[0] == 10){
+						FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) frameLayout_gridtableLayout
+								.getLayoutParams();
+						int weight = DensityUtil.dip2px(getActivity(), 720);
+						layoutParams.width = weight;
+						linearLayout_gridtableLayout.setLayoutParams(layoutParams);
+						linearLayout_gridtableLayout.requestLayout();
+						gridView.setLayoutParams(layoutParams);
+					}else if(array[0] == 11){
+						FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) frameLayout_gridtableLayout
+								.getLayoutParams();
+						int weight = DensityUtil.dip2px(getActivity(), 792);
+						layoutParams.width = weight;
+						linearLayout_gridtableLayout.setLayoutParams(layoutParams);
+						linearLayout_gridtableLayout.requestLayout();
+						gridView.setLayoutParams(layoutParams);
+					}else if(array[0] == 12){
+						FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) frameLayout_gridtableLayout
+								.getLayoutParams();
+						int weight = DensityUtil.dip2px(getActivity(), 864);
+						layoutParams.width = weight;
+						linearLayout_gridtableLayout.setLayoutParams(layoutParams);
+						linearLayout_gridtableLayout.requestLayout();
+						gridView.setLayoutParams(layoutParams);
+					}else if(array[0] == 13){
+						FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) frameLayout_gridtableLayout
+								.getLayoutParams();
+						int weight = DensityUtil.dip2px(getActivity(), 936);
+						layoutParams.width = weight;
+						linearLayout_gridtableLayout.setLayoutParams(layoutParams);
+						linearLayout_gridtableLayout.requestLayout();
+						gridView.setLayoutParams(layoutParams);
+					}else if(array[0] == 14){
+						FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) frameLayout_gridtableLayout
+								.getLayoutParams();
+						int weight = DensityUtil.dip2px(getActivity(), 1008);
+						layoutParams.width = weight;
+						linearLayout_gridtableLayout.setLayoutParams(layoutParams);
+						linearLayout_gridtableLayout.requestLayout();
+						gridView.setLayoutParams(layoutParams);
+					}else if(array[0] == 15){
+						FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) frameLayout_gridtableLayout
+								.getLayoutParams();
+						int weight = DensityUtil.dip2px(getActivity(), 1080);
+						layoutParams.width = weight;
+						linearLayout_gridtableLayout.setLayoutParams(layoutParams);
+						linearLayout_gridtableLayout.requestLayout();
+						gridView.setLayoutParams(layoutParams);
+					}
+					gridView.setNumColumns(array[0]);
 					gridView.setAdapter(adapter);
 				}
 				progressDialog.dismiss();
@@ -204,7 +371,9 @@ public class MainTainIrrigationUserInfoFragment extends Fragment implements
 			MainTainBasicCompileFragment fragment = new MainTainBasicCompileFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
-			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
+			transaction.setCustomAnimations(
+					R.anim.slide_fragment_horizontal_right_in,
+					R.anim.slide_fragment_horizontal_left_out);
 			transaction.replace(R.id.fragment_maintain_present_irrigate,
 					fragment, "main");
 			transaction.commit();
@@ -241,14 +410,15 @@ public class MainTainIrrigationUserInfoFragment extends Fragment implements
 				bundle.putStringArrayList("list", (ArrayList<String>) list);
 				bundle.putInt("area", area);
 				fragment1.setArguments(bundle);
-				transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
+				transaction.setCustomAnimations(
+						R.anim.slide_fragment_horizontal_left_in,
+						R.anim.slide_fragment_horizontal_right_out);
 				transaction.replace(R.id.fragment_maintain_present_irrigate,
 						fragment1, "main");
 				transaction.commit();
 			}
 		}
 	}
-
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,

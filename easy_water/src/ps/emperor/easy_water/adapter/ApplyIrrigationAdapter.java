@@ -33,7 +33,6 @@ public class ApplyIrrigationAdapter extends MyBaseAdapter<infoList> implements O
 			convertView = inflater.inflate(R.layout.fragment_apply_irrigate_list, null);
 			viewHolder = new ViewHolder();
 			viewHolder.units = (TextView) convertView.findViewById(R.id.text_apply_units);
-			viewHolder.element = (TextView) convertView.findViewById(R.id.text_apply_element);
 			viewHolder.whether = (TextView) convertView.findViewById(R.id.text_apply_whether);
 			viewHolder.current_state = (PieChatView) convertView.findViewById(R.id.image_apply_status);
 			viewHolder.whether_percent = (TextView) convertView.findViewById(R.id.text_apply_whether_percent);
@@ -43,8 +42,17 @@ public class ApplyIrrigationAdapter extends MyBaseAdapter<infoList> implements O
 		}
 		infoList infoList = list.get(position);
 		viewHolder.units.setText(infoList.getIrriUnitName());
-//		viewHolder.element.setText(applyIrrigationBean.element);
-		viewHolder.whether.setText("正在灌溉");
+		if("-1".equals(infoList.getIrriState())){
+			viewHolder.whether.setText("无计划");
+		}else if("0".equals(infoList.getIrriState())){
+			viewHolder.whether.setText("等待灌溉");
+		}if("1".equals(infoList.getIrriState())){
+			viewHolder.whether.setText("正在灌溉");
+		}if("2".equals(infoList.getIrriState())){
+			viewHolder.whether.setText("灌溉完毕");
+		}if("3".equals(infoList.getIrriState())){
+			viewHolder.whether.setText("暂停灌溉");
+		}
 		viewHolder.current_state.setAngle(180);
 		viewHolder.whether_percent.setText("50%");
 		return convertView;
@@ -53,7 +61,6 @@ public class ApplyIrrigationAdapter extends MyBaseAdapter<infoList> implements O
 
 	class ViewHolder {
 		TextView units;
-		TextView element;
 		TextView whether;
 		TextView whether_percent;
 		PieChatView current_state;

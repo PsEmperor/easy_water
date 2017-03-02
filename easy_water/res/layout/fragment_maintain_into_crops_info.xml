@@ -75,6 +75,7 @@
                 android:background="@color/white"
                 android:layout_marginRight="15dp"
                 android:ems="10"
+                android:focusable="false"
                 android:singleLine="true" />
 
         </RelativeLayout>

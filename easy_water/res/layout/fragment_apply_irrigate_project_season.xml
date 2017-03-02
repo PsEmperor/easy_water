@@ -14,28 +14,19 @@
   
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="40dp"
                 android:background="@color/white" >
-
-                <TextView
-                    android:id="@+id/text_apply_irriagte_project_season_unit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="5dp"
-                    android:text="141团6连1#地块"
-                    android:textColor="@color/black" />
 
                 <TextView
                     android:id="@+id/text_apply_irriagte_project_season_element"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="5dp"
+                    android:layout_centerVertical="true"
+                    android:singleLine="true"
                     android:text="2#灌溉单元"
                     android:textColor="@color/black" />
+
             </RelativeLayout>
 
             <LinearLayout

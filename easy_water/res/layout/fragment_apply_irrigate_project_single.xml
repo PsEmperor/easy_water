@@ -22,27 +22,19 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="40dp"
                 android:layout_weight="0"
                 android:background="@color/white" >
-
-                <TextView
-                    android:id="@+id/text_apply_irriagte_project_single_unit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="5dp"
-                    android:text="141团6连1#地块"
-                    android:textColor="@color/black" />
 
                 <TextView
                     android:id="@+id/text_apply_irriagte_project_single_element"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="5dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:singleLine="true"
                     android:text="2#灌溉单元"
                     android:textColor="@color/black" />
             </RelativeLayout>
@@ -157,7 +149,8 @@
                         android:layout_marginRight="30dp"
                         android:src="@drawable/image_gray_row" />
                 </RelativeLayout>
-<RelativeLayout
+
+                <RelativeLayout
                     android:id="@+id/layout_apply_irriagte_project_single_time_longs"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -193,6 +186,7 @@
                         android:textOff="@null"
                         android:textOn="@null" />
                 </RelativeLayout>
+
                 <RelativeLayout
                     android:id="@+id/layout_apply_irriagte_project_single_time_intervals"
                     android:layout_width="match_parent"

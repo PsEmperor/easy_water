@@ -2,11 +2,11 @@ package ps.emperor.easy_water.adapter;
 
 import java.util.List;
 
-
-
+import ps.emperor.easy_water.entity.ApplyIrrigationProjectBean.infoList;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.entity.ApplyIrrigationProjectBean;
 import ps.emperor.easy_water.greendao.IrrigationProject;
+import ps.emperor.easy_water.utils.CheckUtil;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,12 +23,13 @@ import android.widget.TextView;
 public class Myadapter extends BaseAdapter {
 
 	private Context con;
-	public List<ApplyIrrigationProjectBean> mType = null;
+	public List<infoList> mType = null;
+	private String group;
 
 
 	// public static WifiType wiType = new WifiType();
 
-	public Myadapter(Context con, List<ApplyIrrigationProjectBean> list) {
+	public Myadapter(Context con, List<infoList> list) {
 		this.con = con;
 		this.mType = list;
 	
@@ -62,10 +63,15 @@ public class Myadapter extends BaseAdapter {
 			holder.group = (TextView) convertView.findViewById(R.id.image_apply_group);
 			holder.time_start = (TextView) convertView.findViewById(R.id.text_apply_irriagte_time_start);
 			holder.time_end = (TextView) convertView.findViewById(R.id.text_apply_irriagte_time_end);
+			holder.time_continue = (TextView) convertView.findViewById(R.id.text_apply_irriagte_time_continue);
+			holder.time_rest = (TextView) convertView.findViewById(R.id.text_apply_irriagte_time_rest);
 	
-			holder.group.setText(mType.get(pos).group);
-			holder.time_start.setText(mType.get(pos).time_start);
-			holder.time_end.setText(mType.get(pos).time_end);
+			group = mType.get(pos).getGroupName().substring(1, mType.get(pos).getGroupName().length());
+			holder.group.setText(group);
+			holder.time_start.setText(mType.get(pos).getStartTime());
+			holder.time_end.setText(mType.get(pos).getEndTime());
+			holder.time_continue.setText(mType.get(pos).getDuration());
+			holder.time_rest.setText(mType.get(pos).getRestTime());
 			convertView.setTag(holder);
 
 		} else {
@@ -78,6 +84,8 @@ public class Myadapter extends BaseAdapter {
 		TextView group;
 		TextView time_start;
 		TextView time_end;
+		TextView time_continue;
+		TextView time_rest;
 	}
 
 	

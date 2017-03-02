@@ -109,6 +109,17 @@ public class FindDisWaterInfoOneBean {
 		private String SuperEqu;
 		private String AuthID;
 		private String FrontWaterLevel;
+		private String PlanStat;
+
+		
+		
+		public String getPlanStat() {
+			return PlanStat;
+		}
+
+		public void setPlanStat(String planStat) {
+			PlanStat = planStat;
+		}
 
 		public String getDisEquID() {
 			return DisEquID;

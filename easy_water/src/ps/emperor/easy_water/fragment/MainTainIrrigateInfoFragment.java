@@ -42,6 +42,7 @@ import ps.emperor.easy_water.entity.UserReleIrrInfoToOneBean;
 import ps.emperor.easy_water.greendao.DBHelper;
 import ps.emperor.easy_water.greendao.Irrigation;
 import ps.emperor.easy_water.utils.CheckUtil;
+import ps.emperor.easy_water.utils.NetStatusUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.MainActionBar;
@@ -77,6 +78,7 @@ public class MainTainIrrigateInfoFragment extends Fragment implements
 	private String units;
 	private ProgressDialog progressDialog;
 	private List<infoList> beens;
+	private List<Irrigation> irrigation;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -120,7 +122,13 @@ public class MainTainIrrigateInfoFragment extends Fragment implements
 
 		Intent intent = getActivity().getIntent();
 		units = intent.getStringExtra("units");
-		init();
+
+		if (NetStatusUtil.isNetValid(getActivity())) {
+			init();
+		} else {
+			Toast.makeText(getActivity(), "当前网络不可用！请检查您的网络状态！", Toast.LENGTH_SHORT)
+					.show();
+		}
 
 		String parten = "00";
 		DecimalFormat decimal = new DecimalFormat(parten);
@@ -237,14 +245,16 @@ public class MainTainIrrigateInfoFragment extends Fragment implements
 						text_maintain_irrigat_info_equipment.setText("");
 					}
 					if (!CheckUtil.IsEmpty(beens.get(0).getMaxGroup())) {
-						text_max_irrigat_group.setText(beens.get(0)
+						group = Integer.valueOf(beens.get(0)
 								.getMaxGroup());
+						text_max_irrigat_group.setText(group+"");
 					} else {
 						text_max_irrigat_group.setText("0");
 					}
 					if (!CheckUtil.IsEmpty(beens.get(0).getValueNum())) {
-						text_max_orroagte_valve.setText(beens.get(0)
+						value = Integer.valueOf(beens.get(0)
 								.getValueNum());
+						text_max_orroagte_valve.setText(value+"");
 					} else {
 						text_max_orroagte_valve.setText(0);
 					}
@@ -278,6 +288,60 @@ public class MainTainIrrigateInfoFragment extends Fragment implements
 						text_max_orroagte_season_end.setText("0000-00-00");
 					}
 				}
+				irrigation = dbHelper.loadContinue(beens.get(0)
+						.getIrriUnitName());
+				if (CheckUtil.IsEmpty(irrigation)) {
+					Irrigation irrigation = new Irrigation();
+					irrigation.setIrrigation(beens.get(0).getIrriUnitName());
+					irrigation.setNContinue("00:00");
+					irrigation.setNNumber(0);
+					irrigation.setNRound(0);
+					irrigation.setNightStart(beens.get(0).getRestStart());
+					irrigation.setNightEnd(beens.get(0).getRestEnd());
+					irrigation.setIsTimeLong(0);
+					irrigation.setFirstDerviceID(beens.get(0).getFirstDerviceID());
+					irrigation.setLongitude(beens.get(0).getLongitude());
+					irrigation.setLatitude(beens.get(0).getLatitude());
+					irrigation.setArea(beens.get(0).getArea());
+					irrigation.setSuperEqu(beens.get(0).getSuperEqu());
+					irrigation.setGroupnumber(group);
+					irrigation.setValuenumber(value);
+					irrigation.setFlushtime(beens.get(0).getFlushTime());
+					irrigation
+							.setSeasonStrat(beens.get(0).getIrriSeasonStart());
+					irrigation.setSeasonEnd(beens.get(0).getIrriSeasonEnd());
+					dbHelper.saveSession(irrigation);
+				}
+				System.out.println(irrigation);
+//				 //夜间休息时间
+//				 if (!irrigation.get(0).getNightStart().equals(text_max_orroagte_restnight_start.getText().toString())||!(irrigation.get(0)
+//				 .getNightEnd()
+//				 .equals(text_max_orroagte_restnight_end.getText()
+//				 .toString()))) {
+//				 dbHelper.updateBasicTime(units,
+//						 beens.get(0).getRestStart(),
+//				 beens.get(0).getRestEnd());
+//				 }
+//				 //最大灌溉组数
+//				 if (!(irrigation.get(0).getGroupnumber() + "")
+//				 .equals(text_max_irrigat_group.getText().toString())) {
+//				 dbHelper.updateBasicGroup(units,group);
+//				 }
+//				 //最大灌溉阀门数
+//				 if (!(irrigation.get(0).getValuenumber() + "")
+//				 .equals(text_max_orroagte_valve.getText().toString())) {
+//				 dbHelper.updateBasicVlaue(units,value);
+//				 }
+//				 //过滤器
+//				 if (!(irrigation.get(0).getFlushtime()).equals(beens.get(0).getFlushTime())){
+//				 dbHelper.updateBasicFilter(units,beens.get(0).getFlushTime());
+//				 }
+//				 //灌季
+//				 if((irrigation.get(0).getSeasonStrat()+"")
+//				 .equals(beens.get(0).getIrriSeasonStart())&&(irrigation.get(0).getSeasonEnd()+"").equals(beens.get(0).getIrriSeasonEnd())){
+//				 }else{
+//				 dbHelper.updateBasicSeason(units,beens.get(0).getIrriSeasonStart(),beens.get(0).getIrriSeasonEnd());
+//				 }
 				progressDialog.dismiss();
 			}
 		});
@@ -296,7 +360,9 @@ public class MainTainIrrigateInfoFragment extends Fragment implements
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
 			SharedUtils.setParam(getActivity(), "isBasic", 1);
-			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
+			transaction.setCustomAnimations(
+					R.anim.slide_fragment_horizontal_left_in,
+					R.anim.slide_fragment_horizontal_right_out);
 			transaction.replace(R.id.fragment_maintain_present_irrigate,
 					fragment, "main");
 			transaction.commit();
@@ -305,7 +371,9 @@ public class MainTainIrrigateInfoFragment extends Fragment implements
 			ApplyIrrigatePanoramicFragment fragment1 = new ApplyIrrigatePanoramicFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
-			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
+			transaction.setCustomAnimations(
+					R.anim.slide_fragment_horizontal_left_in,
+					R.anim.slide_fragment_horizontal_right_out);
 			transaction.replace(R.id.fragment_maintain_present_irrigate,
 					fragment1, "main");
 			transaction.commit();

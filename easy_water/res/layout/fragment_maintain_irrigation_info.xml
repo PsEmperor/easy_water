@@ -64,6 +64,7 @@
   				android:background="@color/gray_2"
   				android:layout_weight="1">
   				<FrameLayout 
+  				    android:id="@+id/frameLayout_gridtableLayout" 
             		android:layout_width="fill_parent"  
             		android:layout_height="match_parent" >
   					<LinearLayout
@@ -77,7 +78,7 @@
     						android:id="@+id/grid_maintain_irrigate_infos" 
     						android:layout_width="fill_parent"
     						android:layout_height="match_parent"
-    						android:numColumns="13"
+    						android:numColumns="15"
     						android:horizontalSpacing="40px"
     						android:nextFocusUp="@+id/buttonList"
   							android:nextFocusDown="@+id/listView"/>

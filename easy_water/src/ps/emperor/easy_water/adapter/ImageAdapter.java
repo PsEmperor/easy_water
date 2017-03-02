@@ -95,6 +95,9 @@ public class ImageAdapter extends BaseAdapter{
         				mImage_bs.set(position, 2);
         			}  
         		}
+        		if(CheckUtil.IsEmpty(mImageIds.get(position).getChanNum())&&CheckUtil.IsEmpty(mImageIds.get(position).getGroupName())){
+        			mImage_bs.set(position,100);
+        		}
         		mImage ++;
         	}
             if(screenWidth == 0){
@@ -122,6 +125,8 @@ public class ImageAdapter extends BaseAdapter{
         	textView.setBackgroundResource(R.drawable.value_selected);
         }else if(mImage_bs.get(position)==2){
         	textView.setBackgroundResource(R.drawable.value_grower);
+        }else if(mImage_bs.get(position)==100){
+        	textView.setVisibility(View.INVISIBLE);
         }else{
         	textView.setBackgroundResource(R.drawable.value_on);
         }

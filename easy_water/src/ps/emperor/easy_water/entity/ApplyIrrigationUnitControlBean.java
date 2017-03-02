@@ -44,6 +44,24 @@ public class ApplyIrrigationUnitControlBean {
 		private String PlantTime;
 		private String IrriState;
 		private String GrowersName;
+		private String StartTime;
+		private String EndTime;
+
+		public String getStartTime() {
+			return StartTime;
+		}
+
+		public void setStartTime(String startTime) {
+			StartTime = startTime;
+		}
+
+		public String getEndTime() {
+			return EndTime;
+		}
+
+		public void setEndTime(String endTime) {
+			EndTime = endTime;
+		}
 
 		public String getFirstDerviceID() {
 			return FirstDerviceID;

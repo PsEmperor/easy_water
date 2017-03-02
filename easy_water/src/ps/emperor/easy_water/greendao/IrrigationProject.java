@@ -13,6 +13,8 @@ public class IrrigationProject {
     private String projectstart;
     private String projectduration;
     private String projectend;
+    private String projectrest;
+    private Integer modification;
     private Integer projectsole;
 
     public IrrigationProject() {
@@ -22,7 +24,7 @@ public class IrrigationProject {
         this.id = id;
     }
 
-    public IrrigationProject(Long id, String irrigation, String round, String marshalling, String projectstart, String projectduration, String projectend, Integer projectsole) {
+    public IrrigationProject(Long id, String irrigation, String round, String marshalling, String projectstart, String projectduration, String projectend, String projectrest, Integer modification, Integer projectsole) {
         this.id = id;
         this.irrigation = irrigation;
         this.round = round;
@@ -30,6 +32,8 @@ public class IrrigationProject {
         this.projectstart = projectstart;
         this.projectduration = projectduration;
         this.projectend = projectend;
+        this.projectrest = projectrest;
+        this.modification = modification;
         this.projectsole = projectsole;
     }
 
@@ -87,6 +91,22 @@ public class IrrigationProject {
 
     public void setProjectend(String projectend) {
         this.projectend = projectend;
+    }
+
+    public String getProjectrest() {
+        return projectrest;
+    }
+
+    public void setProjectrest(String projectrest) {
+        this.projectrest = projectrest;
+    }
+
+    public Integer getModification() {
+        return modification;
+    }
+
+    public void setModification(Integer modification) {
+        this.modification = modification;
     }
 
     public Integer getProjectsole() {

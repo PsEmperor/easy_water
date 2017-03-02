@@ -18,12 +18,14 @@
 
         <TextView
             android:id="@+id/tv_apply_water_distrbution_gate_control_superior"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
+            android:layout_marginRight="100dp"
             android:text="上级设备:	141团北干渠节制闸"
+            android:singleLine="true"
             android:textSize="15sp" />
 
         <TextView
@@ -51,8 +53,11 @@
             android:layout_marginTop="2dp"
             android:background="@color/white"
             android:gravity="center"
-            android:paddingLeft="15dp"
+            android:singleLine="true"
+            android:layout_centerHorizontal="true"
             android:text="141团5连支渠一斗进水闸"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:textSize="15sp" />
     </RelativeLayout>
     <RelativeLayout
@@ -435,7 +440,7 @@
                         android:gravity="center_vertical"
                         android:text="闸门开高"
                         android:textColor="@color/white"
-                        android:textSize="13sp" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/textView1"
@@ -447,7 +452,7 @@
                         android:gravity="center_vertical"
                         android:text="闸门开度"
                         android:textColor="@color/white"
-                        android:textSize="13sp" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/tv_three_OpenProportion_left"
@@ -460,7 +465,7 @@
                         android:gravity="center_vertical"
                         android:text="30%"
                         android:textColor="@color/white"
-                        android:textSize="13sp" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/tv_three_OpenHigh_left"
@@ -472,7 +477,7 @@
                         android:gravity="center_vertical"
                         android:text="0.5m"
                         android:textColor="@color/white" 
-                        android:textSize="13sp"/>
+                        android:textSize="12sp"/>
                 </RelativeLayout>
                 <RelativeLayout
                 android:layout_width="match_parent"
@@ -541,7 +546,7 @@
                         android:gravity="center_vertical"
                         android:text="闸门开高"
                         android:textColor="@color/white"
-                        android:textSize="13sp" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/textView1"
@@ -553,7 +558,7 @@
                         android:gravity="center_vertical"
                         android:text="闸门开度"
                         android:textColor="@color/white" 
-                        android:textSize="13sp"/>
+                        android:textSize="12sp"/>
 
                     <TextView
                         android:id="@+id/tv_three_OpenProportion"
@@ -566,7 +571,7 @@
                         android:gravity="center_vertical"
                         android:text="30%"
                         android:textColor="@color/white" 
-                        android:textSize="13sp"/>
+                        android:textSize="12sp"/>
 
                     <TextView
                         android:id="@+id/tv_three_OpenHigh"
@@ -578,7 +583,7 @@
                         android:gravity="center_vertical"
                         android:text="0.5m"
                         android:textColor="@color/white" 
-                        android:textSize="13sp"/>
+                        android:textSize="12sp"/>
                 </RelativeLayout>
                 <RelativeLayout
                 android:layout_width="match_parent"
@@ -647,7 +652,7 @@
                         android:gravity="center_vertical"
                         android:text="闸门开高"
                         android:textColor="@color/white" 
-                        android:textSize="13sp"/>
+                        android:textSize="12sp"/>
 
                     <TextView
                         android:id="@+id/textView1"
@@ -659,7 +664,7 @@
                         android:gravity="center_vertical"
                         android:text="闸门开度"
                         android:textColor="@color/white" 
-                        android:textSize="13sp"/>
+                        android:textSize="12sp"/>
 
                     <TextView
                         android:id="@+id/tv_three_OpenProportion_right"
@@ -672,7 +677,7 @@
                         android:gravity="center_vertical"
                         android:text="30%"
                         android:textColor="@color/white" 
-                        android:textSize="13sp"/>
+                        android:textSize="12sp"/>
 
                     <TextView
                         android:id="@+id/tv_three_OpenHigh_right"
@@ -684,7 +689,7 @@
                         android:gravity="center_vertical"
                         android:text="0.5m"
                         android:textColor="@color/white"
-                        android:textSize="13sp" />
+                        android:textSize="12sp" />
                 </RelativeLayout>
                 <RelativeLayout
                 android:layout_width="match_parent"

@@ -65,6 +65,7 @@
             android:layout_marginLeft="20dp"
             android:layout_toLeftOf="@+id/verification_code"
             android:background="@color/transparent"
+            android:digits="1234567890."
             android:hint="新手机号" />
 
         <Button
@@ -95,6 +96,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
             android:background="@color/transparent"
+            android:digits="1234567890."
             android:hint="验证码" />
 
     </RelativeLayout>
