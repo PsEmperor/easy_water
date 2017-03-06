@@ -236,7 +236,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="20dp"
-                        android:text="夜间是否灌溉"
+                        android:text="夜间是否休息"
                         android:textColor="@color/black" />
 
                     <ToggleButton

@@ -41,6 +41,7 @@ import ps.emperor.easy_water.Interface.OnWheelChangedListener;
 import ps.emperor.easy_water.activity.TimeAvtivityDialogWater;
 import ps.emperor.easy_water.adapter.NumbericWheelAdapter;
 import ps.emperor.easy_water.adapter.NumericWheelAdapter;
+import ps.emperor.easy_water.entity.IrriGroupStateBean;
 import ps.emperor.easy_water.greendao.DBHelper;
 import ps.emperor.easy_water.greendao.Irrigation;
 import ps.emperor.easy_water.greendao.IrrigationGroup;
@@ -200,20 +201,23 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 		time_number = irrigation.get(0).getNNumber();
 		time_intervals = irrigation.get(0).getNRound();
 
+		if (CheckUtil.IsEmpty(long_hour) || long_hour == 0) {
+			isLong = false;
+		}
+		if (24 == long_hour) {
+			isLong = false;
+			time_longs.setEnabled(false);
+		}
+		if ((CheckUtil.IsEmpty(NightStart) || NightStart.equals("00:00"))
+				&& (CheckUtil.IsEmpty(NightEnd) || NightEnd.equals("00:00"))) {
+			isNight = false;
+		}
 		if (CheckUtil.IsEmpty(irrigation)) {
 			nContinue = "00:00";
 		} else {
 			nContinue = irrigation.get(0).getNContinue() + "";
 		}
 		Continue = nContinue.split(":");
-
-		if (CheckUtil.IsEmpty(long_hour) || long_hour == 0) {
-			isLong = false;
-		}
-		if ((CheckUtil.IsEmpty(NightStart) || NightStart.equals("0"))
-				&& (CheckUtil.IsEmpty(NightStart) || NightStart.equals("0"))) {
-			isNight = false;
-		}
 
 		new Thread(new Runnable() {
 
@@ -406,19 +410,31 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 								Gson gson = new Gson();
 								System.out.println(arg0);
 								progressDialog.dismiss();
+								IrriGroupStateBean fromJson = gson
+										.fromJson(arg0,
+												IrriGroupStateBean.class);
+								if("0".equals(fromJson.getCode())){
+									Toast.makeText(getActivity(), "添加失败！服务器异常！", Toast.LENGTH_SHORT).show();
+								}else if("1".equals(fromJson.getCode())){
+									Toast.makeText(getActivity(), "添加成功！", Toast.LENGTH_SHORT).show();
+									ApplyIrrigateProjectFragment fragment1 = new ApplyIrrigateProjectFragment();
+									// transaction.setCustomAnimations(R.anim.right_in,
+									// R.anim.right_out);
+									Bundle bundle1 = new Bundle();
+									bundle1.putString("units", units);
+									fragment1.setArguments(bundle1);
+									FragmentManager fgManager = getFragmentManager();
+									FragmentTransaction transaction = fgManager.beginTransaction();
+									transaction.setCustomAnimations(
+											R.anim.slide_fragment_horizontal_right_in,
+											R.anim.slide_fragment_horizontal_left_out);
+									transaction.replace(R.id.fl, fragment1, "main");
+									transaction.commit();
+								}else if("2".equals(fromJson.getCode())){
+									Toast.makeText(getActivity(), "添加失败！该时间段内已存在计划，请选择其他时间段！", Toast.LENGTH_SHORT).show();
+								}
 							}
 						});
-				ApplyIrrigateProjectFragment fragment1 = new ApplyIrrigateProjectFragment();
-				// transaction.setCustomAnimations(R.anim.right_in,
-				// R.anim.right_out);
-				Bundle bundle1 = new Bundle();
-				bundle1.putString("units", units);
-				fragment1.setArguments(bundle1);
-				transaction.setCustomAnimations(
-						R.anim.slide_fragment_horizontal_right_in,
-						R.anim.slide_fragment_horizontal_left_out);
-				transaction.replace(R.id.fl, fragment1, "main");
-				transaction.commit();
 			}
 			break;
 		default:
@@ -430,15 +446,23 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		switch (buttonView.getId()) {
 		case R.id.toggle_apply_irriagte_project_season_time_night:// 规律
-			Toast.makeText(getActivity(), "开关--" + isChecked,
-					Toast.LENGTH_SHORT).show();
-			SharedUtils.setParam(getActivity(), "Night", isChecked);
+			SharedUtils.setParam(getActivity(), "SingleNight", isChecked);
 			if (isChecked) {
 				isNight = true;
-				if ((CheckUtil.IsEmpty(NightStart) || NightStart.equals("0"))
-						&& (CheckUtil.IsEmpty(NightEnd) || NightEnd.equals("0"))) {
-					setNight = 2;
+			} else {
+				isNight = false;
+			}
+			if (isNight == false) {
+			} else {
+				if ((CheckUtil.IsEmpty(NightStart) || NightStart
+						.equals("00:00"))
+						&& (CheckUtil.IsEmpty(NightEnd) || NightEnd
+								.equals("00:00"))) {
+					setNight = 1;
 					SharedUtils.setParam(getActivity(), "setNight", setNight);
+					Toast.makeText(getActivity(),
+							"请设置夜间休息时间，点击右上方按钮保存！" + isChecked,
+							Toast.LENGTH_SHORT).show();
 					FragmentManager fgManager = getFragmentManager();
 					FragmentTransaction transaction = fgManager
 							.beginTransaction();
@@ -453,9 +477,9 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 							R.anim.slide_fragment_horizontal_right_out);
 					transaction.replace(R.id.fl, fragment, "main");
 					transaction.commit();
+					Toast.makeText(getActivity(), "开关--" + isChecked,
+							Toast.LENGTH_SHORT).show();
 				}
-			} else {
-				isNight = false;
 			}
 			break;
 		case R.id.toggle_apply_irriagte_project_season_time_random:// 规律
@@ -469,14 +493,20 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 			}
 			break;
 		case R.id.toggle_apply_irriagte_project_season_time_longs:// 规律
-			Toast.makeText(getActivity(), "开关--" + isChecked,
-					Toast.LENGTH_SHORT).show();
-			SharedUtils.setParam(getActivity(), "Long", isChecked);
+			SharedUtils.setParam(getActivity(), "SingleLong", isChecked);
 			if (isChecked) {
 				isLong = true;
+			} else {
+				isLong = false;
+			}
+			if (isLong == false) {
+			} else {
 				if (CheckUtil.IsEmpty(long_hour) || long_hour == 0) {
-					setLong = 2;
+					setLong = 1;
 					SharedUtils.setParam(getActivity(), "setLong", setLong);
+					Toast.makeText(getActivity(),
+							"请设置水泵休息时间，设置0代表连续工作不休息！点击右上方按钮保存！" + isChecked,
+							Toast.LENGTH_SHORT).show();
 					FragmentManager fgManager = getFragmentManager();
 					FragmentTransaction transaction = fgManager
 							.beginTransaction();
@@ -491,10 +521,9 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 							R.anim.slide_fragment_horizontal_right_out);
 					transaction.replace(R.id.fl, fragment, "main");
 					transaction.commit();
+					Toast.makeText(getActivity(), "开关--" + isChecked,
+							Toast.LENGTH_SHORT).show();
 				}
-
-			} else {
-				isLong = false;
 			}
 			break;
 		}

@@ -171,7 +171,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="20dp"
-                        android:text="是否连续工作"
+                        android:text="水泵是否休息"
                         android:textColor="@color/black" />
 
                     <ToggleButton
@@ -203,12 +203,13 @@
                         android:src="@drawable/image_gray_row" />
 
                     <TextView
+                        android:id="@+id/tv_apply_irriagte_project_single_time_night"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="20dp"
-                        android:text="夜间是否灌溉"
+                        android:text="夜间是否休息"
                         android:textColor="@color/black" />
 
                     <ToggleButton

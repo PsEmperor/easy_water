@@ -39,6 +39,7 @@ import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.Interface.OnWheelChangedListener;
 import ps.emperor.easy_water.adapter.NumbericWheelAdapter;
 import ps.emperor.easy_water.adapter.NumericWheelAdapter;
+import ps.emperor.easy_water.entity.IrriGroupStateBean;
 import ps.emperor.easy_water.greendao.DBHelper;
 import ps.emperor.easy_water.greendao.Irrigation;
 import ps.emperor.easy_water.greendao.IrrigationGroup;
@@ -74,7 +75,8 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 	private Boolean isNight, isRandom, isLong;
 	private RelativeLayout layout_time_start, layout_time_continue,
 			layout_time_interval;
-	private TextView tv_time_start, tv_time_continue;
+	private TextView tv_time_start, tv_time_continue,
+			tv_apply_irriagte_project_single_time_night;
 	private Dialog dialog;
 	private int isBefore;
 	private WheelView current_year;
@@ -130,7 +132,7 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 		units = getArguments().getString("units");
 		isFront = getArguments().getInt("isFront");
 		time_max_start = getArguments().getString("time_max_start");
-		
+
 		actionBar = (MainActionBar) view
 				.findViewById(R.id.actionbar_apply_irrigat_project_single);
 		actionBar.setLeftIcon(R.drawable.btn_back_selector);
@@ -161,18 +163,20 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 		time_longs = (ToggleButton) view
 				.findViewById(R.id.toggle_apply_irriagte_project_single_time_longs);
 
+		tv_apply_irriagte_project_single_time_night = (TextView) view
+				.findViewById(R.id.tv_apply_irriagte_project_single_time_night);
+
 		init();
 
 		tv_time_continue.setText(Continue[0] + "小时" + Continue[1] + "分钟");
 		time_night.setChecked(isNight);
 		time_interval.setChecked(isRandom);
 		time_longs.setChecked(isLong);
-		
+
 		if (CheckUtil.IsEmpty(time_max_start)
 				|| "0000-00-00 00:00".equals(time_max_start)) {
 			Date date = new Date(System.currentTimeMillis());
-			SimpleDateFormat sdf = new SimpleDateFormat(
-					"yyyy-MM-dd HH:mm");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 			time_start = sdf.format(date);
 			tv_time_start.setText(time_start);
 		} else {
@@ -200,11 +204,11 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 
 	private void init() {
 		isNight = (Boolean) SharedUtils.getParam(getActivity(), "SingleNight",
-				true);
+				false);
 		isRandom = (Boolean) SharedUtils.getParam(getActivity(),
 				"SingleInterval", false);
 		isLong = (Boolean) SharedUtils.getParam(getActivity(), "SingleLong",
-				true);
+				false);
 
 		irrigation = dbHelper.loadContinue(units);
 		NightStart = irrigation.get(0).getNightStart();
@@ -212,11 +216,15 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 		long_hour = irrigation.get(0).getIsTimeLong();
 
 		if (CheckUtil.IsEmpty(long_hour) || long_hour == 0) {
-			isLong = true;
+			isLong = false;
 		}
-		if ((CheckUtil.IsEmpty(NightStart) || NightStart.equals("0"))
-				&& (CheckUtil.IsEmpty(NightEnd) || NightEnd.equals("0"))) {
-			isNight = true;
+		if (0 == long_hour) {
+			isLong = false;
+			time_longs.setEnabled(false);
+		}
+		if ((CheckUtil.IsEmpty(NightStart) || NightStart.equals("00:00"))
+				&& (CheckUtil.IsEmpty(NightEnd) || NightEnd.equals("00:00"))) {
+			isNight = false;
 		}
 		if (CheckUtil.IsEmpty(irrigation)) {
 			nContinue = "00:00";
@@ -224,60 +232,60 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 			nContinue = irrigation.get(0).getNContinue() + "";
 		}
 		Continue = nContinue.split(":");
-//		new Thread(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//				List<IrrigationProject> listentity = dbHelper
-//						.loadLastMsgBySessionids(units);
-//				if (!CheckUtil.IsEmpty(listentity)) {
-//					Calendar c = Calendar.getInstance();
-//					Calendar c1 = Calendar.getInstance();
-//					try {
-//						c.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm")
-//								.parse(listentity.get(0).getProjectend()));
-//					} catch (ParseException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//					compares = c.getTimeInMillis();
-//					for (int j = 0; j < listentity.size(); j++) {
-//						try {
-//							c1.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm")
-//									.parse(listentity.get(j).getProjectend()));
-//						} catch (ParseException e) {
-//							// TODO Auto-generated catch block
-//							e.printStackTrace();
-//						}
-//						compare = c1.getTimeInMillis();
-//						if (compare > compares) {
-//							temp = compare;
-//							compare = compares;
-//							compares = temp;
-//							Date date = new Date(compares);
-//							SimpleDateFormat sdf = new SimpleDateFormat(
-//									"yyyy-MM-dd HH:mm");
-//							time_start = sdf.format(date);
-//							time_max_start = time_start;
-//						}
-//					}
-//				} else {
-//					Date date = new Date(System.currentTimeMillis());
-//					SimpleDateFormat sdf = new SimpleDateFormat(
-//							"yyyy-MM-dd HH:mm");
-//					time_start = sdf.format(date);
-//					time_max_start = time_start;
-//				}
-//				if (!CheckUtil.IsEmpty(isFront) && isFront != 0) {
-//					time_start = (String) SharedUtils.getParam(getActivity(),
-//							"time_start", "0000-00-00 00:00");
-//					time_max_start = time_start;
-//				}
-//				Message message = new Message();
-//				message.what = 100;
-//				handler.sendMessage(message);
-//			}
-//		}).start();
+		// new Thread(new Runnable() {
+		//
+		// @Override
+		// public void run() {
+		// List<IrrigationProject> listentity = dbHelper
+		// .loadLastMsgBySessionids(units);
+		// if (!CheckUtil.IsEmpty(listentity)) {
+		// Calendar c = Calendar.getInstance();
+		// Calendar c1 = Calendar.getInstance();
+		// try {
+		// c.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm")
+		// .parse(listentity.get(0).getProjectend()));
+		// } catch (ParseException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// compares = c.getTimeInMillis();
+		// for (int j = 0; j < listentity.size(); j++) {
+		// try {
+		// c1.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm")
+		// .parse(listentity.get(j).getProjectend()));
+		// } catch (ParseException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// compare = c1.getTimeInMillis();
+		// if (compare > compares) {
+		// temp = compare;
+		// compare = compares;
+		// compares = temp;
+		// Date date = new Date(compares);
+		// SimpleDateFormat sdf = new SimpleDateFormat(
+		// "yyyy-MM-dd HH:mm");
+		// time_start = sdf.format(date);
+		// time_max_start = time_start;
+		// }
+		// }
+		// } else {
+		// Date date = new Date(System.currentTimeMillis());
+		// SimpleDateFormat sdf = new SimpleDateFormat(
+		// "yyyy-MM-dd HH:mm");
+		// time_start = sdf.format(date);
+		// time_max_start = time_start;
+		// }
+		// if (!CheckUtil.IsEmpty(isFront) && isFront != 0) {
+		// time_start = (String) SharedUtils.getParam(getActivity(),
+		// "time_start", "0000-00-00 00:00");
+		// time_max_start = time_start;
+		// }
+		// Message message = new Message();
+		// message.what = 100;
+		// handler.sendMessage(message);
+		// }
+		// }).start();
 	}
 
 	@Override
@@ -311,8 +319,8 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 			if (!NetStatusUtil.isNetValid(getActivity())) {
 				groups = dbHelper.loadGroupByUnits(units);
 				MatchedNum = groups.size();
-				Toast.makeText(getActivity(), "当前网络不可用！请检查您的网络状态！", Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(getActivity(), "当前网络不可用！请检查您的网络状态！",
+						Toast.LENGTH_SHORT).show();
 			} else {
 				RequestParams param2 = new RequestParams(URL.oneRound); // 网址(请替换成实际的网址)
 				// params.addQueryStringParameter("key", "value"); //
@@ -325,17 +333,21 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 				try {
 					param2.setAsJsonContent(true);
 					js_request.put("firstDerviceID", str1);
-					js_request.put("startTime", time_start);
-					js_request.put("irriDuration", nContinue);
-					if (isNight == true) {
-						js_request.put("isNightIrri", 1);
+					if (CheckUtil.IsEmpty(time_start)) {
+						js_request.put("startTime", time_max_start);
 					} else {
-						js_request.put("isNightIrri", 0);
+						js_request.put("startTime", time_start);
 					}
-					if (isLong == true) {
-						js_request.put("isWorkAway", 1);
+					js_request.put("irriDuration", nContinue);
+					if (isNight == false) {
+						js_request.put("isNightIrri", 0);
 					} else {
+						js_request.put("isNightIrri", 1);
+					}
+					if (isLong == false) {
 						js_request.put("isWorkAway", 0);
+					} else {
+						js_request.put("isWorkAway", 1);
 					}
 					if (isRandom == true) {
 						js_request.put("randomArr", 1);
@@ -389,19 +401,32 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 								Gson gson = new Gson();
 								System.out.println(arg0);
 								progressDialog.dismiss();
+								IrriGroupStateBean fromJson = gson
+										.fromJson(arg0,
+												IrriGroupStateBean.class);
+								if("0".equals(fromJson.getCode())){
+									Toast.makeText(getActivity(), "添加失败！服务器异常！", Toast.LENGTH_SHORT).show();
+								}else if("1".equals(fromJson.getCode())){
+									Toast.makeText(getActivity(), "添加成功！", Toast.LENGTH_SHORT).show();
+									ApplyIrrigateProjectFragment fragment1 = new ApplyIrrigateProjectFragment();
+									// transaction.setCustomAnimations(R.anim.right_in,
+									// R.anim.right_out);
+									Bundle bundle1 = new Bundle();
+									bundle1.putString("units", units);
+									fragment1.setArguments(bundle1);
+									FragmentManager fgManager = getFragmentManager();
+									FragmentTransaction transaction = fgManager.beginTransaction();
+									transaction.setCustomAnimations(
+											R.anim.slide_fragment_horizontal_right_in,
+											R.anim.slide_fragment_horizontal_left_out);
+									transaction.replace(R.id.fl, fragment1, "main");
+									transaction.commit();
+								}else if("2".equals(fromJson.getCode())){
+									Toast.makeText(getActivity(), "添加失败！该时间段内已存在计划，请选择其他时间段！", Toast.LENGTH_SHORT).show();
+								}
 							}
 						});
-				ApplyIrrigateProjectFragment fragment1 = new ApplyIrrigateProjectFragment();
-				// transaction.setCustomAnimations(R.anim.right_in,
-				// R.anim.right_out);
-				Bundle bundle1 = new Bundle();
-				bundle1.putString("units", units);
-				fragment1.setArguments(bundle1);
-				transaction.setCustomAnimations(
-						R.anim.slide_fragment_horizontal_right_in,
-						R.anim.slide_fragment_horizontal_left_out);
-				transaction.replace(R.id.fl, fragment1, "main");
-				transaction.commit();
+				
 			}
 			break;
 		case R.id.toggle_apply_irriagte_project_single_time_night:
@@ -423,7 +448,7 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 			} else {
 				isNight = false;
 			}
-			if (isNight == true) {
+			if (isNight == false) {
 			} else {
 				if ((CheckUtil.IsEmpty(NightStart) || NightStart
 						.equals("00:00"))
@@ -431,6 +456,9 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 								.equals("00:00"))) {
 					setNight = 1;
 					SharedUtils.setParam(getActivity(), "setNight", setNight);
+					Toast.makeText(getActivity(),
+							"请设置夜间休息时间，点击右上方按钮保存！" + isChecked,
+							Toast.LENGTH_SHORT).show();
 					FragmentManager fgManager = getFragmentManager();
 					FragmentTransaction transaction = fgManager
 							.beginTransaction();
@@ -451,8 +479,6 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 			}
 			break;
 		case R.id.toggle_apply_irriagte_project_single_time_random:// 规律
-			Toast.makeText(getActivity(), "开关--" + isChecked,
-					Toast.LENGTH_SHORT).show();
 			SharedUtils.setParam(getActivity(), "SingleInterval", isChecked);
 			if (isChecked) {
 				isRandom = true;
@@ -467,11 +493,14 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 			} else {
 				isLong = false;
 			}
-			if (isLong == true) {
+			if (isLong == false) {
 			} else {
 				if (CheckUtil.IsEmpty(long_hour) || long_hour == 0) {
 					setLong = 1;
 					SharedUtils.setParam(getActivity(), "setLong", setLong);
+					Toast.makeText(getActivity(),
+							"请设置水泵休息时间，设置0代表连续工作不休息！点击右上方按钮保存！" + isChecked,
+							Toast.LENGTH_SHORT).show();
 					FragmentManager fgManager = getFragmentManager();
 					FragmentTransaction transaction = fgManager
 							.beginTransaction();

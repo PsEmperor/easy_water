@@ -117,5 +117,9 @@ public class URL {
 	public static final String updatePumpSwitchState = "http://60.205.220.245:8080/cms/app/IrriUnitSys/updatePumpSwitchState";
 	//应用-灌溉-灌溉单元管理-首部-过滤器反冲洗开启/关闭
 	public static final String updateFilterSwitchState = "http://60.205.220.245:8080/cms/app/IrriUnitSys/updateFilterSwitchState";
+	//应用-灌溉-灌溉单元管理-灌溉计划-自定义设定-第一次保存
+	public static final String customRound = "http://60.205.220.245:8080/cms/app/IrriUnitSys/addRoundIrriPlan/customRound";
+	//应用-灌溉-灌溉单元管理-灌溉计划-单组修改
+	public static final String updateIrriGroupPlan = "http://60.205.220.245:8080/cms/app/IrriUnitSys/updateIrriGroupPlan";
 	
 }

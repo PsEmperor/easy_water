@@ -65,18 +65,16 @@ public class Myadapter extends BaseAdapter {
 			holder.time_end = (TextView) convertView.findViewById(R.id.text_apply_irriagte_time_end);
 			holder.time_continue = (TextView) convertView.findViewById(R.id.text_apply_irriagte_time_continue);
 			holder.time_rest = (TextView) convertView.findViewById(R.id.text_apply_irriagte_time_rest);
-	
-			group = mType.get(pos).getGroupName().substring(1, mType.get(pos).getGroupName().length());
-			holder.group.setText(group);
-			holder.time_start.setText(mType.get(pos).getStartTime());
-			holder.time_end.setText(mType.get(pos).getEndTime());
-			holder.time_continue.setText(mType.get(pos).getDuration());
-			holder.time_rest.setText(mType.get(pos).getRestTime());
 			convertView.setTag(holder);
-
 		} else {
 			holder = (myV) convertView.getTag();
 		}
+		group = mType.get(pos).getGroupName().substring(1, mType.get(pos).getGroupName().length());
+		holder.group.setText(group);
+		holder.time_start.setText(mType.get(pos).getStartTime());
+		holder.time_end.setText(mType.get(pos).getEndTime());
+		holder.time_continue.setText(mType.get(pos).getDuration());
+		holder.time_rest.setText(mType.get(pos).getRestTime());
 		return convertView;
 	}
 

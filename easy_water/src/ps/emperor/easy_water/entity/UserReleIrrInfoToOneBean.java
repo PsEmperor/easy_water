@@ -34,14 +34,16 @@ public class UserReleIrrInfoToOneBean {
     	private String RestEnd;//夜间休息结束
     	private String SuperEqu;//上级设备
 		private String FlushTime;//反过滤冲洗时间
-		private String LongestTime;
+		private String PumpRestTime;//水泵休息时间
 
-		public String getLongestTime() {
-			return LongestTime;
+		
+		
+		public String getPumpRestTime() {
+			return PumpRestTime;
 		}
 
-		public void setLongestTime(String longestTime) {
-			LongestTime = longestTime;
+		public void setPumpRestTime(String pumpRestTime) {
+			this.PumpRestTime = pumpRestTime;
 		}
 
 		public String getIrriSeasonStart() {

@@ -250,6 +250,24 @@ public class DBHelper {
 		}
 	}
 
+	// 更新夜间开关
+	public void updateNightSwitch(String id, int nightSwitch) {
+		Irrigation findUser = irrigationDao.queryBuilder()
+				.where(Properties.Irrigation.eq(id)).build().unique();
+		if (findUser != null) {
+			findUser.setNightSwitch(nightSwitch);
+			irrigationDao.update(findUser);
+		}
+	}
+	// 更新水泵时长开关
+	public void updateLongSwitch(String id, int longSwitch) {
+		Irrigation findUser = irrigationDao.queryBuilder()
+				.where(Properties.Irrigation.eq(id)).build().unique();
+		if (findUser != null) {
+			findUser.setLongSwitch(longSwitch);
+			irrigationDao.update(findUser);
+		}
+	}
 	// 更新过滤器
 	public void updateBasicFilter(String id, String flushtime) {
 		Irrigation findUser = irrigationDao.queryBuilder()

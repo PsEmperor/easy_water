@@ -105,9 +105,6 @@ public class ListViewPagerAdapter1 extends PagerAdapter implements OnItemClickLi
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
-					if(pageNum > 30){
-						Toast.makeText(context, "当前轮次过多 请联网操作！", Toast.LENGTH_SHORT).show();
-					}else{
 					if(list.get(position).getGroupName().equals("A")){
 						nowItem = 1;
 					}
@@ -199,11 +196,12 @@ public class ListViewPagerAdapter1 extends PagerAdapter implements OnItemClickLi
 						bundle.putString("compareTime", compareTime);
 						bundle.putString("units", units);
 						bundle.putInt("position", position);
+						bundle.putString("groupID", list.get(position).getGroupID());
+						bundle.putString("planRound", list.get(position).getPlanRound());
 						Intent intent = new Intent(context, TimeAvtivityDialog.class);
 						intent.putExtras(bundle);
 						context.startActivity(intent);
 //					((Activity)context).finish();
-				}
 				}
 			});
 		}

@@ -130,9 +130,9 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 	private void init() {
 		names = (String) SharedUtils.getParam(getActivity(),
 				"dialog_user_name", "	");
-		String str = "";
+		String str = (String) SharedUtils.getParam(getActivity(), "ps", "12345");
 		try {
-			str = java.net.URLEncoder.encode("12345", "UTF-8");
+			str = java.net.URLEncoder.encode(str, "UTF-8");
 		} catch (UnsupportedEncodingException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

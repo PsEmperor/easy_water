@@ -53,6 +53,7 @@ import android.widget.Toast;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.adapter.ListViewPagerAdapter1;
 import ps.emperor.easy_water.entity.ApplyIrrigationProjectBean;
+import ps.emperor.easy_water.entity.IrriGroupStateBean;
 import ps.emperor.easy_water.entity.ApplyIrrigationProjectBean.infoList;
 import ps.emperor.easy_water.greendao.DBHelper;
 import ps.emperor.easy_water.greendao.Irrigation;
@@ -1041,13 +1042,17 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 										Toast.LENGTH_SHORT);
 								Gson gson = new Gson();
 								System.out.println(arg0);
-								// ApplyIrrigationProjectBean fromJson = gson
-								// .fromJson(
-								// arg0,
-								// ApplyIrrigationProjectBean.class);
-								// beans = fromJson.getAuthNameList();
+								IrriGroupStateBean fromJson = gson
+										.fromJson(arg0,
+												IrriGroupStateBean.class);
 								progressDialog.dismiss();
+								if ("0".equals(fromJson.getCode())) {
+									Toast.makeText(getActivity(),
+											"操作失败！服务器异常！",
+											Toast.LENGTH_SHORT).show();
+								} else if ("1".equals(fromJson.getCode())) {
 								init();
+								}
 							}
 						});
 			}

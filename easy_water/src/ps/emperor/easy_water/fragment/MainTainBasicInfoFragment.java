@@ -1,6 +1,7 @@
 package ps.emperor.easy_water.fragment;
 
 import java.io.UnsupportedEncodingException;
+import java.security.Principal;
 import java.text.DecimalFormat;
 
 import java.text.ParseException;
@@ -26,6 +27,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,10 +37,12 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.Interface.OnWheelChangedListener;
 import ps.emperor.easy_water.adapter.NumbericWheelAdapter;
 import ps.emperor.easy_water.adapter.NumericWheelAdapter;
+import ps.emperor.easy_water.entity.IrriGroupStateBean;
 import ps.emperor.easy_water.entity.UserReleIrrInfoToOneBean;
 import ps.emperor.easy_water.entity.UserReleIrrInfoToOneBean.infoList;
 import ps.emperor.easy_water.greendao.DBHelper;
@@ -47,6 +51,7 @@ import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.NetStatusUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.utils.URL;
+import ps.emperor.easy_water.view.CustomDialog;
 import ps.emperor.easy_water.view.MainActionBars;
 import ps.emperor.easy_water.view.WheelView;
 
@@ -87,6 +92,8 @@ public class MainTainBasicInfoFragment extends Fragment implements
 	private List<Irrigation> irrigation;
 	private ProgressDialog progressDialog;
 	private List<infoList> beens;
+	private ToggleButton time_night, time_longs;
+	private Boolean isNight = false, isLong = false;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -145,12 +152,36 @@ public class MainTainBasicInfoFragment extends Fragment implements
 		tv_time_long.setText(long_hour + "");
 		irrigation = dbHelper.loadContinue(units);
 
+		time_night = (ToggleButton) view
+				.findViewById(R.id.toggle_maintain_basic_info_time_night);
+		time_longs = (ToggleButton) view
+				.findViewById(R.id.toggle_maintain_basic_info_time_longs);
+		
 		if (NetStatusUtil.isNetValid(getActivity())) {
 			init();
 		} else {
 			Toast.makeText(getActivity(), "当前网络不可用！请检查您的网络状态！", Toast.LENGTH_SHORT)
 					.show();
 		}
+		
+		if("00:00".equals(tv_restnight_start.getText().toString())&&"00:00".equals(tv_restnight_end.getText().toString())){
+			isNight = false;
+		}
+		if("24".equals(tv_time_long.getText().toString())){
+			isLong = false;
+			tv_time_long.setText("连续");
+		}
+		if(0 == long_hour){
+			time_longs.setEnabled(false);
+		}else{
+			time_longs.setEnabled(true);
+		}
+		time_night.setChecked(isNight);
+		time_longs.setChecked(isLong);
+		
+		time_night.setOnClickListener(this);
+		time_longs.setOnClickListener(this);
+		
 
 		return view;
 
@@ -248,6 +279,9 @@ public class MainTainBasicInfoFragment extends Fragment implements
 					} else {
 						tv_restnight_end.setText("00:00");
 					}
+					if("00:00".equals(tv_restnight_start.getText().toString())&&"00:00".equals(tv_restnight_end.getText().toString())){
+						isNight = false;
+					}
 					if (!CheckUtil.IsEmpty(beens.get(0).getFlushTime())) {
 						tv_filter.setText(beens.get(0).getFlushTime());
 					} else {
@@ -265,15 +299,18 @@ public class MainTainBasicInfoFragment extends Fragment implements
 					} else {
 						text_season_end.setText("0000-00-00");
 					}
-					if (!CheckUtil.IsEmpty(beens.get(0).getLongestTime())) {
-						tv_time_long.setText(beens.get(0).getLongestTime());
+					if (!CheckUtil.IsEmpty(beens.get(0).getPumpRestTime())) {
+						tv_time_long.setText(beens.get(0).getPumpRestTime());
+						if("0".equals(beens.get(0).getPumpRestTime())){
+							tv_time_long.setText("连续");
+							isLong = false;
+						}
 					} else {
 						tv_time_long.setText("0");
 					}
 					night_start = tv_restnight_start.getText().toString();
 					night_end = tv_restnight_end.getText().toString();
-					long_hour = Integer.valueOf(tv_time_long.getText()
-							.toString());
+					long_hour = Integer.valueOf(beens.get(0).getPumpRestTime());
 					group = Integer.valueOf(tv_irriagte_group.getText()
 							.toString());
 					value = Integer.valueOf(tv_orroagte_valve.getText()
@@ -342,11 +379,6 @@ public class MainTainBasicInfoFragment extends Fragment implements
 			if (setLong == 1) {
 				setLong = 0;
 				SharedUtils.setParam(getActivity(), "setLong", setLong);
-				if (CheckUtil.IsEmpty(long_hour) || long_hour == 0) {
-					SharedUtils.setParam(getActivity(), "SingleLong", true);
-				} else {
-					SharedUtils.setParam(getActivity(), "SingleLong", false);
-				}
 				ApplyIrrigateProjectSingleFragment fragment = new ApplyIrrigateProjectSingleFragment();
 
 				// transaction.setCustomAnimations(R.anim.right_in,
@@ -365,11 +397,6 @@ public class MainTainBasicInfoFragment extends Fragment implements
 			} else if (setLong == 2) {
 				setLong = 0;
 				SharedUtils.setParam(getActivity(), "setLong", setLong);
-				if (CheckUtil.IsEmpty(long_hour) || long_hour == 0) {
-					SharedUtils.setParam(getActivity(), "SingleLong", false);
-				} else {
-					SharedUtils.setParam(getActivity(), "SingleLong", true);
-				}
 				ApplyIrrigateProjectSeasonFragment fragment = new ApplyIrrigateProjectSeasonFragment();
 				// transaction.setCustomAnimations(R.anim.right_in,
 				// R.anim.right_out);
@@ -387,24 +414,6 @@ public class MainTainBasicInfoFragment extends Fragment implements
 			}
 			if (setNight == 1) {
 				setNight = 0;
-				night_start = irrigation.get(0).getNightStart();
-				night_end = irrigation.get(0).getNightEnd();
-				if ((CheckUtil.IsEmpty(night_start) || night_start.equals("0"))) {
-					aNight = 1;
-				} else {
-					aNight = 0;
-				}
-
-				if ((CheckUtil.IsEmpty(night_end) || night_end.equals("0"))) {
-					aNight = 1;
-				} else {
-					aNight = 0;
-				}
-				if (aNight == 1) {
-					SharedUtils.setParam(getActivity(), "SingleNight", false);
-				} else {
-					SharedUtils.setParam(getActivity(), "SingleNight", true);
-				}
 				SharedUtils.setParam(getActivity(), "setNight", setNight);
 				ApplyIrrigateProjectSingleFragment fragment = new ApplyIrrigateProjectSingleFragment();
 				Bundle bundle = new Bundle();
@@ -420,24 +429,6 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				break;
 			} else if (setNight == 2) {
 				setNight = 0;
-				night_start = irrigation.get(0).getNightStart();
-				night_end = irrigation.get(0).getNightEnd();
-				if ((CheckUtil.IsEmpty(night_start) || night_start.equals("0"))) {
-					aNight = 0;
-				} else {
-					aNight = 1;
-				}
-
-				if ((CheckUtil.IsEmpty(night_end) || night_end.equals("0"))) {
-					aNight = 0;
-				} else {
-					aNight = 1;
-				}
-				if (aNight == 0) {
-					SharedUtils.setParam(getActivity(), "SingleNight", false);
-				} else {
-					SharedUtils.setParam(getActivity(), "SingleNight", true);
-				}
 				SharedUtils.setParam(getActivity(), "setNight", setNight);
 				ApplyIrrigateProjectSeasonFragment fragment = new ApplyIrrigateProjectSeasonFragment();
 				Bundle bundle = new Bundle();
@@ -453,15 +444,26 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				break;
 			}
 			if (Skip == 1) {
-				Skip = 0;
-				SharedUtils.setParam(getActivity(), "Skip", Skip);
-				MainTainBasicCompileFragment fragment = new MainTainBasicCompileFragment();
-				transaction.setCustomAnimations(
-						R.anim.slide_fragment_horizontal_right_in,
-						R.anim.slide_fragment_horizontal_left_out);
-				transaction.replace(R.id.fragment_maintain_present_irrigate,
-						fragment, "main");
-				transaction.commit();
+				if(tv_irriagte_group.getText().toString().trim().equals(beens.get(0).getMaxGroup())&&
+						tv_orroagte_valve.getText().toString().trim().equals(beens.get(0).getValueNum())&&
+						tv_filter.getText().toString().trim().equals(beens.get(0).getFlushTime())&&
+						tv_time_long.getText().toString().trim().equals(beens.get(0).getPumpRestTime())&&
+						tv_restnight_start.getText().toString().trim().equals(beens.get(0).getRestStart())&&
+						tv_restnight_end.getText().toString().trim().equals(beens.get(0).getRestEnd())&&
+						text_season_start.getText().toString().trim().equals(beens.get(0).getIrriSeasonStart())&&
+						text_season_end.getText().toString().trim().equals(beens.get(0).getIrriSeasonEnd())){
+					Skip = 0;
+					SharedUtils.setParam(getActivity(), "Skip", Skip);
+					MainTainBasicCompileFragment fragment = new MainTainBasicCompileFragment();
+					transaction.setCustomAnimations(
+							R.anim.slide_fragment_horizontal_right_in,
+							R.anim.slide_fragment_horizontal_left_out);
+					transaction.replace(R.id.fragment_maintain_present_irrigate,
+							fragment, "main");
+					transaction.commit();
+				}else{
+					showAlertDialog(getView());
+				}
 				break;
 			}
 		case R.id.acitionbar_right:
@@ -469,121 +471,7 @@ public class MainTainBasicInfoFragment extends Fragment implements
 			// Integer.valueOf(tv_orroagte_valve.getText().toString()));
 			// Toast.makeText(getActivity(), "保存成功" + value, Toast.LENGTH_SHORT)
 			// .show();
-			if (!NetStatusUtil.isNetValid(getActivity())) {
-				Toast.makeText(getActivity(), "当前网络不可用！请检查您的网络状态！", Toast.LENGTH_SHORT)
-						.show();
-			} else {
-				String str1 = (String) SharedUtils.getParam(getActivity(),
-						"FirstDerviceID", "");
-				RequestParams param2 = new RequestParams(URL.firstDerviceIDIrri); // 网址(请替换成实际的网址)
-				// 参数(请替换成实际的参数与值)
-				progressDialog = ProgressDialog.show(getActivity(),
-						"Loading...", "Please wait...", true, false);
-				JSONObject js_request = new JSONObject();
-				try {
-					param2.setAsJsonContent(true);
-					js_request.put("firstDerviceID", str1);
-					js_request.put("maxGroup", tv_irriagte_group.getText()
-							.toString());
-					js_request.put("valueNum", tv_orroagte_valve.getText()
-							.toString());
-					js_request.put("flushTime", tv_filter.getText().toString());
-					js_request.put("longestTime", tv_time_long.getText()
-							.toString());
-					js_request.put("restStart", tv_restnight_start.getText()
-							.toString());
-					js_request.put("restEnd", tv_restnight_end.getText()
-							.toString());
-					js_request.put("irriSeasonStart", text_season_start
-							.getText().toString());
-					js_request.put("irriSeasonEnd", text_season_end.getText()
-							.toString());
-					param2.setBodyContent(js_request.toString());
-				} catch (Exception e) {
-					e.printStackTrace();
-					param2.setAsJsonContent(true);
-				}// 根据实际需求添加相应键值对
-
-				x.http().request(HttpMethod.PUT, param2,
-						new CommonCallback<String>() {
-							@Override
-							public void onCancelled(CancelledException arg0) {
-
-							}
-
-							// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
-							// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
-							@Override
-							public void onError(Throwable ex,
-									boolean isOnCallback) {
-
-								Toast.makeText(x.app(), ex.getMessage(),
-										Toast.LENGTH_LONG).show();
-								if (ex instanceof HttpException) { // 网络错误 
-									HttpException httpEx = (HttpException) ex;
-									int responseCode = httpEx.getCode();
-									String responseMsg = httpEx.getMessage();
-									String errorResult = httpEx.getResult();
-									// ...
-									progressDialog.dismiss();
-								} else { // 其他错误 
-									// ...
-									progressDialog.dismiss();
-								}
-
-							}
-
-							// 不管成功或者失败最后都会回调该接口
-							@Override
-							public void onFinished() {
-							}
-
-							@Override
-							public void onSuccess(String arg0) {
-								Gson gson = new Gson();
-								// 更新数据库
-								String parten = "00";
-								DecimalFormat decimal = new DecimalFormat(
-										parten);
-								if (!irrigation
-										.get(0)
-										.getNightStart()
-										.equals(tv_restnight_start.getText()
-												.toString())
-										|| !(irrigation.get(0).getNightEnd()
-												.equals(tv_restnight_end
-														.getText().toString()))) {
-									dbHelper.updateBasicTime(units,
-											night_start, night_end);
-								}
-								if (!(irrigation.get(0).getIsTimeLong() + "")
-										.equals(tv_time_long.getText()
-												.toString())) {
-									dbHelper.updateBasicTimeLong(units,
-											long_hour);
-								}
-								if (!(irrigation.get(0).getGroupnumber() + "")
-										.equals(tv_irriagte_group.getText()
-												.toString())) {
-									dbHelper.updateBasicGroup(units, group);
-								}
-								if (!(irrigation.get(0).getValuenumber() + "")
-										.equals(tv_orroagte_valve.getText()
-												.toString())) {
-									dbHelper.updateBasicVlaue(units, value);
-								}
-								if ((irrigation.get(0).getSeasonStrat() + "")
-										.equals(seasonStart)
-										&& (irrigation.get(0).getSeasonEnd() + "")
-												.equals(seasonEnd)) {
-								} else {
-									dbHelper.updateBasicSeason(units,
-											seasonStart, seasonEnd);
-								}
-								progressDialog.dismiss();
-							}
-						});
-			}
+			httpAmend();
 			break;
 		case R.id.layout_maintain_basic_info_max_irrigat_group:// 最大轮灌组数量
 			id = 1;
@@ -607,9 +495,146 @@ public class MainTainBasicInfoFragment extends Fragment implements
 			id = 2;
 			showDateTimePickers(mInflater);
 			break;
+		case R.id.toggle_maintain_basic_info_time_night:
+			break;
+		case R.id.toggle_maintain_basic_info_time_longs:
+			break;
 		}
 	}
 
+	private void httpAmend(){
+		if (!NetStatusUtil.isNetValid(getActivity())) {
+			Toast.makeText(getActivity(), "当前网络不可用！请检查您的网络状态！", Toast.LENGTH_SHORT)
+					.show();
+		} else {
+			String str1 = (String) SharedUtils.getParam(getActivity(),
+					"FirstDerviceID", "");
+			RequestParams param2 = new RequestParams(URL.firstDerviceIDIrri); // 网址(请替换成实际的网址)
+			// 参数(请替换成实际的参数与值)
+			progressDialog = ProgressDialog.show(getActivity(),
+					"Loading...", "Please wait...", true, false);
+			JSONObject js_request = new JSONObject();
+			try {
+				param2.setAsJsonContent(true);
+				js_request.put("firstDerviceID", str1);
+				js_request.put("maxGroup", tv_irriagte_group.getText()
+						.toString());
+				js_request.put("valueNum", tv_orroagte_valve.getText()
+						.toString());
+				js_request.put("flushTime", tv_filter.getText().toString());
+				if("连续".equals(tv_time_long.getText()
+						.toString())){
+					js_request.put("pumpRestTime",0);
+				}else{
+					js_request.put("pumpRestTime" +
+							"",tv_time_long.getText()
+							.toString() );
+				}
+				js_request.put("restStart", tv_restnight_start.getText()
+						.toString());
+				js_request.put("restEnd", tv_restnight_end.getText()
+						.toString());
+				js_request.put("irriSeasonStart", text_season_start
+						.getText().toString());
+				js_request.put("irriSeasonEnd", text_season_end.getText()
+						.toString());
+				param2.setBodyContent(js_request.toString());
+			} catch (Exception e) {
+				e.printStackTrace();
+				param2.setAsJsonContent(true);
+			}// 根据实际需求添加相应键值对
+
+			x.http().request(HttpMethod.PUT, param2,
+					new CommonCallback<String>() {
+						@Override
+						public void onCancelled(CancelledException arg0) {
+
+						}
+
+						// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+						// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+						@Override
+						public void onError(Throwable ex,
+								boolean isOnCallback) {
+
+							Toast.makeText(x.app(), ex.getMessage(),
+									Toast.LENGTH_LONG).show();
+							if (ex instanceof HttpException) { // 网络错误 
+								HttpException httpEx = (HttpException) ex;
+								int responseCode = httpEx.getCode();
+								String responseMsg = httpEx.getMessage();
+								String errorResult = httpEx.getResult();
+								// ...
+								progressDialog.dismiss();
+							} else { // 其他错误 
+								// ...
+								progressDialog.dismiss();
+							}
+
+						}
+
+						// 不管成功或者失败最后都会回调该接口
+						@Override
+						public void onFinished() {
+						}
+
+						@Override
+						public void onSuccess(String arg0) {
+							Gson gson = new Gson();
+							String parten = "00";
+							DecimalFormat decimal = new DecimalFormat(
+									parten);
+							IrriGroupStateBean fromJson = gson
+									.fromJson(arg0,
+											IrriGroupStateBean.class);
+							if("0".equals(fromJson.getCode())){
+								Toast.makeText(getActivity(), "修改失败！", Toast.LENGTH_SHORT).show();
+							}else{
+								progressDialog.dismiss();
+								init();
+							}
+//							// 更新数据库
+//							if (!irrigation
+//									.get(0)
+//									.getNightStart()
+//									.equals(tv_restnight_start.getText()
+//											.toString())
+//									|| !(irrigation.get(0).getNightEnd()
+//											.equals(tv_restnight_end
+//													.getText().toString()))) {
+//								dbHelper.updateBasicTime(units,
+//										night_start, night_end);
+//							}
+//							if (!(irrigation.get(0).getIsTimeLong() + "")
+//									.equals(tv_time_long.getText()
+//											.toString())) {
+//								dbHelper.updateBasicTimeLong(units,
+//										long_hour);
+//							}
+//							if (!(irrigation.get(0).getGroupnumber() + "")
+//									.equals(tv_irriagte_group.getText()
+//											.toString())) {
+//								dbHelper.updateBasicGroup(units, group);
+//							}
+//							if (!(irrigation.get(0).getValuenumber() + "")
+//									.equals(tv_orroagte_valve.getText()
+//											.toString())) {
+//								dbHelper.updateBasicVlaue(units, value);
+//							}
+//							if ((irrigation.get(0).getSeasonStrat() + "")
+//									.equals(seasonStart)
+//									&& (irrigation.get(0).getSeasonEnd() + "")
+//											.equals(seasonEnd)) {
+//							} else {
+//								dbHelper.updateBasicSeason(units,
+//										seasonStart, seasonEnd);
+//							}
+						}
+					});
+		}
+	}
+	
+	
 	/**
 	 * @Description: TODO 弹出日期时间选择器
 	 */
@@ -638,8 +663,17 @@ public class MainTainBasicInfoFragment extends Fragment implements
 			public void onClick(View v) {
 				if (id == 1) {
 				} else if (id == 2) {
-					tv_time_long.setText(wv_hours.getCurrentItem() + "");
 					long_hour = wv_hours.getCurrentItem();
+					if(long_hour == 0){
+						tv_time_long.setText("连续");
+					}else{
+						tv_time_long.setText(long_hour + "");
+					}
+					if(0 == long_hour){
+						time_longs.setEnabled(false);
+					}else{
+						time_longs.setEnabled(true);
+					}
 					// SharedUtils.setParam(getActivity(), "long_hour",
 					// wv_hours.getCurrentItem());
 					// }else if(id == 3){
@@ -1200,5 +1234,36 @@ public class MainTainBasicInfoFragment extends Fragment implements
 		// 设置dialog的布局,并显示
 		dialog.setContentView(view);
 		dialog.show();
+	}
+	public void showAlertDialog(View view) {
+
+		CustomDialog.Builder builder = new CustomDialog.Builder(getActivity());
+		builder.setMessage("当前已进行数据修改但尚未保存 是否确定退出！");
+		builder.setTitle("温馨提示");
+		builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				MainTainBasicCompileFragment fragment = new MainTainBasicCompileFragment();
+				FragmentManager fgManager = getFragmentManager();
+				FragmentTransaction transaction = fgManager.beginTransaction();
+				transaction.setCustomAnimations(
+						R.anim.slide_fragment_horizontal_right_in,
+						R.anim.slide_fragment_horizontal_left_out);
+				transaction.replace(R.id.fragment_maintain_present_irrigate,
+						fragment, "main");
+				transaction.commit();
+				dialog.dismiss();
+				// 设置你的操作事项
+			}
+		});
+
+		builder.setNegativeButton("取消",
+				new android.content.DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+
+		builder.create().show();
+
 	}
 }

@@ -20,6 +20,8 @@ public class Irrigation {
     private String nightStart;
     private String nightEnd;
     private Integer isTimeLong;
+    private Integer nightSwitch;
+    private Integer longSwitch;
     private String nContinue;
     private Integer nNumber;
     private Integer nRound;
@@ -34,7 +36,7 @@ public class Irrigation {
         this.id = id;
     }
 
-    public Irrigation(Long id, String irrigation, String firstDerviceID, String area, String longitude, String latitude, String superEqu, Integer isrelevance, Integer groupnumber, Integer valuenumber, String flushtime, String nightStart, String nightEnd, Integer isTimeLong, String nContinue, Integer nNumber, Integer nRound, String seasonStrat, String seasonEnd, Integer seasonRound) {
+    public Irrigation(Long id, String irrigation, String firstDerviceID, String area, String longitude, String latitude, String superEqu, Integer isrelevance, Integer groupnumber, Integer valuenumber, String flushtime, String nightStart, String nightEnd, Integer isTimeLong, Integer nightSwitch, Integer longSwitch, String nContinue, Integer nNumber, Integer nRound, String seasonStrat, String seasonEnd, Integer seasonRound) {
         this.id = id;
         this.irrigation = irrigation;
         this.firstDerviceID = firstDerviceID;
@@ -49,6 +51,8 @@ public class Irrigation {
         this.nightStart = nightStart;
         this.nightEnd = nightEnd;
         this.isTimeLong = isTimeLong;
+        this.nightSwitch = nightSwitch;
+        this.longSwitch = longSwitch;
         this.nContinue = nContinue;
         this.nNumber = nNumber;
         this.nRound = nRound;
@@ -167,6 +171,22 @@ public class Irrigation {
 
     public void setIsTimeLong(Integer isTimeLong) {
         this.isTimeLong = isTimeLong;
+    }
+
+    public Integer getNightSwitch() {
+        return nightSwitch;
+    }
+
+    public void setNightSwitch(Integer nightSwitch) {
+        this.nightSwitch = nightSwitch;
+    }
+
+    public Integer getLongSwitch() {
+        return longSwitch;
+    }
+
+    public void setLongSwitch(Integer longSwitch) {
+        this.longSwitch = longSwitch;
     }
 
     public String getNContinue() {

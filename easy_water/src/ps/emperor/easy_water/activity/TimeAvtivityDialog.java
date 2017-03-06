@@ -58,8 +58,8 @@ public class TimeAvtivityDialog extends BaseActivity implements OnClickListener 
 	private WheelView hours;
 	private WheelView minutes;
 	private int isBefore;
-	private String time_end, time_ends, time_start, units, compareTime,
-			compareRound;
+	private String irriDuration, startTime, units, compareTime,
+			compareRound,groupID,planRound;
 	private int first_setTime = 0;
 	private long end, nowEnd, minuteOfDay, start;
 	private int nowItem, nowPages, isOne, isSkip,isSkips, position;
@@ -83,6 +83,8 @@ public class TimeAvtivityDialog extends BaseActivity implements OnClickListener 
 		units = bundle.getString("units");
 		compareTime = bundle.getString("compareTime");
 		position = bundle.getInt("position");
+		groupID = bundle.getString("groupID");
+		planRound = bundle.getString("planRound");
 
 		Calendar c = Calendar.getInstance();
 		int currentYear = c.get(Calendar.YEAR);
@@ -214,11 +216,14 @@ public class TimeAvtivityDialog extends BaseActivity implements OnClickListener 
 			String parten = "00";
 			DecimalFormat decimal = new DecimalFormat(parten);
 
-			String a = (year.getCurrentItem() + 2016) + "-"
+			startTime = (year.getCurrentItem() + 2016) + "-"
 					+ decimal.format((month.getCurrentItem() + 1)) + "-"
 					+ decimal.format((day.getCurrentItem() + 1)) + " "
-					+ decimal.format(hours.getCurrentItem()) + ":"
+					+ decimal.format(hour.getCurrentItem()) + ":"
 					+ decimal.format(minute.getCurrentItem());
+			
+			irriDuration = (decimal.format(hours.getCurrentItem()) + ":"
+					+ decimal.format(minute.getCurrentItem()));
 			Calendar c = Calendar.getInstance();
 			int nowYear = c.get(Calendar.YEAR);
 			int nowMonth = c.get(Calendar.MONTH) + 1;
@@ -266,7 +271,7 @@ public class TimeAvtivityDialog extends BaseActivity implements OnClickListener 
 				if(NetStatusUtil.isNetValid(this)){
 					String str1 = (String) SharedUtils.getParam(this,
 							"FirstDerviceID", "");
-					RequestParams param2 = new RequestParams(URL.firstDerviceIDIrri); // 网址(请替换成实际的网址)
+					RequestParams param2 = new RequestParams(URL.updateIrriGroupPlan); // 网址(请替换成实际的网址)
 					// 参数(请替换成实际的参数与值)
 					progressDialog = ProgressDialog.show(this, "Loading...",
 							"Please wait...", true, false);
@@ -274,13 +279,17 @@ public class TimeAvtivityDialog extends BaseActivity implements OnClickListener 
 					try {
 						param2.setAsJsonContent(true);
 						js_request.put("firstDerviceID", str1);
+						js_request.put("groupID",groupID );
+						js_request.put("planRound", planRound);
+						js_request.put("startTime", startTime);
+						js_request.put("irriDuration", irriDuration);
 						param2.setBodyContent(js_request.toString());
 					} catch (Exception e) {
 						e.printStackTrace();
 						param2.setAsJsonContent(true);
 					}// 根据实际需求添加相应键值对
 
-					x.http().request(HttpMethod.PUT, param2,
+					x.http().request(HttpMethod.POST, param2,
 							new CommonCallback<String>() {
 								@Override
 								public void onCancelled(CancelledException arg0) {
@@ -442,7 +451,7 @@ public class TimeAvtivityDialog extends BaseActivity implements OnClickListener 
 								}).show();// 在按键响应事件中显示此对话框
 
 			}
-			System.out.println(a);
+			System.out.println(startTime);
 			break;
 		case R.id.time_canle:
 			isSkip = 2;

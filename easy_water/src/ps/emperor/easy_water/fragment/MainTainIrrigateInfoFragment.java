@@ -306,13 +306,14 @@ public class MainTainIrrigateInfoFragment extends Fragment implements
 					irrigation.setSuperEqu(beens.get(0).getSuperEqu());
 					irrigation.setGroupnumber(group);
 					irrigation.setValuenumber(value);
+					irrigation.setNightSwitch(0);
+					irrigation.setLongSwitch(0);
 					irrigation.setFlushtime(beens.get(0).getFlushTime());
 					irrigation
 							.setSeasonStrat(beens.get(0).getIrriSeasonStart());
 					irrigation.setSeasonEnd(beens.get(0).getIrriSeasonEnd());
 					dbHelper.saveSession(irrigation);
 				}
-				System.out.println(irrigation);
 //				 //夜间休息时间
 //				 if (!irrigation.get(0).getNightStart().equals(text_max_orroagte_restnight_start.getText().toString())||!(irrigation.get(0)
 //				 .getNightEnd()
