@@ -76,7 +76,7 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 	private RelativeLayout layout_time_start, layout_time_continue,
 			layout_time_interval;
 	private TextView tv_time_start, tv_time_continue,
-			tv_apply_irriagte_project_single_time_night;
+			tv_apply_irriagte_project_single_time_night,tv_apply_irriagte_project_single_time_long;
 	private Dialog dialog;
 	private int isBefore;
 	private WheelView current_year;
@@ -120,6 +120,7 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 		};
 	};
 
+	@SuppressLint("ResourceAsColor")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -165,6 +166,8 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 
 		tv_apply_irriagte_project_single_time_night = (TextView) view
 				.findViewById(R.id.tv_apply_irriagte_project_single_time_night);
+		tv_apply_irriagte_project_single_time_long = (TextView) view
+				.findViewById(R.id.tv_apply_irriagte_project_single_time_long);
 
 		init();
 
@@ -182,7 +185,21 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 		} else {
 			tv_time_start.setText(time_max_start);
 		}
-
+		if(!CheckUtil.IsEmpty(irrigation)){
+			if(isNight == true){
+				tv_apply_irriagte_project_single_time_night.setText("("+(irrigation.get(0).getNightStart()+"~"+irrigation.get(0).getNightEnd())+")");
+				tv_apply_irriagte_project_single_time_night.setTextColor(getActivity().getResources().getColor(R.color.black));
+			}else{
+				tv_apply_irriagte_project_single_time_night.setText("("+(irrigation.get(0).getNightStart()+"~"+irrigation.get(0).getNightEnd())+")");
+				tv_apply_irriagte_project_single_time_night.setTextColor(getActivity().getResources().getColor(R.color.gray_2));
+			}
+			if(isLong == true){
+				tv_apply_irriagte_project_single_time_long.setText("("+irrigation.get(0).getIsTimeLong()+"小时)");
+			}else{
+				tv_apply_irriagte_project_single_time_long.setText("(连续)");
+			}
+		}
+		
 		time_night.setOnCheckedChangeListener(this);
 		time_interval.setOnCheckedChangeListener(this);
 		time_longs.setOnCheckedChangeListener(this);
@@ -438,6 +455,7 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 		}
 	}
 
+	@SuppressLint("ResourceAsColor")
 	@Override
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		switch (buttonView.getId()) {
@@ -447,6 +465,15 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 				isNight = true;
 			} else {
 				isNight = false;
+			}
+			if(!CheckUtil.IsEmpty(irrigation)){
+				if(isNight == true){
+					tv_apply_irriagte_project_single_time_night.setText("("+(irrigation.get(0).getNightStart()+"~"+irrigation.get(0).getNightEnd())+")");
+					tv_apply_irriagte_project_single_time_night.setTextColor(getActivity().getResources().getColor(R.color.black));
+				}else{
+					tv_apply_irriagte_project_single_time_night.setText("("+(irrigation.get(0).getNightStart()+"~"+irrigation.get(0).getNightEnd())+")");
+					tv_apply_irriagte_project_single_time_night.setTextColor(getActivity().getResources().getColor(R.color.gray_2));
+				}
 			}
 			if (isNight == false) {
 			} else {
@@ -492,6 +519,13 @@ public class ApplyIrrigateProjectSingleFragment extends Fragment implements
 				isLong = true;
 			} else {
 				isLong = false;
+			}
+			if(!CheckUtil.IsEmpty(irrigation)){
+				if(isLong == true){
+					tv_apply_irriagte_project_single_time_long.setText("("+irrigation.get(0).getIsTimeLong()+"小时)");
+				}else{
+					tv_apply_irriagte_project_single_time_long.setText("(连续)");
+				}
 			}
 			if (isLong == false) {
 			} else {

@@ -74,7 +74,7 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 	private Boolean isLong, isNight, isRandom;
 	private Dialog dialog;
 	private TextView tv_time_continue, tv_time_number, tv_time_interval,
-			tv_time_start;
+			tv_time_start,tv_apply_irriagte_project_single_time_night,tv_apply_irriagte_project_single_time_long;
 	private RelativeLayout layout_time_start, layout_time_continue,
 			layout_time_number, layout_time_interval;
 	private int id, setNight, setLong, round;
@@ -168,9 +168,28 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 				.findViewById(R.id.text_apply_irriagte_project_season_time_interval);
 		tv_time_start = (TextView) view
 				.findViewById(R.id.text_apply_irriagte_project_season_time_start);
+		tv_apply_irriagte_project_single_time_night = (TextView) view
+				.findViewById(R.id.tv_apply_irriagte_project_single_time_nights);
+		tv_apply_irriagte_project_single_time_long = (TextView) view
+				.findViewById(R.id.tv_apply_irriagte_project_single_time_longs);
 
 		init();
 
+		if(!CheckUtil.IsEmpty(irrigation)){
+			if(isNight == true){
+				tv_apply_irriagte_project_single_time_night.setText("("+(irrigation.get(0).getNightStart()+"~"+irrigation.get(0).getNightEnd())+")");
+				tv_apply_irriagte_project_single_time_night.setTextColor(getActivity().getResources().getColor(R.color.black));
+			}else{
+				tv_apply_irriagte_project_single_time_night.setText("("+(irrigation.get(0).getNightStart()+"~"+irrigation.get(0).getNightEnd())+")");
+				tv_apply_irriagte_project_single_time_night.setTextColor(getActivity().getResources().getColor(R.color.gray_2));
+			}
+			if(isLong == true){
+				tv_apply_irriagte_project_single_time_long.setText("("+irrigation.get(0).getIsTimeLong()+"小时)");
+			}else{
+				tv_apply_irriagte_project_single_time_long.setText("(连续)");
+			}
+		}
+		
 		time_night.setChecked(isNight);
 		time_random.setChecked(isRandom);
 		time_longs.setChecked(isLong);
@@ -452,6 +471,15 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 			} else {
 				isNight = false;
 			}
+			if(!CheckUtil.IsEmpty(irrigation)){
+				if(isNight == true){
+					tv_apply_irriagte_project_single_time_night.setText("("+(irrigation.get(0).getNightStart()+"~"+irrigation.get(0).getNightEnd())+")");
+					tv_apply_irriagte_project_single_time_night.setTextColor(getActivity().getResources().getColor(R.color.black));
+				}else{
+					tv_apply_irriagte_project_single_time_night.setText("("+(irrigation.get(0).getNightStart()+"~"+irrigation.get(0).getNightEnd())+")");
+					tv_apply_irriagte_project_single_time_night.setTextColor(getActivity().getResources().getColor(R.color.gray_2));
+				}
+			}
 			if (isNight == false) {
 			} else {
 				if ((CheckUtil.IsEmpty(NightStart) || NightStart
@@ -498,6 +526,13 @@ public class ApplyIrrigateProjectSeasonFragment extends Fragment implements
 				isLong = true;
 			} else {
 				isLong = false;
+			}
+			if(!CheckUtil.IsEmpty(irrigation)){
+				if(isLong == true){
+					tv_apply_irriagte_project_single_time_long.setText("("+irrigation.get(0).getIsTimeLong()+"小时)");
+				}else{
+					tv_apply_irriagte_project_single_time_long.setText("(连续)");
+				}
 			}
 			if (isLong == false) {
 			} else {

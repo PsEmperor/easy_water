@@ -53,6 +53,7 @@ import android.widget.Toast;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.adapter.ListViewPagerAdapter1;
 import ps.emperor.easy_water.entity.ApplyIrrigationProjectBean;
+import ps.emperor.easy_water.entity.GroupIdBeen;
 import ps.emperor.easy_water.entity.IrriGroupStateBean;
 import ps.emperor.easy_water.entity.ApplyIrrigationProjectBean.infoList;
 import ps.emperor.easy_water.greendao.DBHelper;
@@ -79,6 +80,7 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 	private LayoutInflater mInflater;
 	private MainActionBar actionBar;
 	private List<infoList> beans;
+	private List<ps.emperor.easy_water.entity.GroupIdBeen.infoList> beens;
 	private TextView tv_indicator, indicator, btn_project_add, btn_project_del,
 			tv_now_time;
 	private ListViewPagerAdapter1 listPager;
@@ -92,10 +94,10 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 	private List<IrrigationIsFirst> firsts;
 	private IrrigationIsFirst irrigationIsFirst;
 	private List<IrrigationGroup> irrigationGroups;
-	private int isNot, now_round, nowPage, nowPages, notify, isSkip, isFirst,
-			notifys, IsEmpty, empty = 0, isSkips;
+	private int isNot, now_round, nowPage, nowPages, notify, isFirst,
+			notifys, IsEmpty,isSkips;
 	EditText runPager;
-	private String time, units, compareTime, time_start, time_max_start;
+	private String time, units, compareTime, time_start, time_max_start,str1;
 	private Long deletePage, deletePageId;
 	private int MatchedNum, names;
 	private ProgressDialog progressDialog;
@@ -110,84 +112,6 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 				tv_now_time.setText(time);
 				break;
 			case 0:
-				if (CheckUtil.IsEmpty(listentity)) {
-					btn_project_del.setVisibility(View.GONE);
-				} else {
-					btn_project_del.setVisibility(View.VISIBLE);
-				}
-				listPager = new ListViewPagerAdapter1(getActivity(), beans,
-						MatchedNum, units);
-				pager.setAdapter(listPager);
-				pager.setOnPageChangeListener(listener);
-				pageNum = (int) Math.ceil(beans.size() / MatchedNum);
-				if (beans.size() > 0 && beans.size() <= MatchedNum) {
-					pageNum = 1;
-				}
-				if (!CheckUtil.IsEmpty(beans)) {
-					tv_indicator.setText("第" + 1 + "轮" + "/" + "共" + pageNum
-							+ "轮");
-					indicator.setText(1 + "");
-				} else {
-					tv_indicator.setText("第" + 0 + "轮" + "/" + "共" + pageNum
-							+ "轮");
-					indicator.setText(0 + "");
-				}
-				if (CheckUtil.IsEmpty(listentity)) {
-					nowPage = 0;
-				} else {
-					nowPage = 1;
-				}
-				SharedUtils.setParam(getActivity(), "nowPage", nowPage);
-				notify = (Integer) SharedUtils.getParam(getActivity(),
-						"notify", 0);
-				notifys = (Integer) SharedUtils.getParam(getActivity(),
-						"notifys", 0);
-				isSkip = (Integer) SharedUtils.getParam(getActivity(),
-						"isSkip", 0);
-				if (notify == 1) {
-					listentity = dbHelper.loadLastMsgBySessionid(units);
-					if (CheckUtil.IsEmpty(listentity)) {
-						now_round = 0;
-					} else {
-						now_round = Integer.valueOf(listentity.get(0)
-								.getRound());
-					}
-					pager.setCurrentItem(now_round + 1);
-					notify = 0;
-					SharedUtils.setParam(getActivity(), "notify", notify);
-				} else {
-					pager.setCurrentItem(0);
-				}
-				if (notifys == 1) {
-					pager.setCurrentItem(0);
-					notifys = 0;
-					SharedUtils.setParam(getActivity(), "notifys", notifys);
-				}
-				nowPage = (Integer) SharedUtils.getParam(getActivity(),
-						"nowPage", 1);
-				if (isSkip == 1) {
-					isSkip = 0;
-					SharedUtils.setParam(getActivity(), "isSkip", isSkip);
-					pager.setCurrentItem(nowPage - 1);
-				}
-				if (isSkip == 2) {
-					isSkip = 0;
-					SharedUtils.setParam(getActivity(), "isSkip", isSkip);
-					pager.setCurrentItem(nowPage - 1);
-				}
-				if (isSkip == 3) {
-					isSkip = 0;
-					SharedUtils.setParam(getActivity(), "isSkip", isSkip);
-					nowPages = (int) SharedUtils.getParam(getActivity(),
-							"nowPages", isSkip);
-					pager.setCurrentItem(nowPages - 1);
-				}
-				if (CheckUtil.IsEmpty(listentity)) {
-					btn_project_del.setVisibility(View.GONE);
-				} else {
-					btn_project_del.setVisibility(View.VISIBLE);
-				}
-				progressDialog.dismiss();
 				break;
 			case 1:
 				if (CheckUtil.IsEmpty(listentity.size())) {
@@ -403,12 +327,9 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 	}
 
 	private void init() {
-		isSkips = (int) SharedUtils.getParam(getActivity(), "isSkips", 0);
-		if (isSkips == 0) {
 			// irrigation = dbHelper.loadContinue(units);
 			String str1 = (String) SharedUtils.getParam(getActivity(),
 					"FirstDerviceID", "");
-			;
 			try {
 				str1 = java.net.URLEncoder.encode(str1, "UTF-8");
 			} catch (UnsupportedEncodingException e1) {
@@ -478,20 +399,26 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 							if (!CheckUtil.IsEmpty(beans)) {
 								MatchedNum = Integer.valueOf(beans.get(0)
 										.getGroupNum());
-								pageNum = beans.size() / MatchedNum;
 								listPager = new ListViewPagerAdapter1(
 										getActivity(), beans, MatchedNum, units);
 								pager.setAdapter(listPager);
+								pageNum = beans.size() / MatchedNum;
 								pager.setOnPageChangeListener(listener);
 								tv_indicator.setText("第" + 1 + "轮" + "/" + "共"
 										+ pageNum + "轮");
-
+								SharedUtils.setParam(getActivity(), "nowPage", 1);
+								
 								Calendar c = Calendar.getInstance();
 								Calendar c1 = Calendar.getInstance();
 								try {
-									c.setTime(new SimpleDateFormat(
-											"yyyy-MM-dd HH:mm").parse(beans
-											.get(0).getEndTime()));
+									if(CheckUtil.IsEmpty(beans.get(0).getEndTime())){
+										c.setTime(new SimpleDateFormat(
+												"yyyy-MM-dd HH:mm").parse("0000-00-00 00:00"));
+									}else{
+										c.setTime(new SimpleDateFormat(
+												"yyyy-MM-dd HH:mm").parse(beans
+														.get(0).getEndTime()));
+									}
 								} catch (ParseException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
@@ -527,6 +454,7 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 									}
 								}
 							} else {
+								btn_project_del.setVisibility(View.INVISIBLE);
 								Date date = new Date(System.currentTimeMillis());
 								SimpleDateFormat sdf = new SimpleDateFormat(
 										"yyyy-MM-dd HH:mm");
@@ -561,7 +489,6 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 							progressDialog.dismiss();
 						}
 					});
-		}
 	}
 
 	private OnPageChangeListener listener = new OnPageChangeListener() {
@@ -590,6 +517,12 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 
 	public void onResume() {
 		super.onResume();
+		isSkips = (int) SharedUtils.getParam(getActivity(), "isSkips", 0);
+		if(isSkips == 2){
+			init();
+			btn_project_del.setVisibility(View.VISIBLE);
+			isSkips = 0;
+		}
 	};
 
 	@Override
@@ -639,9 +572,6 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 			builder.show();
 			break;
 		case R.id.btn_project_add:
-			if (pageNum > 30) {
-				showAlertDialog(getView());
-			} else {
 				// firsts = dbHelper.loadisFirst(units);
 				// if (CheckUtil.IsEmpty(firsts)) {
 				// isFirst = 0;
@@ -943,29 +873,47 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 											// handler.sendEmptyMessage(1);
 											// }
 											// }).start();
-											for (int i = 0; i < MatchedNum; i++) {
-												infoList bean = new infoList();
-												bean.setStartTime("");
-												bean.setEndTime("");
-												bean.setRestTime("00:00:00");
-												bean.setDuration("00:00:00");
-												bean.setGroupName("组"
-														+ Engroup[i]);
-												beans.add(bean);
+											if(CheckUtil.IsEmpty(beans)){
+												httpGetGroupId();
+											}else{
+												int[] a = new int[pageNum];
+												for (int i = 0; i < a.length; i++) {
+													a[i] = Integer.valueOf(beans.get(i*MatchedNum).getPlanRound());
+												}
+												 for (int i = 0; i < pageNum; i++){    //最多做n-1趟排序
+													               for(int j = 0 ;j < pageNum - i - 1; j++){    //对当前无序区间score[0......length-i-1]进行排序(j的范围很关键，这个范围是在逐步缩小的)
+													            	   if(a[j] < a[j+1]){    //把小的值交换到后面
+													                       int temp = a[j];
+													                       a[j] = a[j+1];
+													                       a[j+1] = temp;
+													                  }
+													               }
+													               }
+												for (int i = 0; i < MatchedNum; i++) {
+													infoList bean = new infoList();
+													bean.setStartTime("");
+													bean.setEndTime("");
+													bean.setRestTime("");
+													bean.setDuration("");
+													bean.setGroupName("组"
+															+ Engroup[i]);
+													bean.setGroupID(beans.get(i).getGroupID());
+													bean.setPlanRound((a[0]+1)+"");
+													beans.add(bean);
+												}
+												listPager = new ListViewPagerAdapter1(
+														getActivity(), beans,
+														MatchedNum, units);
+												pager.setAdapter(listPager);
+												pager.setCurrentItem(beans.size()
+														/ MatchedNum);
 											}
-											listPager = new ListViewPagerAdapter1(
-													getActivity(), beans,
-													MatchedNum, units);
-											pager.setAdapter(listPager);
-											pager.setCurrentItem(beans.size()
-													/ MatchedNum);
-										}
-									}
+										}	
+											}
 								}).create();
 
 				dialog.show();
 				// }
-			}
 			break;
 		case R.id.btn_project_del:
 			if (!NetStatusUtil.isNetValid(getActivity())) {
@@ -1134,7 +1082,6 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 	}
 
 	public void showAlertDialog(View view) {
-
 		CustomDialog.Builder builder = new CustomDialog.Builder(getActivity());
 		builder.setMessage("当前灌溉轮次较多!	请在网络状态良好的环境下进行此操作！ ");
 		builder.setTitle("温馨提示");
@@ -1155,4 +1102,106 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 		builder.create().show();
 
 	}
+	public void httpGetGroupId(){
+		// irrigation = dbHelper.loadContinue(units);
+		str1 = (String) SharedUtils.getParam(getActivity(),
+				"FirstDerviceID", "");
+		try {
+			str1 = java.net.URLEncoder.encode(str1, "UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		RequestParams param3 = new RequestParams(URL.acquireIrriGroup + str1); // 网址(请替换成实际的网址)
+		// params.addQueryStringParameter("key", "value"); //
+		// 参数(请替换成实际的参数与值)
+		progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+				"Please wait...", true, false);
+		JSONObject js_request2 = new JSONObject();
+		try {
+			param3.setAsJsonContent(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			param3.setAsJsonContent(true);
+		}// 根据实际需求添加相应键值对
+
+		x.http().request(HttpMethod.GET, param3,
+				new CommonCallback<String>() {
+					@Override
+					public void onCancelled(CancelledException arg0) {
+
+					}
+
+					// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+					// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+					@Override
+					public void onError(Throwable ex, boolean isOnCallback) {
+
+						Toast.makeText(x.app(), ex.getMessage(),
+								Toast.LENGTH_LONG).show();
+						if (ex instanceof HttpException) { // 网络错误 
+							HttpException httpEx = (HttpException) ex;
+							int responseCode = httpEx.getCode();
+							String responseMsg = httpEx.getMessage();
+							String errorResult = httpEx.getResult();
+							Toast.makeText(getActivity(), "请求失败",
+									Toast.LENGTH_SHORT);
+							// ...
+							progressDialog.dismiss();
+						} else { // 其他错误 
+							// ...
+							Toast.makeText(getActivity(), "请求失败",
+									Toast.LENGTH_SHORT);
+							progressDialog.dismiss();
+						}
+
+					}
+
+					// 不管成功或者失败最后都会回调该接口
+					@Override
+					public void onFinished() {
+					}
+
+					/**
+					 * @param arg0
+					 */
+					@Override
+					public void onSuccess(String arg0) {
+						Toast.makeText(getActivity(), "请求成功",
+								Toast.LENGTH_SHORT);
+						Gson gson = new Gson();
+						System.out.println(arg0);
+						GroupIdBeen fromJson = gson
+								.fromJson(arg0,
+										GroupIdBeen.class);
+						beens = fromJson.getAuthNameList();
+						beans = new ArrayList<infoList>(); 
+						MatchedNum = beens.size();
+						for (int i = 0; i < beens.size(); i++) {
+							infoList bean = new infoList();
+							bean.setStartTime("");
+							bean.setEndTime("");
+							bean.setRestTime("");
+							bean.setDuration("");
+							bean.setFirstDerviceID(str1);
+							bean.setGroupName(beens.get(i).getGroupName());
+							bean.setGroupID(beens.get(i).getGroupID());
+							bean.setGroupNum(beens.size()+"");
+							bean.setPlanRound(1+"");
+							beans.add(bean);
+						}
+						listPager = new ListViewPagerAdapter1(
+								getActivity(), beans,
+								MatchedNum, units);
+						pager.setAdapter(listPager);
+						pager.setCurrentItem(beans.size()
+								/ MatchedNum);
+						pageNum = beans.size() / MatchedNum;
+						pager.setOnPageChangeListener(listener);
+						tv_indicator.setText("第" + 1 + "轮" + "/" + "共"
+								+ pageNum + "轮");
+						progressDialog.dismiss();
+					}
+				});
+}
 }

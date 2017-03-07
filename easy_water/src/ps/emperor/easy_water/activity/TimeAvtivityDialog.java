@@ -21,6 +21,8 @@ import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.Interface.OnWheelChangedListener;
 import ps.emperor.easy_water.BaseActivity;
 import ps.emperor.easy_water.adapter.NumbericWheelAdapter;
+import ps.emperor.easy_water.entity.IrriGroupStateBean;
+import ps.emperor.easy_water.fragment.ApplyIrrigateProjectFragment;
 import ps.emperor.easy_water.greendao.DBHelper;
 import ps.emperor.easy_water.greendao.IrrigationProject;
 import ps.emperor.easy_water.utils.NetStatusUtil;
@@ -30,6 +32,8 @@ import ps.emperor.easy_water.view.WheelView;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -279,7 +283,7 @@ public class TimeAvtivityDialog extends BaseActivity implements OnClickListener 
 					try {
 						param2.setAsJsonContent(true);
 						js_request.put("firstDerviceID", str1);
-						js_request.put("groupID",groupID );
+						js_request.put("groupID",groupID);
 						js_request.put("planRound", planRound);
 						js_request.put("startTime", startTime);
 						js_request.put("irriDuration", irriDuration);
@@ -289,7 +293,7 @@ public class TimeAvtivityDialog extends BaseActivity implements OnClickListener 
 						param2.setAsJsonContent(true);
 					}// 根据实际需求添加相应键值对
 
-					x.http().request(HttpMethod.POST, param2,
+					x.http().request(HttpMethod.PUT, param2,
 							new CommonCallback<String>() {
 								@Override
 								public void onCancelled(CancelledException arg0) {
@@ -326,7 +330,21 @@ public class TimeAvtivityDialog extends BaseActivity implements OnClickListener 
 								public void onSuccess(String arg0) {
 									Gson gson = new Gson();
 									progressDialog.dismiss();
-									finish();
+									IrriGroupStateBean fromJson = gson
+											.fromJson(arg0,
+													IrriGroupStateBean.class);
+									if("0".equals(fromJson.getCode())){
+										Toast.makeText(getApplicationContext(), "修改失败！服务器异常！", Toast.LENGTH_SHORT).show();
+									}else if("1".equals(fromJson.getCode())){
+										Toast.makeText(getApplicationContext(), "修改成功！", Toast.LENGTH_SHORT).show();
+										isSkip = 2;
+										SharedUtils.setParam(getApplication(), "isSkip", isSkip);
+										isSkips = 2;
+										SharedUtils.setParam(getApplication(), "isSkips", isSkips);
+										finish();
+									}else if("2".equals(fromJson.getCode())){
+										Toast.makeText(getApplicationContext(), "修改失败！该时间段内已存在计划，请选择其他时间段！", Toast.LENGTH_SHORT).show();
+									}
 								}
 							});
 				}else{
@@ -418,10 +436,7 @@ public class TimeAvtivityDialog extends BaseActivity implements OnClickListener 
 //					compareRound = listentity.get(position).getRound();
 //					dbHelper.updateProjects(units, compareRound, nowItem,
 //							nowStar + "", time_ends + "");
-//					isSkip = 1;
-//					SharedUtils.setParam(getApplication(), "isSkip", isSkip);
-//					isSkips = 1;
-//					SharedUtils.setParam(getApplication(), "isSkips", isSkips);
+					
 //					finish();
 //				} else {
 //					Toast.makeText(getApplication(), "在范围内", Toast.LENGTH_SHORT)

@@ -78,7 +78,7 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements
 	private DBHelper dbHelper;
 	private List<IrrigationProject> listentity;
 	private String units;
-	private int isNot;
+	private int isNot,isSkips;
 	Long deleteId;
 	private List<infoList> beens;
 	private List<groupList> beans;
@@ -404,7 +404,6 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements
 			transaction.commit();
 			break;
 		case R.id.unit_control_plan: // 设定计划(此处需要传值
-										// 需要授权单位、灌溉单元)
 			if (CheckUtil.IsEmpty(beans)) {
 				Toast.makeText(getActivity(),
 						"请进行灌溉维护后再尝试执行此操作！如需使用灌溉计划请先进行轮灌组维护！",
@@ -418,6 +417,8 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements
 					ApplyIrrigateProjectFragment fragment1 = new ApplyIrrigateProjectFragment();
 					isNot = 1;
 					SharedUtils.setParam(getActivity(), "isNot", isNot);
+					isSkips = 0;
+					SharedUtils.setParam(getActivity(), "isSkips", isSkips);
 					Bundle bundle = new Bundle();
 					bundle.putString("units", units);
 					fragment1.setArguments(bundle);

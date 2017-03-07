@@ -64,6 +64,7 @@ public class ListViewPagerAdapter1 extends PagerAdapter implements OnItemClickLi
 		dbHelper = DBHelper.getInstance(context); // 得到DBHelper对象
 //		irrigationGroups = dbHelper.loadGroupByUnits(units);
 //		MatchedNum  = irrigationGroups.size();
+		MatchedNum  = Integer.valueOf(list.get(0).getGroupNum());
 		int a=list.size() % pageRows;
 		if (a>0) {
 			pageNum=pageNum+1;
@@ -185,11 +186,7 @@ public class ListViewPagerAdapter1 extends PagerAdapter implements OnItemClickLi
 					}
 					nowPage = (Integer) SharedUtils.getParam(context, "nowPage", 1);
 //					compareTime = list.get((nowPage-1) * MatchedNum + position).getTime_start();
-					if(nowPage == 0 ){
-						position = nowPage * MatchedNum +position;
-					}else{
-						position = (nowPage-1) * MatchedNum +position;
-					}
+					position = (nowPage-1) * MatchedNum +position;
 					Bundle bundle = new Bundle();
 						bundle.putInt("nowItem", nowItem);
 						bundle.putInt("nowPage", nowPage);
