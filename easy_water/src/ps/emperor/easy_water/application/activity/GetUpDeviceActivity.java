@@ -11,8 +11,8 @@ import org.xutils.view.annotation.ViewInject;
 
 import ps.emperor.easy_water.BaseActivity;
 import ps.emperor.easy_water.R;
-import ps.emperor.easy_water.application.entity.SearchBeen;
-import ps.emperor.easy_water.application.entity.SearchBeen.IrriListBean;
+import ps.emperor.easy_water.application.entity.UpDeviceBeen;
+import ps.emperor.easy_water.application.entity.UpDeviceBeen.InfoListBean;
 import ps.emperor.easy_water.utils.PsUtils;
 import android.content.Context;
 import android.content.Intent;
@@ -30,17 +30,17 @@ import android.widget.ListView;
 
 import com.google.gson.Gson;
 
-@ContentView(R.layout.activity_configuresearch)
-public class ConfigureSearchActivity extends BaseActivity implements OnClickListener {
+@ContentView(R.layout.activity_getupdevice)
+public class GetUpDeviceActivity extends BaseActivity implements OnClickListener {
 	
-	private Context context = ConfigureSearchActivity.this;
+	private Context context = GetUpDeviceActivity.this;
 	@ViewInject(R.id.lv_deviceName)
 	private ListView lv_d;
 	@ViewInject(R.id.et_search)
 	private EditText ets;
 	private List<String> list = new ArrayList<String>();
 	//所有灌溉单元的集合
-	private List<IrriListBean> irriList;
+	private List<InfoListBean> infoList;
 	private Handler handler  = new Handler(){
 		
 
@@ -51,10 +51,10 @@ public class ConfigureSearchActivity extends BaseActivity implements OnClickList
 				String content = (String)msg.obj;
 //				System.out.println("content-----------------:"+content);
 				Gson g = new Gson();
-				SearchBeen sb = g.fromJson(content, SearchBeen.class);
-				irriList = sb.getIrriList();
-				for (IrriListBean ib : irriList) {
-					list.add(ib.getIrriUnitName());
+				UpDeviceBeen sb = g.fromJson(content, UpDeviceBeen.class);
+				infoList = sb.getInfoList();
+				for (InfoListBean ib : infoList) {
+					list.add(ib.getEquName());
 				}
 				adapter.notifyDataSetChanged();
 				break;
@@ -78,6 +78,9 @@ public class ConfigureSearchActivity extends BaseActivity implements OnClickList
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		x.view().inject(this);
+		
+		
+		
 		control();
 	}
 
@@ -93,10 +96,12 @@ public class ConfigureSearchActivity extends BaseActivity implements OnClickList
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				IrriListBean ib = irriList.get(position);
-				Intent i  = new Intent (ConfigureSearchActivity.this,FirstPartActivity.class);
-				i.putExtra("sbContent", ib);
-				startActivity(i);
+				InfoListBean ib = infoList.get(position);
+				Intent i  = new Intent ();
+				i.putExtra("up_dev", ib.getEquName());
+				
+				setResult(RESULT_OK, i);
+				finish();
 				
 				
 				
@@ -111,14 +116,13 @@ public class ConfigureSearchActivity extends BaseActivity implements OnClickList
 	public void onClick(View v) {
 		switch(v.getId()){
 		case R.id.iv_search:
-//			PsUtils.urlSearch
-			String url = String.format(PsUtils.urlSearch,ets.getText().toString());
+
+			String url = String.format(PsUtils.get_upDevice,ets.getText().toString());
 			RequestParams rp  = new RequestParams(url);
 			PsUtils.send(rp, HttpMethod.GET, handler, context,"搜索中。。。",PsUtils.GET_SEARCH);
 			
 			break;
-//		case:
-//			break;
+
 		}
 		
 	}

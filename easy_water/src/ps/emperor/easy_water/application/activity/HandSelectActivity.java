@@ -37,8 +37,8 @@ public class HandSelectActivity extends BaseActivity implements OnItemClickListe
 	private void control() {
 		list.add(new AppBeen(R.drawable.icon_arrow, "配水设备"));
 		list.add(new AppBeen(R.drawable.icon_arrow, "灌溉单元"));
-		list.add(new AppBeen(R.drawable.icon_arrow, "阀控器配置"));
-		list.add(new AppBeen(R.drawable.icon_arrow, "闸门配置（未定）"));
+//		list.add(new AppBeen(R.drawable.icon_arrow, "阀控器配置"));
+//		list.add(new AppBeen(R.drawable.icon_arrow, "闸门配置（未定）"));
 		
 		title.setText("手动配置选择");
 		

@@ -97,6 +97,8 @@
         </activity>
         <activity android:name="ps.emperor.easy_water.application.activity.FirstPartActivity" >
         </activity>
+        <activity android:name="ps.emperor.easy_water.application.activity.GetUpDeviceActivity" >
+        </activity>
         <activity android:name="ps.emperor.easy_water.application.activity.ValveDeviceActivity1" >
         </activity>
         <activity android:name="ps.emperor.easy_water.application.activity.WaterGateActivity" >

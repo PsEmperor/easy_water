@@ -82,7 +82,8 @@ public class PsUtils {
 	public static final String urlCode_pas= "http://60.205.220.245:8080/cms/app/UserSys/getAuthCode/%s/2";
 	//获取授权单位
 	public static final String get_auth = "http://60.205.220.245:8080/cms/app/UserSys/findUserAuthInfos/authName/%s";
-	
+	//获取上级单位
+	public static final String get_upDevice = "http://60.205.220.245:8080/cms/app/IrriUnitSys/findSuperEquInfo/%s";
 	
 	/**
 	 * POST请求

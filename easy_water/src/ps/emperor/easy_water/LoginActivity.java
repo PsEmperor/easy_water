@@ -50,7 +50,12 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			case PsUtils.LOGIN_IN :
 				
 				String result = (String) msg.obj;
-				if(result.equals("1")){
+				
+				if(result.equals("0")){
+					Toast.makeText(context, "密码错误,请重新登录！", 0).show();
+				}else if(result.equals("-1")){
+					Toast.makeText(context, "用户名不存在,请重新登录！", 0).show();
+				}else{
 					Toast.makeText(context, "登录成功", 0).show();
 					
 					//保存账号密码、是否保存密码状态
@@ -59,15 +64,15 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 					Editor e = sp.edit();
 					e.putString("user", user);
 					e.putString("pass",password);
+					e.putString("userId", result);
 					e.putBoolean("checked", cbSave.isChecked());
 					e.commit();
+					System.out.println("userId====----------------=======:"+result);
 					
 					
 					Intent mintent = new Intent(LoginActivity.this,MainActivity.class);
 					startActivity(mintent);
 					finish();
-				}else if(result.equals("0")){
-					Toast.makeText(context, "登录失败,请重新登录！", 0).show();
 				}
 				
 				
