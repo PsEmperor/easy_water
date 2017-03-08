@@ -74,7 +74,7 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 	private Bitmap bitmap;
 	private ImageView image_info_head;
 	private MainActionBars actionBar;
-	private String names, units, tel, role;
+	private String names, units, tel, role,str;
 	private EditText name;
 	private TextView name_show, tv_info_units, tv_info_user_tel, tv_info_role;
 	private ProgressDialog progressDialog;
@@ -131,7 +131,7 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 	private void init() {
 		names = (String) SharedUtils.getParam(getActivity(),
 				"dialog_user_name", "	");
-		String str = (String) SharedUtils.getParam(getActivity(), "ps", "12345");
+		str = (String) SharedUtils.getParam(getActivity(), "userId", "3");
 		try {
 			str = java.net.URLEncoder.encode(str, "UTF-8");
 		} catch (UnsupportedEncodingException e1) {
@@ -256,7 +256,7 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 			JSONObject js_request = new JSONObject();
 			try {
 				param1.setAsJsonContent(true);
-				js_request.put("userName", "12345");
+				js_request.put("userID", str);
 				js_request.put("fullName", name_show.getText().toString());
 				js_request.put("authID", "1");
 				param1.setBodyContent(js_request.toString());

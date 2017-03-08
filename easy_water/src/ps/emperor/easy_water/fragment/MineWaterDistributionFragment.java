@@ -35,6 +35,7 @@ import ps.emperor.easy_water.entity.UserReleDisInfoBean.infoList;
 import ps.emperor.easy_water.entity.UserReleIrrInfoBean;
 import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.NetStatusUtil;
+import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.MainActionBar;
 
@@ -79,9 +80,9 @@ public class MineWaterDistributionFragment extends Fragment implements
 	}
 
 	private void init() {
-		String str1 = "";
+		String str1 = (String) SharedUtils.getParam(getActivity(), "userId", "3");
 		try {
-			str1 = java.net.URLEncoder.encode("3", "UTF-8");
+			str1 = java.net.URLEncoder.encode(str1, "UTF-8");
 		} catch (UnsupportedEncodingException e1) {
 			e1.printStackTrace();
 		}

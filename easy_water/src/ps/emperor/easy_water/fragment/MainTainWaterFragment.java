@@ -61,6 +61,7 @@ public class MainTainWaterFragment extends Fragment implements OnClickListener,
 	private ImageView image_maintain_water_add;
 	private EditText ed_maintain_water_add;
 	private ProgressDialog progressDialog;
+	private String str;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -110,14 +111,14 @@ public class MainTainWaterFragment extends Fragment implements OnClickListener,
 	}
 
 	private void init() {
-		String str1 = "";
+		str = (String) SharedUtils.getParam(getActivity(), "userId", "3");
 		try {
-			str1 = java.net.URLEncoder.encode("3", "UTF-8");
+			str = java.net.URLEncoder.encode(str , "UTF-8");
 		} catch (UnsupportedEncodingException e1) {
 			e1.printStackTrace();
 		}
 		RequestParams param3 = new RequestParams(URL.findUserReleDisInfoApply
-				+ str1); // 网址(请替换成实际的网址)
+				+ str); // 网址(请替换成实际的网址)
 		// params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)
 		progressDialog = ProgressDialog.show(getActivity(), "Loading...",
 				"Please wait...", true, false);
@@ -196,10 +197,9 @@ public class MainTainWaterFragment extends Fragment implements OnClickListener,
 				Toast.makeText(getActivity(), "当前网络不可用！请检查您的网络状态！", Toast.LENGTH_SHORT)
 						.show();
 			} else {
-				String str1 = "";
 				String str2 = "";
 				try {
-					str1 = java.net.URLEncoder.encode("3", "UTF-8");
+					str = java.net.URLEncoder.encode(str, "UTF-8");
 					str2 = java.net.URLEncoder.encode(ed_maintain_water_add
 							.getText().toString().trim(), "UTF-8");
 				} catch (UnsupportedEncodingException e1) {
@@ -211,7 +211,7 @@ public class MainTainWaterFragment extends Fragment implements OnClickListener,
 							Toast.LENGTH_SHORT).show();
 				} else {
 					RequestParams param3 = new RequestParams(
-							URL.findUserReleDisInfoYet + str1 + "/" + str2); // 网址(请替换成实际的网址)
+							URL.findUserReleDisInfoYet + str + "/" + str2); // 网址(请替换成实际的网址)
 					// params.addQueryStringParameter("key", "value"); //
 					// 参数(请替换成实际的参数与值)
 					progressDialog = ProgressDialog.show(getActivity(),
@@ -274,7 +274,11 @@ public class MainTainWaterFragment extends Fragment implements OnClickListener,
 									if (!CheckUtil.IsEmpty(beens)) {
 										adapter.addData(beens, true);
 										listView.setAdapter(adapter);
+									}else{
+										Toast.makeText(getActivity(), "未能找到匹配的设备，请输入正确的设备名称！", Toast.LENGTH_SHORT).show();
 									}
+									((InputMethodManager)ed_maintain_water_add.getContext().getSystemService(getActivity().INPUT_METHOD_SERVICE)). 
+								     hideSoftInputFromWindow(ed_maintain_water_add.getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS); 
 									progressDialog.dismiss();
 								}
 							});

@@ -50,6 +50,7 @@ public class MineUserTelFragment extends Fragment implements OnClickListener {
 	private EditText edit_mine_user_info_tel, verification_codes;
 	private ProgressDialog progressDialog;
 	private String[] strs;
+	private String str;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,6 +64,7 @@ public class MineUserTelFragment extends Fragment implements OnClickListener {
 		actionBar.setTitle("修改手机号");
 		actionBar.setActionBarOnClickListener(this);
 
+		str = (String) SharedUtils.getParam(getActivity(), "userId", "3");
 		verification_code = (TextView) view
 				.findViewById(R.id.verification_code);
 		verification_code.setOnClickListener(this);
@@ -111,16 +113,15 @@ public class MineUserTelFragment extends Fragment implements OnClickListener {
 			if (CommonUtil.checkPhoneNum(edit_mine_user_info_tel.getText()
 					.toString())) {
 				String str1 = edit_mine_user_info_tel.getText().toString();
-				String str2 = "3";
 				try {
 					str1 = java.net.URLEncoder.encode(str1, "UTF-8");
-					str2 = java.net.URLEncoder.encode(str2, "UTF-8");
+					str = java.net.URLEncoder.encode(str, "UTF-8");
 				} catch (UnsupportedEncodingException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				RequestParams param3 = new RequestParams(URL.getAuthCode + str1
-						+ "/" + str2); // 网址(请替换成实际的网址)
+						+ "/" + str); // 网址(请替换成实际的网址)
 				// params.addQueryStringParameter("key", "value"); //
 				// 参数(请替换成实际的参数与值)
 				progressDialog = ProgressDialog.show(getActivity(),

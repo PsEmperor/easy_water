@@ -102,9 +102,9 @@ public class MineIrrigationEquipmentFragment extends Fragment implements
 	}
 
 	private void init() {
-		String str1 = "";
+		String str1 = (String) SharedUtils.getParam(getActivity(), "userId", "3");
 		try {
-			str1 = java.net.URLEncoder.encode("3", "UTF-8");
+			str1 = java.net.URLEncoder.encode(str1, "UTF-8");
 		} catch (UnsupportedEncodingException e1) {
 			e1.printStackTrace();
 		}

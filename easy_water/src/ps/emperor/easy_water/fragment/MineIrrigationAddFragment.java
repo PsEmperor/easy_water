@@ -28,6 +28,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -35,6 +36,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.adapter.IrrigationAddAdapter;
+import ps.emperor.easy_water.application.ApplicationFragment;
 import ps.emperor.easy_water.entity.AuthorizedBeen;
 import ps.emperor.easy_water.entity.KeyWordBean;
 import ps.emperor.easy_water.entity.UserReleDisInfoBean;
@@ -72,6 +74,7 @@ public class MineIrrigationAddFragment extends Fragment implements
 	private List<infoList> beens;
 	private List<String> list;
 	private ProgressDialog progressDialog;
+	private String str;
 
 	// private CheckBox checkBox;
 
@@ -115,15 +118,15 @@ public class MineIrrigationAddFragment extends Fragment implements
 	}
 
 	private void init() {
-		String str1 = "";
+		str = (String) SharedUtils.getParam(getActivity(), "userId", "3");
 		try {
-			str1 = java.net.URLEncoder.encode("3", "UTF-8");
+			str = java.net.URLEncoder.encode(str, "UTF-8");
 		} catch (UnsupportedEncodingException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		RequestParams param3 = new RequestParams(URL.findUserNoReleIrrInfo
-				+ str1); // 网址(请替换成实际的网址)
+				+ str); // 网址(请替换成实际的网址)
 		// params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)
 		progressDialog = ProgressDialog.show(getActivity(), "Loading...",
 				"Please wait...", true, false);
@@ -153,12 +156,10 @@ public class MineIrrigationAddFragment extends Fragment implements
 					int responseCode = httpEx.getCode();
 					String responseMsg = httpEx.getMessage();
 					String errorResult = httpEx.getResult();
-					Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
 					// ...
 					progressDialog.dismiss();
 				} else { // 其他错误 
 					// ...
-					Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
 					progressDialog.dismiss();
 				}
 
@@ -192,6 +193,8 @@ public class MineIrrigationAddFragment extends Fragment implements
 		FragmentTransaction transaction = fgManager.beginTransaction();
 		switch (v.getId()) {
 		case R.id.acitionbar_left:
+			((InputMethodManager)ed_irrigation_add.getContext().getSystemService(getActivity().INPUT_METHOD_SERVICE)). 
+		     hideSoftInputFromWindow(ed_irrigation_add.getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS); 
 			MineIrrigationEquipmentFragment fragment = new MineIrrigationEquipmentFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
@@ -246,7 +249,7 @@ public class MineIrrigationAddFragment extends Fragment implements
 					JSONObject js_request = new JSONObject();
 					try {
 						param2.setAsJsonContent(true);
-						js_request.put("userID", "3");
+						js_request.put("userID", str);
 						js_request.put("firstDerviceID", list);
 						param2.setBodyContent(js_request.toString());
 					} catch (Exception e) {
@@ -275,14 +278,10 @@ public class MineIrrigationAddFragment extends Fragment implements
 										String responseMsg = httpEx
 												.getMessage();
 										String errorResult = httpEx.getResult();
-										Toast.makeText(getActivity(), "请求失败",
-												Toast.LENGTH_SHORT);
 										// ...
 										progressDialog.dismiss();
 									} else { // 其他错误 
 										// ...
-										Toast.makeText(getActivity(), "请求失败",
-												Toast.LENGTH_SHORT);
 										progressDialog.dismiss();
 									}
 
@@ -320,10 +319,9 @@ public class MineIrrigationAddFragment extends Fragment implements
 			adapter.notifyDataSetChanged();
 			break;
 		case R.id.image_irrigation_add:
-			String str1 = "";
 			String str2 = "";
 			try {
-				str1 = java.net.URLEncoder.encode("3", "UTF-8");
+				str = java.net.URLEncoder.encode(str, "UTF-8");
 				str2 = java.net.URLEncoder.encode(ed_irrigation_add.getText()
 						.toString().trim(), "UTF-8");
 			} catch (UnsupportedEncodingException e1) {
@@ -339,7 +337,7 @@ public class MineIrrigationAddFragment extends Fragment implements
 							Toast.LENGTH_SHORT).show();
 				} else {
 					RequestParams param3 = new RequestParams(
-							URL.UserNoReleIrrInfo + str1 + "/" + str2); // 网址(请替换成实际的网址)
+							URL.UserNoReleIrrInfo + str + "/" + str2); // 网址(请替换成实际的网址)
 					// params.addQueryStringParameter("key", "value"); //
 					// 参数(请替换成实际的参数与值)
 					progressDialog = ProgressDialog.show(getActivity(),
@@ -373,14 +371,10 @@ public class MineIrrigationAddFragment extends Fragment implements
 										String responseMsg = httpEx
 												.getMessage();
 										String errorResult = httpEx.getResult();
-										Toast.makeText(getActivity(), "请求失败",
-												Toast.LENGTH_SHORT);
 										// ...
 										progressDialog.dismiss();
 									} else { // 其他错误 
 										// ...
-										Toast.makeText(getActivity(), "请求失败",
-												Toast.LENGTH_SHORT);
 										progressDialog.dismiss();
 									}
 
@@ -405,7 +399,11 @@ public class MineIrrigationAddFragment extends Fragment implements
 									if (!CheckUtil.IsEmpty(beens)) {
 										adapter.addData(beens, true);
 										listView.setAdapter(adapter);
+									}else{
+										Toast.makeText(getActivity(), "未能找到匹配的设备，请输入正确的设备名称！", Toast.LENGTH_SHORT).show();
 									}
+									((InputMethodManager)ed_irrigation_add.getContext().getSystemService(getActivity().INPUT_METHOD_SERVICE)). 
+								     hideSoftInputFromWindow(ed_irrigation_add.getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS); 
 									progressDialog.dismiss();
 								}
 							});
