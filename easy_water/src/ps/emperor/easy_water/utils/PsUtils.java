@@ -443,7 +443,7 @@ public class PsUtils {
      * @return
      */
     public static SharedPreferences getShared(Context context){
-    	SharedPreferences sp = context.getSharedPreferences("ps", 0);
+    	SharedPreferences sp = context.getSharedPreferences("share_date", 0);
     	
     	return sp;
     }

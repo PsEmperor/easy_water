@@ -101,7 +101,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		sp = getSharedPreferences("ps", 0);
+		sp = getSharedPreferences("share_date", 0);
 		setContentView(R.layout.activity_login);
 		findView();
 		

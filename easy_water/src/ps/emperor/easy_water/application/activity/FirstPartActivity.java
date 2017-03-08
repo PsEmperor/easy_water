@@ -1,6 +1,5 @@
 package ps.emperor.easy_water.application.activity;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +11,7 @@ import org.xutils.http.RequestParams;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
+
 import ps.emperor.easy_water.BaseActivity;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.application.entity.AuthUnitBeen;
