@@ -199,11 +199,11 @@ public class MainTainIrrigationUserInfoFragment extends Fragment implements
 				MainTainIrrigationInfoBean fromJson = gson.fromJson(arg0,
 						MainTainIrrigationInfoBean.class);
 				beens = fromJson.getAuthNameList();
-				int[] array = new int[beens.size()];
-				for (int i = 0; i < array.length; i++) {
-					array[i] = Integer.valueOf(beens.get(i).getTotalChanNum());
-				}
 				if (!CheckUtil.IsEmpty(beens)) {
+					int[] array = new int[beens.size()];
+					for (int i = 0; i < array.length; i++) {
+						array[i] = Integer.valueOf(beens.get(i).getTotalChanNum());
+					}
 					int temp;
 					for (int i = 0; i < array.length; i++) {
 						for (int j = i + 1; j < array.length; j++) {

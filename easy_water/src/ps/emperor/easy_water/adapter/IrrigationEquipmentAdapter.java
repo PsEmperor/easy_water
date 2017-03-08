@@ -14,6 +14,7 @@ import org.xutils.http.RequestParams;
 
 import com.google.gson.Gson;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 
 import android.view.View;
@@ -38,6 +39,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 public class IrrigationEquipmentAdapter extends MyBaseAdapter<infoList>{
 	private Context context;
 	private int statusCode,IrrCode,IrrCodes,mark;
+	private ProgressDialog progressDialog;
 	
 	public IrrigationEquipmentAdapter(Context context,int IrrCode) {
 		super(context);
@@ -69,6 +71,8 @@ public class IrrigationEquipmentAdapter extends MyBaseAdapter<infoList>{
 					int position = (Integer) viewHolder.button.getTag();
 					RequestParams param3 = new RequestParams(URL.IrrstatusCode);  // 网址(请替换成实际的网址) 
 //					 params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)   
+					progressDialog = ProgressDialog.show(context, "Loading...",
+							"Please wait...", true, false);
 					JSONObject js_request = new JSONObject();
 					try {
 						param3.setAsJsonContent(true);
@@ -105,10 +109,12 @@ public class IrrigationEquipmentAdapter extends MyBaseAdapter<infoList>{
 				                    String responseMsg = httpEx.getMessage();  
 				                    String errorResult = httpEx.getResult();  
 				                    Toast.makeText(context, "请求失败", Toast.LENGTH_SHORT);
+				                    progressDialog.dismiss();
 				                    // ...  
 				                } else { // 其他错误    
 				                    // ...  
 				                	Toast.makeText(context, "请求失败", Toast.LENGTH_SHORT);
+				                	progressDialog.dismiss();
 				                }  
 				                  
 				            }  
@@ -122,6 +128,7 @@ public class IrrigationEquipmentAdapter extends MyBaseAdapter<infoList>{
 				            @Override  
 				            public void onSuccess(String arg0) {  
 				                  Toast.makeText(context, "请求成功", Toast.LENGTH_SHORT);
+				                  progressDialog.dismiss();
 				            }  
 				        }); 
 				}

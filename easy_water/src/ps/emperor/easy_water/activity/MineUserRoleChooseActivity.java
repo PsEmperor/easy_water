@@ -22,7 +22,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 /**
- * 单孔闸门控制
+ * 用户角色申请
  * 
  * @author 毛国江
  * @version 2016-9-9 下午16:49

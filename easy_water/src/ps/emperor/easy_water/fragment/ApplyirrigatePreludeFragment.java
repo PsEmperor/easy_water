@@ -164,50 +164,52 @@ public class ApplyirrigatePreludeFragment extends Fragment implements
 				Gson gson = new Gson();
 				PreludeBean fromJson = gson.fromJson(arg0, PreludeBean.class);
 				beens = fromJson.getAuthNameList();
-				if ("0".equals(beens.get(0).getPumpSwitch())) {
-					isWaterPump = false;
-				} else {
-					isWaterPump = true;
+				if(!CheckUtil.IsEmpty(beens)){
+					if ("0".equals(beens.get(0).getPumpSwitch())) {
+						isWaterPump = false;
+					} else {
+						isWaterPump = true;
+					}
+					if ("0".equals(beens.get(0).getFilterSwitch())) {
+						isFilter = false;
+					} else {
+						isFilter = true;
+					}
+					if ("0".equals(beens.get(0).getFertilizerSwitch())) {
+						isFertilizer_drill = false;
+					} else {
+						isFertilizer_drill = true;
+					}
+					if (!CheckUtil.IsEmpty(beens.get(0).getWorkStress())) {
+						work_stress.setText(beens.get(0).getWorkStress());
+					} else {
+						work_stress.setText("");
+					}
+					if (!CheckUtil.IsEmpty(beens.get(0).getPressThreshold())) {
+						filter_pressure.setText(beens.get(0).getPressThreshold());
+					} else {
+						filter_pressure.setText("");
+					}
+					if (!CheckUtil.IsEmpty(beens.get(0).getInstantFlow())) {
+						flow_rate.setText(beens.get(0).getInstantFlow());
+					} else {
+						flow_rate.setText("");
+					}
+					if (!CheckUtil.IsEmpty(beens.get(0).getAccumulateWater())) {
+						cumulative_water.setText(beens.get(0).getAccumulateWater());
+					} else {
+						cumulative_water.setText("");
+					}
+					if (!CheckUtil.IsEmpty(beens.get(0).getAccumulateElectric())) {
+						cumulative_power.setText(beens.get(0)
+								.getAccumulateElectric());
+					} else {
+						cumulative_power.setText("");
+					}
+					bt_water_pump.setChecked(isWaterPump);
+					bt_filter.setChecked(isFilter);
+					bt_fertilizer_drill.setChecked(isFertilizer_drill);
 				}
-				if ("0".equals(beens.get(0).getFilterSwitch())) {
-					isFilter = false;
-				} else {
-					isFilter = true;
-				}
-				if ("0".equals(beens.get(0).getFertilizerSwitch())) {
-					isFertilizer_drill = false;
-				} else {
-					isFertilizer_drill = true;
-				}
-				if (!CheckUtil.IsEmpty(beens.get(0).getWorkStress())) {
-					work_stress.setText(beens.get(0).getWorkStress());
-				} else {
-					work_stress.setText("");
-				}
-				if (!CheckUtil.IsEmpty(beens.get(0).getPressThreshold())) {
-					filter_pressure.setText(beens.get(0).getPressThreshold());
-				} else {
-					filter_pressure.setText("");
-				}
-				if (!CheckUtil.IsEmpty(beens.get(0).getInstantFlow())) {
-					flow_rate.setText(beens.get(0).getInstantFlow());
-				} else {
-					flow_rate.setText("");
-				}
-				if (!CheckUtil.IsEmpty(beens.get(0).getAccumulateWater())) {
-					cumulative_water.setText(beens.get(0).getAccumulateWater());
-				} else {
-					cumulative_water.setText("");
-				}
-				if (!CheckUtil.IsEmpty(beens.get(0).getAccumulateElectric())) {
-					cumulative_power.setText(beens.get(0)
-							.getAccumulateElectric());
-				} else {
-					cumulative_power.setText("");
-				}
-				bt_water_pump.setChecked(isWaterPump);
-				bt_filter.setChecked(isFilter);
-				bt_fertilizer_drill.setChecked(isFertilizer_drill);
 				progressDialog.dismiss();
 			}
 		});

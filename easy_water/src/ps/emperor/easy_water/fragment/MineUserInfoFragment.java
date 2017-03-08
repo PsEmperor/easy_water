@@ -78,6 +78,7 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 	private EditText name;
 	private TextView name_show, tv_info_units, tv_info_user_tel, tv_info_role;
 	private ProgressDialog progressDialog;
+	private List<infoList> infoList;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -191,7 +192,7 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 				Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
 				Gson gson = new Gson();
 				UserBean fromJson = gson.fromJson(arg0, UserBean.class);
-				List<infoList> infoList = fromJson.getAuthNameList();
+				infoList = fromJson.getAuthNameList();
 				if (!CheckUtil.IsEmpty(infoList)) {
 					names = infoList.get(0).getFullName();
 					units = infoList.get(0).getAuthName();
@@ -232,16 +233,11 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.acitionbar_left:// 回退
 			MinesFragment fragment = new MinesFragment();
-			// transaction.setCustomAnimations(R.anim.right_in,
-			// R.anim.right_out);
-			// transaction
-			// .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 			transaction.setCustomAnimations(
 					R.anim.slide_fragment_horizontal_right_in,
 					R.anim.slide_fragment_horizontal_left_out);
 			transaction.replace(R.id.fl, fragment, "main");
 			transaction.commit();
-//			fgManager.popBackStack();
 			break;
 		case R.id.acitionbar_right:
 			if (!NetStatusUtil.isNetValid(getActivity())) {
@@ -392,7 +388,7 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 			transaction.setCustomAnimations(
 					R.anim.slide_fragment_horizontal_left_in,
 					R.anim.slide_fragment_horizontal_right_out);
-			transaction.add(R.id.fl, fragment1, "main").addToBackStack(null);
+			transaction.replace(R.id.fl, fragment1, "main").addToBackStack(null);
 			transaction.commit();
 			break;
 		case R.id.layout_info_units: // 授权单位
@@ -402,20 +398,22 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 			transaction.setCustomAnimations(
 					R.anim.slide_fragment_horizontal_left_in,
 					R.anim.slide_fragment_horizontal_right_out);
-			transaction.add(R.id.fl, fragment2, "main").addToBackStack(null);
+			transaction.replace(R.id.fl, fragment2, "main").addToBackStack(null);
 			transaction.commit();
 			break;
 		case R.id.layout_info_role: // 角色申请
 			if (CheckUtil.IsEmpty(units)) {
-
-			} else {
+				
+			}else if(CheckUtil.IsEmpty(infoList.get(0).getAuthName())){
+				Toast.makeText(getActivity(), "您尚未选择授权单位，请选择授权单位后再进行此操作！", Toast.LENGTH_SHORT).show();
+			}else {
 				MineUserRoleFragment fragment3 = new MineUserRoleFragment();
 				// transaction.setCustomAnimations(R.anim.right_in,
 				// R.anim.right_out);
 				transaction.setCustomAnimations(
 						R.anim.slide_fragment_horizontal_left_in,
 						R.anim.slide_fragment_horizontal_right_out);
-				transaction.add(R.id.fl, fragment3, "main").addToBackStack(null);
+				transaction.replace(R.id.fl, fragment3, "main").addToBackStack(null);
 				transaction.commit();
 			}
 			break;

@@ -95,15 +95,14 @@ public class MineUserTelFragment extends Fragment implements OnClickListener {
 		     hideSoftInputFromWindow(edit_mine_user_info_tel.getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS); 
 			((InputMethodManager)verification_codes.getContext().getSystemService(getActivity().INPUT_METHOD_SERVICE)). 
 			hideSoftInputFromWindow(verification_codes.getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS); 
-//			MineUserInfoFragment fragment = new MineUserInfoFragment();
-//			// transaction.setCustomAnimations(R.anim.right_in,
+			MineUserInfoFragment fragment = new MineUserInfoFragment();
+			// transaction.setCustomAnimations(R.anim.right_in,
 //			// R.anim.right_out);
 			transaction.setCustomAnimations(
 					R.anim.slide_fragment_horizontal_right_in,
 					R.anim.slide_fragment_horizontal_left_out);
-//			transaction.replace(R.id.fl, fragment, "main");
-//			transaction.commit();
-			fgManager.popBackStack();
+			transaction.replace(R.id.fl, fragment, "main");
+			transaction.commit();
 			break;
 		case R.id.verification_code:
 			if (!NetStatusUtil.isNetValid(getActivity())) {

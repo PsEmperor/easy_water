@@ -6,8 +6,12 @@ public class URL {
 	public static final String userInfo = "http://60.205.220.245:8080/cms/app/UserSys/userInfo";
 	//修改个人信息
 	public static final String updateUserinfo = "http://60.205.220.245:8080/cms/app/UserSys/updateUserinfo/userName";
+	//获取授权单位
+	public static final String currentUserAuth = "http://60.205.220.245:8080/cms/app/UserSys/currentUserAuth/";
 	//授权单位前缀
 	public static final String urluserAuthInfo = "http://60.205.220.245:8080/cms/app/UserSys/userAuthInfo/";
+	//上传授权单位
+	public static final String authName = "http://60.205.220.245:8080/cms/app/UserSys/updateUserinfo/authName";
 	//我-个人信息-手机号码修改-最终修改
 	public static final String updatePhoneNum = "http://60.205.220.245:8080/cms/app/UserSys/updatePhoneNum";
 	//我-个人信息-手机号码修改-获取手机验证码

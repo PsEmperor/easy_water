@@ -382,26 +382,27 @@ public class MainTainIrrigationInfoFragment extends Fragment implements
 					gridView.setAdapter(adapter);
 					text_maintain_irrigat_round.setText(beans.get(0)
 							.getGroupNum());
-				}
-				if (!CheckUtil.IsEmpty(irrigationGroups)) {
-					deleteId = irrigationGroups.get(0).getId();
-					if (irrigationGroups.size() != Integer.valueOf(beans.get(0)
-							.getGroupNum())) {
-						for (int i = 0; i < irrigationGroups.size(); i++) {
-							dbHelper.deleteGroupId(deleteId);
-							deleteId++;
+					
+					if (!CheckUtil.IsEmpty(irrigationGroups)) {
+						deleteId = irrigationGroups.get(0).getId();
+						if (irrigationGroups.size() != Integer.valueOf(beans.get(0)
+								.getGroupNum())) {
+							for (int i = 0; i < irrigationGroups.size(); i++) {
+								dbHelper.deleteGroupId(deleteId);
+								deleteId++;
+							}
 						}
 					}
-				}
-				if (CheckUtil.IsEmpty(irrigationGroups)
-						|| irrigationGroups.size() != Integer.valueOf(beans
-								.get(0).getGroupNum())) {
-					for (int i = 1; i <= Integer.valueOf(beans.get(0)
-							.getGroupNum()); i++) {
-						irrigationGroup = new IrrigationGroup();
-						irrigationGroup.setIrrigation(units);
-						irrigationGroup.setMatchedNum(i);
-						dbHelper.saveGroup(irrigationGroup);
+					if (CheckUtil.IsEmpty(irrigationGroups)
+							|| irrigationGroups.size() != Integer.valueOf(beans
+									.get(0).getGroupNum())) {
+						for (int i = 1; i <= Integer.valueOf(beans.get(0)
+								.getGroupNum()); i++) {
+							irrigationGroup = new IrrigationGroup();
+							irrigationGroup.setIrrigation(units);
+							irrigationGroup.setMatchedNum(i);
+							dbHelper.saveGroup(irrigationGroup);
+						}
 					}
 				}
 				progressDialog.dismiss();
@@ -466,7 +467,7 @@ public class MainTainIrrigationInfoFragment extends Fragment implements
 						param2.setAsJsonContent(true);
 						String str1 = (String) SharedUtils.getParam(
 								getActivity(), "FirstDerviceID", "");
-						;
+						
 						try {
 							str1 = java.net.URLEncoder.encode(str1, "UTF-8");
 						} catch (UnsupportedEncodingException e1) {

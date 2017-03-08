@@ -47,6 +47,8 @@ import ps.emperor.easy_water.adapter.MineUserProvinceAdapter;
 import ps.emperor.easy_water.adapter.MineUserUnitAdapter;
 import ps.emperor.easy_water.entity.AuthorizedBeen.infoList;
 import ps.emperor.easy_water.entity.AuthorizedBeen;
+import ps.emperor.easy_water.entity.IrriGroupStateBean;
+import ps.emperor.easy_water.entity.UserBean;
 import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.NetStatusUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
@@ -74,10 +76,11 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 	private MineUserUnitAdapter adapter3;
 	private MineUserEvenAdapter adapter4;
 	private ListView listView;
-	private String shareUnitID,province,state,district,units,event,shareProvince,shareState,shareDistrict,shareEven,shareUnit;//淇濆瓨鍦╯hard涓殑
+	private String str,shareUnitID,province,state,district,units,event,shareProvince,shareState,shareDistrict,shareEven,shareUnit;//淇濆瓨鍦╯hard涓殑
 	private int chose;
 	AuthorizedBeen authorizedBeen;
 	private ProgressDialog progressDialog;
+	private List<infoList> beens;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -107,34 +110,46 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 		actionBar.setTitle("授权单位");
 		actionBar.setActionBarOnClickListener(this);
 		
-		if (NetStatusUtil.isNetValid(getActivity())) {
-			init();
-		} else {
-			Toast.makeText(getActivity(), "当前网络不可用！请检查您的网络状态！", Toast.LENGTH_SHORT)
-					.show();
-		}
-		
 		tvProvince = (TextView) view.findViewById(R.id.text_mine_user_info_province);
 		tvState = (TextView) view.findViewById(R.id.text_mine_user_info_state);
 		tvDistrict = (TextView) view.findViewById(R.id.text_mine_user_info_district);
 		tvUnits = (TextView) view.findViewById(R.id.text_mine_user_info_units);
 		tvEven = (TextView) view.findViewById(R.id.text_mine_user_info_even);
 		
-		if(!CheckUtil.IsEmpty(shareProvince)){
-			tvProvince.setText(shareProvince);
+		adapter = new MineUserProvinceAdapter(getActivity());
+		adapter1 = new MineUserStateAdapter(getActivity());
+		adapter2 = new MineUserDistrictAdapter(getActivity());
+		adapter3 = new MineUserUnitAdapter(getActivity());
+		adapter4 = new MineUserEvenAdapter(getActivity());
+		
+		if (NetStatusUtil.isNetValid(getActivity())) {
+			init();
+		} else {
+			Toast.makeText(getActivity(), "当前网络不可用！请检查您的网络状态！", Toast.LENGTH_SHORT)
+					.show();
+			shareProvince = (String) SharedUtils.getParam(getActivity(), "shareProvince", "无数据");
+			shareState = (String) SharedUtils.getParam(getActivity(), "shareState", "无数据");
+			shareDistrict = (String) SharedUtils.getParam(getActivity(), "shareDistrict", "无数据");
+			shareUnit = (String) SharedUtils.getParam(getActivity(), "shareUnit", "无数据");
+			shareEven = (String) SharedUtils.getParam(getActivity(), "shareEven", "无数据");
+		
+			if(!CheckUtil.IsEmpty(shareProvince)){
+				tvProvince.setText(shareProvince);
+			}
+			if(!CheckUtil.IsEmpty(shareState)){
+				tvState.setText(shareState);
+			}
+			if(!CheckUtil.IsEmpty(shareDistrict)){
+				tvDistrict.setText(shareDistrict);
+			}
+			if(!CheckUtil.IsEmpty(shareEven)){
+				tvEven.setText(shareEven);
+			}
+			if(!CheckUtil.IsEmpty(shareUnit)){
+				tvUnits.setText(shareUnit);
+			}
 		}
-		if(!CheckUtil.IsEmpty(shareState)){
-			tvState.setText(shareState);
-		}
-		if(!CheckUtil.IsEmpty(shareDistrict)){
-			tvDistrict.setText(shareDistrict);
-		}
-		if(!CheckUtil.IsEmpty(shareEven)){
-			tvEven.setText(shareEven);
-		}
-		if(!CheckUtil.IsEmpty(shareUnit)){
-			tvUnits.setText(shareUnit);
-		}
+		
 		tvProvince.setOnClickListener(this);
 		tvState.setOnClickListener(this);
 		tvDistrict.setOnClickListener(this);
@@ -144,17 +159,79 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 	}
 
 	private void init() {
-		adapter = new MineUserProvinceAdapter(getActivity());
-		adapter1 = new MineUserStateAdapter(getActivity());
-		adapter2 = new MineUserDistrictAdapter(getActivity());
-		adapter3 = new MineUserUnitAdapter(getActivity());
-		adapter4 = new MineUserEvenAdapter(getActivity());
-		
-		shareProvince = (String) SharedUtils.getParam(getActivity(), "shareProvince", "无数据");
-		shareState = (String) SharedUtils.getParam(getActivity(), "shareState", "无数据");
-		shareDistrict = (String) SharedUtils.getParam(getActivity(), "shareDistrict", "无数据");
-		shareUnit = (String) SharedUtils.getParam(getActivity(), "shareUnit", "无数据");
-		shareEven = (String) SharedUtils.getParam(getActivity(), "shareEven", "无数据");
+		str = (String) SharedUtils.getParam(getActivity(), "userId", "3");
+		try {
+			str = java.net.URLEncoder.encode(str, "UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		RequestParams params = new RequestParams(URL.currentUserAuth  + str); // 网址(请替换成实际的网址)
+		// params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)
+		progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+				"Please wait...", true, false);
+		JSONObject js_request = new JSONObject();
+		try {
+			params.setAsJsonContent(true);
+			// params.setBodyContent("{\"userId\":\"\",\"userName\":\"\",\"userPhone\":\"\",\"fullName\":\"二狗子\",\"authID\":\"\",\"pathtoPhoto\":\"\"}");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			// params.setAsJsonContent(true);
+			// params.setBodyContent("Content-Type: application/json"+js_request.toString());
+		}// 根据实际需求添加相应键值对
+
+		x.http().request(HttpMethod.GET, params, new CommonCallback<String>() {
+			@Override
+			public void onCancelled(CancelledException arg0) {
+
+			}
+
+			// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+			// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+			@Override
+			public void onError(Throwable ex, boolean isOnCallback) {
+
+				Toast.makeText(x.app(), ex.getMessage(), Toast.LENGTH_LONG)
+						.show();
+				if (ex instanceof HttpException) { // 网络错误
+					HttpException httpEx = (HttpException) ex;
+					int responseCode = httpEx.getCode();
+					String errorResult = httpEx.getResult();
+					Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT);
+					// ...
+					progressDialog.dismiss();
+				} else { // 其他错误
+					// ...
+					Toast.makeText(getActivity(), "网络请求超时！", Toast.LENGTH_SHORT);
+					progressDialog.dismiss();
+				}
+
+			}
+
+			// 不管成功或者失败最后都会回调该接口
+			@Override
+			public void onFinished() {
+			}
+
+			@Override
+			public void onSuccess(String arg0) {
+				Toast.makeText(getActivity(), "请求成功", Toast.LENGTH_SHORT);
+				Gson gson = new Gson();
+				AuthorizedBeen fromJson = gson.fromJson(arg0, AuthorizedBeen.class);
+                authorizedBeen = new AuthorizedBeen();
+                authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
+                beens = fromJson.getAuthNameList();
+                if(!CheckUtil.IsEmpty(beens)){
+               	 tvProvince.setText(beens.get(0).getAuthProvince());
+               	 tvState.setText(beens.get(0).getAuthCity());
+               	 tvDistrict.setText(beens.get(0).getAuthCounty());
+               	 tvEven.setText(beens.get(0).getAuthTown());
+               	 tvUnits.setText(beens.get(0).getAuthManage());
+                }
+				progressDialog.dismiss();
+			}
+		});
 	}
 
 	@Override
@@ -164,13 +241,100 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 				.beginTransaction();
 		switch (v.getId()) {
 		case R.id.acitionbar_left:
-//			MineUserInfoFragment fragment = new MineUserInfoFragment();
-//			// transaction.setCustomAnimations(R.anim.right_in,
-//			// R.anim.right_out);
-//			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
-//			transaction.replace(R.id.fl, fragment, "main");
-//			transaction.commit();
-			fgManager.popBackStack();
+			MineUserInfoFragment fragment = new MineUserInfoFragment();
+			// transaction.setCustomAnimations(R.anim.right_in,
+			// R.anim.right_out);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
+			transaction.replace(R.id.fl, fragment, "main");
+			transaction.commit();
+//			fgManager.popBackStack();
+			break;
+		case R.id.acitionbar_right:
+			if (!NetStatusUtil.isNetValid(getActivity())) {
+				Toast.makeText(getActivity(), "当前网络不可用！请检查您的网络状态！", Toast.LENGTH_SHORT)
+				.show();
+			} else {
+			RequestParams param1 = new RequestParams(URL.authName); // 网址(请替换成实际的网址)
+			// params.addQueryStringParameter("key", "value"); //
+			// 参数(请替换成实际的参数与值)
+			progressDialog = ProgressDialog.show(getActivity(), "Loading...",
+					"Please wait...", true, false);
+			JSONObject js_request = new JSONObject();
+			try {
+				param1.setAsJsonContent(true);
+				js_request.put("userID", str);
+				js_request.put("authID", beens.get(0).getAuthID());
+				param1.setBodyContent(js_request.toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				param1.setBodyContent("Content-Type: application/json"
+						+ js_request.toString());
+				e.printStackTrace();
+				param1.setAsJsonContent(true);
+			}// 根据实际需求添加相应键值对
+
+			x.http().request(HttpMethod.PUT, param1,
+					new CommonCallback<String>() {
+						@Override
+						public void onCancelled(CancelledException arg0) {
+
+						}
+
+						// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+						// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+						@Override
+						public void onError(Throwable ex, boolean isOnCallback) {
+
+							Toast.makeText(x.app(), ex.getMessage(),
+									Toast.LENGTH_LONG).show();
+							if (ex instanceof HttpException) { // 网络错误
+								HttpException httpEx = (HttpException) ex;
+								int responseCode = httpEx.getCode();
+								String responseMsg = httpEx.getMessage();
+								String errorResult = httpEx.getResult();
+								Toast.makeText(getActivity(), "请求失败",
+										Toast.LENGTH_SHORT);
+								// ...
+								progressDialog.dismiss();
+							} else { // 其他错误
+								// ...
+								Toast.makeText(getActivity(), "请求失败",
+										Toast.LENGTH_SHORT);
+								progressDialog.dismiss();
+							}
+
+						}
+
+						// 不管成功或者失败最后都会回调该接口
+						@Override
+						public void onFinished() {
+						}
+
+						@Override
+						public void onSuccess(String arg0) {
+							Toast.makeText(getActivity(), "请求成功",
+									Toast.LENGTH_SHORT);
+							progressDialog.dismiss();
+							Gson gson = new Gson();
+							IrriGroupStateBean fromJson = gson
+									.fromJson(arg0,
+											IrriGroupStateBean.class);
+							if("0".equals(fromJson.getCode())){
+								Toast.makeText(getActivity(), "保存失败，请检查授权单位是否正确！", Toast.LENGTH_SHORT).show();
+							}else{
+							android.app.FragmentManager fgManager = getFragmentManager();
+							android.app.FragmentTransaction transaction = fgManager
+									.beginTransaction();
+							MineUserInfoFragment fragment = new MineUserInfoFragment();
+							// transaction.setCustomAnimations(R.anim.right_in,
+							// R.anim.right_out);
+							transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
+							transaction.replace(R.id.fl, fragment, "main");
+							transaction.commit();
+							}
+						}
+					});
+			}
 			break;
 		case R.id.text_mine_user_info_province:
 			chose = 1;
@@ -235,9 +399,9 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 		                  authorizedBeen = new AuthorizedBeen();
 		                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
 		                  List<infoList> beens = fromJson.getAuthNameList();
-		                 if(!CheckUtil.IsEmpty(beens)){
+		                  if(!CheckUtil.IsEmpty(beens)){
 		                	 adapter.addData(beens, true);
-		                 }
+		                  }
 		                  progressDialog.dismiss();
 		            }  
 		        }); 
@@ -255,7 +419,6 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			}
 		break;
 		case R.id.text_mine_user_info_state:
-			shareProvince = (String) SharedUtils.getParam(getActivity(), "shareProvince", "");
 			chose = 2;
 			if (!NetStatusUtil.isNetValid(getActivity())) {
 				Toast.makeText(getActivity(), "当前网络不可用！", Toast.LENGTH_SHORT)
@@ -263,13 +426,12 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			} else {
 			String str = "";
 			try {
-				str = java.net.URLEncoder.encode(shareProvince,"UTF-8");
+				str = java.net.URLEncoder.encode(tvProvince.getText().toString().trim(),"UTF-8");
 			} catch (UnsupportedEncodingException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			System.out.println(str);
-			if(CheckUtil.IsEmpty(shareProvince)){
+			if(CheckUtil.IsEmpty(tvProvince.getText().toString().trim())){
 				Toast.makeText(getActivity(), "请选择省份后进行此操作！", Toast.LENGTH_SHORT).show();
 			}else{
 			RequestParams param2 = new RequestParams(URL.urluserAuthInfo+str);  // 网址(请替换成实际的网址) 
@@ -348,8 +510,6 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			}
 			break;
 		case R.id.text_mine_user_info_district:
-			shareProvince = (String) SharedUtils.getParam(getActivity(), "shareProvince", "");
-			shareState = (String) SharedUtils.getParam(getActivity(), "shareState", "");
 			chose = 3;
 			if (!NetStatusUtil.isNetValid(getActivity())) {
 				Toast.makeText(getActivity(), "当前网络不可用！", Toast.LENGTH_SHORT)
@@ -358,15 +518,15 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			String str1 = "";
 			String str2 = "";
 			try {
-				str1 = java.net.URLEncoder.encode(shareProvince,"UTF-8");
-				str2 = java.net.URLEncoder.encode(shareState,"UTF-8");
+				str1 = java.net.URLEncoder.encode(tvProvince.getText().toString().trim(),"UTF-8");
+				str2 = java.net.URLEncoder.encode(tvState.getText().toString().trim(),"UTF-8");
 			} catch (UnsupportedEncodingException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			if(CheckUtil.IsEmpty(shareProvince)){
+			if(CheckUtil.IsEmpty(tvProvince.getText().toString().trim())){
 				Toast.makeText(getActivity(), "请选择省份后进行此操作！", Toast.LENGTH_SHORT).show();
-			}else if(CheckUtil.IsEmpty(shareState)){
+			}else if(CheckUtil.IsEmpty(tvState.getText().toString().trim())){
 				Toast.makeText(getActivity(), "请选择市后进行此操作！", Toast.LENGTH_SHORT).show();
 			}else{
 			RequestParams param3 = new RequestParams(URL.urluserAuthInfo+str1+"/"+str2);  // 网址(请替换成实际的网址) 
@@ -446,9 +606,6 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			}
 			break;
 		case R.id.text_mine_user_info_even:
-			shareProvince = (String) SharedUtils.getParam(getActivity(), "shareProvince", "");
-			shareState = (String) SharedUtils.getParam(getActivity(), "shareState", "");
-			shareDistrict = (String) SharedUtils.getParam(getActivity(), "shareDistrict", "");
 			chose = 4;
 			if (!NetStatusUtil.isNetValid(getActivity())) {
 				Toast.makeText(getActivity(), "当前网络不可用！", Toast.LENGTH_SHORT)
@@ -458,18 +615,18 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			String str4 = "";
 			String str5 = "";
 			try {
-				str3 = java.net.URLEncoder.encode(shareProvince,"UTF-8");
-				str4 = java.net.URLEncoder.encode(shareState,"UTF-8");
-				str5 = java.net.URLEncoder.encode(shareDistrict,"UTF-8");
+				str3 = java.net.URLEncoder.encode(tvProvince.getText().toString().trim(),"UTF-8");
+				str4 = java.net.URLEncoder.encode(tvState.getText().toString().trim(),"UTF-8");
+				str5 = java.net.URLEncoder.encode(tvDistrict.getText().toString().trim(),"UTF-8");
 			} catch (UnsupportedEncodingException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			if(CheckUtil.IsEmpty(shareProvince)){
+			if(CheckUtil.IsEmpty(tvProvince.getText().toString().trim())){
 				Toast.makeText(getActivity(), "请选择省份后进行此操作！", Toast.LENGTH_SHORT).show();
-			}else if(CheckUtil.IsEmpty(shareState)){
+			}else if(CheckUtil.IsEmpty(tvState.getText().toString().trim())){
 				Toast.makeText(getActivity(), "请选择市后进行此操作！", Toast.LENGTH_SHORT).show();
-			}else if(CheckUtil.IsEmpty(shareDistrict)){
+			}else if(CheckUtil.IsEmpty(tvDistrict.getText().toString().trim())){
 				Toast.makeText(getActivity(), "请选择区后进行此操作！", Toast.LENGTH_SHORT).show();
 			}else{
 			RequestParams param4 = new RequestParams(URL.urluserAuthInfo+str3+"/"+str4+"/"+str5);  // 网址(请替换成实际的网址) 
@@ -549,10 +706,6 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			}
 			break;
 		case R.id.text_mine_user_info_units:
-			shareProvince = (String) SharedUtils.getParam(getActivity(), "shareProvince", "");
-			shareState = (String) SharedUtils.getParam(getActivity(), "shareState", "");
-			shareDistrict = (String) SharedUtils.getParam(getActivity(), "shareDistrict", "");
-			shareEven = (String) SharedUtils.getParam(getActivity(), "shareEven", "");
 			chose = 5;
 			if (!NetStatusUtil.isNetValid(getActivity())) {
 				Toast.makeText(getActivity(), "当前网络不可用！", Toast.LENGTH_SHORT)
@@ -563,21 +716,21 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			String str8 = "";
 			String str9 = "";
 			try {
-				str6 = java.net.URLEncoder.encode(shareProvince,"UTF-8");
-				str7 = java.net.URLEncoder.encode(shareState,"UTF-8");
-				str8 = java.net.URLEncoder.encode(shareDistrict,"UTF-8");
-				str9 = java.net.URLEncoder.encode(shareEven,"UTF-8");
+				str6 = java.net.URLEncoder.encode(tvProvince.getText().toString().trim(),"UTF-8");
+				str7 = java.net.URLEncoder.encode(tvState.getText().toString().trim(),"UTF-8");
+				str8 = java.net.URLEncoder.encode(tvDistrict.getText().toString().trim(),"UTF-8");
+				str9 = java.net.URLEncoder.encode(tvEven.getText().toString().trim(),"UTF-8");
 			} catch (UnsupportedEncodingException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			if(CheckUtil.IsEmpty(shareProvince)){
+			if(CheckUtil.IsEmpty(tvProvince.getText().toString().trim())){
 				Toast.makeText(getActivity(), "请选择省份后进行此操作！", Toast.LENGTH_SHORT).show();
-			}else if(CheckUtil.IsEmpty(shareState)){
+			}else if(CheckUtil.IsEmpty(tvState.getText().toString().trim())){
 				Toast.makeText(getActivity(), "请选择市后进行此操作！", Toast.LENGTH_SHORT).show();
-			}else if(CheckUtil.IsEmpty(shareDistrict)){
+			}else if(CheckUtil.IsEmpty(tvDistrict.getText().toString().trim())){
 				Toast.makeText(getActivity(), "请选择区后进行此操作！", Toast.LENGTH_SHORT).show();
-			}else if(CheckUtil.IsEmpty(shareEven)){
+			}else if(CheckUtil.IsEmpty(tvEven.getText().toString().trim())){
 				Toast.makeText(getActivity(), "请选择连后进行此操作！", Toast.LENGTH_SHORT).show();
 			}else{
 			RequestParams param5 = new RequestParams(URL.urluserAuthInfo+str6+"/"+str7+"/"+str8+"/"+str9);  // 网址(请替换成实际的网址) 
@@ -633,7 +786,7 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 		                  AuthorizedBeen fromJson = gson.fromJson(arg0, AuthorizedBeen.class);
 		                  authorizedBeen = new AuthorizedBeen();
 		                  authorizedBeen = gson.fromJson(arg0, AuthorizedBeen.class);
-		                  List<infoList> beens = fromJson.getAuthNameList();
+		                  beens = fromJson.getAuthNameList();
 		                  if(!CheckUtil.IsEmpty(beens)){
 		                	  adapter3.addData(beens, true);
 		                  }
@@ -669,24 +822,42 @@ public class MineUserUnitFragment extends android.app.Fragment implements
 			province = authorizedBeen.getAuthNameList().get(position).getAuthProvince();
 			tvProvince.setText(province);
 			SharedUtils.setParam(getActivity(), "shareProvince", province);
+			if(!province.equals(beens.get(0).getAuthProvince())){
+				tvState.setText("");
+	            tvDistrict.setText("");
+	            tvEven.setText("");
+	            tvUnits.setText("");
+			}
 			popupWindow.dismiss();
 		}
 		if(chose == 2){
 			state = authorizedBeen.getAuthNameList().get(position).getAuthCity();
 			tvState.setText(state);
 			SharedUtils.setParam(getActivity(), "shareState", state);
+			if(!state.equals(beens.get(0).getAuthCity())){
+				tvDistrict.setText("");
+		        tvEven.setText("");
+		        tvUnits.setText("");
+			}
 			popupWindow.dismiss();
 		}
 		if(chose == 3){
 			district = authorizedBeen.getAuthNameList().get(position).getAuthCounty();
 			tvDistrict.setText(district);
 			SharedUtils.setParam(getActivity(), "shareDistrict", district);
+			if(!district.equals(beens.get(0).getAuthCounty())){
+				tvEven.setText("");
+		        tvUnits.setText("");
+			}
 			popupWindow.dismiss();
 		}
 		if(chose == 4){
 			event = authorizedBeen.getAuthNameList().get(position).getAuthTown();
 			tvEven.setText(event);
 			SharedUtils.setParam(getActivity(), "shareEven", event);
+			if(!event.equals(beens.get(0).getAuthManage())){
+		        tvUnits.setText("");
+			}
 			popupWindow.dismiss();
 		}
 		if(chose == 5){

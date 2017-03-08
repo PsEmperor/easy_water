@@ -84,28 +84,33 @@ public class MineUserRoleFragment extends Fragment implements OnClickListener,On
 		RoleBeans = new ArrayList<RoleBean>();
 		 
 		bean = new RoleBean();
-		bean.setRole("灌溉管理员");
-		bean.setMsg("灌溉管理员是管理灌溉单元信息的角色 可以查看并操作有关灌溉的所有数据！");
+		bean.setRole("高级管理员");
+		bean.setMsg("高级管理员是该系统中最高等级的管理员 可以查看并操作所有的数据！");
 		RoleBeans.add(bean);
-		bean = new RoleBean();
-		bean.setRole("配水管理员");
-		bean.setMsg("配水管理员是管理配水设备信息的角色 可以查看并操作有关配水的所有数据！");
-		RoleBeans.add(bean);
+		
 		bean = new RoleBean();
 		bean.setRole("综合管理员");
 		bean.setMsg("综合管理员是灌溉管理员与配水管理员的结合 可以查看并操作有关灌溉和配水的所有数据！");
 		RoleBeans.add(bean);
+		
 		bean = new RoleBean();
-		bean.setRole("种植户");
-		bean.setMsg("种植户是仅可以进行查询并修改有关自身的灌溉信息和配水信息的角色！");
+		bean.setRole("灌溉管理员");
+		bean.setMsg("灌溉管理员是管理灌溉单元信息的角色 可以查看并操作有关灌溉的所有数据！");
 		RoleBeans.add(bean);
+		
 		bean = new RoleBean();
-		bean.setRole("高级管理员");
-		bean.setMsg("高级管理员是该系统中最高等级的管理员 可以查看并操作所有的数据！");
+		bean.setRole("配水管理员");
+		bean.setMsg("配水管理员是管理配水设备信息的角色 可以查看并操作有关配水的所有数据！");
 		RoleBeans.add(bean);
+		
 		bean = new RoleBean();
 		bean.setRole("安装调试员");
 		bean.setMsg("安装调试员是管理设备配置信息的角色 可以查看并操作有关设备配置的所有数据！");
+		RoleBeans.add(bean);
+		
+		bean = new RoleBean();
+		bean.setRole("种植户");
+		bean.setMsg("种植户是仅可以进行查询并修改有关自身的灌溉信息和配水信息的角色！");
 		RoleBeans.add(bean);
 		
 		adapter = new RoleAdapter(getActivity());
@@ -157,13 +162,12 @@ public class MineUserRoleFragment extends Fragment implements OnClickListener,On
 		FragmentTransaction transaction = fgManager.beginTransaction();
 		switch (v.getId()) {
 		case R.id.acitionbar_left:
-//			MineUserInfoFragment fragment = new MineUserInfoFragment();
-//			// transaction.setCustomAnimations(R.anim.right_in,
-//			// R.anim.right_out);
-//			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
-//			transaction.replace(R.id.fl, fragment, "main");
-//			transaction.commit();
-			fgManager.popBackStack();
+			MineUserInfoFragment fragment = new MineUserInfoFragment();
+			// transaction.setCustomAnimations(R.anim.right_in,
+			// R.anim.right_out);
+			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
+			transaction.replace(R.id.fl, fragment, "main");
+			transaction.commit();
 			break;
 		case R.id.acitionbar_right:
 			PickNum();

@@ -366,7 +366,7 @@ public class ApplyIrrigateSingleValveFragment extends Fragment implements
 				if (CheckUtil.IsEmpty(beans.get(0).getGroupNum())
 						|| "0".equals(beans.get(0).getGroupNum())) {
 					Toast.makeText(getActivity(), "请进行灌溉维护后再尝试执行此操作！",
-							Toast.LENGTH_LONG).show();
+							Toast.LENGTH_SHORT).show();
 				} else {
 					ApplyIrrigateControlFragment fragment1 = new ApplyIrrigateControlFragment();
 					Bundle bundle1 = new Bundle();

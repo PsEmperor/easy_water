@@ -412,7 +412,7 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements
 				if (CheckUtil.IsEmpty(beans.get(0).getGroupNum())
 						|| "0".equals(beans.get(0).getGroupNum())) {
 					Toast.makeText(getActivity(), "如需使用灌溉计划请先进行轮灌组维护！",
-							Toast.LENGTH_LONG).show();
+							Toast.LENGTH_SHORT).show();
 				} else {
 					ApplyIrrigateProjectFragment fragment1 = new ApplyIrrigateProjectFragment();
 					isNot = 1;

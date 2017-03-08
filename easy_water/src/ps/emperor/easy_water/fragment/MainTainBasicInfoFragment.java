@@ -254,114 +254,118 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				UserReleIrrInfoToOneBean fromJson = gson.fromJson(arg0,
 						UserReleIrrInfoToOneBean.class);
 				beens = fromJson.getAuthNameList();
-				for (infoList authNameListBean : beens) {
-					if (!CheckUtil.IsEmpty(beens.get(0).getMaxGroup())) {
-						tv_irriagte_group.setText(beens.get(0).getMaxGroup()
-								+ "");
-					} else {
-						tv_irriagte_group.setText("0");
-					}
-					if (!CheckUtil.IsEmpty(beens.get(0).getValueNum())) {
-						tv_orroagte_valve.setText(beens.get(0).getValueNum()
-								+ "");
-					} else {
-						tv_orroagte_valve.setText("0");
-					}
-					String parten = "00";
-					DecimalFormat decimal = new DecimalFormat(parten);
-					if (!CheckUtil.IsEmpty(beens.get(0).getRestStart())) {
-						tv_restnight_start.setText(beens.get(0).getRestStart());
-					} else {
-						tv_restnight_start.setText("00:00");
-					}
-					if (!CheckUtil.IsEmpty(beens.get(0).getRestEnd())) {
-						tv_restnight_end.setText(beens.get(0).getRestEnd());
-					} else {
-						tv_restnight_end.setText("00:00");
-					}
-					if("00:00".equals(tv_restnight_start.getText().toString())&&"00:00".equals(tv_restnight_end.getText().toString())){
-						isNight = false;
-					}
-					if (!CheckUtil.IsEmpty(beens.get(0).getFlushTime())) {
-						tv_filter.setText(beens.get(0).getFlushTime());
-					} else {
-						tv_filter.setText("0");
-					}
-					if (!CheckUtil.IsEmpty(beens.get(0).getIrriSeasonStart())) {
-						text_season_start.setText(beens.get(0)
-								.getIrriSeasonStart());
-					} else {
-						text_season_start.setText("0000-00-00");
-					}
-					if (!CheckUtil.IsEmpty(beens.get(0).getIrriSeasonEnd())) {
-						text_season_end
-								.setText(beens.get(0).getIrriSeasonEnd());
-					} else {
-						text_season_end.setText("0000-00-00");
-					}
-					if (!CheckUtil.IsEmpty(beens.get(0).getPumpRestTime())) {
-						tv_time_long.setText(beens.get(0).getPumpRestTime());
-						if("0".equals(beens.get(0).getPumpRestTime())){
-							tv_time_long.setText("连续");
-							isLong = false;
+				if(CheckUtil.IsEmpty(beens)){
+					
+				}else{
+					for (infoList authNameListBean : beens) {
+						if (!CheckUtil.IsEmpty(beens.get(0).getMaxGroup())) {
+							tv_irriagte_group.setText(beens.get(0).getMaxGroup()
+									+ "");
+						} else {
+							tv_irriagte_group.setText("0");
 						}
-					} else {
-						tv_time_long.setText("0");
-					}
-					night_start = tv_restnight_start.getText().toString();
-					night_end = tv_restnight_end.getText().toString();
-					long_hour = Integer.valueOf(beens.get(0).getPumpRestTime());
-					group = Integer.valueOf(tv_irriagte_group.getText()
-							.toString());
-					value = Integer.valueOf(tv_orroagte_valve.getText()
-							.toString());
+						if (!CheckUtil.IsEmpty(beens.get(0).getValueNum())) {
+							tv_orroagte_valve.setText(beens.get(0).getValueNum()
+									+ "");
+						} else {
+							tv_orroagte_valve.setText("0");
+						}
+						String parten = "00";
+						DecimalFormat decimal = new DecimalFormat(parten);
+						if (!CheckUtil.IsEmpty(beens.get(0).getRestStart())) {
+							tv_restnight_start.setText(beens.get(0).getRestStart());
+						} else {
+							tv_restnight_start.setText("00:00");
+						}
+						if (!CheckUtil.IsEmpty(beens.get(0).getRestEnd())) {
+							tv_restnight_end.setText(beens.get(0).getRestEnd());
+						} else {
+							tv_restnight_end.setText("00:00");
+						}
+						if("00:00".equals(tv_restnight_start.getText().toString())&&"00:00".equals(tv_restnight_end.getText().toString())){
+							isNight = false;
+						}
+						if (!CheckUtil.IsEmpty(beens.get(0).getFlushTime())) {
+							tv_filter.setText(beens.get(0).getFlushTime());
+							filterStart = tv_filter.getText().toString()
+									.substring(0, 2);
+							filterEnd = tv_filter.getText().toString().substring(4, 6);
+						} else {
+							tv_filter.setText("0");
+						}
+						if (!CheckUtil.IsEmpty(beens.get(0).getIrriSeasonStart())) {
+							text_season_start.setText(beens.get(0)
+									.getIrriSeasonStart());
+						} else {
+							text_season_start.setText("0000-00-00");
+						}
+						if (!CheckUtil.IsEmpty(beens.get(0).getIrriSeasonEnd())) {
+							text_season_end
+									.setText(beens.get(0).getIrriSeasonEnd());
+						} else {
+							text_season_end.setText("0000-00-00");
+						}
+						if (!CheckUtil.IsEmpty(beens.get(0).getPumpRestTime())) {
+							tv_time_long.setText(beens.get(0).getPumpRestTime());
+							if("0".equals(beens.get(0).getPumpRestTime())){
+								tv_time_long.setText("连续");
+								isLong = false;
+							}
+							long_hour = Integer.valueOf(beens.get(0).getPumpRestTime());
+						} else {
+							tv_time_long.setText("0");
+							long_hour = Integer.valueOf(tv_time_long.getText().toString());
+						}
+						night_start = tv_restnight_start.getText().toString();
+						night_end = tv_restnight_end.getText().toString();
+						
+						group = Integer.valueOf(tv_irriagte_group.getText()
+								.toString());
+						value = Integer.valueOf(tv_orroagte_valve.getText()
+								.toString());
 
-					filterStart = tv_filter.getText().toString()
-							.substring(0, 2);
-					filterEnd = tv_filter.getText().toString().substring(4, 6);
-					seasonStart = text_season_start.getText().toString();
-					seasonEnd = text_season_end.getText().toString();
-					// if (!irrigation.get(0)
-					// .getNightStart()
-					// .equals(tv_restnight_start.getText()
-					// .toString())||!(irrigation.get(0)
-					// .getNightEnd()
-					// .equals(tv_restnight_end.getText()
-					// .toString()))) {
-					// dbHelper.updateBasicTime(units,
-					// night_start,
-					// night_cont,
-					// night_end);
-					// }
-					// if (!(irrigation.get(0).getIsTimeLong() + "")
-					// .equals(tv_time_long.getText().toString())) {
-					// dbHelper.updateBasicTimeLong(units, long_hour);
-					// }
-					// if (!(irrigation.get(0).getIsTimeLong() + "")
-					// .equals(tv_time_long.getText().toString())) {
-					// dbHelper.updateBasicTimeLong(units, long_hour);
-					// }
-					// if (!(irrigation.get(0).getGroupnumber() + "")
-					// .equals(tv_irriagte_group.getText().toString())) {
-					// dbHelper.updateBasicGroup(units,group);
-					// }
-					// if (!(irrigation.get(0).getValuenumber() + "")
-					// .equals(tv_orroagte_valve.getText().toString())) {
-					// dbHelper.updateBasicVlaue(units,value);
-					// }
-//					 if (irrigation.get(0).getFlushtime().equals(beens.get(0).getFlushTime()))
-//					 {
-//					 }else{
-//					 dbHelper.updateBasicFilter(units,beens.get(0).getFlushTime());
-//					 }
-					// if((irrigation.get(0).getSeasonStrat()+"")
-					// .equals(seasonStart)&&(irrigation.get(0).getSeasonEnd()+"").equals(seasonEnd)){
-					// }else{
-					// dbHelper.updateBasicSeason(units,seasonStart,seasonEnd);
-					// }
-					irrigation = dbHelper.loadContinue(units);
-					System.out.println(irrigation.get(0).getSeasonStrat() + "");
-					System.out.println(irrigation.get(0).getSeasonEnd() + "");
+						seasonStart = text_season_start.getText().toString();
+						seasonEnd = text_season_end.getText().toString();
+						// if (!irrigation.get(0)
+						// .getNightStart()
+						// .equals(tv_restnight_start.getText()
+						// .toString())||!(irrigation.get(0)
+						// .getNightEnd()
+						// .equals(tv_restnight_end.getText()
+						// .toString()))) {
+						// dbHelper.updateBasicTime(units,
+						// night_start,
+						// night_cont,
+						// night_end);
+						// }
+						// if (!(irrigation.get(0).getIsTimeLong() + "")
+						// .equals(tv_time_long.getText().toString())) {
+						// dbHelper.updateBasicTimeLong(units, long_hour);
+						// }
+						// if (!(irrigation.get(0).getIsTimeLong() + "")
+						// .equals(tv_time_long.getText().toString())) {
+						// dbHelper.updateBasicTimeLong(units, long_hour);
+						// }
+						// if (!(irrigation.get(0).getGroupnumber() + "")
+						// .equals(tv_irriagte_group.getText().toString())) {
+						// dbHelper.updateBasicGroup(units,group);
+						// }
+						// if (!(irrigation.get(0).getValuenumber() + "")
+						// .equals(tv_orroagte_valve.getText().toString())) {
+						// dbHelper.updateBasicVlaue(units,value);
+						// }
+//						 if (irrigation.get(0).getFlushtime().equals(beens.get(0).getFlushTime()))
+//						 {
+//						 }else{
+//						 dbHelper.updateBasicFilter(units,beens.get(0).getFlushTime());
+//						 }
+						// if((irrigation.get(0).getSeasonStrat()+"")
+						// .equals(seasonStart)&&(irrigation.get(0).getSeasonEnd()+"").equals(seasonEnd)){
+						// }else{
+						// dbHelper.updateBasicSeason(units,seasonStart,seasonEnd);
+						// }
+						irrigation = dbHelper.loadContinue(units);
+				}
 				}
 				progressDialog.dismiss();
 			}
@@ -447,7 +451,7 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				if(tv_irriagte_group.getText().toString().trim().equals(beens.get(0).getMaxGroup())&&
 						tv_orroagte_valve.getText().toString().trim().equals(beens.get(0).getValueNum())&&
 						tv_filter.getText().toString().trim().equals(beens.get(0).getFlushTime())&&
-						tv_time_long.getText().toString().trim().equals(beens.get(0).getPumpRestTime())&&
+						(long_hour+"").equals(beens.get(0).getPumpRestTime())&&
 						tv_restnight_start.getText().toString().trim().equals(beens.get(0).getRestStart())&&
 						tv_restnight_end.getText().toString().trim().equals(beens.get(0).getRestEnd())&&
 						text_season_start.getText().toString().trim().equals(beens.get(0).getIrriSeasonStart())&&
@@ -524,7 +528,7 @@ public class MainTainBasicInfoFragment extends Fragment implements
 				js_request.put("flushTime", tv_filter.getText().toString());
 				if("连续".equals(tv_time_long.getText()
 						.toString())){
-					js_request.put("pumpRestTime",0);
+					js_request.put("pumpRestTime","0");
 				}else{
 					js_request.put("pumpRestTime" +
 							"",tv_time_long.getText()
@@ -587,48 +591,48 @@ public class MainTainBasicInfoFragment extends Fragment implements
 							IrriGroupStateBean fromJson = gson
 									.fromJson(arg0,
 											IrriGroupStateBean.class);
+							progressDialog.dismiss();
 							if("0".equals(fromJson.getCode())){
 								Toast.makeText(getActivity(), "修改失败！", Toast.LENGTH_SHORT).show();
 							}else{
-								progressDialog.dismiss();
 								init();
 							}
-//							// 更新数据库
-//							if (!irrigation
-//									.get(0)
-//									.getNightStart()
-//									.equals(tv_restnight_start.getText()
-//											.toString())
-//									|| !(irrigation.get(0).getNightEnd()
-//											.equals(tv_restnight_end
-//													.getText().toString()))) {
-//								dbHelper.updateBasicTime(units,
-//										night_start, night_end);
-//							}
-//							if (!(irrigation.get(0).getIsTimeLong() + "")
-//									.equals(tv_time_long.getText()
-//											.toString())) {
-//								dbHelper.updateBasicTimeLong(units,
-//										long_hour);
-//							}
-//							if (!(irrigation.get(0).getGroupnumber() + "")
-//									.equals(tv_irriagte_group.getText()
-//											.toString())) {
-//								dbHelper.updateBasicGroup(units, group);
-//							}
-//							if (!(irrigation.get(0).getValuenumber() + "")
-//									.equals(tv_orroagte_valve.getText()
-//											.toString())) {
-//								dbHelper.updateBasicVlaue(units, value);
-//							}
-//							if ((irrigation.get(0).getSeasonStrat() + "")
-//									.equals(seasonStart)
-//									&& (irrigation.get(0).getSeasonEnd() + "")
-//											.equals(seasonEnd)) {
-//							} else {
-//								dbHelper.updateBasicSeason(units,
-//										seasonStart, seasonEnd);
-//							}
+							// 更新数据库
+							if (!irrigation
+									.get(0)
+									.getNightStart()
+									.equals(tv_restnight_start.getText()
+											.toString())
+									|| !(irrigation.get(0).getNightEnd()
+											.equals(tv_restnight_end
+													.getText().toString()))) {
+								dbHelper.updateBasicTime(units,
+										night_start, night_end);
+							}
+							if (!(irrigation.get(0).getIsTimeLong() + "")
+									.equals(tv_time_long.getText()
+											.toString())) {
+								dbHelper.updateBasicTimeLong(units,
+										long_hour);
+							}
+							if (!(irrigation.get(0).getGroupnumber() + "")
+									.equals(tv_irriagte_group.getText()
+											.toString())) {
+								dbHelper.updateBasicGroup(units, group);
+							}
+							if (!(irrigation.get(0).getValuenumber() + "")
+									.equals(tv_orroagte_valve.getText()
+											.toString())) {
+								dbHelper.updateBasicVlaue(units, value);
+							}
+							if ((irrigation.get(0).getSeasonStrat() + "")
+									.equals(seasonStart)
+									&& (irrigation.get(0).getSeasonEnd() + "")
+											.equals(seasonEnd)) {
+							} else {
+								dbHelper.updateBasicSeason(units,
+										seasonStart, seasonEnd);
+							}
 						}
 					});
 		}
