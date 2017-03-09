@@ -128,7 +128,8 @@ public class ApplyIrrigateFragment extends Fragment implements OnClickListener,
 	}
 
 	private void init() {
-		str = (String) SharedUtils.getParam(getActivity(), "userId", "3");
+//		str = (String) SharedUtils.getParam(getActivity(), "userId", "3");
+		str = "3";
 		try {
 			str = java.net.URLEncoder.encode(str, "UTF-8");
 		} catch (UnsupportedEncodingException e1) {

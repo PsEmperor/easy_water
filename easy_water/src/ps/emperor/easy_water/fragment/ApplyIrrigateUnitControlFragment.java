@@ -265,10 +265,10 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements
 					}
 					if ("-1".equals(beens.get(0).getIrriState())) {
 						text_apply_plan.setText("无计划");
-						text_apply_plan_pause.setVisibility(View.GONE);
+						text_apply_plan_pause.setVisibility(View.INVISIBLE);
 					} else if ("0".equals(beens.get(0).getIrriState())) {
 						text_apply_plan.setText("等待灌溉");
-						text_apply_plan_pause.setVisibility(View.GONE);
+						text_apply_plan_pause.setVisibility(View.INVISIBLE);
 					}
 					if ("1".equals(beens.get(0).getIrriState())) {
 						text_apply_plan.setText("正在灌溉");
@@ -276,7 +276,7 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements
 					}
 					if ("2".equals(beens.get(0).getIrriState())) {
 						text_apply_plan.setText("灌溉完毕");
-						text_apply_plan_pause.setVisibility(View.GONE);
+						text_apply_plan_pause.setVisibility(View.INVISIBLE);
 					}
 					if ("3".equals(beens.get(0).getIrriState())) {
 						text_apply_plan.setText("暂停灌溉");
@@ -284,26 +284,29 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements
 						text_apply_plan_pause.setText("立即开始");
 					}
 					String str = text_apply_plan_pause.getText().toString();
-					SpannableStringBuilder style = new SpannableStringBuilder(
-							str);
-					// str代表要显示的全部字符串
-					ClickableSpan what = new ClickableSpan() {
-
-						@Override
-						public void onClick(View widget) {
-							if (NetStatusUtil.isNetValid(getActivity())) {
-								Fetch();
-							} else {
-								Toast.makeText(getActivity(), "当前网络不可用！",
-										Toast.LENGTH_SHORT).show();
+					if(CheckUtil.IsEmpty(str)){
+						
+					}else{
+						SpannableStringBuilder style = new SpannableStringBuilder(
+								str);
+						// str代表要显示的全部字符串
+						ClickableSpan what = new ClickableSpan() {
+							
+							@Override
+							public void onClick(View widget) {
+								if (NetStatusUtil.isNetValid(getActivity())) {
+									Fetch();
+								} else {
+									Toast.makeText(getActivity(), "当前网络不可用！",
+											Toast.LENGTH_SHORT).show();
+								}
 							}
-						}
-					};
-					style.setSpan(what, 0, 4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-					text_apply_plan_pause.setText(style);
-					text_apply_plan_pause.setMovementMethod(LinkMovementMethod
-							.getInstance());
-
+						};
+						style.setSpan(what, 0, 4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+						text_apply_plan_pause.setText(style);
+						text_apply_plan_pause.setMovementMethod(LinkMovementMethod
+								.getInstance());
+					}
 					if (CheckUtil.IsEmpty(beens.get(0).getStartTime())) {
 						start_time.setText(beens.get(0).getStartTime());
 						start.setVisibility(View.INVISIBLE);
