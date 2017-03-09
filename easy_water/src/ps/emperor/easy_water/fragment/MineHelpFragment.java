@@ -70,7 +70,7 @@ public class MineHelpFragment extends Fragment implements OnClickListener {
 		case R.id.acitionbar_left:
 			MinesFragment fragment = new MinesFragment();
 //			transaction.setCustomAnimations(R.anim.right_in, R.anim.right_out);
-			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
+			transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 			transaction.replace(R.id.fl, fragment, "main");
 			transaction.commit();
 			break;

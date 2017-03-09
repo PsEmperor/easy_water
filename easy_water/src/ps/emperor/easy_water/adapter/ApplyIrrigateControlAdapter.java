@@ -6,11 +6,9 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.entity.ApplyIrrigateControlBean;
-import ps.emperor.easy_water.entity.ApplyIrrigateControlBean.infoList;
 
 /**
  * 灌溉组控制
@@ -18,7 +16,7 @@ import ps.emperor.easy_water.entity.ApplyIrrigateControlBean.infoList;
  * @author 毛国江
  * @version 2016-5-18 上午11:12
  */
-public class ApplyIrrigateControlAdapter extends MyBaseAdapter<infoList> implements OnClickListener {
+public class ApplyIrrigateControlAdapter extends MyBaseAdapter<ApplyIrrigateControlBean> implements OnClickListener {
 
 	private Context context;
 
@@ -34,23 +32,18 @@ public class ApplyIrrigateControlAdapter extends MyBaseAdapter<infoList> impleme
 			convertView = inflater.inflate(R.layout.fragment_apply_irrigate_control_list, null);
 			viewHolder = new ViewHolder();
 			viewHolder.valves = (TextView) convertView.findViewById(R.id.text_irriagte_control_list_text);
-			viewHolder.image = (ImageView) convertView.findViewById(R.id.text_irriagte_control_list);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		infoList infoList = list.get(position);
-		if("1".equals(infoList.getValueControlSwitch())){
-			viewHolder.image.setImageResource(R.drawable.value_selected);
-		}
-		viewHolder.valves.setText(infoList.getChanNum());
+		ApplyIrrigateControlBean applyIrrigateControlBean = list.get(position);
+		viewHolder.valves.setText(applyIrrigateControlBean.valve);
 		return convertView;
 
 	}
 
 	class ViewHolder {
 		TextView valves;
-		ImageView image;
 	}
 
 	@Override

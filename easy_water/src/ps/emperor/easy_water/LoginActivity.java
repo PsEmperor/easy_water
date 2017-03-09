@@ -5,6 +5,9 @@ import org.json.JSONObject;
 import org.xutils.http.HttpMethod;
 import org.xutils.http.RequestParams;
 
+
+import com.google.gson.Gson;
+
 import ps.emperor.easy_water.application.entity.BaseBeen;
 import ps.emperor.easy_water.register.ForgotActivity;
 import ps.emperor.easy_water.register.RegisterActivity;

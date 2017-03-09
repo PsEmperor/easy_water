@@ -220,9 +220,7 @@ public class WheelView extends View {
 		visibleItems = count;
 		invalidate();
 	}
-	public void setItemsHight(int count) {
-		itemHeight = count;
-	}
+
 	/**
 	 * 得到标签
 	 * 

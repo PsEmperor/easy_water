@@ -1,10 +1,5 @@
 package ps.emperor.easy_water.entity;
 
-import java.util.List;
-
-import ps.emperor.easy_water.entity.ApplyIrrigationUnitControlBean.groupList;
-import ps.emperor.easy_water.entity.AuthorizedBeen.infoList;
-
 /**
  * 单阀显示
  * @author 毛国江
@@ -13,110 +8,41 @@ import ps.emperor.easy_water.entity.AuthorizedBeen.infoList;
 public class ApplyIrrigateSingleValveBean {
 
 
-	 private List<infoList> infoList;
-	 private List<groupList> groupList;
-	 
-	 
-	    public List<infoList> getInfoList() {
-		return infoList;
+	public String single_valve; // 单阀
+	public String names; // 单阀
+	public String crops; // 单阀
+
+	public String getSingle_valve() {
+		return single_valve;
 	}
 
-	public void setInfoList(List<infoList> infoList) {
-		this.infoList = infoList;
+	public void setSingle_valve(String single_valve) {
+		this.single_valve = single_valve;
 	}
 
-	public List<groupList> getGroupList() {
-		return groupList;
+	public String getNames() {
+		return names;
 	}
 
-	public void setGroupList(List<groupList> groupList) {
-		this.groupList = groupList;
+	public void setNames(String names) {
+		this.names = names;
 	}
 
-		public List<infoList> getAuthNameList() {
-	        return infoList;
-	    }
+	public String getCrops() {
+		return crops;
+	}
 
-	    public void setAuthNameList(List<infoList> authNameList) {
-	        this.infoList = authNameList;
-	    }
+	public void setCrops(String crops) {
+		this.crops = crops;
+	}
 
-	    public static class infoList {
-	        /**
-	         * AuthProvince : 授
-	         */
+	public String getValve() {
+		return single_valve;
+	}
 
-	    	private String ChanNum;
-	    	private String CropName;
-	    	private String GrowersName;
-	    	private String ValueControlChanID;
-	    	private String ValueControlSwitch;
-	    	private String GroupName;
-	    	private String TotalChanNum;
-	    	
-	    	public String getGroupName() {
-				return GroupName;
-			}
-			public void setGroupName(String groupName) {
-				GroupName = groupName;
-			}
-			public String getValueControlSwitch() {
-				return ValueControlSwitch;
-			}
-			public void setValueControlSwitch(String valueControlSwitch) {
-				ValueControlSwitch = valueControlSwitch;
-			}
-			public String getValueControlChanID() {
-				return ValueControlChanID;
-			}
-			public void setValueControlChanID(String valueControlChanID) {
-				ValueControlChanID = valueControlChanID;
-			}
-			public Boolean istrue; // 是否选中
-	    	
-			public Boolean getIstrue() {
-				return istrue;
-			}
-			public void setIstrue(Boolean istrue) {
-				this.istrue = istrue;
-			}
-			public String getChanNum() {
-				return ChanNum;
-			}
-			public void setChanNum(String chanNum) {
-				ChanNum = chanNum;
-			}
-			public String getCropName() {
-				return CropName;
-			}
-			public void setCropName(String cropName) {
-				CropName = cropName;
-			}
-			public String getGrowersName() {
-				return GrowersName;
-			}
-			public void setGrowersName(String growersName) {
-				GrowersName = growersName;
-			}
-			public String getTotalChanNum() {
-				return TotalChanNum;
-			}
-			public void setTotalChanNum(String totalChanNum) {
-				TotalChanNum = totalChanNum;
-			}
-	    	
-	    	
-	    }
-	    public static class groupList{
-			private String GroupNum;
+	public void setValve(String valve) {
+		this.single_valve = valve;
+	}
 
-			public String getGroupNum() {
-				return GroupNum;
-			}
 
-			public void setGroupNum(String groupNum) {
-				GroupNum = groupNum;
-			}
-
-		}
 }

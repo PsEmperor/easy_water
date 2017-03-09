@@ -27,8 +27,6 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
-            android:singleLine="true"
-			android:layout_marginRight="100dp"
             android:text="111团5连"
             android:textColor="@color/gray_1" 
             android:textSize="14sp"/>

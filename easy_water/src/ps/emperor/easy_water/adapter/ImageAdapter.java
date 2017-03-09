@@ -1,15 +1,11 @@
 package ps.emperor.easy_water.adapter;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Vector;
 
 
 
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.entity.MainTainIrrigationInfoBean;
-import ps.emperor.easy_water.entity.MainTainIrrigationInfoBean.infoList;
-import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.SharedUtils;
 
 import android.annotation.SuppressLint;
@@ -29,14 +25,13 @@ import android.widget.TextView;
 
 public class ImageAdapter extends BaseAdapter{    
     private Context mContext;			// 定义Context
-    private List<infoList> mImageIds;	// 定义一个向量作为图片源
-    private List<Integer> mImage_bs = new ArrayList<Integer>();	// 定义一个向量作为选中与否容器
+    private Vector<MainTainIrrigationInfoBean> mImageIds;	// 定义一个向量作为图片源
+    private Vector<Boolean> mImage_bs = new Vector<Boolean>();	// 定义一个向量作为选中与否容器
     private int lastPosition = -1;		//记录上一次选中的图片位置，-1表示未选中任何图片
     private boolean multiChoose;		//表示当前适配器是否允许多选
     private int screenWidth,screenHeigh;
-    int mImage = 0;
     
-    public ImageAdapter(Context c, boolean isMulti,List<infoList>  mImageId){
+    public ImageAdapter(Context c, boolean isMulti,Vector<MainTainIrrigationInfoBean>  mImageId){
     	mContext = c;
     	multiChoose = isMulti;
     	mImageIds = mImageId;
@@ -50,7 +45,7 @@ public class ImageAdapter extends BaseAdapter{
 //    	mImageIds.add(R.drawable.item6);
     	
     	for(int i=0; i<mImageIds.size(); i++)
-    		mImage_bs.add(0);
+    		mImage_bs.add(false);
     }
     
 	@Override
@@ -85,21 +80,6 @@ public class ImageAdapter extends BaseAdapter{
         	screenWidth = (int) SharedUtils.getParam(mContext, "screenWidth", 0);
         	screenHeigh = (int) SharedUtils.getParam(mContext, "screenHeigh", 0);
         	textView = new TextView(mContext);
-        	if(mImage < mImageIds.size()){
-        		if(!CheckUtil.IsEmpty(mImageIds.get(position).getIsAllocationGrowers())){
-        			if(mImageIds.get(position).getIsAllocationGrowers().equals("1")){
-        				mImage_bs.set(position, 2);
-        			}  
-        		}else if(!CheckUtil.IsEmpty(mImageIds.get(position).getIsAllocationCrop())){
-        			if(mImageIds.get(position).getIsAllocationCrop().equals("1")){
-        				mImage_bs.set(position, 2);
-        			}  
-        		}
-        		if(CheckUtil.IsEmpty(mImageIds.get(position).getChanNum())&&CheckUtil.IsEmpty(mImageIds.get(position).getGroupName())){
-        			mImage_bs.set(position,100);
-        		}
-        		mImage ++;
-        	}
             if(screenWidth == 0){
             	textView.setLayoutParams(new GridView.LayoutParams(100, 100));
             }else{
@@ -117,50 +97,62 @@ public class ImageAdapter extends BaseAdapter{
         }
 //        imageView.setImageDrawable(makeBmp(mImageIds.elementAt(position).getGates(),
 //        		mImage_bs.elementAt(position)));
-        textView.setText(mImageIds.get(position).getChanNum());
+        textView.setText(mImageIds.elementAt(position).getGate());
         textView.setBackgroundResource(R.drawable.value_on);
         textView.setGravity(Gravity.BOTTOM|Gravity.CENTER);
         textView.setPadding(10, 10, 5, 10);
-        if(mImage_bs.get(position)==1){
+        if(mImageIds.get(position).getState() == 1){
+        	textView.setClickable(false);
+        	textView.setBackgroundResource(R.color.gray_1);
+        }
+        else if(mImage_bs.get(position)==true){
         	textView.setBackgroundResource(R.drawable.value_selected);
-        }else if(mImage_bs.get(position)==2){
-        	textView.setBackgroundResource(R.drawable.value_grower);
-        }else if(mImage_bs.get(position)==100){
-        	textView.setVisibility(View.INVISIBLE);
         }else{
         	textView.setBackgroundResource(R.drawable.value_on);
         }
         return textView;
 	}
-	
+	private LayerDrawable makeBmp(int id, boolean isChosen){
+		Bitmap mainBmp = ((BitmapDrawable)mContext.getResources().getDrawable(id)).getBitmap();
+		
+		// 根据isChosen来选取对勾的图片
+    	Bitmap seletedBmp;
+    	if(isChosen == true){
+    		seletedBmp = BitmapFactory.decodeResource(mContext.getResources(),
+    				R.drawable.btncheck_yes);
+    	}else{
+    		seletedBmp = BitmapFactory.decodeResource(mContext.getResources(),
+    				R.drawable.btncheck_no);
+    	}
+    	// 产生叠加图
+    	Drawable[] array = new Drawable[2];
+    	array[0] = new BitmapDrawable(mainBmp);
+    	array[1] = new BitmapDrawable(seletedBmp);
+    	LayerDrawable la = new LayerDrawable(array);
+    	//setLayerInset(int index, int l, int t, int r, int b)
+    	la.setLayerInset(0, 0, 0, 0, 0);
+    	la.setLayerInset(1, 100, -5, 0, 80 );//右上角
+//    	la.setLayerInset(0, 10, 10, 10, 10 ); 
+    	 
+    	return la;	//返回叠加后的图
+    }
+
 	// 修改选中的״̬
     public void changeState(int position){
     	// 多选
-    	if(multiChoose == true){
-    		if(mImage_bs.get(position) == 2){
-	    		mImage_bs.set(position, 1);	//直接取反即可	
-	    	}else if(mImage_bs.get(position) == 1){
-    			mImage_bs.set(position, 0);	//直接取反即可	
-    		}else if(mImage_bs.get(position) == 0){
-    			mImage_bs.set(position, 1);	//直接取反即可	
-    		}
-    		if((mImage_bs.get(position))== 0){
+    	if(multiChoose == true){	
+    		mImage_bs.setElementAt(!mImage_bs.elementAt(position), position);	//直接取反即可	
+    		if((!mImage_bs.elementAt(position))== true){
     			mImageIds.get(position).setIstrue(false);
-    		}else if((mImage_bs.get(position))== 1){
+    		}else{
     			mImageIds.get(position).setIstrue(true);
     		}
     	}
     	// 单选
     	else{						
 	    	if(lastPosition != -1)
-	    		mImage_bs.set(lastPosition, 0);	//取消上一次的选中状态
-	    	if(mImage_bs.get(position) == 2){
-	    		mImage_bs.set(position, 1);	//直接取反即可	
-	    	}else if(mImage_bs.get(position) == 1){
-    			mImage_bs.set(position, 0);	//直接取反即可	
-    		}else if(mImage_bs.get(position) == 0){
-    			mImage_bs.set(position, 1);	//直接取反即可	
-    		}
+	    		mImage_bs.setElementAt(false, lastPosition);	//取消上一次的选中状态״̬
+	    	mImage_bs.setElementAt(!mImage_bs.elementAt(position), position);	//直接取反即可	
 	    	lastPosition = position;		//记录本次选中的位置
     	}
     	notifyDataSetChanged();		//通知适配器进行更新
@@ -170,13 +162,13 @@ public class ImageAdapter extends BaseAdapter{
     		//��ѡ 
     		if(all){
     			for(int i=0;i<mImage_bs.size();i++){
-    				mImage_bs.set(i, 1);
+    				mImage_bs.setElementAt(true, i);
     				mImageIds.get(i).setIstrue(true);
     			}
     			
     		}else{
     			for(int i=0;i<mImage_bs.size();i++){
-    				mImage_bs.set(i, 0);
+    				mImage_bs.setElementAt(false, i);
     				mImageIds.get(i).setIstrue(false);
     			}
     		}

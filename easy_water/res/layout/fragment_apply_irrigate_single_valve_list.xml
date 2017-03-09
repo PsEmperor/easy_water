@@ -5,53 +5,53 @@
     android:orientation="vertical" >
 
     <RelativeLayout
-        android:layout_width="70dp"
-        android:layout_height="55dp" >
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
 
         <ImageView
             android:id="@+id/text_apply_irrigate_single_valve_list"
-            android:layout_width="65dp"
+            android:layout_width="55dp"
             android:layout_height="55dp"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/text_apply_irrigate_single_valve_list"
-            android:gravity="center"
             android:src="@drawable/value_on"
+            android:gravity="center"
             android:textSize="15sp" />
 
         <TextView
-            android:id="@+id/text_apply_irrigate_single_valve_crop"
-            android:layout_width="30dp"
+            android:id="@+id/text_apply_irrigate_single_valve_user_name"
+            android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="1dp"
+            android:text="王" 
+            android:textColor="@color/black"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/text_apply_irrigate_single_valve_crop"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignBaseline="@+id/text_apply_irrigate_single_valve_user_name"
+            android:layout_alignBottom="@+id/text_apply_irrigate_single_valve_user_name"
+            android:layout_alignRight="@+id/text_apply_irrigate_single_valve_list"
             android:text="土"
             android:textColor="@color/black"
-            android:layout_marginLeft="7dp"
-            android:singleLine="true"
-            android:textSize="13sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/text_apply_irrigate_single_valve_list_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_alignBottom="@+id/text_apply_irrigate_single_valve_list"
             android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
             android:text="1-1"
-            android:textColor="@color/black"
             android:layout_marginBottom="7dp"
-            android:translationX="-2.5dp"
+            android:textColor="@color/black"
             android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/text_apply_irrigate_single_valve_user_name"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:singleLine="true"
-            android:textSize="13sp"
-            android:layout_marginRight="10dp"
-            android:text="王" />
 
     </RelativeLayout>
 

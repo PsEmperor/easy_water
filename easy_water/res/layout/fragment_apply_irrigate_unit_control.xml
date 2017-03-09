@@ -20,21 +20,28 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="50dp"
                     android:background="@color/white" >
 
                     <TextView
                         android:id="@+id/text_apply_unit_control_units"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
+                        android:layout_marginTop="3dp"
                         android:text="141团6连1#地块"
-                        android:singleLine="true"
-                        android:layout_marginLeft="30dp"
-                        android:layout_marginRight="30dp"
                         android:textColor="@color/black" />
 
+                    <TextView
+                        android:id="@+id/text_apply_unit_control_element"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="3dp"
+                        android:text="2#灌溉单元"
+                        android:textColor="@color/black" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -64,15 +71,16 @@
 
                     <TextView
                         android:id="@+id/hlvSimpleList"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@+id/tv_apply_irrigate_project_names"
                         android:gravity="center_vertical|left"
                         android:singleLine="true"
-                        android:text=""
-                        android:layout_marginLeft="120dp"
-                        android:layout_marginRight="25dp"
+                        android:layout_marginLeft="30dp"
+                        android:text="768 亩"
                         android:textColor="@color/gray_1" />
+
                 </RelativeLayout>
 
                 <TextView
@@ -103,7 +111,7 @@
                         android:layout_alignBaseline="@+id/textView6"
                         android:layout_alignBottom="@+id/textView6"
                         android:layout_centerHorizontal="true"
-                        android:text=""
+                        android:text="768 亩"
                         android:textColor="@color/gray_1" />
                 </RelativeLayout>
 
@@ -135,7 +143,7 @@
                         android:layout_alignBaseline="@+id/textView7"
                         android:layout_alignBottom="@+id/textView7"
                         android:layout_centerHorizontal="true"
-                        android:text=""
+                        android:text="6组"
                         android:textColor="@color/gray_1" />
                 </RelativeLayout>
 
@@ -179,13 +187,13 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="155dp"
+                    android:layout_height="150dp"
                     android:background="@color/white" >
 
                     <ListView
                         android:id="@+id/list_apply_irrigate_unit_control_plant"
                         android:layout_width="match_parent"
-                        android:layout_height="155dp"
+                        android:layout_height="150dp"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentTop="true" >
                     </ListView>
@@ -198,115 +206,53 @@
         >
 
         <TextView
-            android:id="@+id/textView_plan"
+            android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="30dp"
-            android:layout_marginTop="7dp"
+            android:layout_marginTop="5dp"
             android:text="当前状态"
-            android:textSize="16sp"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/text_apply_plan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textView4"
+            android:layout_alignBottom="@+id/textView4"
+            android:layout_centerHorizontal="true"
+            android:text="暂无"
             android:textColor="@color/black" />
 
         <ImageView
             android:id="@+id/unit_control_plan"
-            android:layout_width="60dp"
-            android:layout_height="100dp"
+            android:layout_width="50dp"
+            android:layout_height="85dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:layout_marginRight="25dp"
-            android:layout_marginTop="7dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
             android:src="@drawable/project" />
 
         <TextView
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textView_plan"
-            android:layout_below="@+id/textView_plan"
-            android:layout_marginTop="5dp"
-            android:textSize="16sp"
+            android:layout_alignLeft="@+id/textView4"
+            android:layout_below="@+id/textView4"
+            android:layout_marginTop="14dp"
             android:text="灌溉计划"
             android:textColor="@color/black" />
-
-        <TextView
-            android:id="@+id/text_apply_plan_end_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/text_apply_plan_start_time"
-            android:layout_below="@+id/text_apply_plan_start_time"
-            android:layout_marginTop="7dp"
-            android:singleLine="true"
-            android:textSize="15sp"
-            android:translationX="-30dp"
-            android:gravity="left"
-            android:text="" />
-
-        <TextView
-            android:id="@+id/text_apply_plan_pause"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textView5"
-            android:layout_alignBottom="@+id/textView5"
-            android:layout_centerHorizontal="true"
-            android:text=""
-            android:translationX="20dp"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/text_apply_plan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/textView5"
-            android:layout_centerHorizontal="true"
-            android:text=""
-            android:translationX="20dp"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/text_apply_plan_start_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/text_apply_plan"
-            android:layout_below="@+id/text_apply_plan_pause"
-            android:singleLine="true"
-            android:layout_marginTop="7dp"
-            android:translationX="-30dp"
-            android:gravity="left"
-            android:text=""
-            android:textSize="15sp" />
-
-        <TextView
-            android:id="@+id/tv_apply_irrigate_unit_control_end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/tv_apply_irrigate_unit_control_start"
-            android:layout_below="@+id/tv_apply_irrigate_unit_control_start"
-            android:layout_marginTop="7dp"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:text="结束" />
-
-        <TextView
-            android:id="@+id/tv_apply_irrigate_unit_control_start"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textView5"
-            android:layout_below="@+id/textView5"
-            android:layout_marginTop="7dp"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:text="开始" />
 
     </RelativeLayout>
     <Button
     android:id="@+id/btn_apply_irrigate_unit_control_true"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="45dp"
     android:layout_marginLeft="20dp"
-    android:layout_marginRight="25dp"
+    android:layout_marginRight="20dp"
     android:layout_weight="0"
-    android:layout_marginTop="8dp"
     android:text="立刻控制" />
 </LinearLayout>

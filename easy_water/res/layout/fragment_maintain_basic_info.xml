@@ -32,7 +32,6 @@
                 android:layout_alignTop="@+id/textView8"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="55dp"
-                android:textColor="@color/black"
                 android:text="0" />
 
             <ImageView
@@ -50,7 +49,6 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="30dp"
-                android:textColor="@color/black"
                 android:text="最多轮灌组数量" />
         </RelativeLayout>
 
@@ -65,10 +63,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_marginBottom="16dp"
                 android:layout_alignParentLeft="true"
+                android:layout_marginBottom="16dp"
                 android:layout_marginLeft="30dp"
-                android:textColor="@color/black"
                 android:text="最多同时开阀数量" />
 
             <TextView
@@ -78,8 +75,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="55dp"
-                android:textColor="@color/black"
-                android:text="0" />
+                android:text="6" />
 
             <ImageView
                 android:id="@+id/imageView3"
@@ -99,15 +95,13 @@
             android:layout_below="@+id/layout_maintain_basic_info_max_orroagte_valve" >
 
             <TextView
-                android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
                 android:layout_marginBottom="16dp"
                 android:layout_marginLeft="30dp"
-                android:text="反过滤冲洗器时间"
-                android:textColor="@color/black" />
+                android:text="反过滤冲洗器时间" />
 
             <TextView
                 android:id="@+id/text_maintain_basic_info_filter"
@@ -116,8 +110,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="55dp"
-                android:text="0时"
-                android:textColor="@color/black" />
+                android:text="0时" />
 
             <ImageView
                 android:id="@+id/imageView2"
@@ -128,60 +121,43 @@
                 android:layout_marginRight="25dp"
                 android:src="@drawable/image_gray_row" />
         </RelativeLayout>
-        <RelativeLayout
-            android:id="@+id/layout_apply_irriagte_project_single_time_long"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_below="@+id/layout_maintain_basic_info_max_orroagte_filter"
-            android:background="@color/white" >
+<RelativeLayout
+                    android:id="@+id/layout_apply_irriagte_project_single_time_long"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/plan_layout_height"
+                    android:layout_marginTop="1dp"
+                    android:background="@color/white" 
+                    android:layout_below="@+id/layout_maintain_basic_info_max_orroagte_filter" >
 
-            <ImageView
-                android:id="@+id/imageview2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="25dp"
-                android:src="@drawable/image_gray_row" />
+                    <ImageView
+                        android:id="@+id/imageview2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="25dp"
+                        android:src="@drawable/image_gray_row" />
 
-            <TextView
-                android:id="@+id/textview3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/imageview2"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="30dp"
-                android:text="水泵休息时间"
-                 android:layout_alignParentBottom="true"
-                android:layout_marginBottom="16dp"
-                android:textColor="@color/black" />
+                    <TextView
+                        android:id="@+id/text_apply_irriagte_project_single_time_long"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="0时" 
+                        android:layout_marginRight="55dp"
+                         android:layout_alignParentRight="true"/>
 
-            <ToggleButton
-                android:id="@+id/toggle_maintain_basic_info_time_longs"
-                android:layout_width="45dp"
-                android:layout_height="25dp"
-                android:layout_alignBaseline="@+id/text_apply_irriagte_project_single_time_long"
-                android:layout_alignBottom="@+id/text_apply_irriagte_project_single_time_long"
-                android:layout_alignParentRight="true"
-                android:background="@drawable/personalinformation_selector"
-                android:disabledAlpha="?android:disabledAlpha"
-                android:textOff="@null"
-                android:layout_marginRight="55dp"
-                android:textOn="@null" />
+                    <TextView
+                        android:id="@+id/textview3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="30dp"
+                        android:gravity="center_vertical"
+                        android:text="允许最长灌溉时间/日"
+                        android:layout_centerVertical="true" />
 
-            <TextView
-                android:id="@+id/text_apply_irriagte_project_single_time_long"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/imageview2"
-                android:layout_toRightOf="@+id/textview3"
-                android:text="0时"
-                android:layout_marginLeft="28dp"
-                android:gravity="right"
-                android:textColor="@color/black" />
-
-        </RelativeLayout>
-
+                </RelativeLayout>
         <RelativeLayout
             android:id="@+id/layout_maintain_basic_info_max_orroagte_restnight"
             android:layout_width="match_parent"
@@ -201,23 +177,30 @@
                 android:id="@+id/TextViewX"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/imageView_test_gray_row"
                 android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="30dp"
                 android:gravity="center_vertical"
-                android:text="夜间休息时间"
-                android:textColor="@color/black" />
+                android:text="夜间休息时间" />
 
             <TextView
-                android:id="@+id/text_maintain_basic_info_max_orroagte_restnight_start"
+                android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/textView1"
-                android:layout_alignBottom="@+id/textView1"
-                android:layout_toRightOf="@+id/textView1"
-                android:text="00：00"
-                android:layout_marginLeft="5dp"
-                android:textColor="@color/black" />
+                android:layout_above="@+id/TextViewX"
+                android:layout_marginBottom="2dp"
+                android:layout_marginRight="15dp"
+                android:layout_toLeftOf="@+id/text_maintain_basic_info_max_orroagte_restnight_start"
+                android:text="开始时间" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/textView1"
+                android:layout_below="@+id/TextViewX"
+                android:layout_marginTop="2dp"
+                android:text="结束时间" />
 
             <TextView
                 android:id="@+id/text_maintain_basic_info_max_orroagte_restnight_end"
@@ -225,45 +208,20 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@+id/textView2"
                 android:layout_alignBottom="@+id/textView2"
-                android:layout_marginRight="18dp"
-                android:layout_toLeftOf="@+id/imageView_test_gray_row"
-                android:layout_marginLeft="5dp"
-                android:text="00：00"
-                android:textColor="@color/black" />
+                android:layout_alignLeft="@+id/text_maintain_basic_info_max_orroagte_restnight_start"
+                android:gravity="center_vertical"
+                android:text="00：00" />
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/text_maintain_basic_info_max_orroagte_restnight_start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/TextViewX"
-                android:layout_alignParentBottom="true"
-                android:text="开始时间"
-                android:layout_marginBottom="10dp"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_toLeftOf="@+id/text_maintain_basic_info_max_orroagte_restnight_end"
-                android:text="结束时间"
-                android:layout_marginBottom="10dp"
-                android:textColor="@color/black" />
-
-            <ToggleButton
-                android:id="@+id/toggle_maintain_basic_info_time_night"
-                android:layout_width="45dp"
-                android:layout_height="25dp"
-                android:layout_alignBaseline="@+id/TextViewX"
-                android:layout_alignBottom="@+id/TextViewX"
+                android:layout_alignBaseline="@+id/textView1"
+                android:layout_alignBottom="@+id/textView1"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/personalinformation_selector"
-                android:disabledAlpha="?android:disabledAlpha"
-                android:textOff="@null"
                 android:layout_marginRight="55dp"
-                android:textOn="@null" />
-
+                android:gravity="center_vertical"
+                android:text="00：00" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -271,7 +229,8 @@
             android:layout_width="match_parent"
             android:layout_height="85dp"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/layout_maintain_basic_info_max_orroagte_restnight" >
+            android:layout_below="@+id/layout_maintain_basic_info_max_orroagte_restnight"
+            >
 
             <ImageView
                 android:id="@+id/ImageView01"
@@ -289,7 +248,6 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="30dp"
-                android:textColor="@color/black"
                 android:text="灌季" />
 
             <TextView
@@ -299,7 +257,6 @@
                 android:layout_alignLeft="@+id/TextView01"
                 android:layout_below="@+id/textView3"
                 android:layout_marginTop="2dp"
-                android:textColor="@color/black"
                 android:text="结束时间" />
 
             <TextView
@@ -309,32 +266,32 @@
                 android:layout_alignBaseline="@+id/TextView01"
                 android:layout_alignBottom="@+id/TextView01"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="55dp"
                 android:gravity="center_vertical"
-                android:textColor="@color/black"
+                android:layout_marginRight="55dp"
                 android:text="0000-00-00" />
 
             <TextView
                 android:id="@+id/TextView01"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/ImageView01"
-                android:layout_marginLeft="35dp"
-                android:layout_toRightOf="@+id/textView3"
-                android:textColor="@color/black"
+                android:layout_above="@+id/textView3"
+                android:layout_marginRight="15dp"
+                android:layout_toLeftOf="@+id/text_maintain_basic_info_max_orroagte_season_start"
+                android:layout_marginBottom="2dp"
                 android:text="开始时间" />
 
             <TextView
                 android:id="@+id/text_maintain_basic_info_max_orroagte_season_end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/text_maintain_basic_info_max_orroagte_season_start"
-                android:layout_below="@+id/ImageView01"
+                android:layout_alignBaseline="@+id/TextView02"
+                android:layout_alignBottom="@+id/TextView02"
+                android:layout_toRightOf="@+id/TextView01"
                 android:gravity="center_vertical"
-                android:textColor="@color/black"
                 android:text="0000-00-00" />
+
         </RelativeLayout>
+        
     </RelativeLayout>
-    
 
 </LinearLayout>

@@ -2,11 +2,11 @@ package ps.emperor.easy_water.adapter;
 
 import java.util.List;
 
-import ps.emperor.easy_water.entity.ApplyIrrigationProjectBean.infoList;
+
+
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.entity.ApplyIrrigationProjectBean;
 import ps.emperor.easy_water.greendao.IrrigationProject;
-import ps.emperor.easy_water.utils.CheckUtil;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,14 +22,56 @@ import android.widget.TextView;
  */
 public class Myadapter extends BaseAdapter {
 
+//	private Context context;
+//	public List<ApplyIrrigationProjectBean> mType = null;
+//	
+//	public Myadapter(Context context,List<ApplyIrrigationProjectBean> list) {
+//		super(context);
+//		this.context = context;
+//		this.mType = list;
+//	}
+//
+//	@Override
+//	public View MyGetView(int position, View convertView, ViewGroup parent) {
+//		final ViewHolder viewHolder;
+//		if (convertView == null) {
+//			convertView = inflater.inflate(R.layout.fragment_apply_irrigate_project_list, null);
+//			viewHolder = new ViewHolder();
+//			viewHolder.group = (TextView) convertView.findViewById(R.id.image_apply_group);
+//			viewHolder.time_start = (TextView) convertView.findViewById(R.id.text_apply_irriagte_time_start);
+//			viewHolder.time_end = (TextView) convertView.findViewById(R.id.text_apply_irriagte_time_end);
+//			convertView.setTag(viewHolder);
+//		} else {
+//			viewHolder = (ViewHolder) convertView.getTag();
+//		}
+//		ApplyIrrigationProjectBean applyIrrigationProjectBean = list.get(position);
+//		viewHolder.group.setText(applyIrrigationProjectBean.group);
+//		viewHolder.time_start.setText(applyIrrigationProjectBean.time_start);
+//		viewHolder.time_end.setText(applyIrrigationProjectBean.time_end);
+//		notifyDataSetChanged();
+//		return convertView;
+//
+//	}
+//
+//	class ViewHolder {
+//		TextView group;
+//		TextView time_start;
+//		TextView time_end;
+//	}
+//
+//	@Override
+//	public void onClick(View v) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+
 	private Context con;
-	public List<infoList> mType = null;
-	private String group;
+	public List<ApplyIrrigationProjectBean> mType = null;
 
 
 	// public static WifiType wiType = new WifiType();
 
-	public Myadapter(Context con, List<infoList> list) {
+	public Myadapter(Context con, List<ApplyIrrigationProjectBean> list) {
 		this.con = con;
 		this.mType = list;
 	
@@ -63,18 +105,15 @@ public class Myadapter extends BaseAdapter {
 			holder.group = (TextView) convertView.findViewById(R.id.image_apply_group);
 			holder.time_start = (TextView) convertView.findViewById(R.id.text_apply_irriagte_time_start);
 			holder.time_end = (TextView) convertView.findViewById(R.id.text_apply_irriagte_time_end);
-			holder.time_continue = (TextView) convertView.findViewById(R.id.text_apply_irriagte_time_continue);
-			holder.time_rest = (TextView) convertView.findViewById(R.id.text_apply_irriagte_time_rest);
+	
+			holder.group.setText(mType.get(pos).group);
+			holder.time_start.setText(mType.get(pos).time_start);
+			holder.time_end.setText(mType.get(pos).time_end);
 			convertView.setTag(holder);
+
 		} else {
 			holder = (myV) convertView.getTag();
 		}
-		group = mType.get(pos).getGroupName().substring(1, mType.get(pos).getGroupName().length());
-		holder.group.setText(group);
-		holder.time_start.setText(mType.get(pos).getStartTime());
-		holder.time_end.setText(mType.get(pos).getEndTime());
-		holder.time_continue.setText(mType.get(pos).getDuration());
-		holder.time_rest.setText(mType.get(pos).getRestTime());
 		return convertView;
 	}
 
@@ -82,8 +121,6 @@ public class Myadapter extends BaseAdapter {
 		TextView group;
 		TextView time_start;
 		TextView time_end;
-		TextView time_continue;
-		TextView time_rest;
 	}
 
 	

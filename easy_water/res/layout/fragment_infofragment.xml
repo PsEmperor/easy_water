@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" 
-    android:background="@color/gray_2">
+    android:background="@color/gray_3">
     
 <ps.emperor.easy_water.view.MainActionBar
         android:id="@+id/fragment_informationfragment"
@@ -43,7 +43,7 @@
     </LinearLayout>
         <LinearLayout
             android:id="@+id/linear_infofragment_test"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="fill_parent"
             android:orientation="vertical" >
         </LinearLayout>

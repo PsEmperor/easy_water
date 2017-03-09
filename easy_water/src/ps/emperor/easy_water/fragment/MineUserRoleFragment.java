@@ -8,7 +8,6 @@ import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -18,17 +17,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import ps.emperor.easy_water.R;
-import ps.emperor.easy_water.activity.MineUserRoleChooseActivity;
-import ps.emperor.easy_water.adapter.RoleAdapter;
-import ps.emperor.easy_water.entity.RoleBean;
-import ps.emperor.easy_water.entity.RoleBean;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.view.MainActionBar;
 
@@ -39,16 +32,14 @@ import ps.emperor.easy_water.view.MainActionBar;
  * @version 2016-5-17 下午14：10
  */
 @SuppressLint("NewApi")
-public class MineUserRoleFragment extends Fragment implements OnClickListener,OnItemClickListener {
+public class MineUserRoleFragment extends Fragment implements OnClickListener {
 
 	private LayoutInflater mInflater;
 	private MainActionBar actionBar;
 	private TextView role;
 	private ListView listView;
-	private List<RoleBean> RoleBeans;
-	private RoleAdapter adapter;
+	private List<String> groups;
 	private int tag;
-	RoleBean bean;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,7 +51,7 @@ public class MineUserRoleFragment extends Fragment implements OnClickListener,On
 
 		actionBar = (MainActionBar) view.findViewById(R.id.actionbar_user_role);
 		actionBar.setLeftIcon(R.drawable.btn_back_selector);
-		actionBar.setRightGone();
+		actionBar.setRightIcon(R.drawable.ic_launcher);
 		actionBar.setTitle("用户角色申请");
 		actionBar.setActionBarOnClickListener(this);
 
@@ -81,42 +72,18 @@ public class MineUserRoleFragment extends Fragment implements OnClickListener,On
 
 		listView = (ListView) view.findViewById(R.id.list_user_role);
 
-		RoleBeans = new ArrayList<RoleBean>();
-		 
-		bean = new RoleBean();
-		bean.setRole("高级管理员");
-		bean.setMsg("高级管理员是该系统中最高等级的管理员 可以查看并操作所有的数据！");
-		RoleBeans.add(bean);
-		
-		bean = new RoleBean();
-		bean.setRole("综合管理员");
-		bean.setMsg("综合管理员是灌溉管理员与配水管理员的结合 可以查看并操作有关灌溉和配水的所有数据！");
-		RoleBeans.add(bean);
-		
-		bean = new RoleBean();
-		bean.setRole("灌溉管理员");
-		bean.setMsg("灌溉管理员是管理灌溉单元信息的角色 可以查看并操作有关灌溉的所有数据！");
-		RoleBeans.add(bean);
-		
-		bean = new RoleBean();
-		bean.setRole("配水管理员");
-		bean.setMsg("配水管理员是管理配水设备信息的角色 可以查看并操作有关配水的所有数据！");
-		RoleBeans.add(bean);
-		
-		bean = new RoleBean();
-		bean.setRole("安装调试员");
-		bean.setMsg("安装调试员是管理设备配置信息的角色 可以查看并操作有关设备配置的所有数据！");
-		RoleBeans.add(bean);
-		
-		bean = new RoleBean();
-		bean.setRole("种植户");
-		bean.setMsg("种植户是仅可以进行查询并修改有关自身的灌溉信息和配水信息的角色！");
-		RoleBeans.add(bean);
-		
-		adapter = new RoleAdapter(getActivity());
-		adapter.addData(RoleBeans, true);
-		listView.setAdapter(adapter);
-		listView.setOnItemClickListener(this);
+		groups = new ArrayList<String>();
+
+		groups.add("高级管理员");
+		groups.add("综合管理员");
+		groups.add("灌溉管理员");
+		groups.add("配水管理员");
+		groups.add("安装调试员");
+		groups.add("虚拟测试");
+		groups.add("种植户");
+
+		listView.setAdapter(new ArrayAdapter<String>(getActivity(),
+				android.R.layout.simple_list_item_single_choice, groups));
 		return view;
 
 	}
@@ -129,31 +96,40 @@ public class MineUserRoleFragment extends Fragment implements OnClickListener,On
 		FragmentManager fgManager = getFragmentManager();
 		FragmentTransaction transaction = fgManager.beginTransaction();
 		if (position == 0) {
-			Intent intent = new Intent(getActivity(),MineUserRoleChooseActivity.class);
-			startActivity(intent);
-			SharedUtils.setParam(getActivity(), "tag", tag);
+
 		} else if (position == 1) {
 			tag = 1;
-			Intent intent = new Intent(getActivity(),MineUserRoleChooseActivity.class);
-			startActivity(intent);
+			MineIrrigationAddChangeFragment fragment1 = new MineIrrigationAddChangeFragment();
+			// transaction.setCustomAnimations(R.anim.right_in,
+			// R.anim.right_out);
+			transaction
+					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.replace(R.id.fl, fragment1, "main");
+			transaction.commit();
 			SharedUtils.setParam(getActivity(), "tag", tag);
 		} else if (position == 2) {
-			Intent intent = new Intent(getActivity(),MineUserRoleChooseActivity.class);
-			startActivity(intent);
-			SharedUtils.setParam(getActivity(), "tag", tag);
+			MineIrrigationAddChangeFragment fragment1 = new MineIrrigationAddChangeFragment();
+			// transaction.setCustomAnimations(R.anim.right_in,
+			// R.anim.right_out);
+			transaction
+					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.replace(R.id.fl, fragment1, "main");
+			transaction.commit();
 		} else if (position == 3) {
-			Intent intent = new Intent(getActivity(),MineUserRoleChooseActivity.class);
-			startActivity(intent);
-			SharedUtils.setParam(getActivity(), "tag", tag);
+			MineWaterAddChangeFragment fragment1 = new MineWaterAddChangeFragment();
+			// transaction.setCustomAnimations(R.anim.right_in,
+			// R.anim.right_out);
+			transaction
+					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.replace(R.id.fl, fragment1, "main");
+			transaction.commit();
 		} else if (position == 4) {
-			Intent intent = new Intent(getActivity(),MineUserRoleChooseActivity.class);
-			startActivity(intent);
-			SharedUtils.setParam(getActivity(), "tag", tag);
+
 		} else if (position == 5) {
-			Intent intent = new Intent(getActivity(),MineUserRoleChooseActivity.class);
-			startActivity(intent);
-			SharedUtils.setParam(getActivity(), "tag", tag);
-		} 
+
+		} else if (position == 6) {
+
+		}
 	}
 
 	@Override
@@ -165,7 +141,8 @@ public class MineUserRoleFragment extends Fragment implements OnClickListener,On
 			MineUserInfoFragment fragment = new MineUserInfoFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
-			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_right_in, R.anim.slide_fragment_horizontal_left_out);
+			transaction
+					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 			transaction.replace(R.id.fl, fragment, "main");
 			transaction.commit();
 			break;
@@ -175,12 +152,6 @@ public class MineUserRoleFragment extends Fragment implements OnClickListener,On
 		default:
 			break;
 		}
-	}
-
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,
-			long id) {
-		PickNum();
 	}
 
 }

@@ -507,7 +507,7 @@ public class ValveDeviceFragment extends Fragment implements android.view.View.O
 		}
 
 		
-		ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,list);
+		ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(),R.layout.listview_custom_item,list);
 		adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 		sp_gd.setAdapter(adapter);
 		

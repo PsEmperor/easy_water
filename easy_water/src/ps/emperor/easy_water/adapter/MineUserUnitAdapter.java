@@ -2,19 +2,19 @@ package ps.emperor.easy_water.adapter;
 
 
 import android.content.Context;
-
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import ps.emperor.easy_water.R;
-import ps.emperor.easy_water.entity.AuthorizedBeen.infoList;
+import ps.emperor.easy_water.entity.MineUserUnitBean;
+
 /**
  * (我)授权单位
  * 
  * @author 毛国江
  * @version 2016-5-18 上午11:12
  */
-public class MineUserUnitAdapter extends MyBaseAdapter<infoList> {
+public class MineUserUnitAdapter extends MyBaseAdapter<MineUserUnitBean> {
 
 	private Context context;
 
@@ -34,8 +34,8 @@ public class MineUserUnitAdapter extends MyBaseAdapter<infoList> {
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		infoList mineUserUnitBean = list.get(position);
-		viewHolder.unit.setText(mineUserUnitBean.getAuthManage());
+		MineUserUnitBean mineUserUnitBean = list.get(position);
+		viewHolder.unit.setText(mineUserUnitBean.unit);
 		return convertView;
 
 	}

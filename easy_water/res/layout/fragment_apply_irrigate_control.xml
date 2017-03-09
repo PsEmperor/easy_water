@@ -13,25 +13,32 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:background="@color/white" >
 
         <TextView
             android:id="@+id/text_apply_irrigate_control_unit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:singleLine="true"
+            android:layout_marginTop="5dp"
             android:text="141团6连1#地块" />
+
+        <TextView
+            android:id="@+id/text_apply_irrigate_control_element"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"
+            android:text="2#灌溉单元" />
 
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="140dp"
+        android:layout_height="130dp"
         android:layout_marginTop="10dp" >
 
         <RelativeLayout
@@ -51,7 +58,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="10dp"
-                android:text="" />
+                android:text="正在执行灌溉任务" />
 
             <TextView
                 android:id="@+id/textView1"
@@ -121,7 +128,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp">
 
-        <GridView
+        <ps.emperor.easy_water.view.MyGridView
             android:id="@+id/grid_apply_irrigate_control_fm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -129,7 +136,7 @@
             android:layout_alignParentTop="true"
             android:numColumns="4" 
             >
-        </GridView>
+        </ps.emperor.easy_water.view.MyGridView>
     </RelativeLayout>
 
     <RelativeLayout

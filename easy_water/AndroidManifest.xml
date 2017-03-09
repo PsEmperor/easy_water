@@ -109,11 +109,9 @@
         <activity android:name="ps.emperor.easy_water.activity.TimeAvtivityDialogWater" />
         <activity
             android:name="ps.emperor.easy_water.activity.IrriagteOrWaterActivity"  
-            android:windowSoftInputMode="adjustPan"   
-             />
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name="ps.emperor.easy_water.activity.MainTainPresentrrigateActivity" />
         <activity android:name="ps.emperor.easy_water.activity.MainTainGateInfoActivity" />
-        <activity android:name="ps.emperor.easy_water.activity.MineUserRoleChooseActivity" />
         <activity
             android:name=".BlueToothActivity"
             android:launchMode="singleTask" >

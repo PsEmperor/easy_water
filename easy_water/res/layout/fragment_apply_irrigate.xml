@@ -23,13 +23,13 @@
         <EditText
             android:id="@+id/ed_apply_irrigation_add"
             android:layout_width="match_parent"
-            android:layout_height="35dp"
+            android:layout_height="30dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:background="@color/white"
             android:gravity="center_vertical"
             android:paddingLeft="15dp"
-            android:hint="請輸入设备名称"
+            android:hint="請輸入授權單位"
             android:textColor="@color/gray_1"
             android:layout_marginRight="60dp" 
             android:singleLine="true"/>

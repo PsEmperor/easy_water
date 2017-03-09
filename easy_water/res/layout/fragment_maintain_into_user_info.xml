@@ -101,7 +101,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
             android:singleLine="true"
-            android:text="联系人手机"
+            android:text="联系人电话"
             android:textColor="@color/black"
             android:textSize="16sp" />
 

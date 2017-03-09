@@ -23,12 +23,11 @@ public class MainTainPresentrrigateActivity extends BaseActivity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_maintain_present_irrigate);
 		manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-		
 		FragmentManager fgManager = getFragmentManager();
 		FragmentTransaction transaction = fgManager.beginTransaction();
 		MainTainIrrigateInfoFragment fragment = new MainTainIrrigateInfoFragment();
 		transaction
-		.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 		transaction.replace(R.id.fragment_maintain_present_irrigate, fragment, "main");
 		transaction.commit();
 	}

@@ -23,352 +23,342 @@
             android:layout_height="70dp"
             android:orientation="vertical" >
 
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/gray_3" >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/gray_3" >
 
-    <TextView
-        android:id="@+id/text_maintain_irrigat_info_unit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:text="141团6连1#地块3#灌溉单元"
-        android:textColor="@color/black" />
+                <TextView
+                    android:id="@+id/text_maintain_irrigat_info_unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:text="141团6连1#地块3#灌溉单元"
+                    android:textColor="@color/black" />
 
-    <RelativeLayout
-        android:id="@+id/layout_maintain_basic_info_max_irrigat_group_examine"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_below="@+id/rv_maintain_irrigat_info_super" >
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignRight="@+id/textView1"
+                    android:layout_below="@+id/textView1"
+                    android:layout_marginTop="10dp"
+                    android:text="位置"
+                    android:textColor="@color/black" />
 
-        <TextView
-            android:id="@+id/text_maintain_basic_info_max_irrigat_group_examine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="45dp"
-            android:text="0"
-            android:textColor="@color/black" />
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/textView6"
+                    android:layout_below="@+id/textView6"
+                    android:layout_marginTop="10dp"
+                    android:text="上级设备" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="30dp"
-            android:text="最多轮灌组数量"
-            android:textColor="@color/black" />
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/text_maintain_irrigat_info_address"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="10dp"
+                    android:text="控制面积"
+                    android:textColor="@color/black" />
 
-    <RelativeLayout
-        android:id="@+id/layout_maintain_basic_info_max_orroagte_valve_examine"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/layout_maintain_basic_info_max_irrigat_group_examine" >
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/text_maintain_irrigat_info_unit"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="21dp"
+                    android:text="设备ID"
+                    android:textColor="@color/black" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="30dp"
-            android:layout_centerVertical="true"
-            android:text="最多同时开阀数量"
-            android:textColor="@color/black" />
+                <TextView
+                    android:id="@+id/tv_maintain_irrigat_info_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/textView3"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="55dp"
+                    android:text="SB2016956495" />
 
-        <TextView
-            android:id="@+id/text_maintain_basic_info_max_orroagte_valve_examine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="45dp"
-            android:text="6"
-            android:textColor="@color/black" />
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/text_maintain_irrigat_info_equipment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/textView2"
+                    android:layout_alignBottom="@+id/textView2"
+                    android:layout_alignRight="@+id/tv_maintain_irrigat_info_id"
+                    android:text="8#地块1斗渠进水闸" />
 
-    <RelativeLayout
-        android:id="@+id/layout_maintain_basic_info_max_orroagte_filter_examine"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/layout_maintain_basic_info_max_orroagte_valve_examine" >
+                <TextView
+                    android:id="@+id/text_maintain_irrigat_info_area"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/textView2"
+                    android:layout_alignRight="@+id/text_maintain_irrigat_info_equipment"
+                    android:text="987亩" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="30dp"
-            android:text="反过滤冲洗器时间"
-			android:layout_centerVertical="true"
-            android:textColor="@color/black" />
+                <TextView
+                    android:id="@+id/text_maintain_irrigat_info_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignRight="@+id/text_maintain_irrigat_info_area"
+                    android:layout_below="@+id/text_maintain_irrigat_info_addres"
+                    android:layout_marginTop="5dp"
+                    android:text="N : 40.534235" />
 
-        <TextView
-            android:id="@+id/text_maintain_basic_info_filter_examine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="45dp"
-            android:text="0"
-            android:textColor="@color/black" />
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/text_maintain_irrigat_info_addres"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/textView3"
+                    android:layout_alignBottom="@+id/textView3"
+                    android:layout_alignRight="@+id/text_maintain_irrigat_info_address"
+                    android:text="E : 118.476542" />
+            </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/layout_maintain_basic_info_max_orroagte_restnight_examine"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_below="@+id/layout_maintain_basic_info_max_orroagte_filter_examine" >
+            <RelativeLayout
+                android:id="@+id/layout_maintain_basic_info_max_irrigat_group_examine"
+                android:layout_width="match_parent"
+                android:layout_height="45dp" >
 
-        <TextView
-            android:id="@+id/TextViewX"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="30dp"
-            android:gravity="center_vertical"
-            android:text="夜间休息时间"
-            android:textColor="@color/black" />
+                <TextView
+                    android:id="@+id/text_maintain_basic_info_max_irrigat_group_examine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@+id/textView8"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="55dp"
+                    android:text="0" />
 
-        <TextView
-            android:id="@+id/textView_test_end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textView_test_start"
-            android:layout_below="@+id/TextViewX"
-            android:layout_marginTop="2dp"
-            android:text="结束时间"
-            android:textColor="@color/black" />
+                <ImageView
+                    android:id="@+id/imageView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="25dp"
+                    android:src="@drawable/image_gray_row" />
 
-        <TextView
-            android:id="@+id/text_maintain_basic_info_max_orroagte_restnight_end_examine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textView_test_end"
-            android:layout_alignBottom="@+id/textView_test_end"
-            android:layout_alignLeft="@+id/text_maintain_basic_info_max_orroagte_restnight_start_examine"
-            android:gravity="center_vertical"
-            android:text="00：00"
-            android:textColor="@color/black" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="30dp"
+                    android:text="最多轮灌组数量" />
+            </RelativeLayout>
 
-        <TextView
-            android:id="@+id/text_maintain_basic_info_max_orroagte_restnight_start_examine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textView_test_start"
-            android:layout_alignBottom="@+id/textView_test_start"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="45dp"
-            android:gravity="center_vertical"
-            android:text="00：00"
-            android:textColor="@color/black" />
+            <RelativeLayout
+                android:id="@+id/layout_maintain_basic_info_max_orroagte_valve_examine"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/layout_maintain_basic_info_max_irrigat_group" >
 
-        <TextView
-            android:id="@+id/textView_test_start"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/TextViewX"
-            android:layout_marginBottom="2dp"
-            android:layout_marginLeft="30dp"
-            android:layout_toRightOf="@+id/TextViewX"
-            android:text="开始时间"
-            android:textColor="@color/black" />
-    </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginLeft="30dp"
+                    android:text="最多同时开阀数量" />
 
-    <RelativeLayout
-        android:id="@+id/layout_maintain_basic_info_season_examine"
-        android:layout_width="match_parent"
-        android:layout_height="85dp"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/layout_maintain_basic_info_max_orroagte_restnight_examine" >
+                <TextView
+                    android:id="@+id/text_maintain_basic_info_max_orroagte_valve_examine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="55dp"
+                    android:text="6" />
 
-        <TextView
-            android:id="@+id/textView_test_examine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="30dp"
-            android:text="灌季" />
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="25dp"
+                    android:src="@drawable/image_gray_row" />
+            </RelativeLayout>
 
-        <TextView
-            android:id="@+id/TextView02"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/TextView01"
-            android:layout_below="@+id/textView_test_examine"
-            android:layout_marginTop="2dp"
-            android:text="结束时间" />
+            <RelativeLayout
+                android:id="@+id/layout_maintain_basic_info_max_orroagte_filter_examine"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/layout_maintain_basic_info_max_orroagte_valve_examine" >
 
-        <TextView
-            android:id="@+id/text_maintain_basic_info_max_orroagte_season_start_examine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/TextView01"
-            android:layout_alignBottom="@+id/TextView01"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="45dp"
-            android:gravity="center_vertical"
-            android:text="0000-00-00" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginLeft="30dp"
+                    android:text="反过滤冲洗器时间" />
 
-        <TextView
-            android:id="@+id/TextView01"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/textView_test_examine"
-            android:layout_marginBottom="2dp"
-            android:layout_marginLeft="50dp"
-            android:layout_toRightOf="@+id/textView_test_examine"
-            android:text="开始时间" />
+                <TextView
+                    android:id="@+id/text_maintain_basic_info_filter_examine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="55dp"
+                    android:text="0" />
 
-        <TextView
-            android:id="@+id/text_maintain_basic_info_max_orroagte_season_end_examine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/TextView02"
-            android:layout_alignBottom="@+id/TextView02"
-            android:layout_alignLeft="@+id/text_maintain_basic_info_max_orroagte_season_start_examine"
-            android:gravity="center_vertical"
-            android:text="0000-00-00" />
-    </RelativeLayout>
+                <ImageView
+                    android:id="@+id/imageView_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="25dp"
+                    android:src="@drawable/image_gray_row" />
+            </RelativeLayout>
 
+            <RelativeLayout
+                android:id="@+id/layout_maintain_basic_info_max_orroagte_restnight_examine"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_below="@+id/layout_maintain_basic_info_max_orroagte_filter_examine" >
 
-    
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="25dp"
+                    android:src="@drawable/image_gray_row" />
 
-    <RelativeLayout
-        android:id="@+id/rv_maintain_irrigat_info_super"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/rv_maintain_irrigat_info_area" >
+                <TextView
+                    android:id="@+id/TextViewX"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="30dp"
+                    android:gravity="center_vertical"
+                    android:text="夜间休息时间" />
 
-        <TextView
-            android:id="@+id/text_maintain_irrigat_info_equipment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="45dp"
-            android:text="配水设备5"
-            android:textColor="@color/black" />
+                <TextView
+                    android:id="@+id/textView_test_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/TextViewX"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_toLeftOf="@+id/text_maintain_basic_info_max_orroagte_restnight_start_examine"
+                    android:text="开始时间" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="30dp"
-            android:text="上级设备"
-            android:textColor="@color/black" />
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/textView_test_end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/textView_test_start"
+                    android:layout_below="@+id/TextViewX"
+                    android:layout_marginTop="2dp"
+                    android:text="结束时间" />
 
-    <RelativeLayout
-        android:id="@+id/rv_maintain_irrigat_info_area"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/rv_maintain_irrigat_info_address" >
+                <TextView
+                    android:id="@+id/text_maintain_basic_info_max_orroagte_restnight_end_examine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/textView_test_end"
+                    android:layout_alignBottom="@+id/textView_test_end"
+                    android:layout_alignLeft="@+id/text_maintain_basic_info_max_orroagte_restnight_start_examine"
+                    android:gravity="center_vertical"
+                    android:text="00：00" />
 
-        <TextView
-            android:id="@+id/text_maintain_irrigat_info_area"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="45dp"
-            android:text="987亩"
-            android:textColor="@color/black" />
+                <TextView
+                    android:id="@+id/text_maintain_basic_info_max_orroagte_restnight_start_examine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/textView_test_start"
+                    android:layout_alignBottom="@+id/textView_test_start"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="55dp"
+                    android:gravity="center_vertical"
+                    android:text="00：00" />
+            </RelativeLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="30dp"
-            android:text="控制面积"
-            android:textColor="@color/black" />
-    </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/layout_maintain_basic_info_season_examine"
+                android:layout_width="match_parent"
+                android:layout_height="85dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/layout_maintain_basic_info_max_orroagte_valve_examine" >
 
-    <RelativeLayout
-        android:id="@+id/rv_maintain_irrigat_info_address"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/rv_maintain_irrigat_info_id" >
+                <ImageView
+                    android:id="@+id/ImageView01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="25dp"
+                    android:src="@drawable/image_gray_row" />
 
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="3dp"
-            android:text="位置"
-            android:textColor="@color/black" />
-        
-        <TextView
-        android:id="@+id/text_maintain_irrigat_info_address"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/text_maintain_irrigat_info_addres"
-        android:layout_below="@+id/text_maintain_irrigat_info_addres"
-        android:gravity="right"
-        android:singleLine="true"
-        android:text="N : 40.534235"
-        android:layout_marginTop="5dp"
-        android:textColor="@color/black" />
+                <TextView
+                    android:id="@+id/textView_test_examine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="30dp"
+                    android:text="灌季" />
 
-        <TextView
-            android:id="@+id/text_maintain_irrigat_info_addres"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="45dp"
-            android:layout_marginTop="3dp"
-            android:text="E : 118.476542"
-            android:textColor="@color/black" />
+                <TextView
+                    android:id="@+id/TextView02"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/TextView01"
+                    android:layout_below="@+id/textView_test_examine"
+                    android:layout_marginTop="2dp"
+                    android:text="结束时间" />
 
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/text_maintain_basic_info_max_orroagte_season_start_examine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/TextView01"
+                    android:layout_alignBottom="@+id/TextView01"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="55dp"
+                    android:gravity="center_vertical"
+                    android:text="0000-00-00" />
 
-    <RelativeLayout
-        android:id="@+id/rv_maintain_irrigat_info_id"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/text_maintain_irrigat_info_unit"
-        android:layout_marginTop="10dp" >
+                <TextView
+                    android:id="@+id/TextView01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/textView_test_examine"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_toLeftOf="@+id/text_maintain_basic_info_max_orroagte_season_start_examine"
+                    android:text="开始时间" />
 
-        <TextView
-            android:id="@+id/tv_maintain_irrigat_info_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="45dp"
-            android:text="IDASNDOAJP"
-            android:textColor="@color/black" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="30dp"
-            android:text="设备ID"
-            android:textColor="@color/black" />
-    </RelativeLayout>
-
-</RelativeLayout>
-
+                <TextView
+                    android:id="@+id/text_maintain_basic_info_max_orroagte_season_end_examine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/TextView02"
+                    android:layout_alignBottom="@+id/TextView02"
+                    android:layout_toRightOf="@+id/TextView01"
+                    android:gravity="center_vertical"
+                    android:text="0000-00-00" />
+            </RelativeLayout>
         </LinearLayout>
-        
     </ScrollView>
 
     <RelativeLayout

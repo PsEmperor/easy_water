@@ -2,16 +2,13 @@ package ps.emperor.easy_water.adapter;
 
 
 import android.content.Context;
-
-
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import ps.emperor.easy_water.R;
-import ps.emperor.easy_water.entity.CropBeen;
-import ps.emperor.easy_water.entity.CropBeen.infoList;
+import ps.emperor.easy_water.entity.MainTainIrrigationInfoBean;
 
 /**
  * 录入作物信息
@@ -19,7 +16,7 @@ import ps.emperor.easy_water.entity.CropBeen.infoList;
  * @author 毛国江
  * @version 2016-5-18 上午11:12
  */
-public class MainTainIntoCropsAdapter extends MyBaseAdapter<infoList> implements OnClickListener {
+public class MainTainIntoCropsAdapter extends MyBaseAdapter<MainTainIrrigationInfoBean> implements OnClickListener {
 
 	private Context context;
 
@@ -32,15 +29,15 @@ public class MainTainIntoCropsAdapter extends MyBaseAdapter<infoList> implements
 	public View MyGetView(int position, View convertView, ViewGroup parent) {
 		final ViewHolder viewHolder;
 		if (convertView == null) {
-			convertView = inflater.inflate(R.layout.layout_irrigation_user_popu, null);
+			convertView = inflater.inflate(R.layout.fragment_maintain_into_crops_list, null);
 			viewHolder = new ViewHolder();
-			viewHolder.valves = (TextView) convertView.findViewById(R.id.text_mine_user_units);
+			viewHolder.valves = (TextView) convertView.findViewById(R.id.text_maintain_into_crops_list);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		infoList infoList = list.get(position);
-		viewHolder.valves.setText(infoList.getCropName());
+		MainTainIrrigationInfoBean mainTainIrrigationInfoBean = list.get(position);
+		viewHolder.valves.setText(mainTainIrrigationInfoBean.gate);
 		return convertView;
 
 	}

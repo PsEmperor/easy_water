@@ -42,17 +42,16 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/textView1"
             android:layout_centerHorizontal="true"
-            android:text="0" />
+            android:text="6" />
 
-        <GridView
+        <ListView
             android:id="@+id/list_maintain_irrigat_info_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/textView1"
-            android:layout_marginTop="10dp"
-             >
-        </GridView>
+            android:layout_marginTop="10dp" >
+        </ListView>
     </RelativeLayout>
 
 </LinearLayout>

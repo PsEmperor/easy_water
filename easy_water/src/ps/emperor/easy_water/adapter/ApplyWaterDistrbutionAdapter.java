@@ -2,22 +2,20 @@ package ps.emperor.easy_water.adapter;
 
 
 import android.content.Context;
-
-
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import ps.emperor.easy_water.R;
-import ps.emperor.easy_water.entity.UserReleDisInfoBean.infoList;
+import ps.emperor.easy_water.entity.ApplyWaterDistrbutionBean;
 
 /**
  * 配水（应用）适配器
  * @author 毛国江
  * @version 2016-5-26 下午14:03
  */
-public class ApplyWaterDistrbutionAdapter extends MyBaseAdapter<infoList> implements OnClickListener {
+public class ApplyWaterDistrbutionAdapter extends MyBaseAdapter<ApplyWaterDistrbutionBean> implements OnClickListener {
 
 	private Context context;
 
@@ -33,15 +31,16 @@ public class ApplyWaterDistrbutionAdapter extends MyBaseAdapter<infoList> implem
 			convertView = inflater.inflate(R.layout.fragment_apply_water_distrbution_list, null);
 			viewHolder = new ViewHolder();
 			viewHolder.units = (TextView) convertView.findViewById(R.id.text_apply_water_units);
+			viewHolder.gate = (TextView) convertView.findViewById(R.id.text_apply_water_gate);
 			viewHolder.whether = (TextView) convertView.findViewById(R.id.text_apply_water_whether);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		infoList infoList = list.get(position);
-		viewHolder.units.setText(infoList.getDisEquName());
-//		viewHolder.gate.setText(infoList.getDisEquName());
-		viewHolder.whether.setText(infoList.getDisEquID());
+		ApplyWaterDistrbutionBean applyWateDistrbutionBean = list.get(position);
+		viewHolder.units.setText(applyWateDistrbutionBean.units);
+		viewHolder.gate.setText(applyWateDistrbutionBean.gate);
+		viewHolder.whether.setText(applyWateDistrbutionBean.whether);
 		return convertView;
 
 	}
@@ -56,5 +55,4 @@ public class ApplyWaterDistrbutionAdapter extends MyBaseAdapter<infoList> implem
 	public void onClick(DialogInterface dialog, int which) {
 
 	}
-	
 }

@@ -36,8 +36,6 @@
             android:layout_marginLeft="30dp"
             android:layout_toRightOf="@+id/textView1"
             android:text="智能闸门"
-            android:singleLine="true"
-            android:layout_marginRight="20dp"
             android:textColor="@color/gray_1"
             android:textSize="15sp" />
 
@@ -49,7 +47,6 @@
             android:layout_below="@+id/textView1"
             android:layout_marginTop="15dp"
             android:text="设备ID"
-            android:singleLine="true"
             android:textColor="@color/black"
             android:textSize="16sp" />
 
@@ -61,8 +58,6 @@
             android:layout_alignBottom="@+id/textView2"
             android:layout_alignLeft="@+id/text_maintain_gate_info_category"
             android:text="ZM12428-84"
-            android:layout_marginRight="20dp"
-            android:singleLine="true"
             android:textColor="@color/gray_1"
             android:textSize="15sp" />
 
@@ -84,8 +79,6 @@
             android:layout_alignBottom="@+id/textView3"
             android:layout_alignLeft="@+id/text_maintain_gate_info_id"
             android:text="E: 118.444716"
-            android:layout_marginRight="20dp"
-            android:singleLine="true"
             android:textColor="@color/gray_1"
             android:textSize="15sp" />
 
@@ -97,9 +90,7 @@
             android:layout_below="@+id/textView3"
             android:layout_marginTop="5dp"
             android:text="N: 40.444716"
-            android:layout_marginRight="20dp"
             android:textColor="@color/gray_1"
-            android:singleLine="true"
             android:textSize="15sp" />
 
         <TextView
@@ -144,11 +135,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/textView5"
-            android:layout_alignLeft="@+id/text_maintain_gate_info_n"
+            android:layout_alignLeft="@+id/text_maintain_gate_info_name"
+            android:layout_marginLeft="5dp"
             android:text="141水利局"
             android:textColor="@color/gray_1"
-            android:singleLine="true"
-            android:layout_marginRight="20dp"
             android:textSize="15sp" />
 
         <TextView
@@ -159,7 +149,6 @@
             android:layout_below="@+id/textView5"
             android:layout_marginTop="15dp"
             android:text="上级设备"
-            android:singleLine="true"
             android:textColor="@color/black"
             android:textSize="16sp" />
 
@@ -170,10 +159,9 @@
             android:layout_alignBaseline="@+id/textView6"
             android:layout_alignBottom="@+id/textView6"
             android:layout_alignLeft="@+id/text_maintain_gate_info_name"
+            android:layout_marginLeft="5dp"
             android:text="141团南干渠进水闸"
             android:textColor="@color/gray_1"
-            android:layout_marginRight="20dp"
-            android:singleLine="true"
             android:textSize="15sp" />
 
         <TextView

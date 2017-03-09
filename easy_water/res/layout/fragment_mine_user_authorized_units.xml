@@ -5,11 +5,11 @@
     android:background="@color/gray_3"
     android:orientation="vertical" >
 
-    <ps.emperor.easy_water.view.MainActionBars
+    <ps.emperor.easy_water.view.MainActionBar
         android:id="@+id/actionbar_user_unit"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
-    </ps.emperor.easy_water.view.MainActionBars>
+    </ps.emperor.easy_water.view.MainActionBar>
 <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -50,7 +50,6 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:layout_weight="1"
-        android:choiceMode="singleChoice"
         android:background="@color/white" >
     </ListView>
     <TextView

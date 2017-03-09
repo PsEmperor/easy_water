@@ -21,7 +21,7 @@ public class MainTainGateInfoActivity extends BaseActivity{
 		FragmentTransaction transaction = fgManager.beginTransaction();
 		MainTainGateInfoFragment fragment = new MainTainGateInfoFragment();
 		transaction
-		.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 		transaction.replace(R.id.fragment_maintain_gate_info, fragment, "main");
 		transaction.commit();
 	}

@@ -3,7 +3,6 @@ package ps.emperor.easy_water.adapter;
 
 import java.util.List;
 
-import ps.emperor.easy_water.entity.ApplyIrrigationProjectBean.infoList;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -19,7 +18,7 @@ import ps.emperor.easy_water.entity.ApplyIrrigationProjectBean;
  * @author 毛国江
  * @version 2016-5-18 上午11:12
  */
-public class ApplyIrrigationProjectAdapter extends MyBaseAdapter<infoList> implements OnClickListener {
+public class ApplyIrrigationProjectAdapter extends MyBaseAdapter<ApplyIrrigationProjectBean> implements OnClickListener {
 
 	private Context context;
 	public List<ApplyIrrigationProjectBean> mType = null;
@@ -43,10 +42,10 @@ public class ApplyIrrigationProjectAdapter extends MyBaseAdapter<infoList> imple
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		infoList applyIrrigationProjectBean = list.get(position);
-		viewHolder.group.setText(applyIrrigationProjectBean.getGroupName());
-		viewHolder.time_start.setText(applyIrrigationProjectBean.getStartTime());
-		viewHolder.time_end.setText(applyIrrigationProjectBean.getEndTime());
+		ApplyIrrigationProjectBean applyIrrigationProjectBean = list.get(position);
+		viewHolder.group.setText(applyIrrigationProjectBean.group);
+		viewHolder.time_start.setText(applyIrrigationProjectBean.time_start);
+		viewHolder.time_end.setText(applyIrrigationProjectBean.time_end);
 		notifyDataSetChanged();
 		return convertView;
 
