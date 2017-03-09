@@ -1,16 +1,11 @@
 package ps.emperor.easy_water;
 
-import java.io.InputStream;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.http.HttpMethod;
 import org.xutils.http.RequestParams;
 
-import cn.jpush.android.api.JPushInterface;
+import ps.emperor.easy_water.application.entity.BaseBeen;
 import ps.emperor.easy_water.register.ForgotActivity;
 import ps.emperor.easy_water.register.RegisterActivity;
 import ps.emperor.easy_water.utils.PsUtils;
@@ -29,6 +24,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.jpush.android.api.JPushInterface;
+
+import com.google.gson.Gson;
 
 /**
  * 登录界面activity
@@ -55,7 +52,12 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			switch (msg.what) {
 			case PsUtils.LOGIN_IN :
 				
-				String result = (String) msg.obj;
+				String st = (String) msg.obj;
+				
+				Gson g = new Gson();
+				BaseBeen bb = g.fromJson(st, BaseBeen.class);
+				
+				String result = bb.getCode();
 				
 				if(result.equals("0")){
 					Toast.makeText(context, "密码错误,请重新登录！", 0).show();
