@@ -156,7 +156,7 @@ public class ForgotActivity extends BaseActivity implements OnClickListener {
 			backTimer();
 			
 			//获取验证码
-			String url  = String.format(PsUtils.urlCode_pas, PsUtils.getShared(context).getString("pass", ""));
+			String url  = String.format(PsUtils.urlCode_pas,etP.getText().toString());
 			
 			RequestParams rc = new RequestParams(url);
 			
