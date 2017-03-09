@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/f_pump"
-        android:name="ps.emperor.easy_water.application.FirstDeviceFragment"
+        android:name="ps.emperor.easy_water.application.fragment.FirstDeviceFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

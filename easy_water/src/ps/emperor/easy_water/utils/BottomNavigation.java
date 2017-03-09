@@ -2,7 +2,7 @@ package ps.emperor.easy_water.utils;
 
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.action.ActionFragment;
-import ps.emperor.easy_water.application.ApplicationFragment;
+import ps.emperor.easy_water.application.fragment.ApplicationFragment;
 import ps.emperor.easy_water.fragment.MinesFragment;
 import ps.emperor.easy_water.homepage.HomePageFragment;
 import android.app.Activity;
@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 public class BottomNavigation extends RelativeLayout implements OnClickListener {
 
+	//F1S2T3Fo4
 	private RelativeLayout rlF, rlS, rlT, rlFo;
 	private ImageView ivF, ivS, ivT, ivFo;
 	private TextView tvF, tvS, tvT, tvFo;

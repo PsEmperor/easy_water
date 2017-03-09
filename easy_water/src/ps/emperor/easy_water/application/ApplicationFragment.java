@@ -19,6 +19,9 @@ import org.xutils.http.RequestParams;
 
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.activity.IrriagteOrWaterActivity;
+import ps.emperor.easy_water.application.activity.TestingActivity;
+import ps.emperor.easy_water.application.adapter.AppGvAdapter;
+import ps.emperor.easy_water.application.entity.AppBeen;
 import ps.emperor.easy_water.fragment.ApplyIrrigateFragment;
 import ps.emperor.easy_water.fragment.ApplyWaterDistrbutionFragment;
 import ps.emperor.easy_water.fragment.InformationFragment;

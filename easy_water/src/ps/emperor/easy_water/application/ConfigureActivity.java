@@ -10,6 +10,10 @@ import org.xutils.view.annotation.Event;
 
 import ps.emperor.easy_water.BaseActivity;
 import ps.emperor.easy_water.R;
+import ps.emperor.easy_water.application.activity.FirstPartActivity;
+import ps.emperor.easy_water.application.activity.WaterGateActivity;
+import ps.emperor.easy_water.application.adapter.Configure_Lv_Adapter;
+import ps.emperor.easy_water.application.entity.Configure_Lv_item;
 import ps.emperor.easy_water.utils.PsUtils;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;

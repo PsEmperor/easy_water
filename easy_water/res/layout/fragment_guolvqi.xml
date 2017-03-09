@@ -33,6 +33,12 @@
             android:gravity="center"
             android:text="选择种类"
             android:textSize="18sp" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="left|center"
+            android:textSize="18sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -46,21 +52,21 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="最大流量"
+            android:text="最大流量(m³/h)"
             android:textSize="18sp" />
 
         <EditText
-            android:layout_width="60dp"
+            android:id="@+id/et_maxFlow"
+            android:layout_width="120dp"
+            android:background="@drawable/bg_circular_square_edittext_selector"
             android:layout_height="wrap_content"
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/tv_ll"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="left|center"
-            android:text="m³/h"
             android:textSize="18sp" />
     </LinearLayout>
 
@@ -77,11 +83,7 @@
             android:gravity="center"
             android:text="冲洗方式"
             android:textSize="18sp" />
-         <EditText
-             android:visibility="invisible"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:textSize="18sp" />
+
 
         <RadioGroup
             android:id="@+id/rg"
@@ -105,6 +107,10 @@
                 android:text="定时" >
             </RadioButton>
         </RadioGroup>
+                 <TextView
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp" />
     </LinearLayout>
     
         <LinearLayout
@@ -118,12 +124,13 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="压差阀值"
+            android:text="压差阀值(Mp)"
             android:textSize="18sp" />
 
         <EditText
             android:id="@+id/et_fazhi"
-            android:layout_width="60dp"
+            android:layout_width="120dp"
+            android:background="@drawable/bg_circular_square_edittext_selector"
             android:layout_height="wrap_content"
             android:textSize="18sp" />
 
@@ -132,7 +139,6 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="left|center"
-            android:text="Mp"
             android:textSize="18sp" />
     </LinearLayout>
     
@@ -150,10 +156,12 @@
             android:text="时间间隔"
             android:textSize="18sp" />
 
-        <TextView
+        <EditText
             android:id="@+id/tv_timeInterval"
-            android:layout_width="60dp"
+            android:layout_width="120dp"
+            android:background="@drawable/bg_circular_square_edittext_selector"
             android:layout_height="wrap_content"
+            android:hint="小时/分钟"
             android:textSize="18sp" />
 
         <TextView
@@ -161,7 +169,6 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="left|center"
-            android:text="小时/分钟"
             android:textSize="18sp" />
     </LinearLayout>
     
@@ -180,8 +187,10 @@
             android:textSize="18sp" />
 
         <EditText
-            android:visibility="invisible"
-            android:layout_width="60dp"
+            android:id="@+id/et_telphone"
+            android:layout_width="120dp"
+            android:background="@drawable/bg_circular_square_edittext_selector"
+            android:hint="010-10000000"
             android:layout_height="wrap_content"
             android:textSize="18sp" />
 
@@ -192,7 +201,6 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="left|center"
-            android:text="010-10000000"
             android:textSize="18sp" />
     </LinearLayout>
     
