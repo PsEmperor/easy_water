@@ -29,6 +29,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -47,6 +48,8 @@ public class WaterGateActivity extends BaseActivity implements OnClickListener {
 	private ToggleButton tb_up;
 	@ViewInject(R.id.ll_upflow_range)
 	private LinearLayout upflow;
+	@ViewInject(R.id.et_writeUp)
+	private EditText wup;
 	
 	/*
 	 * 下游水位
@@ -55,6 +58,8 @@ public class WaterGateActivity extends BaseActivity implements OnClickListener {
 	private ToggleButton tb_down;
 	@ViewInject(R.id.ll_downflow_range)
 	private LinearLayout downflow;
+	@ViewInject(R.id.et_writeDown)
+	private EditText wdown;
 	
 	
 	
@@ -157,11 +162,11 @@ public class WaterGateActivity extends BaseActivity implements OnClickListener {
 	private void initKong() {
 		List<String> list = new ArrayList<String>();
 		for (int i = 1; i < 11; i++) {
-			list.add("\t\t\t\t\t\t\t" + i);
+			list.add(i+"");
 		}
 
 		ArrayAdapter adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, list);
+				R.layout.listview_custom_item, list);
 		adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 		sp_k.setAdapter(adapter);
 	}
@@ -187,6 +192,7 @@ public class WaterGateActivity extends BaseActivity implements OnClickListener {
 					upflow.setVisibility(View.VISIBLE);
 				}else{
 					upflow.setVisibility(View.GONE);
+					wup.setText("");
 				}
 				
 			}
@@ -201,6 +207,7 @@ public class WaterGateActivity extends BaseActivity implements OnClickListener {
 					downflow.setVisibility(View.VISIBLE);
 				}else{
 					downflow.setVisibility(View.GONE);
+					wdown.setText("");
 					
 				}
 				

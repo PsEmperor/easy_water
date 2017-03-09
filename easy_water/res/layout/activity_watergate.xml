@@ -363,14 +363,16 @@
                         android:text="量程(m)" />
 
                     <EditText
-                        android:id="@+id/et_writeUpN"
+                        android:id="@+id/et_writeUp"
                          android:background="@drawable/bg_circular_square_edittext_selector"
                         android:layout_width="0dp"
+                        android:inputType="number"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center" />
                     
                      <TextView
+                        
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -432,8 +434,9 @@
 
                     <EditText
                          android:background="@drawable/bg_circular_square_edittext_selector"
-                        android:id="@+id/et_writeDownN"
+                        android:id="@+id/et_writeDown"
                         android:layout_width="0dp"
+                        android:inputType="number"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center" />
