@@ -32,7 +32,7 @@
             android:id="@+id/et_getUpInfo"
             android:gravity="center"
             android:layout_width="0dp"
-            android:background="@color/gray_2"
+            android:background="@drawable/bg_circular_square_edittext_selector"
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:layout_weight="1"
@@ -100,7 +100,7 @@
         <EditText 
             android:id="@+id/et_gateWid"
             android:gravity="center"
-            android:background="@color/gray_2"
+            android:background="@drawable/bg_circular_square_edittext_selector"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textSize="18sp"
@@ -130,7 +130,7 @@
         <EditText 
             android:id="@+id/et_high"
             android:gravity="center"
-            android:background="@color/gray_2"
+            android:background="@drawable/bg_circular_square_edittext_selector"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textSize="18sp"

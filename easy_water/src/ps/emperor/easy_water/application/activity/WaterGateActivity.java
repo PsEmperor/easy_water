@@ -3,6 +3,8 @@ package ps.emperor.easy_water.application.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xutils.x;
 import org.xutils.http.HttpMethod;
 import org.xutils.http.RequestParams;
@@ -41,6 +43,38 @@ import com.google.gson.Gson;
 @ContentView(R.layout.activity_watergate)
 public class WaterGateActivity extends BaseActivity implements OnClickListener {
 	
+	//设备类别
+	@ViewInject(R.id.et_fm)
+	private EditText lb;
+	//设备id
+	@ViewInject(R.id.et_id)
+	private EditText id;
+	//经度
+	@ViewInject(R.id.et_location1)
+	private EditText lo1;
+	//纬度
+	@ViewInject(R.id.et_location2)
+	private EditText lo2;
+	//设备名称
+	@ViewInject(R.id.et_mc)
+	private EditText mc;
+	//授权单位
+	@ViewInject(R.id.tv_dw)
+	private TextView dw;
+	//上级设备
+	@ViewInject(R.id.tv_sb)
+	private TextView sb;
+	//设计流量
+	@ViewInject(R.id.et_sj)
+	private EditText sj;
+	//控制面积
+	@ViewInject(R.id.et_mj)
+	private EditText mj;
+	//孔数
+	@ViewInject(R.id.sp_k)
+	private Spinner sp;
+	
+	
 	/*
 	 * 上游水位
 	 */
@@ -63,10 +97,7 @@ public class WaterGateActivity extends BaseActivity implements OnClickListener {
 	
 	
 	
-	@ViewInject(R.id.tv_dw)
-	private TextView dw;
-	@ViewInject(R.id.tv_sb)
-	private TextView sb;
+
 	
 	private TextView tvt;
 	private Button bte;
@@ -256,11 +287,50 @@ public class WaterGateActivity extends BaseActivity implements OnClickListener {
 			
 		case R.id.bt_edit:
 			//添加保存操作-----未写
-			//威胁
+			/*
+			 * "disEquType":"闸门控制器",
+				"disEquID":"配水设备ID1",
+				"disEquName":"配水设备1",
+				"longitude":"100",
+				"latitude":"100",
+				"designFlow":"100",
+				"authID":"1",
+				"superEqu":"配水设备1",
+				"area":"100",
+				"poreNum":"5",
+				"frontWaterLevel":"100",
+				"backWaterLevel":"100"
+			 */
+		
 			
+			String ur = PsUtils.add_water_info;
 			
+			RequestParams rp = new RequestParams(ur);
 			
+			JSONObject jo = new JSONObject();
 			
+			try {
+				jo.put("disEquType", lb.getText().toString());
+				jo.put("disEquID", id.getText().toString());
+				jo.put("disEquName",mc.getText().toString());
+				jo.put("longitude", lo1.getText().toString());
+				jo.put("latitude", lo2.getText().toString());
+				jo.put("designFlow", sj.getText().toString());
+				jo.put("authID", authID);
+				jo.put("superEqu", sb.getText().toString());
+				jo.put("area", mj.getText().toString());
+				jo.put("poreNum", sp.getSelectedItem().toString());
+				jo.put("frontWaterLevel", wup.getText().toString());
+				jo.put("backWaterLevel", wdown.getText().toString());
+				rp.setBodyContent(jo.toString());
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			PsUtils.send(rp, HttpMethod.POST, handler, this, "保存数据中。。。", PsUtils.SAVE_INFO);
+			
+
 			break;
 
 		default:
