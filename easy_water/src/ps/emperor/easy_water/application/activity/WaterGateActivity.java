@@ -339,6 +339,11 @@ public class WaterGateActivity extends BaseActivity implements OnClickListener {
 		
 	}
 	
+	//获取孔数数量
+	public int getPore(){
+		return Integer.parseInt(sp.getSelectedItem().toString());
+	}
+	
 	
 	
 	@Override
