@@ -62,6 +62,14 @@ public class PsUtils {
 	public final static int GET_UP_DEV= 0x93;
 	//获取验证码
 	public final static int GET_CHECK_CODE = 0x92;
+	//获取水泵类型
+	public final static int GET_PUMP_TYPE  = 0x91;
+	//获取过滤器类型
+	public final static int GET_FILTER_TYPE = 0x90;
+	//获取压力传感器类型
+	public final static int GET_PRESS_TYPE = 0x89;
+	//获取流量传感器类型
+	public final static int GET_FLOW_TYPE  = 0x88;
 	
 	
 	/**
@@ -84,6 +92,14 @@ public class PsUtils {
 	public static final String get_auth = "http://60.205.220.245:8080/cms/app/UserSys/findUserAuthInfos/authName/%s";
 	//获取上级单位
 	public static final String get_upDevice = "http://60.205.220.245:8080/cms/app/IrriUnitSys/findSuperEquInfo/%s";
+	//获取水泵类别
+	public static final String get_pumpType = "http://60.205.220.245:8080/cms/app/IrriUnitSys/findPartEquType/1";
+	//获取过滤器类别
+	public static final String get_filterType = "http://60.205.220.245:8080/cms/app/IrriUnitSys/findPartEquType/2";
+	//获取压力传感器类别
+	public static final String get_pressType = "http://60.205.220.245:8080/cms/app/IrriUnitSys/findPartEquType/3";
+	//获取流量传感器类别
+	public static final String get_flowType = "http://60.205.220.245:8080/cms/app/IrriUnitSys/findPartEquType/4";
 	
 	/**
 	 * POST请求
@@ -351,10 +367,10 @@ public class PsUtils {
 	 * 
 	 * 需要在每个请求中加入handler，上面为Handler样例
 	 */
-	public static void send(RequestParams rp,HttpMethod httpMethod ,final Handler handler,Context context,String msg,final int whatContent){
+	public static void send(RequestParams rp,HttpMethod HttpMethod ,final Handler handler,Context context,String msg,final int whatContent){
 		final ProgressDialog pd = proDiag(msg, context);
 		
-		x.http().request(httpMethod, rp, new CommonCallback<String>() {
+		x.http().request(HttpMethod, rp, new CommonCallback<String>() {
 
 			@Override
 			public void onSuccess(String result) {

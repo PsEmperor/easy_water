@@ -522,7 +522,7 @@ public class ValveDeviceFragment extends Fragment implements android.view.View.O
 		list.add("无线阀控器");
 		list.add("有线阀控器");
 		
-		ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,list);
+		ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(),R.layout.listview_custom_item,list);
 		adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 		sp_fm.setAdapter(adapter);
 	}

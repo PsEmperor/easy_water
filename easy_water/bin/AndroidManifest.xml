@@ -280,9 +280,11 @@
         <meta-data
             android:name="JPUSH_CHANNEL"
             android:value="developer-default" />
+        <!-- dec31133477c790b07634556 -->
         <meta-data
             android:name="JPUSH_APPKEY"
-            android:value="dec31133477c790b07634556" />
+            android:value="4022c12ee353e79dd2a6c264" />
+        	
  <!-- </>值来自开发者平台取得的AppKey -->
 
     </application>

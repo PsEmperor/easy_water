@@ -278,8 +278,7 @@ public class FirstPartActivity extends BaseActivity implements OnClickListener {
 		list.add("虚拟首部");
 		list.add("实体首部");
 
-		ArrayAdapter adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, list);
+		ArrayAdapter adapter = new ArrayAdapter<String>(this,R.layout.listview_custom_item,list);
 		adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 		sp.setAdapter(adapter);
 	}

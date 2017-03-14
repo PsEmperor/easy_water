@@ -71,6 +71,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 					
 					//保存账号密码、是否保存密码状态
 					
+					JPushInterface.setAlias(LoginActivity.this, user, null);
 					
 					Editor e = sp.edit();
 					e.putString("user", user);
