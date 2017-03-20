@@ -111,7 +111,7 @@ public class WaterPumpFragment extends Fragment implements OnClickListener {
 
 				
 				break;
-
+ 
 			default:
 				break;
 			}

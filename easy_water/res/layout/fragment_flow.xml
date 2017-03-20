@@ -24,7 +24,7 @@
 	        android:text="传感器"
 	        />
 	    
-	    <Button 
+	    <Spinner 
 	        android:id="@+id/bt_sbinter"
 	       android:layout_width="0dp"
 	        android:gravity="center"
