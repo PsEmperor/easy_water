@@ -36,13 +36,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.entity.FindDisEquInfoOneBean;
+import ps.emperor.easy_water.entity.PermissionListBeans.PermissionListBean;
 import ps.emperor.easy_water.entity.UserReleIrrInfoToOneBean.infoList;
+import ps.emperor.easy_water.entity.PermissionListBeans;
 import ps.emperor.easy_water.entity.UserReleIrrInfoBean;
 import ps.emperor.easy_water.entity.UserReleIrrInfoToOneBean;
 import ps.emperor.easy_water.greendao.DBHelper;
 import ps.emperor.easy_water.greendao.Irrigation;
 import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.NetStatusUtil;
+import ps.emperor.easy_water.utils.PsUtils;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.MainActionBar;
@@ -79,6 +82,8 @@ public class MainTainIrrigateInfoFragment extends Fragment implements
 	private ProgressDialog progressDialog;
 	private List<infoList> beens;
 	private List<Irrigation> irrigation;
+	private List<PermissionListBean> PermissionListBean;
+	private PermissionListBeans PermissionListBeans;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,7 +99,6 @@ public class MainTainIrrigateInfoFragment extends Fragment implements
 		actionBar.setTitle("灌溉信息维护");
 		actionBar.setActionBarOnClickListener(this);
 
-		
 		tv_maintain_irrigat_info_id = (TextView) view
 				.findViewById(R.id.tv_maintain_irrigat_info_id);
 		text_maintain_irrigat_info_addres = (TextView) view
@@ -127,9 +131,14 @@ public class MainTainIrrigateInfoFragment extends Fragment implements
 		if (NetStatusUtil.isNetValid(getActivity())) {
 			init();
 		} else {
-			Toast.makeText(getActivity(), "当前网络不可用！请检查您的网络状态！", Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(getActivity(), "当前网络不可用！请检查您的网络状态！",
+					Toast.LENGTH_SHORT).show();
 		}
+
+		Gson gson = new Gson();
+		PermissionListBeans = gson.fromJson(PsUtils.getShared(getActivity())
+				.getString("permissionList", null), PermissionListBeans.class);
+		PermissionListBean = PermissionListBeans.getPermissionList();
 
 		String parten = "00";
 		DecimalFormat decimal = new DecimalFormat(parten);
@@ -246,16 +255,14 @@ public class MainTainIrrigateInfoFragment extends Fragment implements
 						text_maintain_irrigat_info_equipment.setText("");
 					}
 					if (!CheckUtil.IsEmpty(beens.get(0).getMaxGroup())) {
-						group = Integer.valueOf(beens.get(0)
-								.getMaxGroup());
-						text_max_irrigat_group.setText(group+"");
+						group = Integer.valueOf(beens.get(0).getMaxGroup());
+						text_max_irrigat_group.setText(group + "");
 					} else {
 						text_max_irrigat_group.setText("0");
 					}
 					if (!CheckUtil.IsEmpty(beens.get(0).getValueNum())) {
-						value = Integer.valueOf(beens.get(0)
-								.getValueNum());
-						text_max_orroagte_valve.setText(value+"");
+						value = Integer.valueOf(beens.get(0).getValueNum());
+						text_max_orroagte_valve.setText(value + "");
 					} else {
 						text_max_orroagte_valve.setText(0);
 					}
@@ -300,7 +307,8 @@ public class MainTainIrrigateInfoFragment extends Fragment implements
 					irrigation.setNightStart(beens.get(0).getRestStart());
 					irrigation.setNightEnd(beens.get(0).getRestEnd());
 					irrigation.setIsTimeLong(0);
-					irrigation.setFirstDerviceID(beens.get(0).getFirstDerviceID());
+					irrigation.setFirstDerviceID(beens.get(0)
+							.getFirstDerviceID());
 					irrigation.setLongitude(beens.get(0).getLongitude());
 					irrigation.setLatitude(beens.get(0).getLatitude());
 					irrigation.setArea(beens.get(0).getArea());
@@ -315,35 +323,37 @@ public class MainTainIrrigateInfoFragment extends Fragment implements
 					irrigation.setSeasonEnd(beens.get(0).getIrriSeasonEnd());
 					dbHelper.saveSession(irrigation);
 				}
-//				 //夜间休息时间
-//				 if (!irrigation.get(0).getNightStart().equals(text_max_orroagte_restnight_start.getText().toString())||!(irrigation.get(0)
-//				 .getNightEnd()
-//				 .equals(text_max_orroagte_restnight_end.getText()
-//				 .toString()))) {
-//				 dbHelper.updateBasicTime(units,
-//						 beens.get(0).getRestStart(),
-//				 beens.get(0).getRestEnd());
-//				 }
-//				 //最大灌溉组数
-//				 if (!(irrigation.get(0).getGroupnumber() + "")
-//				 .equals(text_max_irrigat_group.getText().toString())) {
-//				 dbHelper.updateBasicGroup(units,group);
-//				 }
-//				 //最大灌溉阀门数
-//				 if (!(irrigation.get(0).getValuenumber() + "")
-//				 .equals(text_max_orroagte_valve.getText().toString())) {
-//				 dbHelper.updateBasicVlaue(units,value);
-//				 }
-//				 //过滤器
-//				 if (!(irrigation.get(0).getFlushtime()).equals(beens.get(0).getFlushTime())){
-//				 dbHelper.updateBasicFilter(units,beens.get(0).getFlushTime());
-//				 }
-//				 //灌季
-//				 if((irrigation.get(0).getSeasonStrat()+"")
-//				 .equals(beens.get(0).getIrriSeasonStart())&&(irrigation.get(0).getSeasonEnd()+"").equals(beens.get(0).getIrriSeasonEnd())){
-//				 }else{
-//				 dbHelper.updateBasicSeason(units,beens.get(0).getIrriSeasonStart(),beens.get(0).getIrriSeasonEnd());
-//				 }
+				// //夜间休息时间
+				// if
+				// (!irrigation.get(0).getNightStart().equals(text_max_orroagte_restnight_start.getText().toString())||!(irrigation.get(0)
+				// .getNightEnd()
+				// .equals(text_max_orroagte_restnight_end.getText()
+				// .toString()))) {
+				// dbHelper.updateBasicTime(units,
+				// beens.get(0).getRestStart(),
+				// beens.get(0).getRestEnd());
+				// }
+				// //最大灌溉组数
+				// if (!(irrigation.get(0).getGroupnumber() + "")
+				// .equals(text_max_irrigat_group.getText().toString())) {
+				// dbHelper.updateBasicGroup(units,group);
+				// }
+				// //最大灌溉阀门数
+				// if (!(irrigation.get(0).getValuenumber() + "")
+				// .equals(text_max_orroagte_valve.getText().toString())) {
+				// dbHelper.updateBasicVlaue(units,value);
+				// }
+				// //过滤器
+				// if
+				// (!(irrigation.get(0).getFlushtime()).equals(beens.get(0).getFlushTime())){
+				// dbHelper.updateBasicFilter(units,beens.get(0).getFlushTime());
+				// }
+				// //灌季
+				// if((irrigation.get(0).getSeasonStrat()+"")
+				// .equals(beens.get(0).getIrriSeasonStart())&&(irrigation.get(0).getSeasonEnd()+"").equals(beens.get(0).getIrriSeasonEnd())){
+				// }else{
+				// dbHelper.updateBasicSeason(units,beens.get(0).getIrriSeasonStart(),beens.get(0).getIrriSeasonEnd());
+				// }
 				progressDialog.dismiss();
 			}
 		});
@@ -358,6 +368,18 @@ public class MainTainIrrigateInfoFragment extends Fragment implements
 			getActivity().finish();
 			break;
 		case R.id.acitionbar_right:
+			if (PermissionListBean.get(0).getOpertionStat().contains("5")) {
+				MainTainIrrigationfarmarcropInfoFragment fragment3 = new MainTainIrrigationfarmarcropInfoFragment();
+				// transaction.setCustomAnimations(R.anim.right_in,
+				// R.anim.right_out);
+				transaction.setCustomAnimations(
+						R.anim.slide_fragment_horizontal_left_in,
+						R.anim.slide_fragment_horizontal_right_out);
+				transaction.replace(R.id.fragment_maintain_present_irrigate,
+						fragment3, "main");
+				transaction.commit();
+			} else if (PermissionListBean.get(0).getOpertionStat()
+					.contains("4")) {
 				MainTainBasicCompileFragment fragment = new MainTainBasicCompileFragment();
 				// transaction.setCustomAnimations(R.anim.right_in,
 				// R.anim.right_out);
@@ -368,6 +390,10 @@ public class MainTainIrrigateInfoFragment extends Fragment implements
 				transaction.replace(R.id.fragment_maintain_present_irrigate,
 						fragment, "main");
 				transaction.commit();
+			} else {
+				Toast.makeText(getActivity(), "抱歉，您没有操作此步骤的权限！",
+						Toast.LENGTH_SHORT).show();
+			}
 			break;
 		case R.id.btn_maintain_panoramic:
 			ApplyIrrigatePanoramicFragment fragment1 = new ApplyIrrigatePanoramicFragment();

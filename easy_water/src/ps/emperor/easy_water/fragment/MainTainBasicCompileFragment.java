@@ -4,6 +4,8 @@ package ps.emperor.easy_water.fragment;
 import java.io.Serializable;
 import java.util.List;
 
+import com.google.gson.Gson;
+
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -16,10 +18,14 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import ps.emperor.easy_water.R;
+import ps.emperor.easy_water.entity.PermissionListBeans;
+import ps.emperor.easy_water.entity.PermissionListBeans.PermissionListBean;
 import ps.emperor.easy_water.entity.UserReleIrrInfoToOneBean.infoList;
 import ps.emperor.easy_water.utils.CheckUtil;
+import ps.emperor.easy_water.utils.PsUtils;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.view.MainActionBar;
 
@@ -39,6 +45,8 @@ public class MainTainBasicCompileFragment extends Fragment implements
 	button_user_crop,button_basic_info;
 	private int Skip;
 	private String units;
+	private List<PermissionListBean> PermissionListBean;
+	private PermissionListBeans PermissionListBeans;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,6 +76,10 @@ public class MainTainBasicCompileFragment extends Fragment implements
 		button_user_name.setOnClickListener(this);
 		button_marshalling.setOnClickListener(this);
 		units = (String) SharedUtils.getParam(getActivity(), "units", 1+"");
+		
+		Gson gson = new Gson();
+		PermissionListBeans = gson.fromJson(PsUtils.getShared(getActivity()).getString("permissionList", null),PermissionListBeans.class);
+		PermissionListBean = PermissionListBeans.getPermissionList();
 		return view;
 	}
 
@@ -86,22 +98,27 @@ public class MainTainBasicCompileFragment extends Fragment implements
 			transaction.commit();
 			break;
 		case R.id.button_maintain_compile_basic_info:// 基本信息
-			Skip = 1;
-			SharedUtils.setParam(getActivity(), "setLong", 0);
-			SharedUtils.setParam(getActivity(), "setNight", 0);
-			SharedUtils.setParam(getActivity(), "Skip", Skip);
-			MainTainBasicInfoFragment fragment1 = new MainTainBasicInfoFragment();
-			// transaction.setCustomAnimations(R.anim.right_in,
-			// R.anim.right_out);
-			Bundle bundle = new Bundle();
-			bundle.putString("units", units);
-			fragment1.setArguments(bundle);
-			transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
-			transaction.replace(R.id.fragment_maintain_present_irrigate,
-					fragment1, "main");
-			transaction.commit();
+			if (PermissionListBean.get(9).getOpertionStat().contains("4")) {
+				Skip = 1;
+				SharedUtils.setParam(getActivity(), "setLong", 0);
+				SharedUtils.setParam(getActivity(), "setNight", 0);
+				SharedUtils.setParam(getActivity(), "Skip", Skip);
+				MainTainBasicInfoFragment fragment1 = new MainTainBasicInfoFragment();
+				// transaction.setCustomAnimations(R.anim.right_in,
+				// R.anim.right_out);
+				Bundle bundle = new Bundle();
+				bundle.putString("units", units);
+				fragment1.setArguments(bundle);
+				transaction.setCustomAnimations(R.anim.slide_fragment_horizontal_left_in, R.anim.slide_fragment_horizontal_right_out);
+				transaction.replace(R.id.fragment_maintain_present_irrigate,
+						fragment1, "main");
+				transaction.commit();
+			}else{
+				Toast.makeText(getActivity(), "抱歉，您没有操作此步骤的权限！", Toast.LENGTH_SHORT).show();
+			}
 			break;
 		case R.id.button_maintain_compile_user_name:// 种植户信息
+			if(PermissionListBean.get(10).getOpertionStat().contains("4")){
 			MainTainIrrigationUserInfoFragment fragment2 = new MainTainIrrigationUserInfoFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
@@ -109,8 +126,12 @@ public class MainTainBasicCompileFragment extends Fragment implements
 			transaction.replace(R.id.fragment_maintain_present_irrigate,
 					fragment2, "main");
 			transaction.commit();
+			}else{
+				Toast.makeText(getActivity(), "抱歉，您没有操作此步骤的权限！", Toast.LENGTH_SHORT).show();
+			}
 			break;
 		case R.id.button_maintain_compile_user_farmarcrop:// 种植作物信息
+			if(PermissionListBean.get(11).getOpertionStat().contains("4")){
 			MainTainIrrigationfarmarcropInfoFragment fragment3 = new MainTainIrrigationfarmarcropInfoFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
@@ -118,8 +139,12 @@ public class MainTainBasicCompileFragment extends Fragment implements
 			transaction.replace(R.id.fragment_maintain_present_irrigate,
 					fragment3, "main");
 			transaction.commit();
+			}else{
+				Toast.makeText(getActivity(), "抱歉，您没有操作此步骤的权限！", Toast.LENGTH_SHORT).show();
+			}
 			break;
 		case R.id.button_maintain_compile_reset: // 轮灌组编辑
+			if(PermissionListBean.get(12).getOpertionStat().contains("4")){
 			MainTainIrrigationInfoFragment fragment4 = new MainTainIrrigationInfoFragment();
 			// transaction.setCustomAnimations(R.anim.right_in,
 			// R.anim.right_out);
@@ -127,6 +152,9 @@ public class MainTainBasicCompileFragment extends Fragment implements
 			transaction.replace(R.id.fragment_maintain_present_irrigate,
 					fragment4, "main");
 			transaction.commit();
+			}else{
+				Toast.makeText(getActivity(), "抱歉，您没有操作此步骤的权限！", Toast.LENGTH_SHORT).show();
+			}
 			break;
 		}
 	}

@@ -43,10 +43,13 @@ import ps.emperor.easy_water.adapter.ArrayWheelAdapter;
 import ps.emperor.easy_water.adapter.NumericWheelAdapter;
 import ps.emperor.easy_water.entity.ApplyIrrigateControlBean;
 import ps.emperor.easy_water.entity.IrriGroupStateBean;
+import ps.emperor.easy_water.entity.PermissionListBeans;
 import ps.emperor.easy_water.entity.ApplyIrrigateControlBean.infoList;
 import ps.emperor.easy_water.entity.ApplyIrrigateControlBean.groupList;
+import ps.emperor.easy_water.entity.PermissionListBeans.PermissionListBean;
 import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.NetStatusUtil;
+import ps.emperor.easy_water.utils.PsUtils;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.MainActionBars;
@@ -80,6 +83,8 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 	private Dialog dialog;
 	private IrriGroupStateBean bean;
 	String[] group;
+	private List<PermissionListBean> PermissionListBean;
+	private PermissionListBeans PermissionListBeans;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -157,6 +162,10 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 					.show();
 		}
 
+		Gson gson = new Gson();
+		PermissionListBeans = gson.fromJson(PsUtils.getShared(getActivity()).getString("permissionList", null),PermissionListBeans.class);
+		PermissionListBean = PermissionListBeans.getPermissionList();
+		
 		return view;
 	}
 
@@ -503,728 +512,732 @@ public class ApplyIrrigateControlFragment extends Fragment implements
 			dialog.show();
 			break;
 		case R.id.button_apply_irriagte_control_operation:
-			if (!NetStatusUtil.isNetValid(getActivity())) {
-				Toast.makeText(getActivity(), "当前网络不可用！请检查您的网络 状态！", Toast.LENGTH_SHORT)
-						.show();
-			} else {
-				String str2 = "";
-				try {
-					str1 = java.net.URLEncoder.encode(str1, "UTF-8");
-					str2 = java.net.URLEncoder.encode(
-							beens.get(0).getGroupID(), "UTF-8");
-				} catch (UnsupportedEncodingException e1) {
-					e1.printStackTrace();
-				}
-				RequestParams param3 = new RequestParams(
-						URL.judgeIrriGroupState + str1 + "/" + str2); // 网址(请替换成实际的网址)
-				// params.addQueryStringParameter("key", "value"); //
-				// 参数(请替换成实际的参数与值)
-				progressDialog = ProgressDialog.show(getActivity(),
-						"Loading...", "Please wait...", true, false);
-				JSONObject js_request2 = new JSONObject();
-				try {
-					param3.setAsJsonContent(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-					param3.setAsJsonContent(true);
-				}// 根据实际需求添加相应键值对
-
-				x.http().request(HttpMethod.GET, param3,
-						new CommonCallback<String>() {
-							@Override
-							public void onCancelled(CancelledException arg0) {
-
-							}
-
-							// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
-							// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
-							@Override
-							public void onError(Throwable ex,
-									boolean isOnCallback) {
-
-								Toast.makeText(x.app(), ex.getMessage(),
-										Toast.LENGTH_LONG).show();
-								if (ex instanceof HttpException) { // 网络错误 
-									HttpException httpEx = (HttpException) ex;
-									int responseCode = httpEx.getCode();
-									String responseMsg = httpEx.getMessage();
-									String errorResult = httpEx.getResult();
-									// ...
-									progressDialog.dismiss();
-								} else { // 其他错误 
-									// ...
-									progressDialog.dismiss();
-								}
-
-							}
-
-							// 不管成功或者失败最后都会回调该接口
-							@Override
-							public void onFinished() {
-							}
-
-							@Override
-							public void onSuccess(String arg0) {
-								Gson gson = new Gson();
+			if(PermissionListBean.get(8).getOpertionStat().contains("4")){
+				if (!NetStatusUtil.isNetValid(getActivity())) {
+					Toast.makeText(getActivity(), "当前网络不可用！请检查您的网络 状态！", Toast.LENGTH_SHORT)
+					.show();
+				} else {
+					String str2 = "";
+					try {
+						str1 = java.net.URLEncoder.encode(str1, "UTF-8");
+						str2 = java.net.URLEncoder.encode(
+								beens.get(0).getGroupID(), "UTF-8");
+					} catch (UnsupportedEncodingException e1) {
+						e1.printStackTrace();
+					}
+					RequestParams param3 = new RequestParams(
+							URL.judgeIrriGroupState + str1 + "/" + str2); // 网址(请替换成实际的网址)
+					// params.addQueryStringParameter("key", "value"); //
+					// 参数(请替换成实际的参数与值)
+					progressDialog = ProgressDialog.show(getActivity(),
+							"Loading...", "Please wait...", true, false);
+					JSONObject js_request2 = new JSONObject();
+					try {
+						param3.setAsJsonContent(true);
+					} catch (Exception e) {
+						e.printStackTrace();
+						param3.setAsJsonContent(true);
+					}// 根据实际需求添加相应键值对
+					
+					x.http().request(HttpMethod.GET, param3,
+							new CommonCallback<String>() {
+						@Override
+						public void onCancelled(CancelledException arg0) {
+							
+						}
+						
+						// 注意:如果是自己onSuccess回调方法里写了一些导致程序崩溃的代码，也会回调道该方法，因此可以用以下方法区分是网络错误还是其他错误
+						// 还有一点，网络超时也会也报成其他错误，还需具体打印出错误内容比较容易跟踪查看
+						@Override
+						public void onError(Throwable ex,
+								boolean isOnCallback) {
+							
+							Toast.makeText(x.app(), ex.getMessage(),
+									Toast.LENGTH_LONG).show();
+							if (ex instanceof HttpException) { // 网络错误 
+								HttpException httpEx = (HttpException) ex;
+								int responseCode = httpEx.getCode();
+								String responseMsg = httpEx.getMessage();
+								String errorResult = httpEx.getResult();
+								// ...
 								progressDialog.dismiss();
-								bean = gson.fromJson(
-										arg0, IrriGroupStateBean.class);
-								if ("1".equals(bean.getCode())) {
-									new AlertDialog.Builder(getActivity())
-											.setTitle("系统提示")
-											// 设置对话框标题
-											.setMessage(
-													"您当前正在打开一个没有灌溉计划的灌溉组，是否设置灌溉时长")
-											// 设置显示的内容
-											.setPositiveButton(
-													"放弃",
-													new DialogInterface.OnClickListener() {// 添加返回按钮
-
-														@Override
-														public void onClick(
-																DialogInterface dialog,
-																int which) {// 响应事件
-															dialog.dismiss();
-														}
-
-													})
-											.setNeutralButton(
-													"仅开阀",
-													new DialogInterface.OnClickListener() {
-														@Override
-														public void onClick(
-																DialogInterface dialog,
-																int which) {
-															RequestParams param2 = new RequestParams(
-																	URL.controlIrriGroupValue); // 网址(请替换成实际的网址)
-															progressDialog = ProgressDialog
-																	.show(getActivity(),
-																			"Loading...",
-																			"Please wait...",
-																			true,
-																			false);
-															JSONObject js_request = new JSONObject();
-															try {
-																param2.setAsJsonContent(true);
-																js_request
-																		.put("paramState",
-																				bean.getCode());
-																js_request
-																		.put("firstDerviceID",
-																				str1);
-																js_request
-																		.put("groupID",
-																				beens.get(
-																						0)
-																						.getGroupID());
-																js_request
-																		.put("isNewPlan",
-																				"0");
-																js_request
-																		.put("irriDuration",
-																				"");
-																param2.setBodyContent(js_request
-																		.toString());
-															} catch (Exception e) {
-																e.printStackTrace();
-																param2.setAsJsonContent(true);
-															}// 根据实际需求添加相应键值对
-
-															x.http()
-																	.request(
-																			HttpMethod.PUT,
-																			param2,
-																			new CommonCallback<String>() {
-																				@Override
-																				public void onCancelled(
-																						CancelledException arg0) {
-
-																				}
-
-																				@Override
-																				public void onError(
-																						Throwable ex,
-																						boolean isOnCallback) {
-
-																					Toast.makeText(
-																							x.app(),
-																							ex.getMessage(),
-																							Toast.LENGTH_LONG)
-																							.show();
-																					if (ex instanceof HttpException) { // 网络错误
-																														// 
-																						HttpException httpEx = (HttpException) ex;
-																						int responseCode = httpEx
-																								.getCode();
-																						String responseMsg = httpEx
-																								.getMessage();
-																						String errorResult = httpEx
-																								.getResult();
-																						progressDialog
-																								.dismiss();
-																					} else { // 其他错误
-																								// 
-																						progressDialog
-																								.dismiss();
-																					}
-
-																				}
-
-																				// 不管成功或者失败最后都会回调该接口
-																				@Override
-																				public void onFinished() {
-																				}
-
-																				@Override
-																				public void onSuccess(
-																						String arg0) {
-																					Toast.makeText(
-																							getActivity(),
-																							"成功",
-																							Toast.LENGTH_SHORT)
-																							.show();
-																					progressDialog
-																							.dismiss();
-																					init();
-																					button_operation.setText("立即关闭");
-																				}
-																			});
-														}
-													})
-											.setNegativeButton(
-
-													"设置时长",
-													new DialogInterface.OnClickListener() {// 添加确定按钮
-
-														@Override
-														public void onClick(
-																DialogInterface dialog,
-																int which) {// 确定按钮的响应事件
-															showDateTimePicker(mInflater);
-														}
-													}).show();// 在按键响应事件中显示此对话框
-								} else if ("2".equals(bean.getCode())) {
-									new AlertDialog.Builder(getActivity())
-											.setTitle("系统提示")
-											// 设置对话框标题
-											.setMessage(
-													"您当前正在关闭一个正在执行灌溉计划的灌溉组，该计划将被随之被终止 ，是否继续")
-											// 设置显示的内容
-											.setPositiveButton(
-													"放弃",
-													new DialogInterface.OnClickListener() {// 添加返回按钮
-
-														@Override
-														public void onClick(
-																DialogInterface dialog,
-																int which) {// 响应事件
-															dialog.dismiss();
-														}
-
-													})
-											.setNegativeButton(
-
-													"继续",
-													new DialogInterface.OnClickListener() {// 添加确定按钮
-
-														@Override
-														public void onClick(
-																DialogInterface dialog,
-																int which) {// 确定按钮的响应事件
-															if (!NetStatusUtil
-																	.isNetValid(getActivity())) {
-																Toast.makeText(
-																		getActivity(),
-																		"当前网络不可用！",
-																		Toast.LENGTH_SHORT)
-																		.show();
-															} else {
-																HttpClose();
-															}
-														}
-													}).show();// 在按键响应事件中显示此对话框
-
-								} else if ("3".equals(bean.getCode())) {
-									new AlertDialog.Builder(getActivity())
-											.setTitle("系统提示")
-											// 设置对话框标题
-
-											.setMessage(
-													"您当前正在打开一个设有灌溉计划但尚未执行的灌溉组，该计划仍将被执行")
-											// 设置显示的内容
-
-											.setPositiveButton(
-													"放弃",
-													new DialogInterface.OnClickListener() {// 添加返回按钮
-
-														@Override
-														public void onClick(
-																DialogInterface dialog,
-																int which) {// 响应事件
-															dialog.dismiss();
-														}
-
-													})
-											.setNeutralButton(
-													"仅开阀",
-													new DialogInterface.OnClickListener() {
-														@Override
-														public void onClick(
-																DialogInterface dialog,
-																int which) {
-															RequestParams param2 = new RequestParams(
-																	URL.controlIrriGroupValue); // 网址(请替换成实际的网址)
-															progressDialog = ProgressDialog
-																	.show(getActivity(),
-																			"Loading...",
-																			"Please wait...",
-																			true,
-																			false);
-															JSONObject js_request = new JSONObject();
-															try {
-																param2.setAsJsonContent(true);
-																js_request
-																		.put("paramState",
-																				bean.getCode());
-																js_request
-																		.put("firstDerviceID",
-																				str1);
-																js_request
-																		.put("groupID",
-																				beens.get(
-																						0)
-																						.getGroupID());
-																js_request
-																		.put("isNewPlan",
-																				"0");
-																js_request
-																		.put("irriDuration",
-																				"");
-																param2.setBodyContent(js_request
-																		.toString());
-															} catch (Exception e) {
-																e.printStackTrace();
-																param2.setAsJsonContent(true);
-															}// 根据实际需求添加相应键值对
-
-															x.http()
-																	.request(
-																			HttpMethod.PUT,
-																			param2,
-																			new CommonCallback<String>() {
-																				@Override
-																				public void onCancelled(
-																						CancelledException arg0) {
-
-																				}
-
-																				@Override
-																				public void onError(
-																						Throwable ex,
-																						boolean isOnCallback) {
-
-																					Toast.makeText(
-																							x.app(),
-																							ex.getMessage(),
-																							Toast.LENGTH_LONG)
-																							.show();
-																					if (ex instanceof HttpException) { // 网络错误
-																														// 
-																						HttpException httpEx = (HttpException) ex;
-																						int responseCode = httpEx
-																								.getCode();
-																						String responseMsg = httpEx
-																								.getMessage();
-																						String errorResult = httpEx
-																								.getResult();
-																						progressDialog
-																								.dismiss();
-																					} else { // 其他错误
-																								// 
-																						progressDialog
-																								.dismiss();
-																					}
-
-																				}
-
-																				// 不管成功或者失败最后都会回调该接口
-																				@Override
-																				public void onFinished() {
-																				}
-
-																				@Override
-																				public void onSuccess(
-																						String arg0) {
-																					Toast.makeText(
-																							getActivity(),
-																							"成功",
-																							Toast.LENGTH_SHORT)
-																							.show();
-																					progressDialog
-																					.dismiss();
-																			init();
-																			button_operation.setText("立即关闭");
-																				}
-																			});
-														}
-													})
-											.setNegativeButton(
-
-													"设置时长",
-													new DialogInterface.OnClickListener() {// 添加确定按钮
-
-														@Override
-														public void onClick(
-																DialogInterface dialog,
-																int which) {// 确定按钮的响应事件
-															showDateTimePicker(mInflater);
-														}
-													}).show();// 在按键响应事件中显示此对话框
-
-								} else if ("4".equals(bean.getCode())) {
-									new AlertDialog.Builder(getActivity())
-											.setTitle("系统提示")
-											// 设置对话框标题
-
-											.setMessage(
-													"您当前正在关闭一个全组开启但无灌溉计划的灌溉组，是否关闭所有阀门")
-											// 设置显示的内容
-
-											.setPositiveButton(
-													"放弃",
-													new DialogInterface.OnClickListener() {// 添加返回按钮
-
-														@Override
-														public void onClick(
-																DialogInterface dialog,
-																int which) {// 响应事件
-															dialog.dismiss();
-														}
-
-													})
-											.setNegativeButton(
-
-													"确定",
-													new DialogInterface.OnClickListener() {// 添加确定按钮
-
-														@Override
-														public void onClick(
-																DialogInterface dialog,
-																int which) {// 确定按钮的响应事件
-															if (!NetStatusUtil
-																	.isNetValid(getActivity())) {
-																Toast.makeText(
-																		getActivity(),
-																		"当前网络不可用！",
-																		Toast.LENGTH_SHORT)
-																		.show();
-															} else {
-																HttpClose();
-															}
-														}
-													}).show();// 在按键响应事件中显示此对话框
-
-								} else if ("5".equals(bean.getCode())) {
-									new AlertDialog.Builder(getActivity())
-											.setTitle("系统提示")
-											// 设置对话框标题
-
-											.setMessage(
-													"您当前正在打开一个设有单阀灌溉计划且正在执行的灌溉组，是否选择开启其余阀门")
-											// 设置显示的内容
-
-											.setPositiveButton(
-													"放弃",
-													new DialogInterface.OnClickListener() {// 添加返回按钮
-
-														@Override
-														public void onClick(
-																DialogInterface dialog,
-																int which) {// 响应事件
-															dialog.dismiss();
-														}
-
-													})
-											.setNeutralButton(
-													"仅开阀",
-													new DialogInterface.OnClickListener() {
-														@Override
-														public void onClick(
-																DialogInterface dialog,
-																int which) {
-
-															RequestParams param2 = new RequestParams(
-																	URL.controlIrriGroupValue); // 网址(请替换成实际的网址)
-															progressDialog = ProgressDialog
-																	.show(getActivity(),
-																			"Loading...",
-																			"Please wait...",
-																			true,
-																			false);
-															JSONObject js_request = new JSONObject();
-															try {
-																param2.setAsJsonContent(true);
-																js_request
-																		.put("paramState",
-																				bean.getCode());
-																js_request
-																		.put("firstDerviceID",
-																				str1);
-																js_request
-																		.put("groupID",
-																				beens.get(
-																						0)
-																						.getGroupID());
-																js_request
-																		.put("isNewPlan",
-																				"0");
-																js_request
-																		.put("irriDuration",
-																				"");
-																param2.setBodyContent(js_request
-																		.toString());
-															} catch (Exception e) {
-																e.printStackTrace();
-																param2.setAsJsonContent(true);
-															}// 根据实际需求添加相应键值对
-
-															x.http()
-																	.request(
-																			HttpMethod.PUT,
-																			param2,
-																			new CommonCallback<String>() {
-																				@Override
-																				public void onCancelled(
-																						CancelledException arg0) {
-
-																				}
-
-																				@Override
-																				public void onError(
-																						Throwable ex,
-																						boolean isOnCallback) {
-
-																					Toast.makeText(
-																							x.app(),
-																							ex.getMessage(),
-																							Toast.LENGTH_LONG)
-																							.show();
-																					if (ex instanceof HttpException) { // 网络错误
-																														// 
-																						HttpException httpEx = (HttpException) ex;
-																						int responseCode = httpEx
-																								.getCode();
-																						String responseMsg = httpEx
-																								.getMessage();
-																						String errorResult = httpEx
-																								.getResult();
-																						progressDialog
-																								.dismiss();
-																					} else { // 其他错误
-																								// 
-																						progressDialog
-																								.dismiss();
-																					}
-
-																				}
-
-																				// 不管成功或者失败最后都会回调该接口
-																				@Override
-																				public void onFinished() {
-																				}
-
-																				@Override
-																				public void onSuccess(
-																						String arg0) {
-																					Toast.makeText(
-																							getActivity(),
-																							"成功",
-																							Toast.LENGTH_SHORT)
-																							.show();
-																					progressDialog
-																					.dismiss();
-																			init();
-																			button_operation.setText("立即关闭");
-																				}
-																			});
-														}
-													})
-											.setNegativeButton(
-													"设置时长",
-													new DialogInterface.OnClickListener() {// 添加确定按钮
-
-														@Override
-														public void onClick(
-																DialogInterface dialog,
-																int which) {// 确定按钮的响应事件
-															showDateTimePicker(mInflater);
-														}
-
-													}
-													).show();// 在按键响应事件中显示此对话框
-
-								} else if ("6".equals(bean.getCode())) {
-									new AlertDialog.Builder(getActivity())
-											.setTitle("系统提示")
-											// 设置对话框标题
-
-											.setMessage(
-													"您当前正在打开一个单阀开启但无灌溉计划的灌溉组，是否选择开启其余阀门")
-											// 设置显示的内容
-
-											.setPositiveButton(
-													"设置时长",
-													new DialogInterface.OnClickListener() {// 添加确定按钮
-
-														@Override
-														public void onClick(
-																DialogInterface dialog,
-																int which) {// 确定按钮的响应事件
-															showDateTimePicker(mInflater);
-														}
-													})
-											.setNeutralButton(
-													"仅开阀",
-													new DialogInterface.OnClickListener() {
-														@Override
-														public void onClick(
-																DialogInterface dialog,
-																int which) {
-
-															RequestParams param2 = new RequestParams(
-																	URL.controlIrriGroupValue); // 网址(请替换成实际的网址)
-															progressDialog = ProgressDialog
-																	.show(getActivity(),
-																			"Loading...",
-																			"Please wait...",
-																			true,
-																			false);
-															JSONObject js_request = new JSONObject();
-															try {
-																param2.setAsJsonContent(true);
-																js_request
-																		.put("paramState",
-																				bean.getCode());
-																js_request
-																		.put("firstDerviceID",
-																				str1);
-																js_request
-																		.put("groupID",
-																				beens.get(
-																						0)
-																						.getGroupID());
-																js_request
-																		.put("isNewPlan",
-																				"0");
-																js_request
-																		.put("irriDuration",
-																				"");
-																param2.setBodyContent(js_request
-																		.toString());
-															} catch (Exception e) {
-																e.printStackTrace();
-																param2.setAsJsonContent(true);
-															}// 根据实际需求添加相应键值对
-
-															x.http()
-																	.request(
-																			HttpMethod.PUT,
-																			param2,
-																			new CommonCallback<String>() {
-																				@Override
-																				public void onCancelled(
-																						CancelledException arg0) {
-
-																				}
-
-																				@Override
-																				public void onError(
-																						Throwable ex,
-																						boolean isOnCallback) {
-
-																					Toast.makeText(
-																							x.app(),
-																							ex.getMessage(),
-																							Toast.LENGTH_LONG)
-																							.show();
-																					if (ex instanceof HttpException) { // 网络错误
-																														// 
-																						HttpException httpEx = (HttpException) ex;
-																						int responseCode = httpEx
-																								.getCode();
-																						String responseMsg = httpEx
-																								.getMessage();
-																						String errorResult = httpEx
-																								.getResult();
-																						progressDialog
-																								.dismiss();
-																					} else { // 其他错误
-																								// 
-																						progressDialog
-																								.dismiss();
-																					}
-
-																				}
-
-																				// 不管成功或者失败最后都会回调该接口
-																				@Override
-																				public void onFinished() {
-																				}
-
-																				@Override
-																				public void onSuccess(
-																						String arg0) {
-																					Toast.makeText(
-																							getActivity(),
-																							"成功",
-																							Toast.LENGTH_SHORT)
-																							.show();
-																					progressDialog
-																					.dismiss();
-																			init();
-																			button_operation.setText("立即关闭");
-																				}
-																			});
-														}
-													})
-											.setNegativeButton(
-													"放弃",
-													new DialogInterface.OnClickListener() {// 添加返回按钮
-
-														@Override
-														public void onClick(
-																DialogInterface dialog,
-																int which) {// 响应事件
-															dialog.dismiss();
-														}
-
-													}).show();// 在按键响应事件中显示此对话框
-
-								}else if ("7".equals(bean.getCode())) {
-									new AlertDialog.Builder(getActivity())
-											.setTitle("系统提示")
-											// 设置对话框标题
-
-											.setMessage(
-										 			"温馨提示：开启灌溉组后将该灌溉单元下最大阀门数量，故无法进行此操作！")
-											// 设置显示的内容
-
-											.setNegativeButton(
-													"确定",
-													new DialogInterface.OnClickListener() {// 添加返回按钮
-
-														@Override
-											 			public void onClick(
-																DialogInterface dialog,
-																int which) {// 响应事件
-															dialog.dismiss();
-														}
-
-													}).show();// 在按键响应事件中显示此对话框
-
-								}
+							} else { // 其他错误 
+								// ...
+								progressDialog.dismiss();
 							}
-						});
+							
+						}
+						
+						// 不管成功或者失败最后都会回调该接口
+						@Override
+						public void onFinished() {
+						}
+						
+						@Override
+						public void onSuccess(String arg0) {
+							Gson gson = new Gson();
+							progressDialog.dismiss();
+							bean = gson.fromJson(
+									arg0, IrriGroupStateBean.class);
+							if ("1".equals(bean.getCode())) {
+								new AlertDialog.Builder(getActivity())
+								.setTitle("系统提示")
+								// 设置对话框标题
+								.setMessage(
+										"您当前正在打开一个没有灌溉计划的灌溉组，是否设置灌溉时长")
+										// 设置显示的内容
+										.setPositiveButton(
+												"放弃",
+												new DialogInterface.OnClickListener() {// 添加返回按钮
+													
+													@Override
+													public void onClick(
+															DialogInterface dialog,
+															int which) {// 响应事件
+														dialog.dismiss();
+													}
+													
+												})
+												.setNeutralButton(
+														"仅开阀",
+														new DialogInterface.OnClickListener() {
+															@Override
+															public void onClick(
+																	DialogInterface dialog,
+																	int which) {
+																RequestParams param2 = new RequestParams(
+																		URL.controlIrriGroupValue); // 网址(请替换成实际的网址)
+																progressDialog = ProgressDialog
+																		.show(getActivity(),
+																				"Loading...",
+																				"Please wait...",
+																				true,
+																				false);
+																JSONObject js_request = new JSONObject();
+																try {
+																	param2.setAsJsonContent(true);
+																	js_request
+																	.put("paramState",
+																			bean.getCode());
+																	js_request
+																	.put("firstDerviceID",
+																			str1);
+																	js_request
+																	.put("groupID",
+																			beens.get(
+																					0)
+																					.getGroupID());
+																	js_request
+																	.put("isNewPlan",
+																			"0");
+																	js_request
+																	.put("irriDuration",
+																			"");
+																	param2.setBodyContent(js_request
+																			.toString());
+																} catch (Exception e) {
+																	e.printStackTrace();
+																	param2.setAsJsonContent(true);
+																}// 根据实际需求添加相应键值对
+																
+																x.http()
+																.request(
+																		HttpMethod.PUT,
+																		param2,
+																		new CommonCallback<String>() {
+																			@Override
+																			public void onCancelled(
+																					CancelledException arg0) {
+																				
+																			}
+																			
+																			@Override
+																			public void onError(
+																					Throwable ex,
+																					boolean isOnCallback) {
+																				
+																				Toast.makeText(
+																						x.app(),
+																						ex.getMessage(),
+																						Toast.LENGTH_LONG)
+																						.show();
+																				if (ex instanceof HttpException) { // 网络错误
+																					// 
+																					HttpException httpEx = (HttpException) ex;
+																					int responseCode = httpEx
+																							.getCode();
+																					String responseMsg = httpEx
+																							.getMessage();
+																					String errorResult = httpEx
+																							.getResult();
+																					progressDialog
+																					.dismiss();
+																				} else { // 其他错误
+																					// 
+																					progressDialog
+																					.dismiss();
+																				}
+																				
+																			}
+																			
+																			// 不管成功或者失败最后都会回调该接口
+																			@Override
+																			public void onFinished() {
+																			}
+																			
+																			@Override
+																			public void onSuccess(
+																					String arg0) {
+																				Toast.makeText(
+																						getActivity(),
+																						"成功",
+																						Toast.LENGTH_SHORT)
+																						.show();
+																				progressDialog
+																				.dismiss();
+																				init();
+																				button_operation.setText("立即关闭");
+																			}
+																		});
+															}
+														})
+														.setNegativeButton(
+																
+																"设置时长",
+																new DialogInterface.OnClickListener() {// 添加确定按钮
+																	
+																	@Override
+																	public void onClick(
+																			DialogInterface dialog,
+																			int which) {// 确定按钮的响应事件
+																		showDateTimePicker(mInflater);
+																	}
+																}).show();// 在按键响应事件中显示此对话框
+							} else if ("2".equals(bean.getCode())) {
+								new AlertDialog.Builder(getActivity())
+								.setTitle("系统提示")
+								// 设置对话框标题
+								.setMessage(
+										"您当前正在关闭一个正在执行灌溉计划的灌溉组，该计划将被随之被终止 ，是否继续")
+										// 设置显示的内容
+										.setPositiveButton(
+												"放弃",
+												new DialogInterface.OnClickListener() {// 添加返回按钮
+													
+													@Override
+													public void onClick(
+															DialogInterface dialog,
+															int which) {// 响应事件
+														dialog.dismiss();
+													}
+													
+												})
+												.setNegativeButton(
+														
+														"继续",
+														new DialogInterface.OnClickListener() {// 添加确定按钮
+															
+															@Override
+															public void onClick(
+																	DialogInterface dialog,
+																	int which) {// 确定按钮的响应事件
+																if (!NetStatusUtil
+																		.isNetValid(getActivity())) {
+																	Toast.makeText(
+																			getActivity(),
+																			"当前网络不可用！",
+																			Toast.LENGTH_SHORT)
+																			.show();
+																} else {
+																	HttpClose();
+																}
+															}
+														}).show();// 在按键响应事件中显示此对话框
+								
+							} else if ("3".equals(bean.getCode())) {
+								new AlertDialog.Builder(getActivity())
+								.setTitle("系统提示")
+								// 设置对话框标题
+								
+								.setMessage(
+										"您当前正在打开一个设有灌溉计划但尚未执行的灌溉组，该计划仍将被执行")
+										// 设置显示的内容
+										
+										.setPositiveButton(
+												"放弃",
+												new DialogInterface.OnClickListener() {// 添加返回按钮
+													
+													@Override
+													public void onClick(
+															DialogInterface dialog,
+															int which) {// 响应事件
+														dialog.dismiss();
+													}
+													
+												})
+												.setNeutralButton(
+														"仅开阀",
+														new DialogInterface.OnClickListener() {
+															@Override
+															public void onClick(
+																	DialogInterface dialog,
+																	int which) {
+																RequestParams param2 = new RequestParams(
+																		URL.controlIrriGroupValue); // 网址(请替换成实际的网址)
+																progressDialog = ProgressDialog
+																		.show(getActivity(),
+																				"Loading...",
+																				"Please wait...",
+																				true,
+																				false);
+																JSONObject js_request = new JSONObject();
+																try {
+																	param2.setAsJsonContent(true);
+																	js_request
+																	.put("paramState",
+																			bean.getCode());
+																	js_request
+																	.put("firstDerviceID",
+																			str1);
+																	js_request
+																	.put("groupID",
+																			beens.get(
+																					0)
+																					.getGroupID());
+																	js_request
+																	.put("isNewPlan",
+																			"0");
+																	js_request
+																	.put("irriDuration",
+																			"");
+																	param2.setBodyContent(js_request
+																			.toString());
+																} catch (Exception e) {
+																	e.printStackTrace();
+																	param2.setAsJsonContent(true);
+																}// 根据实际需求添加相应键值对
+																
+																x.http()
+																.request(
+																		HttpMethod.PUT,
+																		param2,
+																		new CommonCallback<String>() {
+																			@Override
+																			public void onCancelled(
+																					CancelledException arg0) {
+																				
+																			}
+																			
+																			@Override
+																			public void onError(
+																					Throwable ex,
+																					boolean isOnCallback) {
+																				
+																				Toast.makeText(
+																						x.app(),
+																						ex.getMessage(),
+																						Toast.LENGTH_LONG)
+																						.show();
+																				if (ex instanceof HttpException) { // 网络错误
+																					// 
+																					HttpException httpEx = (HttpException) ex;
+																					int responseCode = httpEx
+																							.getCode();
+																					String responseMsg = httpEx
+																							.getMessage();
+																					String errorResult = httpEx
+																							.getResult();
+																					progressDialog
+																					.dismiss();
+																				} else { // 其他错误
+																					// 
+																					progressDialog
+																					.dismiss();
+																				}
+																				
+																			}
+																			
+																			// 不管成功或者失败最后都会回调该接口
+																			@Override
+																			public void onFinished() {
+																			}
+																			
+																			@Override
+																			public void onSuccess(
+																					String arg0) {
+																				Toast.makeText(
+																						getActivity(),
+																						"成功",
+																						Toast.LENGTH_SHORT)
+																						.show();
+																				progressDialog
+																				.dismiss();
+																				init();
+																				button_operation.setText("立即关闭");
+																			}
+																		});
+															}
+														})
+														.setNegativeButton(
+																
+																"设置时长",
+																new DialogInterface.OnClickListener() {// 添加确定按钮
+																	
+																	@Override
+																	public void onClick(
+																			DialogInterface dialog,
+																			int which) {// 确定按钮的响应事件
+																		showDateTimePicker(mInflater);
+																	}
+																}).show();// 在按键响应事件中显示此对话框
+								
+							} else if ("4".equals(bean.getCode())) {
+								new AlertDialog.Builder(getActivity())
+								.setTitle("系统提示")
+								// 设置对话框标题
+								
+								.setMessage(
+										"您当前正在关闭一个全组开启但无灌溉计划的灌溉组，是否关闭所有阀门")
+										// 设置显示的内容
+										
+										.setPositiveButton(
+												"放弃",
+												new DialogInterface.OnClickListener() {// 添加返回按钮
+													
+													@Override
+													public void onClick(
+															DialogInterface dialog,
+															int which) {// 响应事件
+														dialog.dismiss();
+													}
+													
+												})
+												.setNegativeButton(
+														
+														"确定",
+														new DialogInterface.OnClickListener() {// 添加确定按钮
+															
+															@Override
+															public void onClick(
+																	DialogInterface dialog,
+																	int which) {// 确定按钮的响应事件
+																if (!NetStatusUtil
+																		.isNetValid(getActivity())) {
+																	Toast.makeText(
+																			getActivity(),
+																			"当前网络不可用！",
+																			Toast.LENGTH_SHORT)
+																			.show();
+																} else {
+																	HttpClose();
+																}
+															}
+														}).show();// 在按键响应事件中显示此对话框
+								
+							} else if ("5".equals(bean.getCode())) {
+								new AlertDialog.Builder(getActivity())
+								.setTitle("系统提示")
+								// 设置对话框标题
+								
+								.setMessage(
+										"您当前正在打开一个设有单阀灌溉计划且正在执行的灌溉组，是否选择开启其余阀门")
+										// 设置显示的内容
+										
+										.setPositiveButton(
+												"放弃",
+												new DialogInterface.OnClickListener() {// 添加返回按钮
+													
+													@Override
+													public void onClick(
+															DialogInterface dialog,
+															int which) {// 响应事件
+														dialog.dismiss();
+													}
+													
+												})
+												.setNeutralButton(
+														"仅开阀",
+														new DialogInterface.OnClickListener() {
+															@Override
+															public void onClick(
+																	DialogInterface dialog,
+																	int which) {
+																
+																RequestParams param2 = new RequestParams(
+																		URL.controlIrriGroupValue); // 网址(请替换成实际的网址)
+																progressDialog = ProgressDialog
+																		.show(getActivity(),
+																				"Loading...",
+																				"Please wait...",
+																				true,
+																				false);
+																JSONObject js_request = new JSONObject();
+																try {
+																	param2.setAsJsonContent(true);
+																	js_request
+																	.put("paramState",
+																			bean.getCode());
+																	js_request
+																	.put("firstDerviceID",
+																			str1);
+																	js_request
+																	.put("groupID",
+																			beens.get(
+																					0)
+																					.getGroupID());
+																	js_request
+																	.put("isNewPlan",
+																			"0");
+																	js_request
+																	.put("irriDuration",
+																			"");
+																	param2.setBodyContent(js_request
+																			.toString());
+																} catch (Exception e) {
+																	e.printStackTrace();
+																	param2.setAsJsonContent(true);
+																}// 根据实际需求添加相应键值对
+																
+																x.http()
+																.request(
+																		HttpMethod.PUT,
+																		param2,
+																		new CommonCallback<String>() {
+																			@Override
+																			public void onCancelled(
+																					CancelledException arg0) {
+																				
+																			}
+																			
+																			@Override
+																			public void onError(
+																					Throwable ex,
+																					boolean isOnCallback) {
+																				
+																				Toast.makeText(
+																						x.app(),
+																						ex.getMessage(),
+																						Toast.LENGTH_LONG)
+																						.show();
+																				if (ex instanceof HttpException) { // 网络错误
+																					// 
+																					HttpException httpEx = (HttpException) ex;
+																					int responseCode = httpEx
+																							.getCode();
+																					String responseMsg = httpEx
+																							.getMessage();
+																					String errorResult = httpEx
+																							.getResult();
+																					progressDialog
+																					.dismiss();
+																				} else { // 其他错误
+																					// 
+																					progressDialog
+																					.dismiss();
+																				}
+																				
+																			}
+																			
+																			// 不管成功或者失败最后都会回调该接口
+																			@Override
+																			public void onFinished() {
+																			}
+																			
+																			@Override
+																			public void onSuccess(
+																					String arg0) {
+																				Toast.makeText(
+																						getActivity(),
+																						"成功",
+																						Toast.LENGTH_SHORT)
+																						.show();
+																				progressDialog
+																				.dismiss();
+																				init();
+																				button_operation.setText("立即关闭");
+																			}
+																		});
+															}
+														})
+														.setNegativeButton(
+																"设置时长",
+																new DialogInterface.OnClickListener() {// 添加确定按钮
+																	
+																	@Override
+																	public void onClick(
+																			DialogInterface dialog,
+																			int which) {// 确定按钮的响应事件
+																		showDateTimePicker(mInflater);
+																	}
+																	
+																}
+																).show();// 在按键响应事件中显示此对话框
+								
+							} else if ("6".equals(bean.getCode())) {
+								new AlertDialog.Builder(getActivity())
+								.setTitle("系统提示")
+								// 设置对话框标题
+								
+								.setMessage(
+										"您当前正在打开一个单阀开启但无灌溉计划的灌溉组，是否选择开启其余阀门")
+										// 设置显示的内容
+										
+										.setPositiveButton(
+												"设置时长",
+												new DialogInterface.OnClickListener() {// 添加确定按钮
+													
+													@Override
+													public void onClick(
+															DialogInterface dialog,
+															int which) {// 确定按钮的响应事件
+														showDateTimePicker(mInflater);
+													}
+												})
+												.setNeutralButton(
+														"仅开阀",
+														new DialogInterface.OnClickListener() {
+															@Override
+															public void onClick(
+																	DialogInterface dialog,
+																	int which) {
+																
+																RequestParams param2 = new RequestParams(
+																		URL.controlIrriGroupValue); // 网址(请替换成实际的网址)
+																progressDialog = ProgressDialog
+																		.show(getActivity(),
+																				"Loading...",
+																				"Please wait...",
+																				true,
+																				false);
+																JSONObject js_request = new JSONObject();
+																try {
+																	param2.setAsJsonContent(true);
+																	js_request
+																	.put("paramState",
+																			bean.getCode());
+																	js_request
+																	.put("firstDerviceID",
+																			str1);
+																	js_request
+																	.put("groupID",
+																			beens.get(
+																					0)
+																					.getGroupID());
+																	js_request
+																	.put("isNewPlan",
+																			"0");
+																	js_request
+																	.put("irriDuration",
+																			"");
+																	param2.setBodyContent(js_request
+																			.toString());
+																} catch (Exception e) {
+																	e.printStackTrace();
+																	param2.setAsJsonContent(true);
+																}// 根据实际需求添加相应键值对
+																
+																x.http()
+																.request(
+																		HttpMethod.PUT,
+																		param2,
+																		new CommonCallback<String>() {
+																			@Override
+																			public void onCancelled(
+																					CancelledException arg0) {
+																				
+																			}
+																			
+																			@Override
+																			public void onError(
+																					Throwable ex,
+																					boolean isOnCallback) {
+																				
+																				Toast.makeText(
+																						x.app(),
+																						ex.getMessage(),
+																						Toast.LENGTH_LONG)
+																						.show();
+																				if (ex instanceof HttpException) { // 网络错误
+																					// 
+																					HttpException httpEx = (HttpException) ex;
+																					int responseCode = httpEx
+																							.getCode();
+																					String responseMsg = httpEx
+																							.getMessage();
+																					String errorResult = httpEx
+																							.getResult();
+																					progressDialog
+																					.dismiss();
+																				} else { // 其他错误
+																					// 
+																					progressDialog
+																					.dismiss();
+																				}
+																				
+																			}
+																			
+																			// 不管成功或者失败最后都会回调该接口
+																			@Override
+																			public void onFinished() {
+																			}
+																			
+																			@Override
+																			public void onSuccess(
+																					String arg0) {
+																				Toast.makeText(
+																						getActivity(),
+																						"成功",
+																						Toast.LENGTH_SHORT)
+																						.show();
+																				progressDialog
+																				.dismiss();
+																				init();
+																				button_operation.setText("立即关闭");
+																			}
+																		});
+															}
+														})
+														.setNegativeButton(
+																"放弃",
+																new DialogInterface.OnClickListener() {// 添加返回按钮
+																	
+																	@Override
+																	public void onClick(
+																			DialogInterface dialog,
+																			int which) {// 响应事件
+																		dialog.dismiss();
+																	}
+																	
+																}).show();// 在按键响应事件中显示此对话框
+								
+							}else if ("7".equals(bean.getCode())) {
+								new AlertDialog.Builder(getActivity())
+								.setTitle("系统提示")
+								// 设置对话框标题
+								
+								.setMessage(
+										"温馨提示：开启灌溉组后将该灌溉单元下最大阀门数量，故无法进行此操作！")
+										// 设置显示的内容
+										
+										.setNegativeButton(
+												"确定",
+												new DialogInterface.OnClickListener() {// 添加返回按钮
+													
+													@Override
+													public void onClick(
+															DialogInterface dialog,
+															int which) {// 响应事件
+														dialog.dismiss();
+													}
+													
+												}).show();// 在按键响应事件中显示此对话框
+								
+							}
+						}
+					});
+			}
+			}else{
+				Toast.makeText(getActivity(), "抱歉，您没有操作此步骤的权限！", Toast.LENGTH_SHORT).show();
 			}
 			break;
 		}

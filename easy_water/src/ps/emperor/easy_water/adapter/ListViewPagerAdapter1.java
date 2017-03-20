@@ -6,12 +6,16 @@ import java.util.ArrayList;
 
 import java.util.List;
 
+import com.google.gson.Gson;
+
 import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.activity.TimeAvtivityDialog;
 import ps.emperor.easy_water.entity.ApplyIrrigationProjectBean;
+import ps.emperor.easy_water.entity.PermissionListBeans;
 import ps.emperor.easy_water.greendao.DBHelper;
 import ps.emperor.easy_water.greendao.IrrigationGroup;
 import ps.emperor.easy_water.greendao.IrrigationProject;
+import ps.emperor.easy_water.utils.PsUtils;
 import ps.emperor.easy_water.utils.SharedUtils;
 
 import android.app.Activity;
@@ -23,6 +27,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import ps.emperor.easy_water.entity.ApplyIrrigationProjectBean.infoList;
+import ps.emperor.easy_water.entity.PermissionListBeans.PermissionListBean;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +50,8 @@ public class ListViewPagerAdapter1 extends PagerAdapter implements OnItemClickLi
 	private DBHelper dbHelper;
 	private int MatchedNum;
 	private List<IrrigationGroup> irrigationGroups;
+	private List<PermissionListBean> PermissionListBean;
+	private PermissionListBeans PermissionListBeans;
 	/**
 	 * 
 	 * @param context 活动窗体
@@ -64,6 +71,10 @@ public class ListViewPagerAdapter1 extends PagerAdapter implements OnItemClickLi
 		dbHelper = DBHelper.getInstance(context); // 得到DBHelper对象
 //		irrigationGroups = dbHelper.loadGroupByUnits(units);
 //		MatchedNum  = irrigationGroups.size();
+		
+		Gson gson = new Gson();
+		PermissionListBeans = gson.fromJson(PsUtils.getShared(context).getString("permissionList", null),PermissionListBeans.class);
+		PermissionListBean = PermissionListBeans.getPermissionList();
 		MatchedNum  = Integer.valueOf(list.get(0).getGroupNum());
 		int a=list.size() % pageRows;
 		if (a>0) {
@@ -101,6 +112,7 @@ public class ListViewPagerAdapter1 extends PagerAdapter implements OnItemClickLi
 			mList.setAdapter(myadapter);
 			mListViewPager.add(viewPager);
 			myadapter.notifyDataSetChanged();
+			if(PermissionListBean.get(6).getOpertionStat().contains("4")){
 			mList.setOnItemClickListener(new OnItemClickListener() {
 
 				@Override
@@ -201,8 +213,10 @@ public class ListViewPagerAdapter1 extends PagerAdapter implements OnItemClickLi
 //					((Activity)context).finish();
 				}
 			});
+			}else{
+				Toast.makeText(context, "抱歉，您没有操作此步骤的权限！", Toast.LENGTH_SHORT).show();
+			}
 		}
-
 	}
 
 	@Override

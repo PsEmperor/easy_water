@@ -1,11 +1,16 @@
 package ps.emperor.easy_water;
 
+import java.util.List;
+
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.http.HttpMethod;
 import org.xutils.http.RequestParams;
 
-import ps.emperor.easy_water.application.entity.BaseBeen;
+import ps.emperor.easy_water.application.entity.LoginBeen;
+import ps.emperor.easy_water.application.entity.LoginBeen.InfoListBean;
+import ps.emperor.easy_water.application.entity.LoginBeen.PermissionListBean;
 import ps.emperor.easy_water.register.ForgotActivity;
 import ps.emperor.easy_water.register.RegisterActivity;
 import ps.emperor.easy_water.utils.PsUtils;
@@ -55,9 +60,18 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				String st = (String) msg.obj;
 				
 				Gson g = new Gson();
-				BaseBeen bb = g.fromJson(st, BaseBeen.class);
+				LoginBeen bb = g.fromJson(st, LoginBeen.class);
 				
-				String result = bb.getCode();
+				List<PermissionListBean> permissionList = bb.getPermissionList();
+				
+				String permiss = g.toJson(permissionList);
+				List<InfoListBean> infoList = bb.getInfoList();
+				InfoListBean infoListBean = infoList.get(0);
+				
+				String result = infoListBean.getCode()+"";
+				int userID = infoListBean.getUserID();
+				int roleID = infoListBean.getRoleID();
+				
 				
 				if(result.equals("0")){
 					Toast.makeText(context, "密码错误,请重新登录！", 0).show();
@@ -67,15 +81,19 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 					Toast.makeText(context, "登录成功", 0).show();
 					
 					//保存账号密码、是否保存密码状态
-					
+	
+					JPushInterface.setAlias(LoginActivity.this, user, null);
 					
 					Editor e = sp.edit();
 					e.putString("user", user);
 					e.putString("pass",password);
-					e.putString("userId", result);
+					e.putString("userId", userID+"");
+					e.putString("permissionList", "{\"permissionList\" :"+permiss+"}");
+					e.putString("roleId",roleID+"");
+				
 					e.putBoolean("checked", cbSave.isChecked());
 					e.commit();
-					System.out.println("userId====----------------=======:"+result);
+					System.out.println("permiss====----------------=======:"+"{\"permissionList\" :"+permiss+"}");
 					
 					
 					Intent mintent = new Intent(LoginActivity.this,MainActivity.class);
@@ -115,6 +133,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		
 		if(cbSave.isChecked()){
 			etUser.setText(sp.getString("user", ""));
+		  
 			etPa.setText(sp.getString("pass", ""));
 		}
 	}
@@ -179,7 +198,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			JSONObject jo = new JSONObject();
 			try {
 				jo.put("userName", user);
-				jo.put("password", password);
+				jo.put("password", PsUtils.MD5(password));
 				rp.setBodyContent(jo.toString());
 				
 			} catch (JSONException e) {

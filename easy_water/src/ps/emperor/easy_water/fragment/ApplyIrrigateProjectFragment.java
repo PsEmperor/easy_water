@@ -55,7 +55,9 @@ import ps.emperor.easy_water.adapter.ListViewPagerAdapter1;
 import ps.emperor.easy_water.entity.ApplyIrrigationProjectBean;
 import ps.emperor.easy_water.entity.GroupIdBeen;
 import ps.emperor.easy_water.entity.IrriGroupStateBean;
+import ps.emperor.easy_water.entity.PermissionListBeans;
 import ps.emperor.easy_water.entity.ApplyIrrigationProjectBean.infoList;
+import ps.emperor.easy_water.entity.PermissionListBeans.PermissionListBean;
 import ps.emperor.easy_water.greendao.DBHelper;
 import ps.emperor.easy_water.greendao.Irrigation;
 import ps.emperor.easy_water.greendao.IrrigationGroup;
@@ -63,6 +65,7 @@ import ps.emperor.easy_water.greendao.IrrigationIsFirst;
 import ps.emperor.easy_water.greendao.IrrigationProject;
 import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.NetStatusUtil;
+import ps.emperor.easy_water.utils.PsUtils;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.CustomDialog;
@@ -104,6 +107,8 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 	ApplyIrrigationProjectBean bean;
 	private int currentItem, deletePages;
 	private long temp, compare, compares;
+	private List<PermissionListBean> PermissionListBean;
+	private PermissionListBeans PermissionListBeans;
 
 	private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
@@ -251,6 +256,10 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 
 		dbHelper = DBHelper.getInstance(getActivity()); // 得到DBHelper对象
 
+		Gson gson = new Gson();
+		PermissionListBeans = gson.fromJson(PsUtils.getShared(getActivity()).getString("permissionList", null),PermissionListBeans.class);
+		PermissionListBean = PermissionListBeans.getPermissionList();
+		
 		tv_indicator = (TextView) view.findViewById(R.id.indicator);
 		tv_indicator.setOnClickListener(this);
 		indicator = (TextView) view.findViewById(R.id.tv_indicator);
@@ -265,7 +274,7 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 		// .findViewById(R.id.list_apply_irrigatr_project);
 		beans = new ArrayList<infoList>();
 		pager = (ViewPager) view.findViewById(R.id.pager);
-
+		
 		if (NetStatusUtil.isNetValid(getActivity())) {
 			init();
 		} else {
@@ -288,7 +297,6 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 						handler.sendMessage(message);
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -572,6 +580,10 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 			builder.show();
 			break;
 		case R.id.btn_project_add:
+			if(!PermissionListBean.get(6).getOpertionStat().contains("1")){
+				btn_project_add.setEnabled(false);
+				Toast.makeText(getActivity(), "抱歉，您没有操作此步骤的权限！", Toast.LENGTH_SHORT).show();
+			}else{
 				// firsts = dbHelper.loadisFirst(units);
 				// if (CheckUtil.IsEmpty(firsts)) {
 				// isFirst = 0;
@@ -914,8 +926,12 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 
 				dialog.show();
 				// }
+			}
 			break;
 		case R.id.btn_project_del:
+			if(!PermissionListBean.get(6).getOpertionStat().contains("2")){
+				btn_project_del.setEnabled(false);
+			}else{
 			if (!NetStatusUtil.isNetValid(getActivity())) {
 				Toast.makeText(getActivity(), "当前网络不可用！请检查您的网络状态！",
 						Toast.LENGTH_SHORT).show();
@@ -1071,7 +1087,7 @@ public class ApplyIrrigateProjectFragment extends Fragment implements
 			// handler.sendEmptyMessage(2);
 			// }
 			// }).start();
-
+			}
 		}
 	}
 

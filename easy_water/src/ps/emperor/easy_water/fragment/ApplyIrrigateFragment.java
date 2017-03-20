@@ -23,13 +23,16 @@ import ps.emperor.easy_water.application.ApplicationFragment;
 import ps.emperor.easy_water.entity.ApplyIrrigationBean;
 import ps.emperor.easy_water.entity.IrriGroupStateBean;
 import ps.emperor.easy_water.entity.IrrigationEquipmentBean;
+import ps.emperor.easy_water.entity.PermissionListBeans;
 import ps.emperor.easy_water.entity.UserReleIrrInfoBean;
+import ps.emperor.easy_water.entity.PermissionListBeans.PermissionListBean;
 import ps.emperor.easy_water.entity.UserReleIrrInfoBean.infoList;
 import ps.emperor.easy_water.greendao.DBHelper;
 import ps.emperor.easy_water.greendao.Irrigation;
 import ps.emperor.easy_water.greendao.IrrigationGroup;
 import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.NetStatusUtil;
+import ps.emperor.easy_water.utils.PsUtils;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.MainActionBar;
@@ -75,6 +78,8 @@ public class ApplyIrrigateFragment extends Fragment implements OnClickListener,
 	private ImageView image_apply_irrigation_add;
 	private EditText ed_apply_irrigation_add;
 	private String str;
+	
+	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -128,8 +133,7 @@ public class ApplyIrrigateFragment extends Fragment implements OnClickListener,
 	}
 
 	private void init() {
-//		str = (String) SharedUtils.getParam(getActivity(), "userId", "3");
-		str = "3";
+		str = (String) SharedUtils.getParam(getActivity(), "userId", "3");
 		try {
 			str = java.net.URLEncoder.encode(str, "UTF-8");
 		} catch (UnsupportedEncodingException e1) {

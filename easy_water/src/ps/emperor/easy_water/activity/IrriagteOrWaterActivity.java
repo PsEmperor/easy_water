@@ -3,10 +3,15 @@ package ps.emperor.easy_water.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.Gson;
+
 import ps.emperor.easy_water.BaseActivity;
 import ps.emperor.easy_water.R;
+import ps.emperor.easy_water.entity.PermissionListBeans;
+import ps.emperor.easy_water.entity.PermissionListBeans.PermissionListBean;
 import ps.emperor.easy_water.fragment.MainTainIrrigateFragment;
 import ps.emperor.easy_water.fragment.MainTainWaterFragment;
+import ps.emperor.easy_water.utils.PsUtils;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.view.MainActionBar;
 import android.app.FragmentManager;
@@ -27,7 +32,8 @@ public class IrriagteOrWaterActivity extends BaseActivity implements
 	private List<TextView> itemViews;
 	private int index;
 	private InputMethodManager  manager ;
-	
+	private List<PermissionListBean> PermissionListBean;
+	private PermissionListBeans PermissionListBeans;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +54,10 @@ public class IrriagteOrWaterActivity extends BaseActivity implements
 		
 		irrigate.setOnClickListener(this);
 		water.setOnClickListener(this);
+		Gson gson = new Gson();
+		PermissionListBeans = gson.fromJson(PsUtils.getShared(this).getString("permissionList", null),PermissionListBeans.class);
+		PermissionListBean = PermissionListBeans.getPermissionList();
 		initDate();
-
 
 //		index = 1;
 //		clearStatus();
@@ -74,6 +82,21 @@ public class IrriagteOrWaterActivity extends BaseActivity implements
 	        } 
 	    }  
 	private void initDate() {
+		if(PermissionListBean.get(0).getOpertionStat().equals("-1")){
+			clearStatus();
+			FragmentManager fgManager = getFragmentManager();
+			FragmentTransaction transaction = fgManager.beginTransaction();
+			MainTainWaterFragment fragment1 = new MainTainWaterFragment();
+			transaction
+					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction
+					.replace(R.id.fragment_home_recommend, fragment1, "main");
+			transaction.commit();
+			index = 2;
+			clearStatus();
+			irrigate.setVisibility(View.GONE);
+			water.setTranslationX(15);
+		}else if(PermissionListBean.get(1).getOpertionStat().equals("-1")){
 			clearStatus();
 			FragmentManager fgManager = getFragmentManager();
 			FragmentTransaction transaction = fgManager.beginTransaction();
@@ -84,6 +107,20 @@ public class IrriagteOrWaterActivity extends BaseActivity implements
 			transaction.commit();
 			index = 1;
 			clearStatus();
+			water.setVisibility(View.GONE);
+			irrigate.setTranslationX(-15);
+		}else{
+			clearStatus();
+			FragmentManager fgManager = getFragmentManager();
+			FragmentTransaction transaction = fgManager.beginTransaction();
+			MainTainIrrigateFragment fragment = new MainTainIrrigateFragment();
+			transaction
+					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.replace(R.id.fragment_home_recommend, fragment, "main");
+			transaction.commit();
+			index = 1;
+			clearStatus();
+		}
 	}
 
 	@Override

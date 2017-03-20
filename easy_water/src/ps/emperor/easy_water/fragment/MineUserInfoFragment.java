@@ -144,8 +144,7 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 	private void init() {
 		names = (String) SharedUtils.getParam(getActivity(),
 				"dialog_user_name", "	");
-//		str = (String) SharedUtils.getParam(getActivity(), "userId", "3");
-		str = "3";
+		str = (String) SharedUtils.getParam(getActivity(), "userId", "3");
 		try {
 			str = java.net.URLEncoder.encode(str, "UTF-8");
 		} catch (UnsupportedEncodingException e1) {
@@ -153,18 +152,13 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 			e1.printStackTrace();
 		}
 		RequestParams params = new RequestParams(URL.userInfo + "/" + str); // 网址(请替换成实际的网址)
-		// params.addQueryStringParameter("key", "value"); // 参数(请替换成实际的参数与值)
 		progressDialog = ProgressDialog.show(getActivity(), "Loading...",
 				"Please wait...", true, false);
 		JSONObject js_request = new JSONObject();
 		try {
 			params.setAsJsonContent(true);
-			// params.setBodyContent("{\"userId\":\"\",\"userName\":\"\",\"userPhone\":\"\",\"fullName\":\"二狗子\",\"authID\":\"\",\"pathtoPhoto\":\"\"}");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			// params.setAsJsonContent(true);
-			// params.setBodyContent("Content-Type: application/json"+js_request.toString());
 		}// 根据实际需求添加相应键值对
 
 		x.http().request(HttpMethod.GET, params, new CommonCallback<String>() {
@@ -302,7 +296,6 @@ public class MineUserInfoFragment extends Fragment implements OnClickListener {
 					param1.setAsJsonContent(true);
 					js_request.put("userID", str);
 					js_request.put("fullName", name_show.getText().toString());
-					js_request.put("authID", "1");
 					param1.setBodyContent(js_request.toString());
 				} catch (Exception e) {
 					// TODO Auto-generated catch block

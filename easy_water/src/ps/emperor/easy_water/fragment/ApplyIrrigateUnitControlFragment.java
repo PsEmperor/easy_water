@@ -42,13 +42,16 @@ import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.adapter.ApplyIrrigateUnitControlPlantAdapter;
 import ps.emperor.easy_water.adapter.CustomArrayAdapters;
 import ps.emperor.easy_water.entity.ApplyIrrigationUnitControlBean;
+import ps.emperor.easy_water.entity.PermissionListBeans;
 import ps.emperor.easy_water.entity.ApplyIrrigationUnitControlBean.groupList;
 import ps.emperor.easy_water.entity.ApplyIrrigationUnitControlBean.infoList;
+import ps.emperor.easy_water.entity.PermissionListBeans.PermissionListBean;
 import ps.emperor.easy_water.greendao.DBHelper;
 import ps.emperor.easy_water.greendao.IrrigationGroup;
 import ps.emperor.easy_water.greendao.IrrigationProject;
 import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.NetStatusUtil;
+import ps.emperor.easy_water.utils.PsUtils;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.MainActionBars;
@@ -85,6 +88,8 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements
 	private ProgressDialog progressDialog;
 	private TextView area, group, irriunit, text_apply_plan, start_time,
 			end_time, text_apply_plan_pause, start, end;
+	private List<PermissionListBean> PermissionListBean;
+	private PermissionListBeans PermissionListBeans;
 
 	private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
@@ -114,6 +119,10 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements
 		actionBar.setTitle("灌溉单元管理");
 		actionBar.setActionBarOnClickListener(this);
 
+		Gson gson = new Gson();
+		PermissionListBeans = gson.fromJson(PsUtils.getShared(getActivity()).getString("permissionList", null),PermissionListBeans.class);
+		PermissionListBean = PermissionListBeans.getPermissionList();
+		
 		dbHelper = DBHelper.getInstance(getActivity()); // 得到DBHelper对象
 		units = getArguments().getString("units");
 
@@ -321,7 +330,11 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements
 			@Override
 			public void onClick(View widget) {
 				if (NetStatusUtil.isNetValid(getActivity())) {
-					Fetch();
+					if(PermissionListBean.get(6).getOpertionStat().contains("4")){
+						Fetch();
+					}else{
+						Toast.makeText(getActivity(), "抱歉，您没有操作此步骤的权限！", Toast.LENGTH_SHORT).show();
+					}
 				} else {
 					Toast.makeText(getActivity(), "当前网络不可用！",
 							Toast.LENGTH_SHORT).show();
@@ -405,6 +418,9 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements
 			transaction.commit();
 			break;
 		case R.id.acitionbar_right:
+			if(PermissionListBean.get(7).getOpertionStat().equals("-1")){
+				Toast.makeText(getActivity(), "抱歉，您没有操作此步骤的权限！", Toast.LENGTH_SHORT).show();
+			}else{
 			ApplyirrigatePreludeFragment fragment3 = new ApplyirrigatePreludeFragment();
 			Bundle bundle2 = new Bundle();
 			bundle2.putString("units", units);
@@ -414,8 +430,12 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements
 					R.anim.slide_fragment_horizontal_right_out);
 			transaction.replace(R.id.fl, fragment3, "main");
 			transaction.commit();
+			}
 			break;
 		case R.id.unit_control_plan: // 设定计划(此处需要传值
+			if(PermissionListBean.get(6).getOpertionStat().equals("-1")){
+				Toast.makeText(getActivity(), "抱歉，您没有操作此步骤的权限！", Toast.LENGTH_SHORT).show();
+			}else{
 			if (CheckUtil.IsEmpty(beans)) {
 				Toast.makeText(getActivity(),
 						"请进行灌溉维护后再尝试执行此操作！如需使用灌溉计划请先进行轮灌组维护！",
@@ -441,8 +461,12 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements
 					transaction.commit();
 				}
 			}
+			}
 			break;
 		case R.id.btn_apply_irrigate_unit_control_true:// 进入单阀界面
+			if(PermissionListBean.get(8).getOpertionStat().equals("-1")){
+				Toast.makeText(getActivity(), "抱歉，您没有操作此步骤的权限！", Toast.LENGTH_SHORT).show();
+			}else{
 			ApplyIrrigateSingleValveFragment fragment2 = new ApplyIrrigateSingleValveFragment();
 			Bundle bundle1 = new Bundle();
 			bundle1.putString("units", units);
@@ -452,6 +476,7 @@ public class ApplyIrrigateUnitControlFragment extends Fragment implements
 					R.anim.slide_fragment_horizontal_right_out);
 			transaction.replace(R.id.fl, fragment2, "main");
 			transaction.commit();
+			}
 			break;
 		case R.id.text_apply_plan_pause:// 暂停
 			break;

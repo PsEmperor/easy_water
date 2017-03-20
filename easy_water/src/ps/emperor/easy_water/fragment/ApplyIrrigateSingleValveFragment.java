@@ -26,11 +26,14 @@ import ps.emperor.easy_water.R;
 import ps.emperor.easy_water.adapter.ApplyIrrigateSingleValveAdapter;
 import ps.emperor.easy_water.adapter.ImageAdapterGroup;
 import ps.emperor.easy_water.entity.ApplyIrrigateSingleValveBean;
+import ps.emperor.easy_water.entity.PermissionListBeans;
 import ps.emperor.easy_water.entity.ApplyIrrigateSingleValveBean.groupList;
 import ps.emperor.easy_water.entity.ApplyIrrigateSingleValveBean.infoList;
+import ps.emperor.easy_water.entity.PermissionListBeans.PermissionListBean;
 import ps.emperor.easy_water.utils.CheckUtil;
 import ps.emperor.easy_water.utils.DensityUtil;
 import ps.emperor.easy_water.utils.NetStatusUtil;
+import ps.emperor.easy_water.utils.PsUtils;
 import ps.emperor.easy_water.utils.SharedUtils;
 import ps.emperor.easy_water.utils.URL;
 import ps.emperor.easy_water.view.MainActionBars;
@@ -64,7 +67,6 @@ public class ApplyIrrigateSingleValveFragment extends Fragment implements
 	private TextView irriUnit;
 	private LinearLayout linearLayout_gridtableLayout;
 	private FrameLayout frameLayout_gridtableLayout;
-
 	// private DBHelper dbHelper;
 	// private SingleValue singleValue;
 
@@ -100,7 +102,7 @@ public class ApplyIrrigateSingleValveFragment extends Fragment implements
 			Toast.makeText(getActivity(), "当前网络不可用！请检查您的网络状态！", Toast.LENGTH_SHORT)
 					.show();
 		}
-
+		
 		// for (int i = 0; i < beans.size(); i++) {
 		// singleValue = new SingleValue();
 		// singleValue.setValueID(beans.get(i).getValve());
