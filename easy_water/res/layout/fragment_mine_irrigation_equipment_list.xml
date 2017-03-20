@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp" >
+
+        <TextView
+            android:id="@+id/tv_rrigation_equipment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="80dp"
+            android:singleLine="true"
+            android:text="141团5连7#地块4#灌溉单元" 
+            android:textSize="14sp"
+            android:textColor="@color/gray_1"/>
+
+        <ToggleButton
+            android:id="@+id/toggle_persona_menstruation_message_sets"
+            android:layout_width="45dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/personalinformation_selector"
+            android:disabledAlpha="?android:disabledAlpha"
+            android:textOff="@null"
+            android:textOn="@null" 
+            />
+    </RelativeLayout>
+
+</LinearLayout>

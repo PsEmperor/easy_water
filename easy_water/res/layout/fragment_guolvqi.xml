@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:background="@color/gray_3"
+    android:orientation="vertical" >
+
+    <ps.emperor.easy_water.utils.Ltitle
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="过滤器形式"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/bt_sbinter"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawableRight="@drawable/icon_arrow"
+            android:gravity="center"
+            android:text="选择种类"
+            android:textSize="18sp" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="left|center"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="最大流量(m³/h)"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/et_maxFlow"
+            android:layout_width="120dp"
+            android:background="@drawable/bg_circular_square_edittext_selector"
+            android:layout_height="wrap_content"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="left|center"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="冲洗方式"
+            android:textSize="18sp" />
+
+
+        <RadioGroup
+            android:id="@+id/rg"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="left|center" >
+
+            <RadioButton
+                android:id="@+id/rb_yacha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="压差" >
+            </RadioButton>
+
+            <RadioButton
+                android:id="@+id/rb_timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="定时" >
+            </RadioButton>
+        </RadioGroup>
+                 <TextView
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp" />
+    </LinearLayout>
+    
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="压差阀值(Mp)"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/et_fazhi"
+            android:layout_width="120dp"
+            android:background="@drawable/bg_circular_square_edittext_selector"
+            android:layout_height="wrap_content"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="left|center"
+            android:textSize="18sp" />
+    </LinearLayout>
+    
+                <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="时间间隔"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/tv_timeInterval"
+            android:layout_width="120dp"
+            android:background="@drawable/bg_circular_square_edittext_selector"
+            android:layout_height="wrap_content"
+            android:hint="小时/分钟"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="left|center"
+            android:textSize="18sp" />
+    </LinearLayout>
+    
+            <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="维修电话"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/et_telphone"
+            android:layout_width="120dp"
+            android:background="@drawable/bg_circular_square_edittext_selector"
+            android:hint="010-10000000"
+            android:layout_height="wrap_content"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_phone"
+            android:clickable="true"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="left|center"
+            android:textSize="18sp" />
+    </LinearLayout>
+    
+    
+    
+
+</LinearLayout>

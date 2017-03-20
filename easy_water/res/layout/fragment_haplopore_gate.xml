@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_3"
+    android:orientation="vertical" >
+
+    <ps.emperor.easy_water.view.MainActionBars
+        android:id="@+id/actionbar_apply_water_haplopore_gate"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+    </ps.emperor.easy_water.view.MainActionBars>
+
+    <RelativeLayout
+        android:id="@+id/layout_apply_water_time_operation"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_weight="0" >
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/icon_arrow_red" 
+            />
+
+        <TextView
+            android:id="@+id/textview_operation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="预约调闸"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_apply_water_time_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textview_operation"
+            android:layout_alignBottom="@+id/textview_operation"
+            android:layout_toRightOf="@+id/textview_operation"
+            android:layout_marginLeft="10dp"
+            android:textSize="15sp"
+            android:text="开始时间: " />
+
+        <TextView
+            android:id="@+id/tv_apply_water_time_starts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/tv_apply_water_time_start"
+            android:layout_alignBottom="@+id/tv_apply_water_time_start"
+            android:layout_toRightOf="@+id/tv_apply_water_time_start"
+            android:textSize="15sp"
+            android:text="2016-11-17 19:03" />
+
+    </RelativeLayout>
+<TextView android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@color/white"/>
+<RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_weight="0" >
+
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentLeft="true"
+              android:layout_centerVertical="true"
+              android:layout_marginLeft="10dp"
+              android:text="预约闸门开度"
+              android:textSize="15sp" />
+
+    </RelativeLayout>
+
+  <TextView android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@color/white"/>
+    <ListView
+        android:id="@+id/list_apply_water_haplopore_gate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@color/white" >
+    </ListView>
+
+</LinearLayout>

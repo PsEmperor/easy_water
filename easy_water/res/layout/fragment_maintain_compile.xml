@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ps.emperor.easy_water.view.MainActionBar
+        android:id="@+id/actionbar_maintain_compile"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+    </ps.emperor.easy_water.view.MainActionBar>
+
+    <Button
+        android:id="@+id/button_maintain_compile_basic_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/blue"
+        android:text="基本信息维护" />
+
+    <Button
+        android:id="@+id/button_maintain_compile_user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/blue"
+        android:text="种植户信息维护" />
+
+    <Button
+        android:id="@+id/button_maintain_compile_user_farmarcrop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/blue"
+        android:text="作物信息维护" />
+
+    <Button
+        android:id="@+id/button_maintain_compile_reset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/blue"
+        android:text="轮灌组维护" />
+
+</LinearLayout>

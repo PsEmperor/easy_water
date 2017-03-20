@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_3"
+    android:orientation="vertical" >
+
+    <ps.emperor.easy_water.view.MainActionBars
+        android:id="@+id/actionbar_apply_irrigat_single_valve"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+    </ps.emperor.easy_water.view.MainActionBars>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white" >
+
+        <TextView
+            android:id="@+id/text_apply_irriagte_single_valve_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:singleLine="true"
+            android:text="141团6连1#地块"
+            android:textColor="@color/black" />
+    </RelativeLayout>
+
+    <ps.emperor.easy_water.view.CustomHScrollView
+        android:id="@+id/scrollView_single"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/gray_3"
+        android:scrollbars="none" >
+
+        <FrameLayout
+            android:id="@+id/frameLayout_gridtableLayout_single"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent" >
+
+            <LinearLayout
+                android:id="@+id/linearLayout_gridtableLayout_single"
+                android:layout_width="1050dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <ScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent" >
+
+                    <ps.emperor.easy_water.view.MyGridView
+                        android:id="@+id/grid_maintain_irrigate_infos_single"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:columnWidth="90dp"
+                        android:horizontalSpacing="20px"
+                        android:nextFocusDown="@+id/listView"
+                        android:nextFocusUp="@+id/buttonList"
+                        android:numColumns="15" />
+                </ScrollView>
+            </LinearLayout>
+        </FrameLayout>
+    </ps.emperor.easy_water.view.CustomHScrollView>
+
+</LinearLayout>

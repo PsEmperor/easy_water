@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+   android:clickable="true"
+    android:orientation="vertical" >
+
+    <ps.emperor.easy_water.utils.Ltitle
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <TextView 
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="设备名称"
+            />
+        
+        <EditText 
+            android:id="@+id/et_getUpInfo"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:background="@color/gray_2"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_weight="1"
+            />
+        
+  <!--       <TextView 
+            android:id="@+id/tv_getUpInfo"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_weight="1"
+            /> -->
+        
+        
+    </LinearLayout>
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <TextView 
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="闸孔序号"
+            />
+        
+        <TextView 
+            android:id="@+id/tv_kongNum"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_weight="1"
+            />
+        
+        
+    </LinearLayout>
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <TextView 
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="闸宽(m)"
+            />
+        
+        <EditText 
+            android:id="@+id/et_gateWid"
+            android:gravity="center"
+            android:background="@color/gray_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_weight="1"
+            />
+        
+        
+    </LinearLayout>
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <TextView 
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="启闭高度(m)"
+            />
+        
+        <EditText 
+            android:id="@+id/et_high"
+            android:gravity="center"
+            android:background="@color/gray_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_weight="1"
+            />
+        
+        
+    </LinearLayout>
+
+
+    
+    <Button
+          android:id="@+id/bt_next"
+          android:onClick="configDanKong"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="70dp"
+		android:layout_gravity="center"
+        android:background="@drawable/login_btn_selector"
+        android:text="下一个"
+        android:textColor="#fff" />
+
+
+
+</LinearLayout>

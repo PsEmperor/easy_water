@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_3"
+    android:orientation="vertical" >
+
+    <ps.emperor.easy_water.view.MainActionBar
+        android:id="@+id/actionbar_maintain_present_irrigate"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+    </ps.emperor.easy_water.view.MainActionBar>
+
+    <TextView
+        android:id="@+id/text_maintain_irrigat_info_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:text="141团6连1#地块3#灌溉单元"
+        android:textColor="@color/black" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="30dp"
+            android:text="当前轮灌组" />
+
+        <TextView
+            android:id="@+id/text_maintain_irrigat_info_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/textView1"
+            android:layout_centerHorizontal="true"
+            android:text="0" />
+
+        <GridView
+            android:id="@+id/list_maintain_irrigat_info_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/textView1"
+            android:layout_marginTop="10dp"
+             >
+        </GridView>
+    </RelativeLayout>
+
+</LinearLayout>

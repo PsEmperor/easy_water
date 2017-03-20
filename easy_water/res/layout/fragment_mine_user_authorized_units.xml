@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_3"
+    android:orientation="vertical" >
+
+    <ps.emperor.easy_water.view.MainActionBars
+        android:id="@+id/actionbar_user_unit"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+    </ps.emperor.easy_water.view.MainActionBars>
+<RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/gray_3"
+        android:orientation="vertical" >
+
+        <EditText
+            android:id="@+id/ed_mine_user_authorized_utils"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="60dp"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:hint="请输入授权单位"
+            android:paddingLeft="15dp"
+            android:singleLine="true"
+            android:textColor="@color/gray_1" />
+
+        <ImageView
+            android:id="@+id/image_mine_user_authorized_utils"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/searchs" />
+    </RelativeLayout>
+    <ListView
+        android:id="@+id/list_mine_user_authorized_utils"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:choiceMode="singleChoice"
+        android:background="@color/white" >
+    </ListView>
+    <TextView
+        android:id="@+id/hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="提示:选择所处行政区划后自动出现管理单位列表，若授权单位不在列表中请与客服联系。"
+        android:textColor="@color/gray_1"
+        android:textSize="14sp" />
+
+</LinearLayout>

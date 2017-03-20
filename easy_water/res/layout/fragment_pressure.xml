@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:background="@color/gray_3"
+    android:orientation="vertical" >
+             <ps.emperor.easy_water.utils.Ltitle
+                 android:id="@+id/ptitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+             
+             <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="传感器"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/bt_pressure"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawableRight="@drawable/icon_arrow"
+            android:gravity="center"
+            android:text="选择传感器数量"
+            android:textSize="18sp" />
+    </LinearLayout>
+    
+
+      <ScrollView 
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        >
+        
+        <LinearLayout 
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+            
+            <ps.emperor.easy_water.application.auxiliary.ItemWater 
+                android:id="@+id/ip1"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:visibility="gone"
+                />
+            
+            <ps.emperor.easy_water.application.auxiliary.ItemWater 
+                android:id="@+id/ip2"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:visibility="gone"
+                />
+            <ps.emperor.easy_water.application.auxiliary.ItemWater 
+                android:id="@+id/ip3"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:visibility="gone"
+                />
+            <ps.emperor.easy_water.application.auxiliary.ItemWater 
+                android:id="@+id/ip4"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:visibility="gone"
+                />
+            <ps.emperor.easy_water.application.auxiliary.ItemWater 
+                android:id="@+id/ip5"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:visibility="gone"
+                />
+            <ps.emperor.easy_water.application.auxiliary.ItemWater 
+                android:id="@+id/ip6"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:visibility="gone"
+                />
+            <ps.emperor.easy_water.application.auxiliary.ItemWater 
+                android:id="@+id/ip7"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:visibility="gone"
+                />
+            <ps.emperor.easy_water.application.auxiliary.ItemWater 
+                android:id="@+id/ip8"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:visibility="gone"
+                />
+            <ps.emperor.easy_water.application.auxiliary.ItemWater 
+                android:id="@+id/ip9"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:visibility="gone"
+                />
+            <ps.emperor.easy_water.application.auxiliary.ItemWater 
+                android:id="@+id/ip10"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:visibility="gone"
+                />
+            <ps.emperor.easy_water.application.auxiliary.ItemWater 
+                android:id="@+id/ip11"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:visibility="gone"
+                />
+            <ps.emperor.easy_water.application.auxiliary.ItemWater 
+                android:id="@+id/ip12"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:visibility="gone"
+                />
+            <ps.emperor.easy_water.application.auxiliary.ItemWater 
+                android:id="@+id/ip13"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:visibility="gone"
+                />
+            <ps.emperor.easy_water.application.auxiliary.ItemWater 
+                android:id="@+id/ip14"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:visibility="gone"
+                />
+            <ps.emperor.easy_water.application.auxiliary.ItemWater 
+                android:id="@+id/ip15"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:visibility="gone"
+                />
+            <ps.emperor.easy_water.application.auxiliary.ItemWater 
+                android:id="@+id/ip16"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:visibility="gone"
+                />
+            <ps.emperor.easy_water.application.auxiliary.ItemWater 
+                android:id="@+id/ip17"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:visibility="gone"
+                />
+            <ps.emperor.easy_water.application.auxiliary.ItemWater 
+                android:id="@+id/ip18"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:visibility="gone"
+                />
+            <ps.emperor.easy_water.application.auxiliary.ItemWater 
+                android:id="@+id/ip19"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:visibility="gone"
+                />
+            <ps.emperor.easy_water.application.auxiliary.ItemWater 
+                android:id="@+id/ip20"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:visibility="gone"
+                />
+            
+            
+            
+            
+        </LinearLayout>
+        
+      </ScrollView>
+
+</LinearLayout>

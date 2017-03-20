@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/layout_relative_change_list"
+        android:layout_width="120dp"
+        android:layout_height="260dp"
+         >
+
+        <RelativeLayout
+            android:id="@+id/layout_relative_changes_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="5dp"
+            android:background="@color/white" >
+
+            <RelativeLayout
+                android:id="@+id/layout_hight_change_list"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="60dp"
+                android:background="@color/blue" >
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignTop="@+id/layout_relative_changes_list"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:background="@color/gray_1" >
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="5dp"
+                android:gravity="center_vertical"
+                android:text="闸门开高"
+                android:textColor="@color/white" 
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="5dp"
+                android:gravity="center_vertical"
+                android:text="闸门开度"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_gate_control_aperture_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/textView1"
+                android:layout_alignBottom="@+id/textView1"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/textView1"
+                android:gravity="center_vertical"
+                android:text="30%"
+                android:textColor="@color/white" 
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/tv_gate_control_hight_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/textView2"
+                android:layout_alignBottom="@+id/textView2"
+                android:layout_alignLeft="@+id/tv_gate_control_aperture_list"
+                android:gravity="center_vertical"
+                android:text="0.5m"
+                android:textColor="@color/white" 
+                android:textSize="12sp"/>
+        </RelativeLayout>
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="50dp"
+                android:background="@color/transparent" >
+
+                <TextView
+                    android:id="@+id/tv_gate_control_number_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:text="1"
+                    android:textColor="@color/black"
+                    android:textSize="50sp" />
+            </RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_3"
+    android:orientation="vertical" >
+
+    <ps.emperor.easy_water.view.MainActionBars
+        android:id="@+id/actionbar_mine_comments"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+    </ps.emperor.easy_water.view.MainActionBars>
+
+    <EditText
+        android:id="@+id/edit_mine_comments"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/white"
+        android:gravity="top"
+        android:hint="请在此输入您的意见和建议，这对我们改善您的服务有非常重要的意义，非常感谢！"
+        android:padding="10dp"
+        android:textSize="15sp" >
+
+        <requestFocus />
+    </EditText>
+
+</LinearLayout>

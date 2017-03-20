@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_3"
+    android:orientation="vertical" >
+
+    <ps.emperor.easy_water.view.MainActionBars
+        android:id="@+id/actionbar_user_unit"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+    </ps.emperor.easy_water.view.MainActionBars>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/transparent"
+        android:text="省、区、直辖市"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/text_mine_user_info_province"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:text=""
+        android:textColor="@color/gray_1"
+        android:textSize="15sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/transparent"
+        android:text="市、地、州"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/text_mine_user_info_state"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:text=""
+        android:textColor="@color/gray_1"
+        android:textSize="15sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/transparent"
+        android:text="区、县、团、场"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/text_mine_user_info_district"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:text=""
+        android:textColor="@color/gray_1"
+        android:textSize="15sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/transparent"
+        android:text="乡、镇、连"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/text_mine_user_info_even"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:text=""
+        android:textColor="@color/gray_1"
+        android:textSize="15sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/transparent"
+        android:text="管理单位"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/text_mine_user_info_units"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:text=""
+        android:textColor="@color/gray_1"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="50dp"
+        android:text="提示:选择所处行政区划后自动出现管理单位列表，若授权单位不在列表中请与客服联系。"
+        android:textColor="@color/gray_1"
+        android:textSize="14sp" />
+
+</LinearLayout>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+ <TextView
+     android:id="@+id/username_view"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:layout_alignParentTop="true"
+     android:layout_centerHorizontal="true"
+     android:gravity="left"
+     android:text="输入闸门开高"
+     android:textAppearance="?android:attr/textAppearanceMedium" />
+
+ <EditText
+     android:id="@+id/edit_gate_height"
+     android:layout_width="70dp"
+     android:layout_height="45dp"
+     android:layout_alignLeft="@+id/username_view"
+     android:layout_below="@+id/username_view"
+     android:layout_marginTop="10dp"
+     android:capitalize="none"
+     android:ems="10"
+     android:singleLine="true"
+     android:textAppearance="?android:attr/textAppearanceMedium" />
+
+ <TextView
+     android:id="@+id/textView1"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:layout_alignBottom="@+id/edit_gate_height"
+     android:layout_toRightOf="@+id/edit_gate_height"
+     android:text="m" 
+     android:textSize="17sp"
+     android:textColor="@color/gray_1"
+     android:layout_marginLeft="15dp"/>
+
+
+</RelativeLayout>

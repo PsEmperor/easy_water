@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_3"
+    android:orientation="vertical" >
+
+    <ps.emperor.easy_water.view.MainActionBar
+        android:id="@+id/actionbar_user_tel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+    </ps.emperor.easy_water.view.MainActionBar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:background="@color/white" >
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/phone1" />
+
+        <TextView
+            android:id="@+id/text_mine_user_info_tel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="当前手机号：15279560809"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_mine_user_info_tel"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:paddingBottom="10dp"
+            android:text="该手机号可用于登录"
+            android:textColor="@color/gray_1" />
+        
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_user_info_new_tel"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mine_layout_height"
+        android:layout_marginTop="15dp"
+        android:background="@color/white" >
+
+        <EditText
+            android:id="@+id/edit_mine_user_info_tel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_toLeftOf="@+id/verification_code"
+            android:background="@color/transparent"
+            android:digits="1234567890."
+            android:hint="新手机号" />
+
+<Button
+            android:id="@+id/verification_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="25dp"
+            android:layout_margin="3dp"
+            android:text="获取验证码"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_info_user_new_tel"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mine_layout_height"
+        android:layout_marginTop="1dp"
+        android:background="@color/white" >
+
+        <EditText
+            android:id="@+id/verification_codes"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:background="@color/transparent"
+            android:digits="1234567890."
+            android:hint="验证码" />
+
+    </RelativeLayout>
+
+    <Button
+                    android:id="@+id/btn_apply_irrigate_unit_control_true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="30dp"
+                    android:text="确定" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:text="提示:手机号码是用户唯一的身份识别码，修改后该用户所有权限和相关信息将与新手机号进行绑定，原号码将失去所有功能，请谨慎操作。"
+        android:textColor="@color/gray_1"
+        android:textSize="14sp" />
+
+</LinearLayout>

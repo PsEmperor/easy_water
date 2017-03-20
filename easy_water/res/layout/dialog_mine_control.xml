@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+ <TextView
+     android:id="@+id/username_view"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:layout_alignParentTop="true"
+     android:layout_centerHorizontal="true"
+     android:gravity="left"
+     android:text="请输入姓名"
+     android:textAppearance="?android:attr/textAppearanceMedium" />
+
+ <EditText
+     android:id="@+id/edit_mine_user_name"
+     android:layout_width="70dp"
+     android:layout_height="45dp"
+     android:layout_alignLeft="@+id/username_view"
+     android:layout_alignRight="@+id/username_view"
+     android:layout_below="@+id/username_view"
+     android:layout_marginTop="10dp"
+     android:capitalize="none"
+     android:ems="10"
+     android:singleLine="true"
+     android:textAppearance="?android:attr/textAppearanceMedium" />
+
+</RelativeLayout>

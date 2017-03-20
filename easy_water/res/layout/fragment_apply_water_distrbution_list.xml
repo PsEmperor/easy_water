@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_3"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white" >
+
+        <TextView
+            android:id="@+id/text_apply_water_whether"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="50dp"
+            android:gravity="center_vertical"
+            android:text="无计划"
+            android:textColor="@color/gray_1" />
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/image_gray_row" />
+
+        <TextView
+            android:id="@+id/text_apply_water_units"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/text_apply_water_whether"
+            android:layout_alignParentLeft="true"
+            android:layout_alignTop="@+id/text_apply_water_whether"
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical"
+            android:lineSpacingMultiplier="1.8"
+            android:singleLine="true"
+            android:textColor="@color/gray_1" />
+
+    </RelativeLayout>
+
+</LinearLayout>

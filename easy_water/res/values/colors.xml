@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <!--二维码-->
+         <color name="result_view">#b0000000</color>
+      <color name="viewfinder_mask">#60000000</color>
+      <color name="possible_result_points">#c0ffff00</color> 
+    <!-- 分隔符 -->
+    
+
+    <!-- 白色 -->
+    <color name="white">#FFFFFF</color>
+    <!-- 黑色 -->
+    <color name="black">#080103</color>
+    <!-- 蓝色 -->
+    <color name="blue">#08aeff</color>
+    <!-- 透明 -->
+    <color name="transparent">#00000000</color>
+    <!-- 一级灰色[深灰] -->
+    <color name="gray_1">#454545</color>
+    <!-- 二级灰色 -->
+    <color name="gray_2">#999999</color>
+    <!-- 三级灰色 [浅灰] -->
+    <color name="gray_3">#e0e0e0</color>
+	<!-- 红色 -->
+    <color name="red">#ed0000</color>
+      <color name="drawer_menu_txt_color">#4c4948</color>
+    <color name="desktop_bg">#f2f5f7</color>
+    <color name="actionbar_bg">#2d3236</color>
+    <color name="color_hui_bg">#dedede</color>
+    <color name="color_bai">#ffffff</color>
+    <color name="listview_subtext_color">#9fa0a0</color>
+    
+    <color name="grey">#d4d2d2</color>
+    <color name="background">#3a3a3a</color>
+    <color name="color_video_bg">#f2f5f7</color>
+    <color name="color_video_text">#4c4948</color>
+    <color name="color_play_text">#898989</color>
+    <color name="color_grid_header">#ff33b5e5</color>
+    
+</resources>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="@color/gray_2">
+    
+<ps.emperor.easy_water.view.MainActionBar
+        android:id="@+id/fragment_informationfragment"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+    </ps.emperor.easy_water.view.MainActionBar>
+
+  
+<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/white" >
+
+        <TextView
+            android:id="@+id/histogram"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_circular_square_edittext_selector"
+            android:gravity="center"
+            android:text="基本数据"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/piechart"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_circular_square_edittext_selector"
+            android:gravity="center"
+            android:text="作物分布"
+            android:textColor="@color/black" />
+    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linear_infofragment_test"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
+        </LinearLayout>
+    
+
+</LinearLayout>

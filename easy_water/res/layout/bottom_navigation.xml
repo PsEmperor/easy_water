@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="52dp"
+    android:background="@android:color/darker_gray"
+    android:orientation="horizontal" >
+
+    <RelativeLayout
+        android:id="@+id/rl_first"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:clickable="true" >
+
+        <ImageView
+            android:id="@+id/iv_first"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/apple_black" />
+
+        <TextView
+            android:id="@+id/tv_first"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_first"
+            android:gravity="center_horizontal"
+            android:text="first"
+            android:textColor="@android:color/background_dark"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_second"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:clickable="true" >
+
+        <ImageView
+            android:id="@+id/iv_second"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/apple_black" />
+
+        <TextView
+            android:id="@+id/tv_second"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_second"
+            android:gravity="center"
+            android:text="second"
+            android:textColor="@android:color/background_dark"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_third"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:clickable="true" >
+
+        <ImageView
+            android:id="@+id/iv_third"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/apple_black" />
+
+        <TextView
+            android:id="@+id/tv_third"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_third"
+            android:gravity="center_horizontal"
+            android:text="third"
+            android:textColor="@android:color/background_dark"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_forth"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:clickable="true" >
+
+        <ImageView
+            android:id="@+id/iv_forth"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/apple_black" />
+
+        <TextView
+            android:id="@+id/tv_forth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_forth"
+
+            android:gravity="center"
+            android:text="forth"
+            android:textColor="@android:color/background_dark"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+</LinearLayout>

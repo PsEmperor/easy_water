@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_3"
+    android:orientation="vertical" >
+ <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent" >
+<LinearLayout android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+    <ps.emperor.easy_water.view.MainActionBars
+        android:id="@+id/actionbar_apply_irrigat_valve_control"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+    </ps.emperor.easy_water.view.MainActionBars>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white" >
+
+        <TextView
+            android:id="@+id/text_apply_irriagte_valve_control_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:singleLine="true"
+            android:text="141团6连1#地块"
+            android:textColor="@color/black" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:orientation="horizontal" >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <ImageView
+                android:id="@+id/image_apply_irriagte_valve_control_unit"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:src="@drawable/value_selected" />
+
+            <TextView
+                android:id="@+id/tv_ChanNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/image_apply_irriagte_valve_control_unit"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="18dp"
+                android:text="1-1" 
+                android:textSize="18sp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <ImageView
+                android:id="@+id/image_irriagte_valve_control_isopen"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/off" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/white" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" 
+        >
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="10dp"
+            android:text="种 植 户" 
+            android:textColor="@color/black"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/text_apply_irriagte_valve_control_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textView2"
+            android:layout_alignBottom="@+id/textView2"
+            android:layout_marginLeft="75dp"
+            android:layout_toRightOf="@+id/textView2"
+            android:text="张三"
+            android:textColor="@color/red" 
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textView2"
+            android:layout_below="@+id/textView2"
+            android:layout_marginTop="15dp"
+            android:text="种植作物" 
+            android:textColor="@color/black"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/text_apply_irriagte_valve_control_crop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textView4"
+            android:layout_alignBottom="@+id/textView4"
+            android:layout_alignLeft="@+id/text_apply_irriagte_valve_control_name"
+            android:text="玉米"
+             android:textColor="@color/red" 
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textView4"
+            android:layout_below="@+id/textView4"
+            android:layout_marginTop="15dp"
+            android:text="控制面积" 
+            android:textColor="@color/black"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/text_apply_irriagte_valve_control_area"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/textView6"
+            android:layout_alignLeft="@+id/text_apply_irriagte_valve_control_crop"
+            android:text="1.8亩" 
+            android:textColor="@color/red" 
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textView6"
+            android:layout_below="@+id/textView6"
+            android:layout_marginTop="15dp"
+            android:text="阀控器ID"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/text_apply_irriagte_valve_control_valve"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textView3"
+            android:layout_alignBottom="@+id/textView3"
+            android:layout_alignLeft="@+id/text_apply_irriagte_valve_control_area"
+            android:text="YH5234165559523"
+            android:textColor="@color/red" 
+            android:textSize="15sp" 
+            android:singleLine="true"/>
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textView3"
+            android:layout_below="@+id/textView3"
+            android:text="灌水次数" 
+            android:layout_marginTop="15dp"
+            android:textColor="@color/black"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/text_apply_irriagte_valve_control_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textView5"
+            android:layout_alignBottom="@+id/textView5"
+            android:layout_alignLeft="@+id/text_apply_irriagte_valve_control_valve"
+            android:text="4次" 
+            android:textColor="@color/red" 
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textView5"
+            android:layout_below="@+id/textView5"
+            android:text="累计灌水时间"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/black"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/text_apply_irriagte_valve_control_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/textView7"
+            android:layout_alignLeft="@+id/text_apply_irriagte_valve_control_number"
+            android:text="18:18:18" 
+            android:textColor="@color/red" 
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/textView5"
+            android:layout_below="@+id/textView7"
+            android:text="灌溉水量"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/text_apply_irriagte_valve_control_water"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textView9"
+            android:layout_alignBottom="@+id/textView9"
+            android:layout_alignLeft="@+id/text_apply_irriagte_valve_control_time"
+            android:text="135.8m³"
+            android:textColor="@color/red" 
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/textView9"
+            android:background="@color/white"
+            android:layout_marginTop="10dp" />
+
+  <RelativeLayout
+       android:id="@+id/layout_apply_irriagte_valve_control"
+       android:layout_width="match_parent"
+       android:layout_height="50dp"
+       android:layout_weight="0"
+       android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/text_apply_irriagte_valve_control"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/image_apply_irriagte_valve_control_unit0"
+            android:layout_alignBottom="@+id/image_apply_irriagte_valve_control_unit0"
+            android:layout_marginLeft="40dp"
+            android:layout_toRightOf="@+id/image_apply_irriagte_valve_control_unit0"
+            android:text="00:00"
+            android:textColor="@color/red"
+            android:textSize="15sp"
+            android:drawableRight="@drawable/icon_arrow_red"
+            android:gravity="center_vertical" 
+            android:drawablePadding="15dp"/>
+
+        <TextView
+            android:id="@+id/image_apply_irriagte_valve_control_unit0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="39dp"
+            android:text="灌水延续时间"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+    </LinearLayout>
+</ScrollView>
+</LinearLayout>

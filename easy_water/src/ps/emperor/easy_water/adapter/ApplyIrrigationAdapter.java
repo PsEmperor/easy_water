@@ -1,0 +1,73 @@
+package ps.emperor.easy_water.adapter;
+
+
+import android.content.Context;
+
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import ps.emperor.easy_water.R;
+import ps.emperor.easy_water.entity.UserReleIrrInfoBean.infoList;
+import ps.emperor.easy_water.view.PieChatView;
+
+/**
+ * 灌溉（应用）适配器
+ * @author 毛国江
+ * @version 2016-5-18 上午11:12
+ */
+public class ApplyIrrigationAdapter extends MyBaseAdapter<infoList> implements OnClickListener {
+
+	private Context context;
+
+	public ApplyIrrigationAdapter(Context context) {
+		super(context);
+		this.context = context;
+	}
+
+	@Override
+	public View MyGetView(int position, View convertView, ViewGroup parent) {
+		final ViewHolder viewHolder;
+		if (convertView == null) {
+			convertView = inflater.inflate(R.layout.fragment_apply_irrigate_list, null);
+			viewHolder = new ViewHolder();
+			viewHolder.units = (TextView) convertView.findViewById(R.id.text_apply_units);
+			viewHolder.whether = (TextView) convertView.findViewById(R.id.text_apply_whether);
+			viewHolder.current_state = (PieChatView) convertView.findViewById(R.id.image_apply_status);
+			viewHolder.whether_percent = (TextView) convertView.findViewById(R.id.text_apply_whether_percent);
+			convertView.setTag(viewHolder);
+		} else {
+			viewHolder = (ViewHolder) convertView.getTag();
+		}
+		infoList infoList = list.get(position);
+		viewHolder.units.setText(infoList.getIrriUnitName());
+		if("-1".equals(infoList.getIrriState())){
+			viewHolder.whether.setText("无计划");
+		}else if("0".equals(infoList.getIrriState())){
+			viewHolder.whether.setText("等待灌溉");
+		}if("1".equals(infoList.getIrriState())){
+			viewHolder.whether.setText("正在灌溉");
+		}if("2".equals(infoList.getIrriState())){
+			viewHolder.whether.setText("灌溉完毕");
+		}if("3".equals(infoList.getIrriState())){
+			viewHolder.whether.setText("暂停灌溉");
+		}
+		viewHolder.current_state.setAngle(180);
+		viewHolder.whether_percent.setText("50%");
+		return convertView;
+
+	}
+
+	class ViewHolder {
+		TextView units;
+		TextView whether;
+		TextView whether_percent;
+		PieChatView current_state;
+	}
+
+	@Override
+	public void onClick(DialogInterface dialog, int which) {
+
+	}
+}

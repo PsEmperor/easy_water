@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <ps.emperor.easy_water.utils.Ltitle 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        />
+    
+    <Button 
+        android:text="启动NFC"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/btn_color_selector"
+        android:id="@+id/bt_nfc"
+        android:layout_weight="1"
+        android:layout_height="0dp"
+       	android:layout_width="match_parent"
+        />
+    
+        <Button 
+        android:text="连接蓝牙"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+       android:background="@drawable/btn_color_selector"
+        android:id="@+id/bt_blue"
+        android:layout_weight="1"
+        android:layout_height="0dp"
+       	android:layout_width="match_parent"
+        />
+    
+    
+
+        
+       <LinearLayout 
+           
+           android:layout_width="match_parent"
+           android:layout_height="0dp"
+           android:layout_weight="1"
+           android:layout_marginTop="20dp"
+           android:orientation="horizontal"
+           >
+           
+           <Button 
+               android:background="@drawable/btn_color_selector"
+               android:text="扫描二维码"
+               android:id="@+id/bt_scan"
+               android:layout_margin="10dp"
+               android:layout_width="0dp"
+               android:layout_weight="1"
+               android:layout_height="match_parent"
+               android:layout_gravity="center_vertical"
+               />
+           <Button 
+               android:background="@drawable/btn_color_selector"
+               android:text="手动配置"
+               android:layout_margin="10dp"
+               android:id="@+id/bt_hand"
+               android:layout_width="0dp"
+               android:layout_weight="1"
+               android:layout_height="match_parent"
+               android:layout_gravity="center_vertical"
+               />
+       </LinearLayout>
+       
+       <TextView 
+           android:layout_margin="10dp"
+           android:layout_width="match_parent"
+           android:layout_height="0dp"
+           android:layout_weight="1"
+           android:textSize="18sp"
+           android:text="温馨提示：\n请选择您最习惯的方式进行配置！！！"
+           />
+    
+
+</LinearLayout>

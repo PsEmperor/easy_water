@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+
+    android:layout_height="45dp"
+
+    android:background="@drawable/title_bg"
+    android:orientation="horizontal" >
+
+    <Button
+        android:id="@+id/bt_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="返回"
+        android:layout_margin="5dp"
+        android:background="@drawable/back_bg"
+        android:textColor="#fff" />
+
+    <TextView
+        android:id="@+id/tv_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="This is Title"
+        android:textColor="#fff"
+        android:textSize="24sp" />
+
+    <Button
+        android:visibility="invisible"
+        android:id="@+id/bt_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_bg"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:text="edit"
+        android:textColor="#fff" />
+
+</LinearLayout>

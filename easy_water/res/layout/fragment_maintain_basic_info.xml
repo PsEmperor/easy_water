@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_3"
+    android:orientation="vertical" >
+
+    <ps.emperor.easy_water.view.MainActionBars
+        android:id="@+id/actionbar_maintain_basic_info"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+    </ps.emperor.easy_water.view.MainActionBars>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white" >
+
+        <RelativeLayout
+            android:id="@+id/layout_maintain_basic_info_max_irrigat_group"
+            android:layout_width="match_parent"
+            android:layout_height="45dp" >
+
+            <TextView
+                android:id="@+id/text_maintain_basic_info_max_irrigat_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/textView8"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="55dp"
+                android:textColor="@color/black"
+                android:text="0" />
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="25dp"
+                android:src="@drawable/image_gray_row" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="30dp"
+                android:textColor="@color/black"
+                android:text="最多轮灌组数量" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_maintain_basic_info_max_orroagte_valve"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/layout_maintain_basic_info_max_irrigat_group" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="16dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="30dp"
+                android:textColor="@color/black"
+                android:text="最多同时开阀数量" />
+
+            <TextView
+                android:id="@+id/text_maintain_basic_info_max_orroagte_valve"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="55dp"
+                android:textColor="@color/black"
+                android:text="0" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="25dp"
+                android:src="@drawable/image_gray_row" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_maintain_basic_info_max_orroagte_filter"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/layout_maintain_basic_info_max_orroagte_valve" >
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="30dp"
+                android:text="反过滤冲洗器时间"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/text_maintain_basic_info_filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="55dp"
+                android:text="0时"
+                android:textColor="@color/black" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="25dp"
+                android:src="@drawable/image_gray_row" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/layout_apply_irriagte_project_single_time_long"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_below="@+id/layout_maintain_basic_info_max_orroagte_filter"
+            android:background="@color/white" >
+
+            <ImageView
+                android:id="@+id/imageview2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="25dp"
+                android:src="@drawable/image_gray_row" />
+
+            <TextView
+                android:id="@+id/textview3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/imageview2"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="30dp"
+                android:text="水泵休息时间"
+                 android:layout_alignParentBottom="true"
+                android:layout_marginBottom="16dp"
+                android:textColor="@color/black" />
+
+            <ToggleButton
+                android:id="@+id/toggle_maintain_basic_info_time_longs"
+                android:layout_width="45dp"
+                android:layout_height="25dp"
+                android:layout_alignBaseline="@+id/text_apply_irriagte_project_single_time_long"
+                android:layout_alignBottom="@+id/text_apply_irriagte_project_single_time_long"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/personalinformation_selector"
+                android:disabledAlpha="?android:disabledAlpha"
+                android:textOff="@null"
+                android:layout_marginRight="55dp"
+                android:textOn="@null" />
+
+            <TextView
+                android:id="@+id/text_apply_irriagte_project_single_time_long"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/imageview2"
+                android:layout_toRightOf="@+id/textview3"
+                android:text="0时"
+                android:layout_marginLeft="28dp"
+                android:gravity="right"
+                android:textColor="@color/black" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_maintain_basic_info_max_orroagte_restnight"
+            android:layout_width="match_parent"
+            android:layout_height="85dp"
+            android:layout_below="@+id/layout_apply_irriagte_project_single_time_long" >
+
+            <ImageView
+                android:id="@+id/imageView_test_gray_row"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="25dp"
+                android:src="@drawable/image_gray_row" />
+
+            <TextView
+                android:id="@+id/TextViewX"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/imageView_test_gray_row"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="30dp"
+                android:gravity="center_vertical"
+                android:text="夜间休息时间"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/text_maintain_basic_info_max_orroagte_restnight_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/textView1"
+                android:layout_alignBottom="@+id/textView1"
+                android:layout_toRightOf="@+id/textView1"
+                android:text="00：00"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/text_maintain_basic_info_max_orroagte_restnight_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/textView2"
+                android:layout_alignBottom="@+id/textView2"
+                android:layout_marginRight="18dp"
+                android:layout_toLeftOf="@+id/imageView_test_gray_row"
+                android:layout_marginLeft="5dp"
+                android:text="00：00"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/TextViewX"
+                android:layout_alignParentBottom="true"
+                android:text="开始时间"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_toLeftOf="@+id/text_maintain_basic_info_max_orroagte_restnight_end"
+                android:text="结束时间"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/black" />
+
+            <ToggleButton
+                android:id="@+id/toggle_maintain_basic_info_time_night"
+                android:layout_width="45dp"
+                android:layout_height="25dp"
+                android:layout_alignBaseline="@+id/TextViewX"
+                android:layout_alignBottom="@+id/TextViewX"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/personalinformation_selector"
+                android:disabledAlpha="?android:disabledAlpha"
+                android:textOff="@null"
+                android:layout_marginRight="55dp"
+                android:textOn="@null" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_maintain_basic_info_season"
+            android:layout_width="match_parent"
+            android:layout_height="85dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/layout_maintain_basic_info_max_orroagte_restnight" >
+
+            <ImageView
+                android:id="@+id/ImageView01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="25dp"
+                android:src="@drawable/image_gray_row" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="30dp"
+                android:textColor="@color/black"
+                android:text="灌季" />
+
+            <TextView
+                android:id="@+id/TextView02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/TextView01"
+                android:layout_below="@+id/textView3"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/black"
+                android:text="结束时间" />
+
+            <TextView
+                android:id="@+id/text_maintain_basic_info_max_orroagte_season_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/TextView01"
+                android:layout_alignBottom="@+id/TextView01"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="55dp"
+                android:gravity="center_vertical"
+                android:textColor="@color/black"
+                android:text="0000-00-00" />
+
+            <TextView
+                android:id="@+id/TextView01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/ImageView01"
+                android:layout_marginLeft="35dp"
+                android:layout_toRightOf="@+id/textView3"
+                android:textColor="@color/black"
+                android:text="开始时间" />
+
+            <TextView
+                android:id="@+id/text_maintain_basic_info_max_orroagte_season_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/text_maintain_basic_info_max_orroagte_season_start"
+                android:layout_below="@+id/ImageView01"
+                android:gravity="center_vertical"
+                android:textColor="@color/black"
+                android:text="0000-00-00" />
+        </RelativeLayout>
+    </RelativeLayout>
+    
+
+</LinearLayout>
